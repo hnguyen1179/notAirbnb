@@ -1,0 +1,65 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the footer of the site/application.
+// -----------------------------------------------------------------------------
+
+.Footer {
+  margin-bottom: 5%;
+  display: flex;
+  justify-content: flex-start;
+
+  &__link-container {
+    display: flex;
+
+    a .Footer__icon {
+      margin: 0 1.5rem;
+      position: relative;
+      font-size: clamp(1rem, 0.8239rem + 0.7512vw, 1.5rem);      
+      font-family: $paragraphFont;
+      font-weight: 600;
+      color: $dark-grey;
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &::before, 
+      &::after {
+        @include bottom-bar;
+      }
+
+      &::before {
+        @include bottom-bar-before;
+      }
+
+      &:hover::before {
+        @include bottom-bar-hover-before;
+      }
+
+      &:hover {
+        transition: 350ms;
+      }
+      
+      &--resume:hover {
+        color: white;
+      }
+
+      &--spotify:hover {
+        color: #1db954;
+      }
+
+      &--linkedin:hover {
+        color: #2867B2;
+      }
+
+      &--github:hover {
+        color: rgb(255, 255, 255); 
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .Footer {
+    margin-bottom: 10%;
+  }
+}

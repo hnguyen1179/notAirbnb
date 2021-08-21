@@ -1,0 +1,38 @@
+// -----------------------------------------------------------------------------
+// This file contains all @font-face declarations, if any.
+// -----------------------------------------------------------------------------
+
+@font-face {
+  font-family: 'AirbnbCereal';
+  src: url('../../fonts/AirbnbCerealMedium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'AirbnbCereal-Black';
+  src: url('../../fonts/AirbnbCerealBlack.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'AirbnbCereal-Bold';
+  src: url('../../fonts/AirbnbCerealBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'AirbnbCereal-Light';
+  src: url('../../fonts/AirbnbCerealLight.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Circular';
+  src: url('../../fonts/CircularStd-Medium.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Circular-Light';
+  src: url('../../fonts/CircularStd-Light.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Circular-Bold';
+  src: url('../../fonts/CircularStd-Bold.otf') format('opentype');
+}

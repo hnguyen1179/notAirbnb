@@ -1,0 +1,13 @@
+/**
+ * Basic typography style for copy text
+ */
+
+// 1rem/em = 10px
+html {
+	font: normal 62.5% / 1.4 $text-font-stack;
+}
+
+// body font size defaults to 16px
+body {
+	font-size: 1.6em;
+}
