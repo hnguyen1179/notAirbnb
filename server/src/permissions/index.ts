@@ -7,29 +7,38 @@ const rules = {
     const userId = getUserId(context);
     return Boolean(userId);
   }),
-  isPostOwner: rule()(async (_parent, args, context) => {
+  isReviewOwner: rule()(async (_parent, args, context: Context) => {
     const userId = getUserId(context);
-    const author = await context.prisma.post
+    const user = await context.prisma.review
       .findUnique({
         where: {
-          id: Number(args.id),
+          id: args.id,
         },
       })
       .author();
-    return userId === author.id;
+    return userId === user?.id;
+  }),
+  isReservationOwner: rule()(async (_parent, args, context: Context) => {
+    const userId = getUserId(context);
+    const user = await context.prisma.reservation
+      .findUnique({
+        where: {
+          id: args.id,
+        },
+      })
+      .user();
+    return userId === user?.id;
   }),
 };
 
 export const permissions = shield({
   Query: {
     me: rules.isAuthenticatedUser,
-    draftsByUser: rules.isAuthenticatedUser,
-    postById: rules.isAuthenticatedUser,
   },
   Mutation: {
-    createDraft: rules.isAuthenticatedUser,
-    togglePublishPost: rules.isPostOwner,
-    incrementPostViewCount: rules.isAuthenticatedUser,
-    deletePost: rules.isPostOwner,
+    createReview: rules.isAuthenticatedUser,
+    deleteReview: rules.isReviewOwner,
+    createReservation: rules.isAuthenticatedUser,
+    deleteReservation: rules.isReservationOwner,
   },
 });

@@ -1,0 +1,16 @@
+{
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 2020
+    },
+    "extends": [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended"
+    ],
+    "rules": {
+        "prettier/prettier": [
+            "error",
+            { "tabWidth": 2 }
+        ]
+    }
+}

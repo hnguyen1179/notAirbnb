@@ -4,7 +4,6 @@ import { compare, hash } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
 import { applyMiddleware } from 'graphql-middleware';
 import {
-  intArg,
   makeSchema,
   nonNull,
   objectType,
@@ -12,101 +11,61 @@ import {
   inputObjectType,
   arg,
   asNexusMethod,
-  enumType,
+  list,
 } from 'nexus';
-import { DateTimeResolver } from 'graphql-scalars';
+import { DateTimeResolver, JSONObjectResolver } from 'graphql-scalars';
 import { Context } from './context';
 
-export const DateTime = asNexusMethod(DateTimeResolver, 'date');
+export const dateTimeScalar = asNexusMethod(DateTimeResolver, 'date');
+export const jsonScalar = asNexusMethod(JSONObjectResolver, 'json');
 
 const Query = objectType({
   name: 'Query',
   definition(t) {
-    t.nonNull.list.nonNull.field('allUsers', {
-      type: 'User',
-      resolve: (_parent, _args, context: Context) => {
-        return context.prisma.user.findMany();
-      },
-    });
-
     t.nullable.field('me', {
       type: 'User',
-      resolve: (parent, args, context: Context) => {
+      resolve: (_parent, _args, context: Context) => {
         const userId = getUserId(context);
         return context.prisma.user.findUnique({
           where: {
-            id: Number(userId),
+            id: userId,
           },
         });
       },
     });
 
-    t.nullable.field('postById', {
-      type: 'Post',
+    t.nullable.field('listingById', {
+      type: 'Listing',
       args: {
-        id: intArg(),
+        id: nonNull(stringArg()),
       },
       resolve: (_parent, args, context: Context) => {
-        return context.prisma.post.findUnique({
-          where: { id: args.id || undefined },
-        });
-      },
-    });
-
-    t.nonNull.list.nonNull.field('feed', {
-      type: 'Post',
-      args: {
-        searchString: stringArg(),
-        skip: intArg(),
-        take: intArg(),
-        orderBy: arg({
-          type: 'PostOrderByUpdatedAtInput',
-        }),
-      },
-      resolve: (_parent, args, context: Context) => {
-        const or = args.searchString
-          ? {
-              OR: [
-                { title: { contains: args.searchString } },
-                { content: { contains: args.searchString } },
-              ],
-            }
-          : {};
-
-        return context.prisma.post.findMany({
+        return context.prisma.listing.findUnique({
           where: {
-            published: true,
-            ...or,
+            id: args.id,
           },
-          take: args.take || undefined,
-          skip: args.skip || undefined,
-          orderBy: args.orderBy || undefined,
         });
       },
     });
 
-    t.list.field('draftsByUser', {
-      type: 'Post',
+    t.nonNull.list.nonNull.field('allListings', {
+      type: 'Listing',
+      resolve: (_parent, _args, context: Context) => {
+        return context.prisma.listing.findMany();
+      },
+    });
+
+    t.nonNull.list.nonNull.field('listingsByRegion', {
+      type: 'Listing',
       args: {
-        userUniqueInput: nonNull(
-          arg({
-            type: 'UserUniqueInput',
-          }),
-        ),
+        region: nonNull(stringArg()),
       },
       resolve: (_parent, args, context: Context) => {
-        return context.prisma.user
-          .findUnique({
-            where: {
-              id: args.userUniqueInput.id || undefined,
-              email: args.userUniqueInput.email || undefined,
-            },
-          })
-          .posts({
-            where: {
-              published: false,
-            },
-          });
+        return context.prisma.listing.findMany({
+          where: {
+            region: args.region,
+          },
+        });
       },
     });
   },
@@ -118,7 +77,10 @@ const Mutation = objectType({
     t.field('signup', {
       type: 'AuthPayload',
       args: {
-        name: stringArg(),
+        id: nonNull(stringArg()),
+        dateJoined: nonNull(stringArg()),
+        firstName: nonNull(stringArg()),
+        lastName: nonNull(stringArg()),
         email: nonNull(stringArg()),
         password: nonNull(stringArg()),
       },
@@ -126,7 +88,10 @@ const Mutation = objectType({
         const hashedPassword = await hash(args.password, 10);
         const user = await context.prisma.user.create({
           data: {
-            name: args.name,
+            id: args.id,
+            dateJoined: args.dateJoined,
+            firstName: args.firstName,
+            lastName: args.lastName,
             email: args.email,
             password: hashedPassword,
           },
@@ -164,76 +129,106 @@ const Mutation = objectType({
       },
     });
 
-    t.field('createDraft', {
-      type: 'Post',
+    // Creating a Reservation
+    t.field('createReservation', {
+      type: 'Reservation',
       args: {
         data: nonNull(
           arg({
-            type: 'PostCreateInput',
+            type: 'ReservationCreateInput',
+          }),
+        ),
+      },
+      resolve: async (_, args, context: Context) => {
+        const userId = getUserId(context);
+
+        if (userId === undefined) throw new Error('User undefined');
+
+        const data = await context.prisma.listing.findUnique({
+          where: { id: args.data.listingId },
+          select: {
+            datesUnavailable: true,
+          },
+        });
+
+        if (!data?.datesUnavailable) throw new Error('Dates Undefined');
+
+        const datesUnavailable: any = data?.datesUnavailable;
+        const start = new Date(args.data.dateStart);
+
+        while (
+          start.toLocaleDateString() !== args.data.dateEnd.toLocaleDateString()
+        ) {
+          datesUnavailable[start.toLocaleDateString()] = true;
+          start.setDate(start.getDate() + 1);
+        }
+
+        context.prisma.listing.update({
+          where: { id: args.data.listingId },
+          data: {
+            datesUnavailable: datesUnavailable,
+          },
+        });
+
+        return context.prisma.reservation.create({
+          data: {
+            userId: userId,
+            listingId: args.data.listingId,
+            dateStart: args.data.dateStart,
+            dateEnd: args.data.dateEnd,
+            totalPrice: args.data.totalPrice,
+          },
+        });
+      },
+    });
+
+    // Deleting a Reservation
+    t.field('deleteReservation', {
+      type: 'Reservation',
+      args: {
+        id: nonNull(stringArg()),
+      },
+      resolve: (_, args, context: Context) => {
+        return context.prisma.reservation.delete({
+          where: { id: args.id },
+        });
+      },
+    });
+
+    // Creating a Review
+    t.field('createReview', {
+      type: 'Review',
+      args: {
+        data: nonNull(
+          arg({
+            type: 'ReviewCreateInput',
           }),
         ),
       },
       resolve: (_, args, context: Context) => {
-        const userId = getUserId(context);
-        return context.prisma.post.create({
+        const authorId = getUserId(context);
+
+        if (authorId === undefined) throw new Error('wtf??');
+
+        return context.prisma.review.create({
           data: {
-            title: args.data.title,
+            authorId: authorId,
+            listingId: args.data.listingId,
             content: args.data.content,
-            authorId: userId,
+            scores: args.data.scores,
           },
         });
       },
     });
 
-    t.field('togglePublishPost', {
-      type: 'Post',
+    // Deleting a Review
+    t.field('deleteReview', {
+      type: 'Review',
       args: {
-        id: nonNull(intArg()),
-      },
-      resolve: async (_, args, context: Context) => {
-        try {
-          const post = await context.prisma.post.findUnique({
-            where: { id: args.id || undefined },
-            select: {
-              published: true,
-            },
-          });
-          return context.prisma.post.update({
-            where: { id: args.id || undefined },
-            data: { published: !post?.published },
-          });
-        } catch (e) {
-          throw new Error(
-            `Post with ID ${args.id} does not exist in the database.`,
-          );
-        }
-      },
-    });
-
-    t.field('incrementPostViewCount', {
-      type: 'Post',
-      args: {
-        id: nonNull(intArg()),
+        id: nonNull(stringArg()),
       },
       resolve: (_, args, context: Context) => {
-        return context.prisma.post.update({
-          where: { id: args.id || undefined },
-          data: {
-            viewCount: {
-              increment: 1,
-            },
-          },
-        });
-      },
-    });
-
-    t.field('deletePost', {
-      type: 'Post',
-      args: {
-        id: nonNull(intArg()),
-      },
-      resolve: (_, args, context: Context) => {
-        return context.prisma.post.delete({
+        return context.prisma.review.delete({
           where: { id: args.id },
         });
       },
@@ -244,79 +239,210 @@ const Mutation = objectType({
 const User = objectType({
   name: 'User',
   definition(t) {
-    t.nonNull.int('id');
-    t.string('name');
+    t.nonNull.string('id');
+    t.nonNull.string('firstName');
+    t.nonNull.string('lastName');
     t.nonNull.string('email');
-    t.nonNull.list.nonNull.field('posts', {
-      type: 'Post',
+    t.nonNull.string('dateJoined');
+    t.nonNull.field('reviews', {
+      type: list('Review'),
       resolve: (parent, _, context: Context) => {
         return context.prisma.user
           .findUnique({
             where: { id: parent.id || undefined },
           })
-          .posts();
+          .reviews();
+      },
+    });
+    t.nonNull.field('reservations', {
+      type: list('Reservation'),
+      resolve: (parent, _, context: Context) => {
+        return context.prisma.user
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .reservations();
       },
     });
   },
 });
 
-const Post = objectType({
-  name: 'Post',
+const Reservation = objectType({
+  name: 'Reservation',
   definition(t) {
-    t.nonNull.int('id');
-    t.nonNull.field('createdAt', { type: 'DateTime' });
-    t.nonNull.field('updatedAt', { type: 'DateTime' });
+    t.nonNull.string('id');
+    t.field('user', {
+      type: 'User',
+      resolve: (parent, _, context: Context) => {
+        return context.prisma.reservation
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .user();
+      },
+    });
+    t.nonNull.string('userId');
+    t.field('listing', {
+      type: 'Listing',
+      resolve: (parent, _, context: Context) => {
+        return context.prisma.reservation
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .listing();
+      },
+    });
+    t.nonNull.string('listingId');
+    t.nonNull.field('dateStart', { type: 'DateTime' });
+    t.nonNull.field('dateEnd', { type: 'DateTime' });
+    t.nonNull.float('totalPrice');
+  },
+});
+
+const Host = objectType({
+  name: 'Host',
+  definition(t) {
+    t.nonNull.string('id');
+    t.nonNull.string('firstName');
+    t.nonNull.string('dateJoined');
+    t.string('description');
+    t.nonNull.field('details', { type: list('String') });
+    t.nonNull.field('medals', { type: list('String') });
+    t.nonNull.field('listings', {
+      type: list('Listing'),
+      resolve: (parent, _, context: Context) => {
+        return context.prisma.host
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .listings();
+      },
+    });
+  },
+});
+
+const Listing = objectType({
+  name: 'Listing',
+  definition(t) {
+    t.nonNull.string('id');
+    t.field('host', {
+      type: 'Host',
+      resolve: (parent, _, context: Context) => {
+        return context.prisma.listing
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .host();
+      },
+    });
+    t.nonNull.string('hostId');
     t.nonNull.string('title');
-    t.string('content');
-    t.nonNull.boolean('published');
-    t.nonNull.int('viewCount');
+    t.nonNull.string('street');
+    t.nonNull.string('city');
+    t.nonNull.string('state');
+    t.nonNull.string('zipCode');
+    t.nonNull.string('address');
+    t.nonNull.string('location');
+    t.nonNull.string('region');
+    t.string('listingDescription');
+    t.string('locationDescription');
+    t.string('stayDescription');
+    t.nonNull.int('price');
+    t.nonNull.int('cleaningFee');
+    t.nonNull.int('numGuests');
+    t.nonNull.int('numBedrooms');
+    t.nonNull.int('numBeds');
+    t.nonNull.int('numBaths');
+    t.nonNull.boolean('smokingRule');
+    t.nonNull.boolean('petsRule');
+    t.nonNull.boolean('superhost');
+    t.nonNull.field('languages', { type: list('String') });
+    t.nonNull.field('imageComments', { type: list('String') });
+    t.nonNull.string('listingType');
+    t.nonNull.field('basicAmenities', { type: list('String') });
+    t.nonNull.field('amenities', { type: list('String') });
+    t.nonNull.field('houseRules', { type: list('String') });
+    t.nonNull.field('healthAndSafety', { type: list('String') });
+    t.nonNull.field('highlights', { type: list('String') });
+    t.nonNull.float('score');
+    t.nonNull.field('scores', { type: list('String') });
+    t.nonNull.field('datesUnavailable', { type: 'JSONObject' });
+    t.nonNull.field('reviews', {
+      type: list('Review'),
+      resolve: (parent, _, context: Context) => {
+        return context.prisma.listing
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .reviews();
+      },
+    });
+    t.nonNull.field('reservations', {
+      type: list('Reservation'),
+      resolve: (parent, _, context: Context) => {
+        return context.prisma.listing
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .reservations();
+      },
+    });
+  },
+});
+
+const Review = objectType({
+  name: 'Review',
+  definition(t) {
+    t.nonNull.string('id');
+    t.field('listing', {
+      type: 'Listing',
+      resolve: (parent, _, context: Context) => {
+        return context.prisma.review
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .listing();
+      },
+    });
+    t.nonNull.string('listingId');
+    t.nonNull.field('date', { type: 'DateTime' });
+    t.nonNull.string('content');
     t.field('author', {
       type: 'User',
       resolve: (parent, _, context: Context) => {
-        return context.prisma.post
+        return context.prisma.review
           .findUnique({
             where: { id: parent.id || undefined },
           })
           .author();
       },
     });
+    t.nonNull.string('authorId');
+    t.nonNull.field('scores', { type: list('String') });
   },
 });
 
-const SortOrder = enumType({
-  name: 'SortOrder',
-  members: ['asc', 'desc'],
-});
-
-const PostOrderByUpdatedAtInput = inputObjectType({
-  name: 'PostOrderByUpdatedAtInput',
+const ReservationCreateInput = inputObjectType({
+  name: 'ReservationCreateInput',
   definition(t) {
-    t.nonNull.field('updatedAt', { type: 'SortOrder' });
+    t.nonNull.string('listingId');
+    t.nonNull.field('dateStart', {
+      type: 'DateTime',
+    });
+    t.nonNull.field('dateEnd', {
+      type: 'DateTime',
+    });
+    t.nonNull.int('totalPrice');
   },
 });
 
-const UserUniqueInput = inputObjectType({
-  name: 'UserUniqueInput',
+const ReviewCreateInput = inputObjectType({
+  name: 'ReviewCreateInput',
   definition(t) {
-    t.int('id');
-    t.string('email');
-  },
-});
-
-const PostCreateInput = inputObjectType({
-  name: 'PostCreateInput',
-  definition(t) {
-    t.nonNull.string('title');
-    t.string('content');
-  },
-});
-
-const UserCreateInput = inputObjectType({
-  name: 'UserCreateInput',
-  definition(t) {
-    t.nonNull.string('email');
-    t.string('name');
-    t.list.nonNull.field('posts', { type: 'PostCreateInput' });
+    t.nonNull.string('authorId');
+    t.nonNull.string('listingId');
+    t.nonNull.string('content');
+    t.nonNull.field('scores', { type: list(nonNull('String')) });
   },
 });
 
@@ -332,15 +458,16 @@ const schemaWithoutPermissions = makeSchema({
   types: [
     Query,
     Mutation,
-    Post,
     User,
+    Reservation,
+    Host,
+    Listing,
+    Review,
     AuthPayload,
-    UserUniqueInput,
-    UserCreateInput,
-    PostCreateInput,
-    SortOrder,
-    PostOrderByUpdatedAtInput,
-    DateTime,
+    dateTimeScalar,
+    jsonScalar,
+    ReservationCreateInput,
+    ReviewCreateInput,
   ],
   outputs: {
     schema: __dirname + '/../schema.graphql',

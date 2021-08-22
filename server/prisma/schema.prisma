@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id
+  firstName    String
+  lastName     String
+  email        String        @unique
+  password     String
+  dateJoined   String
+  reviews      Review[]
+  reservations Reservation[]
+}
+
+model Reservation {
+  id         String   @id @default(uuid())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  listing    Listing  @relation(fields: [listingId], references: [id])
+  listingId  String
+  dateStart  DateTime
+  dateEnd    DateTime
+  totalPrice Float
+}
+
+model Host {
+  id          String    @id
+  firstName   String
+  dateJoined  String
+  description String?
+  details     String[]
+  medals      String[]
+  listings    Listing[]
+}
+
+model Listing {
+  id                  String        @id
+  host                Host          @relation(fields: [hostId], references: [id])
+  hostId              String
+  title               String
+  street              String
+  city                String
+  state               String
+  zipCode             String
+  address             String
+  location            String
+  region              String
+  listingDescription  String?
+  locationDescription String?
+  stayDescription     String?
+  price               Int
+  cleaningFee         Int
+  numGuests           Int
+  numBedrooms         Int
+  numBeds             Int
+  numBaths            Int
+  smokingRule         Boolean
+  petsRule            Boolean
+  superhost           Boolean
+  languages           String[]
+  imageComments       String[]
+  listingType         String
+  basicAmenities      String[]
+  amenities           String[]
+  houseRules          String[]
+  healthAndSafety     String[]
+  highlights          String[]
+  score               Float
+  scores              String[]
+  datesUnavailable    Json
+  reviews             Review[]
+  reservations        Reservation[]
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  listing   Listing  @relation(fields: [listingId], references: [id])
+  listingId String
+  date      DateTime @default(now())
+  content   String
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  String
+  scores    String[]
+}

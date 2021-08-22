@@ -1,0 +1,48 @@
+{
+  "name": "airbnb_clone",
+  "version": "1.0.0",
+  "description": "A clone of airbnb using the MERN stack",
+  "license": "MIT",
+  "scripts": {
+    "dev": "ts-node-dev --no-notify --respawn --transpile-only src/server",
+    "start": "node dist/server",
+    "clean": "rm -rf dist",
+    "build": "npm -s run clean && npm -s run generate && tsc",
+    "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
+    "generate:prisma": "prisma generate --watch",
+    "generate:nexus": "ts-node --transpile-only src/schema"
+  },
+  "prettier": {
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "tabWidth": 2
+  },
+  "dependencies": {
+    "@prisma/client": "^2.29.1",
+    "apollo-server": "2.25.2",
+    "bcryptjs": "2.4.3",
+    "graphql": "15.5.1",
+    "graphql-middleware": "6.0.10",
+    "graphql-scalars": "1.10.0",
+    "graphql-shield": "7.5.0",
+    "graphql-type-json": "^0.3.2",
+    "jsonwebtoken": "8.5.1",
+    "nexus": "1.1.0"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "2.4.2",
+    "@types/jsonwebtoken": "8.5.4",
+    "@types/node": "12.20.16",
+    "@typescript-eslint/eslint-plugin": "^4.28.4",
+    "@typescript-eslint/parser": "^4.28.4",
+    "eslint": "^7.31.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.3.2",
+    "prisma": "^2.29.1",
+    "ts-node": "^10.2.1",
+    "ts-node-dev": "1.1.8",
+    "typescript": "4.3.5"
+  }
+}
