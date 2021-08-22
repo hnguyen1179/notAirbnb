@@ -110,22 +110,26 @@ const Mutation = objectType({
         password: nonNull(stringArg()),
       },
       resolve: async (_parent, { email, password }, context: Context) => {
-        const user = await context.prisma.user.findUnique({
-          where: {
-            email,
-          },
-        });
-        if (!user) {
-          throw new Error(`No user found for email: ${email}`);
+        try {
+          const user = await context.prisma.user.findUnique({
+            where: {
+              email,
+            },
+          });
+          if (!user) {
+            throw new Error(`No user found for email: ${email}`);
+          }
+          const passwordValid = await compare(password, user.password);
+          if (!passwordValid) {
+            throw new Error('Invalid password');
+          }
+          return {
+            token: sign({ userId: user.id }, APP_SECRET),
+            user,
+          };
+        } catch (e) {
+          return e;
         }
-        const passwordValid = await compare(password, user.password);
-        if (!passwordValid) {
-          throw new Error('Invalid password');
-        }
-        return {
-          token: sign({ userId: user.id }, APP_SECRET),
-          user,
-        };
       },
     });
 
