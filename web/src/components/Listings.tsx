@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import AppContext from "../context/app-context";
 import { gql, useQuery } from "@apollo/client";
 
 const LISTINGS_QUERY = gql`
@@ -18,6 +19,7 @@ interface Listing {
 }
 
 function Listings() {
+	const { user } = useContext(AppContext);
 	const { loading, error, data } = useQuery(LISTINGS_QUERY);
 	if (loading) return <p> loading ... </p>;
 	if (error) return <p> {error.message} </p>;

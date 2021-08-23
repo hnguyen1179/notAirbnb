@@ -17,9 +17,10 @@ interface User {
 	firstName: string;
 }
 
-const CLOUD_NAME = process.env.REACT_APP_CLOUDINARY_NAME;
 
 function Users() {
+  const CLOUD_NAME = process.env.REACT_APP_CLOUDINARY_NAME;
+  
   const cld = new Cloudinary({
     cloud: {
       cloudName: CLOUD_NAME,
@@ -31,10 +32,9 @@ function Users() {
 	if (loading) return <p>loading...</p>;
   if (error) return <p>{error.message}</p>;
   
-  console.log(data)
-
 	return (
-		<div>
+    <div>
+      <h1>Project is being ran in {process.env.NODE_ENV}</h1>
       {data.allUsers.map((user: User) => {
         const img = cld.image(`/user_avatars/${user.id}`)
 

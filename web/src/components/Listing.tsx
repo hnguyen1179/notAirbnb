@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { AdvancedImage, placeholder } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/base";
+
+import AppContext from "../context/app-context";
 
 const LISTING = gql`
 	query LISTING($id: String!) {
@@ -87,6 +89,8 @@ interface Props {
 const CLOUD_NAME = process.env.REACT_APP_CLOUDINARY_NAME;
 
 function Listing({ id }: Props) {
+	const { user } = useContext(AppContext);
+
 	const cld = new Cloudinary({
 		cloud: {
 			cloudName: CLOUD_NAME,
@@ -97,7 +101,12 @@ function Listing({ id }: Props) {
 		variables: { id },
 	});
 
-	if (loading) return <p> loading ... </p>;
+	if (loading)
+		return (
+			<div style={{ backgroundColor: "black", height: "100vh" }}>
+				loading
+			</div>
+		);
 	if (error) console.log(JSON.stringify(error, null, 2));
 	if (error) return <p> {error.message} </p>;
 
