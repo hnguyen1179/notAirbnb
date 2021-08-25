@@ -1,3 +1,7 @@
+.MuiContainer {
+	padding-top: 1rem;
+}
+
 .MuiFormControl-root {
 	position: relative;
 
@@ -35,6 +39,7 @@
 
 		.MuiOutlinedInput {
 			&-notchedOutline {
+				// margin: 10px;
 				legend {
 					display: none;
 				}
@@ -43,7 +48,7 @@
 	}
 
 	.MuiFormHelperText-root {
-    margin: 0;
+		margin: 0;
 		font-family: "Circular-Light";
 		font-weight: 800;
 		font-size: 1.2rem;
@@ -52,4 +57,18 @@
 
 .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
 	border-color: black;
+}
+
+input[type="date"]:in-range::-webkit-datetime-edit-year-field,
+input[type="date"]:in-range::-webkit-datetime-edit-month-field,
+input[type="date"]:in-range::-webkit-datetime-edit-day-field,
+input[type="date"]:in-range::-webkit-datetime-edit-text {
+	color: transparent;
+}
+
+input[type="date"]:focus::-webkit-datetime-edit-year-field,
+input[type="date"]:focus::-webkit-datetime-edit-month-field,
+input[type="date"]:focus::-webkit-datetime-edit-day-field,
+input[type="date"]:focus::-webkit-datetime-edit-text {
+    color: black !important;
 }

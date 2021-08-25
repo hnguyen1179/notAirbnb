@@ -3,25 +3,30 @@ import useSignup from "../../hooks/useSignup";
 import PasswordHints from "./PasswordHints";
 
 import TextField from "@material-ui/core/TextField";
-import FormErrors from "./FormError";
+import FormError from "./FormError";
 
 import { emailRegex, symbolRegex } from "../../utils/regex";
 import { containsInformation, isAdult } from "../../utils/validators";
 
 const VERIFIED = "verified";
 
-function SignUp({ form, setVerified, showHints, setShowHints, resetForm }: any) {
+function SignUp({
+	form,
+	setVerified,
+	showHints,
+	setShowHints,
+	resetForm,
+}: any) {
 	const {
 		register,
 		trigger,
 		handleSubmit,
-    getValues,
+		getValues,
 		setError,
 		setValue,
-    watch,
+		watch,
 		formState: { errors },
 	} = form;
-  
 
 	const watchPassword = watch("password");
 
@@ -42,82 +47,97 @@ function SignUp({ form, setVerified, showHints, setShowHints, resetForm }: any) 
 		}
 	};
 
+	const triggerPassword = () => {
+		trigger("password");
+		return true;
+	};
+
+	const redirectToLogin = () => {
+		setValue("password", "");
+		setVerified("verified");
+	};
+
 	return (
 		<div>
 			<h1>Sign Up</h1>
 			<form onSubmit={handleSubmit(onSubmitSignup)}>
-				<div>
-					<input
-						type="email"
-						placeholder="Email Address"
+				<div className="MuiContainer">
+					<TextField
+						error={!!errors.email}
+						helperText={
+							<FormError
+								error={errors.email?.message}
+								redirect={redirectToLogin}
+							/>
+						}
+						label="Email"
+						placeholder="Email"
+						variant="outlined"
 						{...register("email", {
 							required: "This field is required",
 							pattern: {
 								value: emailRegex,
 								message: "Must be a valid email address",
 							},
-							validate: () => {
-								trigger("password");
-								return true;
+							validate: {
+								triggerPassword,
 							},
 						})}
 					/>
-					{errors.email && (
-						<span>
-							{errors.email.message}{" "}
-							<span
-								onClick={() => {
-									setValue("password", "");
-									setVerified(VERIFIED);
-								}}
-							>
-								{errors.email.type === "Duplicate Email" &&
-									"Sign In"}
-							</span>
-						</span>
-					)}
 				</div>
-				<div>
-					<input
-						type="text"
+				<div className="MuiContainer">
+					<TextField
+						error={!!errors.firstName}
+						helperText={
+							<FormError error={errors.firstName?.message} />
+						}
+						label="First Name"
 						placeholder="First Name"
+						variant="outlined"
 						{...register("firstName", {
 							required: "This field is required",
 							pattern: {
 								value: /^\S*$/,
 								message: "Must contain valid characters",
 							},
-							validate: () => {
-								trigger("password");
-								return true;
+							validate: {
+								triggerPassword,
 							},
 						})}
 					/>
-					{errors.firstName && (
-						<span>{errors.firstName.message}</span>
-					)}
 				</div>
-				<div>
-					<input
-						type="text"
+				<div className="MuiContainer">
+					<TextField
+						error={!!errors.lastName}
+						helperText={
+							<FormError error={errors.lastName?.message} />
+						}
+						label="Last Name"
 						placeholder="Last Name"
+						variant="outlined"
 						{...register("lastName", {
 							required: "This field is required",
 							pattern: {
 								value: /^\S*$/,
 								message: "Must contain valid characters",
 							},
-							validate: () => {
-								trigger("password");
-								return true;
+							validate: {
+								triggerPassword,
 							},
 						})}
 					/>
-					{errors.lastName && <span>{errors.lastName.message}</span>}
 				</div>
-				<div>
-					<input
+
+				<div className="MuiContainer">
+					<TextField
+						error={!!errors.birthday}
+						helperText={
+							<FormError error={errors.birthday?.message} />
+						}
 						type="date"
+						label="Birthdate"
+						placeholder="Birthdate"
+						variant="outlined"
 						{...register("birthday", {
 							required: "This field is required",
 							validate: {
@@ -125,12 +145,26 @@ function SignUp({ form, setVerified, showHints, setShowHints, resetForm }: any) 
 							},
 						})}
 					/>
-					{errors.birthday && <span>{errors.birthday.message}</span>}
 				</div>
-				<div>
-					<input
-						type="password"
+
+				<div className="MuiContainer">
+					<TextField
+						error={!!errors.password}
+						helperText={
+							showHints && (
+								<PasswordHints
+									errors={errors.password}
+									passwordLength={watchPassword.length >= 8}
+									passwordStrong={
+										!!watchPassword.match(symbolRegex)
+									}
+								/>
+							)
+						}
+            type="password"
+						label="Password"
 						placeholder="Password"
+						variant="outlined"
 						onFocus={() => setShowHints(true)}
 						{...register("password", {
 							required: "This field is required",
@@ -142,18 +176,12 @@ function SignUp({ form, setVerified, showHints, setShowHints, resetForm }: any) 
 								value: /\w*[\d\W~]+\w*/,
 								message: "Contains a number or symbol",
 							},
-							validate: { 
-                containsInformation: (v: string) => containsInformation(v, getValues),
+							validate: {
+								containsInformation: (v: string) =>
+									containsInformation(v, getValues),
 							},
 						})}
 					/>
-					{showHints && (
-						<PasswordHints
-							errors={errors.password}
-							passwordLength={watchPassword.length >= 8}
-							passwordStrong={!!watchPassword.match(symbolRegex)}
-						/>
-					)}
 				</div>
 				<button type="submit" disabled={signupLoad}>
 					Sign Up

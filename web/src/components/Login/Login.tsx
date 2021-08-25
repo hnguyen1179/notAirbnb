@@ -29,14 +29,17 @@ function Login({ form, showPassword, setShowPassword, resetForm }: any) {
 	};
 
 	return (
-		<div>
+		<div className="MuiContainer">
 			<h1>Log In</h1>
 			<form onSubmit={handleSubmit(onSubmitLogin)}>
 				<div>
+					{/* Login password input requires no validation except for server side validations (invalid password) */}
 					<TextField
 						error={errors.password?.type === "Invalid Password"}
 						helperText={
-							<FormError error={errors.password?.message} />
+							errors.password?.type === "Invalid Password" && (
+								<FormError error={errors.password?.message} />
+							)
 						}
 						type={showPassword ? "text" : "password"}
 						label="Password"

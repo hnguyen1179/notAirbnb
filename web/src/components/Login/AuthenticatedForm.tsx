@@ -29,6 +29,8 @@ function AuthenticatedForm() {
 		form.reset();
 	};
 
+	console.log("ERRORS: ", form.formState.errors)
+
 	// Email validator stage
 	if (verified === UNVERIFIED)
 		return <Welcome form={form} setVerified={setVerified} />;

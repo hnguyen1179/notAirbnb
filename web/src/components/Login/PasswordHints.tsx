@@ -1,4 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { ReactComponent as FailSvg } from "../../assets/svgs/negative.svg";
+import { ReactComponent as PassSvg } from "../../assets/svgs/positive.svg";
 
 const ERROR_NAMES = [
 	"Can't contain your name or email address",
@@ -8,7 +10,7 @@ const ERROR_NAMES = [
 
 const GREEN = "green";
 const RED = "red";
-const REQUIRED = "required"
+const REQUIRED = "required";
 
 const DEFAULTS = [true, false, false];
 
@@ -25,8 +27,12 @@ const PasswordHints: React.FC<Props> = ({
 }: any) => {
 	if (!errors && passwordLength) {
 		return (
-			<ul>
-				<li style={{color: GREEN}}>
+			<ul className="PasswordHints-container">
+				<li
+					className="PasswordHints-container__item"
+					style={{ color: GREEN }}
+				>
+					<PassSvg />
 					{passwordStrong
 						? "Password strength: strong"
 						: "Password strength: good"}
@@ -36,12 +42,18 @@ const PasswordHints: React.FC<Props> = ({
 	}
 
 	return (
-		<ul>
-			<li style={{color: RED}}>Password strength: weak</li>
+		<ul className="PasswordHints-container">
+			<li
+				className="PasswordHints-container__item"
+				style={{ color: RED }}
+			>
+				<FailSvg /> Password strength: weak
+			</li>
 			{errors && errors.type !== REQUIRED
-				? ERROR_NAMES.map((error: string) => {
+				? ERROR_NAMES.map((error: string, idx: any) => {
 						return (
 							<li
+								className="PasswordHints-container__item"
 								style={{
 									color: !Object.values(
 										errors.types
@@ -50,6 +62,7 @@ const PasswordHints: React.FC<Props> = ({
 										: RED,
 								}}
 							>
+								{DEFAULTS[idx] ? <PassSvg /> : <FailSvg />}
 								{error}
 							</li>
 						);
@@ -57,10 +70,12 @@ const PasswordHints: React.FC<Props> = ({
 				: ERROR_NAMES.map((error: string, idx: any) => {
 						return (
 							<li
+								className="PasswordHints-container__item"
 								style={{
 									color: DEFAULTS[idx] ? GREEN : RED,
 								}}
 							>
+								{DEFAULTS[idx] ? <PassSvg /> : <FailSvg />}
 								{error}
 							</li>
 						);

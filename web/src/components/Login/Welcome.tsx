@@ -24,7 +24,7 @@ function Welcome({ form, setVerified }: any) {
 	};
 
 	return (
-		<div>
+		<div className="MuiContainer">
 			<h1>Welcome!</h1>
 			<form onSubmit={handleSubmit(onSubmitEmail)}>
 				<div>
