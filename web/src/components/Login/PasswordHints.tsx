@@ -26,18 +26,18 @@ const PasswordHints: React.FC<Props> = ({
 	if (!errors && passwordLength) {
 		return (
 			<ul>
-				<h1 style={{color: GREEN}}>
+				<li style={{color: GREEN}}>
 					{passwordStrong
-						? "Password Strength: Strong"
-						: "Password Strength: Good"}
-				</h1>
+						? "Password strength: strong"
+						: "Password strength: good"}
+				</li>
 			</ul>
 		);
 	}
 
 	return (
 		<ul>
-			<h1>Password Strength: Weak</h1>
+			<li style={{color: RED}}>Password strength: weak</li>
 			{errors && errors.type !== REQUIRED
 				? ERROR_NAMES.map((error: string) => {
 						return (

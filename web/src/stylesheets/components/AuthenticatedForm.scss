@@ -1,0 +1,55 @@
+.MuiFormControl-root {
+	position: relative;
+
+	.MuiFormLabel-root {
+		font-family: "Circular-Light";
+		font-weight: 800;
+	}
+
+	.MuiInputLabel {
+		&-outlined {
+			font-size: 1.6rem;
+			margin-left: 10px;
+			position: absolute;
+			transform: translateY(0);
+			top: 10px;
+
+			&.MuiInputLabel-shrink {
+				color: grey;
+				transform: translateY(-7px) scale(0.65);
+			}
+		}
+	}
+
+	.MuiInputBase-root {
+		font-family: "Circular-Light";
+		font-weight: 800;
+		position: relative;
+		font-size: 1.6rem;
+
+		input {
+			transform: translateY(5px);
+			margin: 10px;
+			padding: 0;
+		}
+
+		.MuiOutlinedInput {
+			&-notchedOutline {
+				legend {
+					display: none;
+				}
+			}
+		}
+	}
+
+	.MuiFormHelperText-root {
+    margin: 0;
+		font-family: "Circular-Light";
+		font-weight: 800;
+		font-size: 1.2rem;
+	}
+}
+
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+	border-color: black;
+}
