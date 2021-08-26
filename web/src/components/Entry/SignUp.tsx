@@ -8,8 +8,6 @@ import FormError from "./FormError";
 import { emailRegex, symbolRegex } from "../../utils/regex";
 import { containsInformation, isAdult } from "../../utils/validators";
 
-const VERIFIED = "verified";
-
 function SignUp({
 	form,
 	setVerified,
@@ -53,14 +51,14 @@ function SignUp({
 	};
 
 	const redirectToLogin = () => {
-		setValue("password", "");
+		setValue("passwordLogin", "");
 		setVerified("verified");
 	};
 
 	return (
 		<div>
 			<h1>Sign Up</h1>
-			<form onSubmit={handleSubmit(onSubmitSignup)}>
+			<form onSubmit={handleSubmit(onSubmitSignup)} autoComplete="off">
 				<div className="MuiContainer">
 					<TextField
 						error={!!errors.email}
@@ -73,6 +71,7 @@ function SignUp({
 						label="Email"
 						placeholder="Email"
 						variant="outlined"
+						fullWidth
 						{...register("email", {
 							required: "This field is required",
 							pattern: {
@@ -94,6 +93,7 @@ function SignUp({
 						label="First Name"
 						placeholder="First Name"
 						variant="outlined"
+						fullWidth
 						{...register("firstName", {
 							required: "This field is required",
 							pattern: {
@@ -115,6 +115,7 @@ function SignUp({
 						label="Last Name"
 						placeholder="Last Name"
 						variant="outlined"
+						fullWidth
 						{...register("lastName", {
 							required: "This field is required",
 							pattern: {
@@ -138,6 +139,7 @@ function SignUp({
 						label="Birthdate"
 						placeholder="Birthdate"
 						variant="outlined"
+						fullWidth
 						{...register("birthday", {
 							required: "This field is required",
 							validate: {
@@ -161,11 +163,12 @@ function SignUp({
 								/>
 							)
 						}
-            type="password"
+						type="password"
 						label="Password"
 						placeholder="Password"
 						variant="outlined"
 						onFocus={() => setShowHints(true)}
+						fullWidth
 						{...register("password", {
 							required: "This field is required",
 							minLength: {

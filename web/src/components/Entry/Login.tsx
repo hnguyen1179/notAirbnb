@@ -15,13 +15,13 @@ function Login({ form, showPassword, setShowPassword, resetForm }: any) {
 
 	const onSubmitLogin = async (payload: any) => {
 		try {
-			const { email, password } = payload;
-			await login(email, password);
+			const { email, passwordLogin } = payload;
+			await login(email, passwordLogin);
 			resetForm();
 		} catch (e) {
 			// TODO: Figure out how to send back invalid passwords into the password error field
 			setError(
-				"password",
+				"passwordLogin",
 				{ type: "Invalid Password", message: e.message },
 				{ shouldFocus: true }
 			);
@@ -31,21 +31,19 @@ function Login({ form, showPassword, setShowPassword, resetForm }: any) {
 	return (
 		<div className="MuiContainer">
 			<h1>Log In</h1>
-			<form onSubmit={handleSubmit(onSubmitLogin)}>
+			<form onSubmit={handleSubmit(onSubmitLogin)} autoComplete="off">
 				<div>
 					{/* Login password input requires no validation except for server side validations (invalid password) */}
 					<TextField
-						error={errors.password?.type === "Invalid Password"}
+						error={errors.passwordLogin}
 						helperText={
-							errors.password?.type === "Invalid Password" && (
-								<FormError error={errors.password?.message} />
-							)
+							<FormError error={errors.passwordLogin?.message} />
 						}
 						type={showPassword ? "text" : "password"}
 						label="Password"
 						placeholder="Password"
 						variant="outlined"
-						{...register("password")}
+						{...register("passwordLogin")}
 					/>
 					<button
 						type="button"

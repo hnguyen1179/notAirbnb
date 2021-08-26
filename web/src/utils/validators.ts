@@ -32,4 +32,4 @@ const isAdult = (value: string) => {
 	if (value) return getAge(value) >= 18 || "Must be older than 18";
 };
 
-export { containsInformation, isAdult };
+export { getAge, containsInformation, isAdult };

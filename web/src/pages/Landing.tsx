@@ -1,15 +1,12 @@
 import React from "react";
-import LogoWithName from "../assets/svgs/logo-with-name.svg";
-import Logo from "../assets/svgs/logo.svg";
-import AuthenticatedForm from "../components/Login/AuthenticatedForm";
-
-import Login from "../components/Login/Login"
+import {ReactComponent as Logo} from "../assets/svgs/logo.svg";
+import {ReactComponent as LogoWithName} from "../assets/svgs/logo-with-name.svg";
 
 function Landing() {
 	return (
 		<div>
-			<img style={{ height: '300px' }} src={Logo} alt="notAirbnb's Logo" />
-			<AuthenticatedForm></AuthenticatedForm>
+			<Logo height="300px" />
+			<LogoWithName height="300px" />
 		</div>
 	);
 }

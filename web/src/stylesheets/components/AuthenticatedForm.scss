@@ -8,10 +8,15 @@
 	.MuiFormLabel-root {
 		font-family: "Circular-Light";
 		font-weight: 800;
+
+		&.Mui-error {
+			color: #f44336;
+		}
 	}
 
 	.MuiInputLabel {
 		&-outlined {
+			color: grey;
 			font-size: 1.6rem;
 			margin-left: 10px;
 			position: absolute;
@@ -19,7 +24,6 @@
 			top: 10px;
 
 			&.MuiInputLabel-shrink {
-				color: grey;
 				transform: translateY(-7px) scale(0.65);
 			}
 		}
@@ -70,5 +74,18 @@ input[type="date"]:focus::-webkit-datetime-edit-year-field,
 input[type="date"]:focus::-webkit-datetime-edit-month-field,
 input[type="date"]:focus::-webkit-datetime-edit-day-field,
 input[type="date"]:focus::-webkit-datetime-edit-text {
-    color: black !important;
+	color: black !important;
+}
+
+// .MuiFormLabel-root.Mui-error {
+// 	color: #f44336 !important;
+// }
+
+::-webkit-calendar-picker-indicator {
+	// It's a backgroudn image, and so color won't work. Inverting will, however, turn it white
+	filter: invert(1);
+}
+
+:focus::-webkit-calendar-picker-indicator {
+	filter: none;
 }

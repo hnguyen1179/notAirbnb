@@ -19,14 +19,14 @@ function Welcome({ form, setVerified }: any) {
 	const onSubmitEmail = async (payload: any) => {
 		const { email } = payload;
 		const res = await verifyEmail(email);
-		setValue("password", "");
+		setValue("passwordLogin", "");
 		setVerified(res.data.verifyEmail ? VERIFIED : SIGNUP);
 	};
 
 	return (
 		<div className="MuiContainer">
 			<h1>Welcome!</h1>
-			<form onSubmit={handleSubmit(onSubmitEmail)}>
+			<form onSubmit={handleSubmit(onSubmitEmail)} autoComplete="off">
 				<div>
 					<TextField
 						error={!!errors.email}

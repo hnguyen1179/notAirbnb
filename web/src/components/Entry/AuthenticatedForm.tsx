@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useModal } from "../../context/ModalContext";
 
 import Welcome from "./Welcome";
 import Login from "./Login";
@@ -7,6 +8,7 @@ import SignUp from "./SignUp";
 
 const VERIFIED = "verified";
 const UNVERIFIED = "unverified";
+
 interface FormValues {
 	email: string;
 	password: string;
@@ -16,9 +18,10 @@ interface FormValues {
 }
 
 function AuthenticatedForm() {
+	const { entry, setOpen } = useModal();
 	const [showPassword, setShowPassword] = useState(false);
 	const [showHints, setShowHints] = useState(false);
-	const [verified, setVerified] = useState(UNVERIFIED);
+	const [verified, setVerified] = useState(entry);
 
 	const form = useForm<FormValues>({
 		criteriaMode: "all",
@@ -26,10 +29,9 @@ function AuthenticatedForm() {
 
 	const resetForm = () => {
 		setVerified(UNVERIFIED);
+		setOpen(false);
 		form.reset();
 	};
-
-	console.log("ERRORS: ", form.formState.errors)
 
 	// Email validator stage
 	if (verified === UNVERIFIED)

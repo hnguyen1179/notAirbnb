@@ -1,23 +1,13 @@
 import React, { useState } from "react";
-import AppContext from "./app-context";
-import useAuthToken from "../hooks/useAuthToken";
-import { gql, useQuery } from "@apollo/client";
-
+import { AppContext } from "./AppContext";
+import { useQuery } from "@apollo/client";
+import { meQuery } from "../graphql/queries/me";
 interface Props {
 	children: React.ReactNode;
 }
 
-const ME = gql`
-	query ME {
-		me {
-			firstName
-			lastName
-		}
-	}
-`;
-
 function AppState(props: Props) {
-	const { loading, error, data } = useQuery(ME);
+	const { loading, error, data } = useQuery(meQuery);
 	const [message, setMessage] = useState(
 		"This is a message from the Provider"
 	);

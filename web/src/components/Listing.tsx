@@ -3,7 +3,7 @@ import { gql, useQuery } from "@apollo/client";
 import { AdvancedImage, placeholder } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/base";
 
-import AppContext from "../context/app-context";
+import { AppContext } from "../context/AppContext";
 
 const LISTING = gql`
 	query LISTING($id: String!) {
