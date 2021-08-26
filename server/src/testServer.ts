@@ -8,7 +8,7 @@ export const server = new ApolloServer({
 });
 
 server
-  .listen()
+  .listen({ port: 9001 })
   .then(({ url }) =>
     console.log(
       `🚀 Server ready at: ${url} ⭐️ See sample queries: http://pris.ly/e/ts/graphql-auth#using-the-graphql-api`,

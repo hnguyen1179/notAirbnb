@@ -3,21 +3,6 @@ import hosts from './host_and_listings.json';
 import proper_dates_unavailable from './proper_dates_unavailable.json';
 import { PrismaClient, Prisma } from '@prisma/client';
 
-// (async () => {
-//   console.log(await hash('myPassword42', 10));
-// })();
-
-// TODO:
-/**
- *  [D] 1. Reconfigure models to take in new dataset. See the airbnb_scraper project to see what
- *      the new models look like.
- *
- *  [D] 2. Create appropriate queries and mutations
- *
- *  [D] 3. Seed the new datasets into the models
- *
- */
-
 // const prisma = new PrismaClient();
 
 // const userData = users.map((user) => {

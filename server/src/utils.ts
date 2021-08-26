@@ -1,8 +1,9 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 import { verify } from 'jsonwebtoken';
 import { Context } from './context';
 
-export const APP_SECRET = 'appsecret321';
-
+export const APP_SECRET = process.env.APP_SECRET as string;
 interface Token {
   userId: string;
 }

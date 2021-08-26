@@ -14,10 +14,16 @@ import {
   list,
 } from 'nexus';
 import { DateTimeResolver, JSONObjectResolver } from 'graphql-scalars';
+import objectHash from 'object-hash';
 import { Context } from './context';
 
 export const dateTimeScalar = asNexusMethod(DateTimeResolver, 'date');
 export const jsonScalar = asNexusMethod(JSONObjectResolver, 'json');
+
+// Artificially slows down requests to simulate an actual server and show loaders
+const sleep = (milliseconds: number) => {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+};
 
 const Query = objectType({
   name: 'Query',
@@ -41,6 +47,20 @@ const Query = objectType({
       },
       resolve: (_parent, args, context: Context) => {
         return context.prisma.listing.findUnique({
+          where: {
+            id: args.id,
+          },
+        });
+      },
+    });
+
+    t.nullable.field('userById', {
+      type: 'User',
+      args: {
+        id: nonNull(stringArg()),
+      },
+      resolve: (_parent, args, context: Context) => {
+        return context.prisma.user.findUnique({
           where: {
             id: args.id,
           },
@@ -77,29 +97,66 @@ const Mutation = objectType({
     t.field('signup', {
       type: 'AuthPayload',
       args: {
-        id: nonNull(stringArg()),
-        dateJoined: nonNull(stringArg()),
         firstName: nonNull(stringArg()),
         lastName: nonNull(stringArg()),
         email: nonNull(stringArg()),
         password: nonNull(stringArg()),
       },
       resolve: async (_parent, args, context: Context) => {
-        const hashedPassword = await hash(args.password, 10);
-        const user = await context.prisma.user.create({
-          data: {
-            id: args.id,
-            dateJoined: args.dateJoined,
-            firstName: args.firstName,
-            lastName: args.lastName,
-            email: args.email,
-            password: hashedPassword,
+        try {
+          const userExists = await context.prisma.user.findUnique({
+            where: {
+              email: args.email,
+            },
+          });
+
+          if (userExists) {
+            throw new Error('User with this email already exists');
+          }
+
+          const hashedPassword = await hash(args.password, 10);
+
+          const dateJoined = `Joined in ${new Date().getFullYear()}`;
+          const id = objectHash(args);
+
+          const user = await context.prisma.user.create({
+            data: {
+              id,
+              dateJoined,
+              firstName: args.firstName,
+              lastName: args.lastName,
+              email: args.email,
+              password: hashedPassword,
+            },
+          });
+
+          await sleep(500);
+
+          return {
+            token: sign({ userId: user.id }, APP_SECRET),
+            user,
+          };
+        } catch (e) {
+          return e;
+        }
+      },
+    });
+
+    t.field('verifyEmail', {
+      type: 'Boolean',
+      args: {
+        email: nonNull(stringArg()),
+      },
+      resolve: async (_, { email }, context: Context) => {
+        await sleep(500);
+
+        const user = await context.prisma.user.findUnique({
+          where: {
+            email,
           },
         });
-        return {
-          token: sign({ userId: user.id }, APP_SECRET),
-          user,
-        };
+
+        return !!user;
       },
     });
 
@@ -111,18 +168,19 @@ const Mutation = objectType({
       },
       resolve: async (_parent, { email, password }, context: Context) => {
         try {
+          await sleep(500);
+
           const user = await context.prisma.user.findUnique({
             where: {
               email,
             },
           });
-          if (!user) {
-            throw new Error(`No user found for email: ${email}`);
-          }
+          if (!user) throw new Error(`No user found for email: ${email}`);
+
           const passwordValid = await compare(password, user.password);
-          if (!passwordValid) {
-            throw new Error('Invalid password');
-          }
+
+          if (!passwordValid) throw new Error('Invalid password');
+
           return {
             token: sign({ userId: user.id }, APP_SECRET),
             user,
