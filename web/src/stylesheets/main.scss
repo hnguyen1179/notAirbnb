@@ -13,11 +13,10 @@
 @import "layout/header", "layout/footer";
 
 // 5. Components
-@import "components/Loading", "components/AuthenticatedForm",
-	"components/FormError.scss", "components/PasswordHints.scss",
-	"components/Modal.scss", "components/Navbar.scss";
-//   'components/title',
-//   'components/hamburger';
+@import "components/LoadingButton", "components/FormAuth", "components/FormError.scss",
+	"components/FormSignUp", "components/FormWelcome", "components/FormLogIn",
+	"components/PasswordHints.scss", "components/Modal.scss",
+	"components/Navbar.scss";
 
 // 6. Page-specific styles
 @import "pages/Listing";

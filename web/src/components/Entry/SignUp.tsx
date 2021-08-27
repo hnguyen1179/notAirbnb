@@ -1,4 +1,5 @@
 import React from "react";
+import { useModal } from "../../context/ModalContext";
 import useSignup from "../../hooks/useSignup";
 import PasswordHints from "./PasswordHints";
 
@@ -19,6 +20,8 @@ function SignUp({
 	showPassword,
 	clickShowPassword,
 }: any) {
+	const { getCursorPos } = useModal();
+
 	const {
 		register,
 		trigger,
@@ -29,8 +32,7 @@ function SignUp({
 		watch,
 		formState: { errors },
 	} = form;
-	const watchPassword = watch("password");
-
+	const watchPassword = watch("password") || "";
 	const [signup, { loading: signupLoad }] = useSignup();
 
 	const onSubmitSignup = async (payload: any) => {
@@ -77,136 +79,162 @@ function SignUp({
 				<h1 className="EntryForm__title">Sign Up</h1>
 				<div></div>
 			</header>
-			<form
-				className="EntryForm__form"
-				onSubmit={handleSubmit(onSubmitSignup)}
-				autoComplete="off"
-			>
-				<div className="MuiContainer">
-					<TextField
-						error={!!errors.email}
-						helperText={
-							<FormError
-								error={errors.email?.message}
-								redirect={redirectToLogin}
-							/>
-						}
-						label="Email"
-						placeholder="Email"
-						variant="outlined"
-						fullWidth
-						{...register("email", {
-							required: "This field is required",
-							pattern: {
-								value: emailRegex,
-								message: "Must be a valid email address",
-							},
-							validate: {
-								triggerPassword,
-							},
-						})}
-					/>
-				</div>
-				<div className="MuiContainer">
-					<TextField
-						error={!!errors.firstName}
-						helperText={
-							<FormError error={errors.firstName?.message} />
-						}
-						label="First Name"
-						placeholder="First Name"
-						variant="outlined"
-						fullWidth
-						{...register("firstName", {
-							required: "This field is required",
-							pattern: {
-								value: /^\S*$/,
-								message: "Must contain valid characters",
-							},
-							validate: {
-								triggerPassword,
-							},
-						})}
-					/>
-				</div>
-				<div className="MuiContainer">
-					<TextField
-						error={!!errors.lastName}
-						helperText={
-							<FormError error={errors.lastName?.message} />
-						}
-						label="Last Name"
-						placeholder="Last Name"
-						variant="outlined"
-						fullWidth
-						{...register("lastName", {
-							required: "This field is required",
-							pattern: {
-								value: /^\S*$/,
-								message: "Must contain valid characters",
-							},
-							validate: {
-								triggerPassword,
-							},
-						})}
-					/>
-				</div>
+			<main className="EntryForm__main">
+				<form
+					className="EntryForm__form"
+					onSubmit={handleSubmit(onSubmitSignup)}
+					autoComplete="off"
+				>
+					<div className="MuiContainer">
+						<TextField
+							error={!!errors.email}
+							helperText={
+								<FormError
+									error={errors.email?.message}
+									redirect={redirectToLogin}
+								/>
+							}
+							label="Email"
+							placeholder="Email"
+							variant="outlined"
+							fullWidth
+							{...register("email", {
+								required: "This field is required",
+								pattern: {
+									value: emailRegex,
+									message: "Must be a valid email address",
+								},
+								validate: {
+									triggerPassword,
+								},
+							})}
+						/>
+					</div>
+					<div className="MuiContainer">
+						<TextField
+							error={!!errors.firstName}
+							helperText={
+								<FormError error={errors.firstName?.message} />
+							}
+							label="First Name"
+							placeholder="First Name"
+							variant="outlined"
+							fullWidth
+							{...register("firstName", {
+								required: "This field is required",
+								pattern: {
+									value: /^\S*$/,
+									message: "Must contain valid characters",
+								},
+								validate: {
+									triggerPassword,
+								},
+							})}
+						/>
+					</div>
+					<div className="MuiContainer">
+						<TextField
+							error={!!errors.lastName}
+							helperText={
+								<FormError error={errors.lastName?.message} />
+							}
+							label="Last Name"
+							placeholder="Last Name"
+							variant="outlined"
+							fullWidth
+							{...register("lastName", {
+								required: "This field is required",
+								pattern: {
+									value: /^\S*$/,
+									message: "Must contain valid characters",
+								},
+								validate: {
+									triggerPassword,
+								},
+							})}
+						/>
+					</div>
 
-				<div className="MuiContainer">
-					<TextField
-						error={!!errors.birthday}
-						helperText={
-							<FormError error={errors.birthday?.message} />
-						}
-						type="date"
-						label="Birthdate"
-						placeholder="Birthdate"
-						variant="outlined"
-						fullWidth
-						{...register("birthday", {
-							required: "This field is required",
-							validate: {
-								isAdult,
-							},
-						})}
-					/>
-				</div>
+					<div className="MuiContainer">
+						<TextField
+							error={!!errors.birthday}
+							helperText={
+								<FormError error={errors.birthday?.message} />
+							}
+							type="date"
+							label="Birthdate"
+							placeholder="Birthdate"
+							variant="outlined"
+							fullWidth
+							{...register("birthday", {
+								required: "This field is required",
+								validate: {
+									isAdult,
+								},
+							})}
+						/>
+					</div>
 
-				<div className="MuiContainer">
-					<TextField
-						error={!!errors.password}
-						helperText={renderPasswordError}
-						type={showPassword ? "text" : "password"}
-						label="Password"
-						placeholder="Password"
-						variant="outlined"
-						onFocus={() => setShowHints(true)}
-						fullWidth
-						{...register("password", {
-							required: "This field is required",
-							minLength: {
-								value: 8,
-								message: "Must be at least 8 characters long",
-							},
-							pattern: {
-								value: /\w*[\d\W~]+\w*/,
-								message: "Contains a number or symbol",
-							},
-							validate: {
-								containsInformation: (v: string) =>
-									containsInformation(v, getValues),
-							},
-						})}
-					/>
-					<ShowPasswordButton
-						showPassword
-						handleClick={clickShowPassword}
-					/>
-				</div>
-				<button type="submit" disabled={signupLoad}>
-					Sign Up
-				</button>
-			</form>
+					<div className="MuiContainer MuiContainer--password">
+						<TextField
+							error={!!errors.password}
+							helperText={renderPasswordError}
+							type={showPassword ? "text" : "password"}
+							label="Password"
+							placeholder="Password"
+							variant="outlined"
+							onFocus={() => setShowHints(true)}
+							fullWidth
+							{...register("password", {
+								required: "This field is required",
+								minLength: {
+									value: 8,
+									message:
+										"Must be at least 8 characters long",
+								},
+								pattern: {
+									value: /\w*[\d\W~]+\w*/,
+									message: "Contains a number or symbol",
+								},
+								validate: {
+									containsInformation: (v: string) =>
+										containsInformation(v, getValues),
+								},
+							})}
+						/>
+						<ShowPasswordButton
+							showPassword={showPassword}
+							handleClick={clickShowPassword}
+						/>
+					</div>
+					<aside className="EntryForm__main__form__mumbo-jumbo">
+						<p>
+							By selecting{" "}
+							<span className="bold">Agree and continue</span>{" "}
+							below, I agree to Airbnb’s{" "}
+							<span className="terms">Terms of Service</span>,{" "}
+							<span className="terms">
+								Payments Terms of Service
+							</span>
+							, <span className="terms">Privacy Policy</span>, and{" "}
+							<span className="terms">Nondiscrimination Policy</span>.
+						</p>
+					</aside>
+					<button
+						className="EntryForm__main__form__submit-button"
+						type="submit"
+						disabled={signupLoad}
+						onMouseMove={(e) => getCursorPos(e)}
+					>
+						<span className="gradient-container">
+							<span className="gradient"></span>
+						</span>
+						<span className="submit-button__text">
+							Agree and continue
+						</span>
+					</button>
+				</form>
+			</main>
 		</div>
 	);
 }

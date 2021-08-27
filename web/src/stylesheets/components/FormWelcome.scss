@@ -1,0 +1,73 @@
+.EntryFormContainer {
+	.EntryForm__main {
+		&__subtitle {
+			h3 {
+				font-size: 2.2rem;
+				font-weight: 500;
+			}
+		}
+
+		&__divider {
+			margin: 1.4rem 0;
+			text-align: center;
+			overflow: hidden;
+
+			&__or {
+				position: relative;
+				color: $muted-text-color;
+				font-size: 1.4rem;
+        font-weight: 400;
+				padding: 0 1.6rem;
+
+				&::before {
+					content: "";
+					display: block;
+					position: absolute;
+					width: 70rem;
+					height: 0.1rem;
+					left: 130%;
+					top: 60%;
+					border-bottom: 1px solid $muted-line-color;
+				}
+
+				&::after {
+					content: "";
+					display: block;
+					position: absolute;
+					width: 70rem;
+					height: 0.1rem;
+					right: 130%;
+					top: 60%;
+					border-bottom: 1px solid $muted-line-color;
+				}
+			}
+		}
+		&__auth-container {
+			&__auth {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 0 1.2rem;
+
+				div:last-child {
+					-webkit-box-flex: 0;
+					flex: 0 0 20px;
+					text-align: right;
+				}
+
+				&--google {
+					height: 4.6rem;
+					width: 100%;
+					color: rgb(72, 72, 72);
+					background-color: white;
+					border: 0.2rem solid rgb(176, 176, 176);
+					border-radius: 0.8rem;
+
+					&:hover {
+						border-color: black;
+					}
+				}
+			}
+		}
+	}
+}

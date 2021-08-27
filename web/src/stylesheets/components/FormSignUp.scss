@@ -1,0 +1,26 @@
+.EntryFormContainer {
+	.EntryForm__main {
+		&__form {
+			&__mumbo-jumbo {
+				margin: 2.2rem 0;
+				font-size: 1.2rem;
+				font-weight: 400;
+
+				p {
+					.bold {
+						font-weight: bolder;
+					}
+					.terms {
+            text-decoration: underline;
+						color: rgb(0, 76, 196);
+
+						&:hover {
+							color: rgb(0, 55, 145);
+              transition: color 200ms;
+						}
+					}
+				}
+			}
+		}
+	}
+}

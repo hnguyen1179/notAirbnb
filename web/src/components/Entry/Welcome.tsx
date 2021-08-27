@@ -1,21 +1,27 @@
-import React, { useEffect } from "react";
+import React from "react";
 import TextField from "@material-ui/core/TextField";
 import useVerifyEmail from "../../hooks/useVerifyEmail";
 import FormError from "./FormError";
+import { useModal } from "../../context/ModalContext";
 import { ReactComponent as ExitSvg } from "../../assets/svgs/exit.svg";
 import { emailRegex } from "../../utils/regex";
-import { getCurves } from "crypto";
+import LoadingButton from "./LoadingButton";
+
+import { ReactComponent as GoogleSvg } from "../../assets/svgs/google.svg";
 
 const VERIFIED = "verified";
 const SIGNUP = "signup";
 
 function Welcome({ form, setVerified, handleCloseModal }: any) {
+	const { getCursorPos } = useModal();
+
 	const {
 		handleSubmit,
 		setValue,
 		register,
 		formState: { errors },
 	} = form;
+
 	const [verifyEmail, { loading: verifyLoad }] = useVerifyEmail();
 
 	const onSubmitEmail = async (payload: any) => {
@@ -24,40 +30,6 @@ function Welcome({ form, setVerified, handleCloseModal }: any) {
 		setValue("passwordLogin", "");
 		setVerified(res.data.verifyEmail ? VERIFIED : SIGNUP);
 	};
-
-	console.log("refreshed!");
-
-	function getCursorPos(a: any) {
-		const submitButton = document.querySelector(
-			".EntryForm__main__form__submit-button"
-		);
-
-		const posX = a.clientX;
-		const posY = a.clientY;
-
-		const container = document.querySelector(".EntryFormContainer");
-
-		if (container && submitButton) {
-			const { left, top, right, bottom } =
-				submitButton?.getBoundingClientRect();
-			const width = right - left;
-			const widthDiff = posX - left;
-			const height = bottom - top;
-			const heightDiff = posY - top;
-
-			console.log(widthDiff);
-			console.log(width);
-
-			document.documentElement.style.setProperty(
-				"--mouse-x",
-				(widthDiff / width).toString()
-			);
-			document.documentElement.style.setProperty(
-				"--mouse-y",
-				(heightDiff / height).toString()
-			);
-		}
-	}
 
 	return (
 		<div className="EntryForm EntryForm--welcome">
@@ -103,7 +75,11 @@ function Welcome({ form, setVerified, handleCloseModal }: any) {
 						onMouseMove={(e) => getCursorPos(e)}
 					>
 						<span className="gradient-container">
-							<span className="gradient"></span>
+							{verifyLoad ? (
+								<LoadingButton />
+							) : (
+								<span className="gradient"></span>
+							)}
 						</span>
 						<span className="submit-button__text">Continue</span>
 					</button>
@@ -111,9 +87,15 @@ function Welcome({ form, setVerified, handleCloseModal }: any) {
 				<div className="EntryForm__main__divider">
 					<span className="EntryForm__main__divider__or">or</span>
 				</div>
-				<button className="EntryForm__main__google-auth">
-					filler for Google OAuth
-				</button>
+				<div className="EntryForm__main__auth-container">
+					<button className="EntryForm__main__auth-container__auth EntryForm__main__auth-container__auth--google">
+						<div>
+							<GoogleSvg />
+						</div>
+						<div>Continue with Google</div>
+						<div></div>
+					</button>
+				</div>
 			</main>
 		</div>
 	);
