@@ -20,6 +20,14 @@ $titleFont: "NeueMontreal-Bold", "Helvetica Neue";
 $paragraphFont: "NeueMontreal-Regular";
 $fancyFont: "MoristonPersonal-Black";
 
+/// Muted line color
+/// @type Color
+$muted-line-color: #ebebeb;
+
+/// Muted text color
+/// @type Color
+$muted-text-color: #757575;
+
 /// Copy text color
 /// @type Color
 $text-color: rgb(34, 34, 34) !default;

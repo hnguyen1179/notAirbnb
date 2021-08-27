@@ -4,7 +4,7 @@
 
 // 1rem/em = 10px
 html {
-	font: normal 62.5% / 1.4 $text-font-stack;
+	font: normal 62.5% / 1.4 $text-font-stack !important;
 }
 
 // body font size defaults to 16px

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useModal } from "../../context/ModalContext";
 
@@ -12,6 +12,7 @@ const UNVERIFIED = "unverified";
 interface FormValues {
 	email: string;
 	password: string;
+	passwordLogin: string;
 	firstName: string;
 	lastName: string;
 	birthday: string;
@@ -27,15 +28,29 @@ function AuthenticatedForm() {
 		criteriaMode: "all",
 	});
 
-	const resetForm = () => {
-		setVerified(UNVERIFIED);
-		setOpen(false);
-		form.reset();
+	const clickShowPassword = () => {
+		setShowPassword((prev: boolean) => !prev);
 	};
+
+	const resetForm = ({ goBack = false }) => {
+		form.reset();
+		setVerified(UNVERIFIED);
+		if (!goBack) setOpen(false);
+	};
+
+	const handleCloseModal = () => {
+		setOpen(false)
+	}
 
 	// Email validator stage
 	if (verified === UNVERIFIED)
-		return <Welcome form={form} setVerified={setVerified} />;
+		return (
+			<Welcome
+				form={form}
+				setVerified={setVerified}
+				handleCloseModal={handleCloseModal}
+			/>
+		);
 
 	// Email is validated, Password input stage before log in validations
 	if (verified === VERIFIED)
@@ -44,7 +59,7 @@ function AuthenticatedForm() {
 				form={form}
 				setVerified={setVerified}
 				showPassword={showPassword}
-				setShowPassword={setShowPassword}
+				clickShowPassword={clickShowPassword}
 				resetForm={resetForm}
 			/>
 		);
@@ -56,6 +71,8 @@ function AuthenticatedForm() {
 			setVerified={setVerified}
 			showHints={showHints}
 			setShowHints={setShowHints}
+			showPassword={showPassword}
+			clickShowPassword={clickShowPassword}
 			resetForm={resetForm}
 		/>
 	);

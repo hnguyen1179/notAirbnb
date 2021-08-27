@@ -7,6 +7,8 @@ import FormError from "./FormError";
 
 import { emailRegex, symbolRegex } from "../../utils/regex";
 import { containsInformation, isAdult } from "../../utils/validators";
+import ShowPasswordButton from "./ShowPasswordButton";
+import { ReactComponent as BackSvg } from "../../assets/svgs/back.svg";
 
 function SignUp({
 	form,
@@ -14,6 +16,8 @@ function SignUp({
 	showHints,
 	setShowHints,
 	resetForm,
+	showPassword,
+	clickShowPassword,
 }: any) {
 	const {
 		register,
@@ -25,7 +29,6 @@ function SignUp({
 		watch,
 		formState: { errors },
 	} = form;
-
 	const watchPassword = watch("password");
 
 	const [signup, { loading: signupLoad }] = useSignup();
@@ -46,7 +49,7 @@ function SignUp({
 	};
 
 	const triggerPassword = () => {
-		trigger("password");
+		if (getValues("password").length > 0) trigger("password");
 		return true;
 	};
 
@@ -55,10 +58,30 @@ function SignUp({
 		setVerified("verified");
 	};
 
+	const renderPasswordError = showHints ? (
+		<PasswordHints
+			errors={errors.password}
+			passwordLength={watchPassword.length >= 8}
+			passwordStrong={!!watchPassword.match(symbolRegex)}
+		/>
+	) : (
+		<FormError error={errors.password?.message} />
+	);
+
 	return (
-		<div>
-			<h1>Sign Up</h1>
-			<form onSubmit={handleSubmit(onSubmitSignup)} autoComplete="off">
+		<div className="EntryForm EntryForm--signup">
+			<header>
+				<button onClick={() => resetForm({ goBack: true })}>
+					<BackSvg />
+				</button>
+				<h1 className="EntryForm__title">Sign Up</h1>
+				<div></div>
+			</header>
+			<form
+				className="EntryForm__form"
+				onSubmit={handleSubmit(onSubmitSignup)}
+				autoComplete="off"
+			>
 				<div className="MuiContainer">
 					<TextField
 						error={!!errors.email}
@@ -152,18 +175,8 @@ function SignUp({
 				<div className="MuiContainer">
 					<TextField
 						error={!!errors.password}
-						helperText={
-							showHints && (
-								<PasswordHints
-									errors={errors.password}
-									passwordLength={watchPassword.length >= 8}
-									passwordStrong={
-										!!watchPassword.match(symbolRegex)
-									}
-								/>
-							)
-						}
-						type="password"
+						helperText={renderPasswordError}
+						type={showPassword ? "text" : "password"}
 						label="Password"
 						placeholder="Password"
 						variant="outlined"
@@ -184,6 +197,10 @@ function SignUp({
 									containsInformation(v, getValues),
 							},
 						})}
+					/>
+					<ShowPasswordButton
+						showPassword
+						handleClick={clickShowPassword}
 					/>
 				</div>
 				<button type="submit" disabled={signupLoad}>

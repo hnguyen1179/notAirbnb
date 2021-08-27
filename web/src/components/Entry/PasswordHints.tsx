@@ -8,8 +8,8 @@ const ERROR_NAMES = [
 	"Contains a number or symbol",
 ];
 
-const GREEN = "green";
-const RED = "red";
+const GREEN = "rgb(0, 138, 5)";
+const RED = "rgb(193, 53, 21)";
 const REQUIRED = "required";
 
 const DEFAULTS = [true, false, false];

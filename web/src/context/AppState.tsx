@@ -7,7 +7,7 @@ interface Props {
 }
 
 function AppState(props: Props) {
-	const { loading, error, data } = useQuery(meQuery);
+	const { data } = useQuery(meQuery);
 	const [message, setMessage] = useState(
 		"This is a message from the Provider"
 	);

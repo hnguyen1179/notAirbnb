@@ -1,9 +1,4 @@
-import {
-	render,
-	fireEvent,
-	cleanup,
-	getByTestId,
-} from "@testing-library/react";
+import { fireEvent, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 
 import Navbar from "../../components/Navbar";
@@ -53,12 +48,24 @@ describe("<Navbar />", () => {
 		expect(container.firstChild).toMatchSnapshot();
 	});
 
-	it("renders the user's new if logged in", async () => {
-		const { container, getByTestId } = customRender(<Navbar />, [
-			meUserPresentMock,
-		]);
+  // Navbar relies on an external AppState which queries 
+	// it("renders the user's new if logged in", async () => {
+	// 	const { getByTestId } = customRender(<Navbar />, [meUserPresentMock]);
+
+	// 	await waitForData();
+
+	// 	expect(getByTestId("greeting")).toBe("Hello, User");
+	// });
+
+	it("renders the correct modal depending on button", async () => {
+		const { getByText } = customRender(<Navbar />, [meUserNullMock]);
 
 		await waitForData();
-		expect(getByTestId("greeting")).toBe("Hello, User");
+
+		fireEvent.click(getByText(/log in/i));
+		expect(getByText(/welcome/i)).toBeInTheDocument();
+
+		fireEvent.click(getByText(/sign up/i));
+		expect(getByText(/sign up/i)).toBeInTheDocument();
 	});
 });

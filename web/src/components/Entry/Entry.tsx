@@ -3,7 +3,7 @@ import AuthenticatedForm from "./AuthenticatedForm";
 
 function Entry() {
 	return (
-		<div>
+		<div className="EntryFormContainer">
 			<AuthenticatedForm />
 		</div>
 	);

@@ -3,36 +3,51 @@
 // -----------------------------------------------------------------------------
 
 @font-face {
-  font-family: 'AirbnbCereal';
-  src: url('../../fonts/AirbnbCerealMedium.ttf') format('truetype');
+	font-family: "AirbnbCereal";
+	src: url("../../fonts/AirbnbCerealMedium.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: 'AirbnbCereal-Black';
-  src: url('../../fonts/AirbnbCerealBlack.ttf') format('truetype');
+	font-family: "AirbnbCereal-Black";
+	src: url("../../fonts/AirbnbCerealBlack.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: 'AirbnbCereal-Bold';
-  src: url('../../fonts/AirbnbCerealBold.ttf') format('truetype');
+	font-family: "AirbnbCereal-Bold";
+	src: url("../../fonts/AirbnbCerealBold.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: 'AirbnbCereal-Light';
-  src: url('../../fonts/AirbnbCerealLight.ttf') format('truetype');
+	font-family: "AirbnbCereal";
+	src: url("../../fonts/AirbnbCerealLight.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: 'Circular';
-  src: url('../../fonts/CircularStd-Medium.otf') format('opentype');
+	font-family: "Circular";
+	src: url("../../fonts/CircularStd-Medium.otf") format("opentype");
+	font-weight: 400;
 }
 
 @font-face {
-  font-family: 'Circular-Light';
-  src: url('../../fonts/CircularStd-Light.otf') format('opentype');
+	font-family: "Circular";
+	src: url("../../fonts/CircularStd-Light.otf") format("opentype");
+	font-weight: 300;
 }
 
 @font-face {
-  font-family: 'Circular-Bold';
-  src: url('../../fonts/CircularStd-Bold.otf') format('opentype');
+	font-family: "Circular";
+	src: url("../../fonts/CircularStd-Book.otf") format("opentype");
+	font-weight: 200;
+}
+
+@font-face {
+	font-family: "Circular";
+	src: url("../../fonts/CircularStd-Bold.otf") format("opentype");
+	font-weight: 700;
+}
+
+@font-face {
+	font-family: "Circular";
+	src: url("../../fonts/CircularStd-Black.otf") format("opentype");
+	font-weight: 800;
 }

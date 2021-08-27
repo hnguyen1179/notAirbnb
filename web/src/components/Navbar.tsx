@@ -14,10 +14,7 @@ function Navbar() {
 	const handleLogout = useLogout();
 
 	const handleOpen = (e: React.SyntheticEvent<EventTarget>) => {
-		const buttonValue = (e.currentTarget as HTMLInputElement).getAttribute(
-			"value"
-		);
-		setEntry(buttonValue || "unverified");
+		setEntry("unverified");
 		setOpen(true);
 	};
 
@@ -32,17 +29,13 @@ function Navbar() {
 				<h1 data-testid="greeting">hello, {user.firstName}</h1>
 			) : (
 				<div>
-					<button onClick={handleOpen} value="signup">
-						sign up
-					</button>
-					<button onClick={handleOpen} value="unverified">
-						log in
-					</button>
+					<button onClick={handleOpen}>sign up</button>
+					<button onClick={handleOpen}>log in</button>
 				</div>
 			)}
 
-			<Modal open={open} onClose={handleClose}>
-				<div className="Modal-container">
+			<Modal open={open} onClose={handleClose} tabIndex={-1}>
+				<div className="Modal-container" tabIndex={-1}>
 					<Entry />
 				</div>
 			</Modal>

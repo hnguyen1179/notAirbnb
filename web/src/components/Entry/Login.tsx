@@ -2,8 +2,10 @@ import React from "react";
 import useLogin from "../../hooks/useLogin";
 import TextField from "@material-ui/core/TextField";
 import FormError from "./FormError";
+import ShowPasswordButton from "./ShowPasswordButton";
+import { ReactComponent as BackSvg } from "../../assets/svgs/back.svg";
 
-function Login({ form, showPassword, setShowPassword, resetForm }: any) {
+function Login({ form, showPassword, clickShowPassword, resetForm }: any) {
 	const [login, { loading: loginLoad }] = useLogin();
 
 	const {
@@ -19,7 +21,6 @@ function Login({ form, showPassword, setShowPassword, resetForm }: any) {
 			await login(email, passwordLogin);
 			resetForm();
 		} catch (e) {
-			// TODO: Figure out how to send back invalid passwords into the password error field
 			setError(
 				"passwordLogin",
 				{ type: "Invalid Password", message: e.message },
@@ -29,10 +30,20 @@ function Login({ form, showPassword, setShowPassword, resetForm }: any) {
 	};
 
 	return (
-		<div className="MuiContainer">
-			<h1>Log In</h1>
-			<form onSubmit={handleSubmit(onSubmitLogin)} autoComplete="off">
-				<div>
+		<div className="EntryForm EntryForm--welcome">
+			<header>
+				<button aria-label="Close" onClick={() => resetForm({ goBack: true })}>
+					<BackSvg />
+				</button>
+				<h1 className="EntryForm__title">Log In</h1>
+				<div></div>
+			</header>
+			<form
+				className="EntryForm__form"
+				onSubmit={handleSubmit(onSubmitLogin)}
+				autoComplete="off"
+			>
+				<div className="MuiContainer">
 					{/* Login password input requires no validation except for server side validations (invalid password) */}
 					<TextField
 						error={errors.passwordLogin}
@@ -43,18 +54,17 @@ function Login({ form, showPassword, setShowPassword, resetForm }: any) {
 						label="Password"
 						placeholder="Password"
 						variant="outlined"
+						fullWidth
 						{...register("passwordLogin")}
 					/>
-					<button
-						type="button"
-						onClick={() => setShowPassword((prev: any) => !prev)}
-					>
+					<button type="button" onClick={clickShowPassword}>
 						{showPassword ? "hide" : "show"}
 					</button>
 				</div>
-				<button type="submit" disabled={loginLoad}>
-					Log In
-				</button>
+				<ShowPasswordButton
+					showPassword
+					handleClick={clickShowPassword}
+				/>
 			</form>
 		</div>
 	);
