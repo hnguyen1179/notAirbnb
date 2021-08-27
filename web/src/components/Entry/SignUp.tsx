@@ -10,6 +10,7 @@ import { emailRegex, symbolRegex } from "../../utils/regex";
 import { containsInformation, isAdult } from "../../utils/validators";
 import ShowPasswordButton from "./ShowPasswordButton";
 import { ReactComponent as BackSvg } from "../../assets/svgs/back.svg";
+import LoadingButton from "./LoadingButton";
 
 function SignUp({
 	form,
@@ -76,7 +77,7 @@ function SignUp({
 				<button onClick={() => resetForm({ goBack: true })}>
 					<BackSvg />
 				</button>
-				<h1 className="EntryForm__title">Sign Up</h1>
+				<h1 className="EntryForm__title">Finish signing up</h1>
 				<div></div>
 			</header>
 			<main className="EntryForm__main">
@@ -85,31 +86,6 @@ function SignUp({
 					onSubmit={handleSubmit(onSubmitSignup)}
 					autoComplete="off"
 				>
-					<div className="MuiContainer">
-						<TextField
-							error={!!errors.email}
-							helperText={
-								<FormError
-									error={errors.email?.message}
-									redirect={redirectToLogin}
-								/>
-							}
-							label="Email"
-							placeholder="Email"
-							variant="outlined"
-							fullWidth
-							{...register("email", {
-								required: "This field is required",
-								pattern: {
-									value: emailRegex,
-									message: "Must be a valid email address",
-								},
-								validate: {
-									triggerPassword,
-								},
-							})}
-						/>
-					</div>
 					<div className="MuiContainer">
 						<TextField
 							error={!!errors.firstName}
@@ -153,6 +129,12 @@ function SignUp({
 								},
 							})}
 						/>
+						{!errors.lastName && !errors.firstName && (
+							<div className="MuiContainer__input-subtext">
+								Make sure both names match the names on your
+								government ID.
+							</div>
+						)}
 					</div>
 
 					<div className="MuiContainer">
@@ -173,6 +155,44 @@ function SignUp({
 								},
 							})}
 						/>
+						{!errors.birthday && (
+							<div className="MuiContainer__input-subtext">
+								To sign up, you need to be at least 18. Your
+								birthday won’t be shared with other people who
+								use notAirbnb.
+							</div>
+						)}
+					</div>
+
+					<div className="MuiContainer">
+						<TextField
+							error={!!errors.email}
+							helperText={
+								<FormError
+									error={errors.email?.message}
+									redirect={redirectToLogin}
+								/>
+							}
+							label="Email"
+							placeholder="Email"
+							variant="outlined"
+							fullWidth
+							{...register("email", {
+								required: "This field is required",
+								pattern: {
+									value: emailRegex,
+									message: "Must be a valid email address",
+								},
+								validate: {
+									triggerPassword,
+								},
+							})}
+						/>
+						{!errors.email && (
+							<span className="MuiContainer__input-subtext">
+								We'll email you trip confirmations and receipts. (Not really)
+							</span>
+						)}
 					</div>
 
 					<div className="MuiContainer MuiContainer--password">
@@ -211,13 +231,16 @@ function SignUp({
 						<p>
 							By selecting{" "}
 							<span className="bold">Agree and continue</span>{" "}
-							below, I agree to Airbnb’s{" "}
+							below, I agree to notAirbnb’s{" "}
 							<span className="terms">Terms of Service</span>,{" "}
 							<span className="terms">
 								Payments Terms of Service
 							</span>
 							, <span className="terms">Privacy Policy</span>, and{" "}
-							<span className="terms">Nondiscrimination Policy</span>.
+							<span className="terms">
+								Nondiscrimination Policy
+							</span>
+							.
 						</p>
 					</aside>
 					<button
@@ -227,7 +250,11 @@ function SignUp({
 						onMouseMove={(e) => getCursorPos(e)}
 					>
 						<span className="gradient-container">
-							<span className="gradient"></span>
+							{signupLoad ? (
+								<LoadingButton />
+							) : (
+								<span className="gradient"></span>
+							)}
 						</span>
 						<span className="submit-button__text">
 							Agree and continue

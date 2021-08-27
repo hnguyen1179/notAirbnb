@@ -34,8 +34,8 @@ function Navbar() {
 				</div>
 			)}
 
-			<Modal open={open} onClose={handleClose} tabIndex={-1}>
-				<div className="Modal-container" tabIndex={-1}>
+			<Modal open={open} onClose={handleClose}>
+				<div className="Modal-container" style={{ outline: "none" }}>
 					<Entry />
 				</div>
 			</Modal>

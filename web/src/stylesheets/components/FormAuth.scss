@@ -11,6 +11,7 @@
 			padding: 0 2.4rem;
 
 			button {
+				outline: none;
 				@include buttonSvgOutline;
 			}
 
@@ -24,11 +25,12 @@
 		&__title {
 			font-size: 1.6rem;
 			text-align: center;
-			font-weight: 400;
+			font-weight: 500;
 		}
 
 		&__main {
 			padding: 2.4rem;
+			padding-top: 2rem;
 
 			&__form {
 				&__submit-button {
@@ -49,7 +51,22 @@
 					mask-image: -webkit-radial-gradient(center, white, black);
 					overflow: hidden;
 					color: white;
-					border-radius: 0.8rem;
+					
+					// &::before {
+					// 	content: "";
+					// 	display: block;
+					// 	position: absolute;
+					// 	width: calc(100% + 1.6rem);
+					// 	height: calc(100% + 1.6rem);
+					// 	border-radius: 0.8rem;
+					// 	top: -0.8rem;
+					// 	left: -0.8rem;
+					// 	z-index: 30;
+					// }
+
+					// &:focus::before {
+					// 	border: 5px solid red;
+					// }
 
 					.gradient-container {
 						position: absolute;
@@ -129,6 +146,14 @@
 			color: $muted-text-color;
 		}
 	}
+
+	&__input-subtext {
+		font-size: 1.2rem;
+		color: $muted-text-color;
+		margin-top: 0.6rem;
+		margin-bottom: 2.2rem;
+		padding: 0 0.2rem;
+	}
 }
 
 .MuiFormControl-root {
@@ -147,7 +172,7 @@
 			margin-left: 10px;
 			position: absolute;
 			transform: translateY(0);
-			top: 10px;
+			top: 1.2rem;
 
 			&.MuiInputLabel-shrink {
 				transform: translateY(-7px) scale(0.65);
@@ -163,6 +188,7 @@
 		input {
 			transform: translateY(5px);
 			margin: 10px;
+			margin: 1.2rem 1rem;
 			padding: 0;
 		}
 

@@ -7,12 +7,19 @@ interface Props {
 }
 
 function FormError({ error, redirect }: Props) {
-
-	if (!error) return <></>
+	if (!error) return <></>;
 
 	// For email errors from the server
 	if (error === "User with this email already exists") {
-		return <span>This email already exists. <button onClick={redirect}>Log in?</button></span>;
+		return (
+			<div className="FormError">
+				<span>
+					<ErrorSvg />
+				</span>
+				This email already exists.{" "}
+				<button onClick={redirect}>Log in?</button>
+			</div>
+		);
 	}
 
 	return (

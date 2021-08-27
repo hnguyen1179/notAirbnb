@@ -32,7 +32,8 @@ function AuthenticatedForm() {
 		setShowPassword((prev: boolean) => !prev);
 	};
 
-	const resetForm = ({ goBack = false }) => {
+	const resetForm = (option = { goBack: false }) => {
+		const { goBack } = option;
 		form.reset();
 		setVerified(UNVERIFIED);
 		if (!goBack) setOpen(false);

@@ -49,6 +49,16 @@
 		background-color: grey;
 		opacity: 0.1;
 	}
+
+	&:active::before {
+		transform: scale(0.9);
+		transition: transform 150ms ease-in-out;
+	}
+
+	&:focus::before {
+		border: 0.2rem solid black;
+		border-radius: 50%;
+	}
 }
 
 // ** Position of parent must be relative **

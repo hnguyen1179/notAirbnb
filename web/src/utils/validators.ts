@@ -29,7 +29,11 @@ const containsInformation = (value: string, getValues: any) => {
 
 // Validator for Age Field
 const isAdult = (value: string) => {
-	if (value) return getAge(value) >= 18 || "Must be older than 18";
+	if (value)
+		return (
+			getAge(value) >= 18 ||
+			"You must be 18 or older to use notAirbnb. Other people won’t see your birthday."
+		);
 };
 
 export { getAge, containsInformation, isAdult };
