@@ -2,9 +2,9 @@ import React, { useContext } from "react";
 import useLogout from "../hooks/useLogout";
 import { AppContext } from "../context/AppContext";
 import { useModal } from "../context/ModalContext";
-import Loading from "./Loading";
 import Modal from "@material-ui/core/Modal";
 import Entry from "./Entry/Entry";
+import { Transition } from "react-transition-group";
 
 function Navbar() {
 	const { user } = useContext(AppContext);
@@ -24,7 +24,6 @@ function Navbar() {
 
 	return (
 		<div className="Navbar-container">
-			<Loading />
 			{user ? (
 				<h1 data-testid="greeting">hello, {user.firstName}</h1>
 			) : (
@@ -34,11 +33,13 @@ function Navbar() {
 				</div>
 			)}
 
-			<Modal open={open} onClose={handleClose}>
-				<div className="Modal-container" style={{ outline: "none" }}>
-					<Entry />
-				</div>
-			</Modal>
+			<Transition timeout={1000} mountOnEnter unmountOnExit in={open} >
+				<Modal open={open} onClose={handleClose}>
+					<div className="Modal-container">
+						<Entry />
+					</div>
+				</Modal>
+			</Transition>
 
 			{user ? <button onClick={handleLogout}>logout</button> : ""}
 		</div>

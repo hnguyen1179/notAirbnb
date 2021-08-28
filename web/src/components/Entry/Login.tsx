@@ -8,7 +8,7 @@ import { ReactComponent as BackSvg } from "../../assets/svgs/back.svg";
 import LoadingButton from "./LoadingButton";
 
 function Login({ form, showPassword, clickShowPassword, resetForm }: any) {
-	const { getCursorPos } = useModal();
+	const { getCursorPos, demoClicked, setDemoClicked } = useModal();
 	const [login, { loading: loginLoad }] = useLogin();
 
 	const {
@@ -23,6 +23,7 @@ function Login({ form, showPassword, clickShowPassword, resetForm }: any) {
 			const { email, passwordLogin } = payload;
 			await login(email, passwordLogin);
 			resetForm();
+			setDemoClicked(false);
 		} catch (e) {
 			setError(
 				"passwordLogin",
@@ -32,8 +33,10 @@ function Login({ form, showPassword, clickShowPassword, resetForm }: any) {
 		}
 	};
 
+	const inputProps = demoClicked ? { shrink: true } : undefined;
+
 	return (
-		<div className="EntryForm EntryForm--welcome">
+		<div className="EntryForm EntryForm--login">
 			<header>
 				<button
 					aria-label="Close"
@@ -64,10 +67,11 @@ function Login({ form, showPassword, clickShowPassword, resetForm }: any) {
 							placeholder="Password"
 							variant="outlined"
 							fullWidth
+							InputLabelProps={inputProps}
 							{...register("passwordLogin")}
 						/>
 						<ShowPasswordButton
-							showPassword
+							showPassword={showPassword}
 							handleClick={clickShowPassword}
 						/>
 					</div>

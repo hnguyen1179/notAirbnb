@@ -34,11 +34,23 @@
 
 			&__form {
 				&__submit-button {
-					width: 100%;
-					padding: 1.4rem 2.4rem;
+					display: inline-block;
+					position: relative;
+					text-align: center;
+					text-decoration: none;
+					touch-action: manipulation;
+					font-size: 1.6rem;
+					line-height: 2rem;
 					border-radius: 0.8rem;
-					transition: opacity 1.25s ease 0s;
+					outline: none;
+					padding: 1.4rem 2.4rem;
+					transition: box-shadow 0.2s ease 0s,
+						-ms-transform 0.1s ease 0s,
+						-webkit-transform 0.1s ease 0s, transform 0.1s ease 0s;
 					-webkit-tap-highlight-color: transparent;
+					border: none;
+					color: rgb(255, 255, 255);
+					width: 100%;
 					background-image: linear-gradient(
 						to right,
 						#00a6de,
@@ -47,26 +59,8 @@
 						#53b1d1,
 						#63b4cd
 					);
-					position: relative;
-					mask-image: -webkit-radial-gradient(center, white, black);
-					overflow: hidden;
-					color: white;
-					
-					// &::before {
-					// 	content: "";
-					// 	display: block;
-					// 	position: absolute;
-					// 	width: calc(100% + 1.6rem);
-					// 	height: calc(100% + 1.6rem);
-					// 	border-radius: 0.8rem;
-					// 	top: -0.8rem;
-					// 	left: -0.8rem;
-					// 	z-index: 30;
-					// }
 
-					// &:focus::before {
-					// 	border: 5px solid red;
-					// }
+					@include focusOutline;
 
 					.gradient-container {
 						position: absolute;
@@ -144,6 +138,15 @@
 			font-size: 1.4rem;
 			transform: translateY(-50%);
 			color: $muted-text-color;
+			border-radius: 0.4rem;
+			transition: box-shadow 0.2s ease 0s;
+			outline: none;
+
+			&:focus-visible {
+				box-shadow: rgb(255, 255, 255) 0px 0px 0px 2px,
+					rgb(34, 34, 34) 0px 0px 0px 4px;
+				transition: box-shadow 0.2s ease 0s;
+			}
 		}
 	}
 

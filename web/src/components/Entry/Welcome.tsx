@@ -3,17 +3,19 @@ import TextField from "@material-ui/core/TextField";
 import useVerifyEmail from "../../hooks/useVerifyEmail";
 import FormError from "./FormError";
 import { useModal } from "../../context/ModalContext";
-import { ReactComponent as ExitSvg } from "../../assets/svgs/exit.svg";
 import { emailRegex } from "../../utils/regex";
 import LoadingButton from "./LoadingButton";
 
+import { ReactComponent as DemoSvg } from "../../assets/svgs/demo.svg";
+import { ReactComponent as ExitSvg } from "../../assets/svgs/exit.svg";
 import { ReactComponent as GoogleSvg } from "../../assets/svgs/google.svg";
+import { sleep, typeWriter } from "../../utils/typeWriter";
 
 const VERIFIED = "verified";
 const SIGNUP = "signup";
 
 function Welcome({ form, setVerified, handleCloseModal }: any) {
-	const { getCursorPos } = useModal();
+	const { getCursorPos, demoClicked, setDemoClicked } = useModal();
 
 	const {
 		handleSubmit,
@@ -30,6 +32,38 @@ function Welcome({ form, setVerified, handleCloseModal }: any) {
 		setValue("passwordLogin", "");
 		setVerified(res.data.verifyEmail ? VERIFIED : SIGNUP);
 	};
+
+	const clickDemo = async () => {
+		try {
+			const email = document.querySelector(
+				'input[name="email"]'
+			) as HTMLInputElement;
+			const submitEmail = document.querySelector(
+				'button[type="submit"]'
+			) as HTMLElement;
+
+			email.focus();
+			await typeWriter("email", "demo@demo.com", setValue);
+			submitEmail.click();
+
+			await sleep(1250);
+
+			const password = document.querySelector(
+				'input[name="passwordLogin"]'
+			) as HTMLInputElement;
+			const submitPassword = document.querySelector(
+				'button[type="submit"]'
+			) as HTMLElement;
+
+			password.focus();
+			await typeWriter("passwordLogin", "1password", setValue);
+			submitPassword.click();
+		} catch (e) {
+			setDemoClicked(false);
+		}
+	};
+
+	const inputProps = demoClicked ? { shrink: true } : undefined;
 
 	return (
 		<div className="EntryForm EntryForm--welcome">
@@ -59,6 +93,7 @@ function Welcome({ form, setVerified, handleCloseModal }: any) {
 							placeholder="Email"
 							variant="outlined"
 							fullWidth
+							InputLabelProps={inputProps}
 							{...register("email", {
 								required: "This field is required",
 								pattern: {
@@ -68,21 +103,25 @@ function Welcome({ form, setVerified, handleCloseModal }: any) {
 							})}
 						/>
 					</div>
-					<button
-						className="EntryForm__main__form__submit-button"
-						type="submit"
-						disabled={verifyLoad}
-						onMouseMove={(e) => getCursorPos(e)}
-					>
-						<span className="gradient-container">
-							{verifyLoad ? (
-								<LoadingButton />
-							) : (
-								<span className="gradient"></span>
-							)}
-						</span>
-						<span className="submit-button__text">Continue</span>
-					</button>
+					<div>
+						<button
+							className="EntryForm__main__form__submit-button"
+							type="submit"
+							disabled={verifyLoad}
+							onMouseMove={(e) => getCursorPos(e)}
+						>
+							<span className="gradient-container">
+								{verifyLoad ? (
+									<LoadingButton />
+								) : (
+									<span className="gradient"></span>
+								)}
+							</span>
+							<span className="submit-button__text">
+								Continue
+							</span>
+						</button>
+					</div>
 				</form>
 				<div className="EntryForm__main__divider">
 					<span className="EntryForm__main__divider__or">or</span>
@@ -93,6 +132,19 @@ function Welcome({ form, setVerified, handleCloseModal }: any) {
 							<GoogleSvg />
 						</div>
 						<div>Continue with Google</div>
+						<div></div>
+					</button>
+					<button
+						className="EntryForm__main__auth-container__auth EntryForm__main__auth-container__auth--demo"
+						onClick={() => {
+							setDemoClicked(true);
+							clickDemo();
+						}}
+					>
+						<div>
+							<DemoSvg style={{ width: "25px" }} />
+						</div>
+						<div>Use Demo Account</div>
 						<div></div>
 					</button>
 				</div>

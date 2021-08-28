@@ -1,20 +1,29 @@
-import { useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, useEffect } from "react";
 
 interface IModalProviderProps {
+	demoClicked: boolean;
+	setDemoClicked: (x: boolean) => void;
 	entry: string;
 	setEntry: (x: string) => void;
 	open: boolean;
 	setOpen: (x: boolean) => void;
 	getCursorPos: (a: any) => void;
- }
+}
 
 export const ModalContext = createContext<IModalProviderProps | undefined>(
 	undefined
 );
 
 const ModalProvider: React.FC = ({ children }) => {
+	const [demoClicked, setDemoClicked] = useState(false);
 	const [open, setOpen] = useState(false);
 	const [entry, setEntry] = useState("");
+
+	useEffect(() => {
+		if (open === false) {
+			setDemoClicked(false);
+		}
+	}, [open]);
 
 	const getCursorPos = (a: any) => {
 		const gradientBox = document.querySelector(".gradient") as HTMLElement;
@@ -43,11 +52,13 @@ const ModalProvider: React.FC = ({ children }) => {
 	};
 
 	const providerProps: IModalProviderProps = {
+		demoClicked,
+		setDemoClicked,
 		entry,
 		setEntry,
 		open,
 		setOpen,
-		getCursorPos
+		getCursorPos,
 	};
 
 	return (
