@@ -1,5 +1,3 @@
-import React from "react";
-import { useModal } from "../../context/ModalContext";
 import useSignup from "../../hooks/useSignup";
 import PasswordHints from "./PasswordHints";
 
@@ -10,7 +8,7 @@ import { emailRegex, symbolRegex } from "../../utils/regex";
 import { containsInformation, isAdult } from "../../utils/validators";
 import ShowPasswordButton from "./ShowPasswordButton";
 import { ReactComponent as BackSvg } from "../../assets/svgs/back.svg";
-import LoadingButton from "./LoadingButton";
+import SubmitButton from "./SubmitButton";
 
 function SignUp({
 	form,
@@ -21,7 +19,6 @@ function SignUp({
 	showPassword,
 	clickShowPassword,
 }: any) {
-	const { getCursorPos } = useModal();
 
 	const {
 		register,
@@ -42,7 +39,6 @@ function SignUp({
 			await signup(email, password, firstName, lastName);
 			resetForm();
 		} catch (e) {
-			// TODO: Figure out how to send back email already exists into the email error field
 			setError(
 				"email",
 				{ type: "Duplicate Email", message: e.message },
@@ -243,23 +239,9 @@ function SignUp({
 							.
 						</p>
 					</aside>
-					<button
-						className="EntryForm__main__form__submit-button"
-						type="submit"
-						disabled={signupLoad}
-						onMouseMove={(e) => getCursorPos(e)}
-					>
-						<span className="gradient-container">
-							{signupLoad ? (
-								<LoadingButton />
-							) : (
-								<span className="gradient"></span>
-							)}
-						</span>
-						<span className="submit-button__text">
-							Agree and continue
-						</span>
-					</button>
+					<SubmitButton loading={signupLoad}>
+						Agree and continue
+					</SubmitButton>
 				</form>
 			</main>
 		</div>

@@ -103,6 +103,8 @@ const Mutation = objectType({
         password: nonNull(stringArg()),
       },
       resolve: async (_parent, args, context: Context) => {
+        await sleep(Math.random() * 600 + 400);
+
         try {
           const userExists = await context.prisma.user.findUnique({
             where: {
@@ -130,8 +132,6 @@ const Mutation = objectType({
             },
           });
 
-          await sleep(500);
-
           return {
             token: sign({ userId: user.id }, APP_SECRET),
             user,
@@ -148,7 +148,7 @@ const Mutation = objectType({
         email: nonNull(stringArg()),
       },
       resolve: async (_, { email }, context: Context) => {
-        await sleep(500);
+        await sleep(Math.random() * 600 + 400);
 
         const user = await context.prisma.user.findUnique({
           where: {
@@ -167,9 +167,9 @@ const Mutation = objectType({
         password: nonNull(stringArg()),
       },
       resolve: async (_parent, { email, password }, context: Context) => {
-        try {
-          await sleep(500);
+        await sleep(Math.random() * 600 + 400);
 
+        try {
           const user = await context.prisma.user.findUnique({
             where: {
               email,

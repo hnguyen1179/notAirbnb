@@ -18,7 +18,7 @@ import Landing from "./pages/Landing";
 import Listings from "./components/Listings";
 import Listing from "./components/Listing";
 import Users from "./components/Users";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/Navbar/Navbar";
 
 import "./stylesheets/main.scss";
 import { ModalProvider } from "./context/ModalContext";

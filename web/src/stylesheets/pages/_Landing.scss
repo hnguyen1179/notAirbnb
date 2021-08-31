@@ -1,0 +1,9 @@
+.Landing {
+  
+	&__hero {
+    height: 68rem;
+		background: url("https://res.cloudinary.com/dcufjeb5d/image/upload/v1630372469/assets/hero-image.webp");
+    background-position: center;
+    background-size: cover;
+	}
+}

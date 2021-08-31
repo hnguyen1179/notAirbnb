@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useModal } from "../../context/ModalContext";
 
-import Welcome from "./Welcome";
-import Login from "./Login";
-import SignUp from "./SignUp";
+import Welcome from "./FormWelcome";
+import Login from "./FormLogin";
+import SignUp from "./FormSignUp";
 
 const VERIFIED = "verified";
 const UNVERIFIED = "unverified";
@@ -18,7 +18,7 @@ interface FormValues {
 	birthday: string;
 }
 
-function AuthenticatedForm() {
+function Form() {
 	const { entry, setOpen } = useModal();
 	const [showPassword, setShowPassword] = useState(false);
 	const [showHints, setShowHints] = useState(false);
@@ -79,4 +79,4 @@ function AuthenticatedForm() {
 	);
 }
 
-export default AuthenticatedForm;
+export default Form;

@@ -1,4 +1,6 @@
 .EntryFormContainer {
+	width: min(100vw, 57rem);
+	min-height: 400px;
 	position: relative;
 
 	.EntryForm {
@@ -12,6 +14,20 @@
 
 			button {
 				outline: none;
+				appearance: none !important;
+				display: inline-block !important;
+				border-radius: 50% !important;
+				border: none !important;
+				outline: none !important;
+				margin: 0px !important;
+				padding: 0px !important;
+				color: rgb(34, 34, 34) !important;
+				cursor: pointer !important;
+				touch-action: manipulation !important;
+				position: relative !important;
+				background: transparent !important;
+				transition: -ms-transform 0.25s ease 0s,
+					-webkit-transform 0.25s ease 0s, transform 0.25s ease 0s !important;
 				@include buttonSvgOutline;
 			}
 
@@ -51,6 +67,7 @@
 					border: none;
 					color: rgb(255, 255, 255);
 					width: 100%;
+					overflow: hidden;
 					background-image: linear-gradient(
 						to right,
 						#00a6de,
@@ -85,19 +102,20 @@
 							background-size: 200% 200%;
 							opacity: 0;
 							transition: opacity 1.25s ease 0s;
+							-webkit-tap-highlight-color: transparent !important;
 							background-image: radial-gradient(
 								circle,
 								#00a6de,
-								#2dabdd,
-								#44b1dc,
-								#56b6db,
-								#66bbda,
-								#66bbda,
-								#66bbda,
-								#66bbda,
-								#56b6db,
-								#44b1dc,
-								#2dabdd,
+								#36afe0,
+								#51b8e3,
+								#66c0e5,
+								#7ac9e8,
+								#7ac9e8,
+								#7ac9e8,
+								#7ac9e8,
+								#66c0e5,
+								#51b8e3,
+								#36afe0,
 								#00a6de
 							);
 

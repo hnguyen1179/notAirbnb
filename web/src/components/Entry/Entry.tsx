@@ -1,6 +1,6 @@
 import React from "react";
 import { useModal } from "../../context/ModalContext";
-import AuthenticatedForm from "./AuthenticatedForm";
+import AuthenticatedForm from "./Form";
 
 function Entry() {
 	const { demoClicked } = useModal();

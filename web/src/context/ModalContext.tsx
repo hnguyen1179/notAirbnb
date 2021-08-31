@@ -7,7 +7,7 @@ interface IModalProviderProps {
 	setEntry: (x: string) => void;
 	open: boolean;
 	setOpen: (x: boolean) => void;
-	getCursorPos: (a: any) => void;
+	getCursorPos: (a: any, el: HTMLElement | null) => void;
 }
 
 export const ModalContext = createContext<IModalProviderProps | undefined>(
@@ -25,26 +25,24 @@ const ModalProvider: React.FC = ({ children }) => {
 		}
 	}, [open]);
 
-	const getCursorPos = (a: any) => {
-		const gradientBox = document.querySelector(".gradient") as HTMLElement;
-
+	const getCursorPos = (a: any, element: HTMLElement | null) => {
 		const posX = a.clientX;
 		const posY = a.clientY;
 
-		if (gradientBox) {
+		if (element) {
 			const { left, top, right, bottom } =
-				gradientBox?.getBoundingClientRect();
+				element?.getBoundingClientRect();
 			const width = right - left;
 			const widthDiff = posX - left;
 			const height = bottom - top;
 			const heightDiff = posY - top;
 
-			gradientBox.style.setProperty(
+			element.style.setProperty(
 				"--mouse-x",
 				((widthDiff / width) * 75).toString()
 			);
 
-			gradientBox.style.setProperty(
+			element.style.setProperty(
 				"--mouse-y",
 				((heightDiff / height) * 75).toString()
 			);

@@ -17,7 +17,7 @@ function FormError({ error, redirect }: Props) {
 					<ErrorSvg />
 				</span>
 				This email already exists.{" "}
-				<button onClick={redirect}>Log in?</button>
+				<button className="login-redirect-button" onClick={redirect}>Log in?</button>
 			</div>
 		);
 	}

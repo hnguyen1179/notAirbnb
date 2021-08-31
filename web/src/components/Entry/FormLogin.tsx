@@ -1,14 +1,13 @@
-import React from "react";
 import { useModal } from "../../context/ModalContext";
 import useLogin from "../../hooks/useLogin";
 import TextField from "@material-ui/core/TextField";
 import FormError from "./FormError";
 import ShowPasswordButton from "./ShowPasswordButton";
 import { ReactComponent as BackSvg } from "../../assets/svgs/back.svg";
-import LoadingButton from "./LoadingButton";
+import SubmitButton from "./SubmitButton";
 
 function Login({ form, showPassword, clickShowPassword, resetForm }: any) {
-	const { getCursorPos, demoClicked, setDemoClicked } = useModal();
+	const { demoClicked, setDemoClicked } = useModal();
 	const [login, { loading: loginLoad }] = useLogin();
 
 	const {
@@ -75,21 +74,9 @@ function Login({ form, showPassword, clickShowPassword, resetForm }: any) {
 							handleClick={clickShowPassword}
 						/>
 					</div>
-					<button
-						className="EntryForm__main__form__submit-button"
-						type="submit"
-						disabled={loginLoad}
-						onMouseMove={(e) => getCursorPos(e)}
-					>
-						<span className="gradient-container">
-							{loginLoad ? (
-								<LoadingButton />
-							) : (
-								<span className="gradient"></span>
-							)}
-						</span>
-						<span className="submit-button__text">Log In </span>
-					</button>
+					<SubmitButton loading={loginLoad}>
+						Log in
+					</SubmitButton>
 				</form>
 				<div className="EntryForm__main__recover-password">
 					<button>Forgot password?</button>

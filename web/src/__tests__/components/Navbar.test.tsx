@@ -1,7 +1,7 @@
 import { fireEvent, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 
-import Navbar from "../../components/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
 import { customRender } from "../../testing-utils/customRender";
 import { meQuery } from "../../graphql/queries/me";
 

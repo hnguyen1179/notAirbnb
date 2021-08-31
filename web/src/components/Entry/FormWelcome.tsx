@@ -1,26 +1,27 @@
-import React from "react";
 import TextField from "@material-ui/core/TextField";
 import useVerifyEmail from "../../hooks/useVerifyEmail";
 import FormError from "./FormError";
 import { useModal } from "../../context/ModalContext";
 import { emailRegex } from "../../utils/regex";
-import LoadingButton from "./LoadingButton";
 
 import { ReactComponent as DemoSvg } from "../../assets/svgs/demo.svg";
 import { ReactComponent as ExitSvg } from "../../assets/svgs/exit.svg";
 import { ReactComponent as GoogleSvg } from "../../assets/svgs/google.svg";
 import { sleep, typeWriter } from "../../utils/typeWriter";
+import SubmitButton from "./SubmitButton";
 
 const VERIFIED = "verified";
 const SIGNUP = "signup";
 
 function Welcome({ form, setVerified, handleCloseModal }: any) {
-	const { getCursorPos, demoClicked, setDemoClicked } = useModal();
+	const { demoClicked, setDemoClicked } = useModal();
 
 	const {
 		handleSubmit,
 		setValue,
 		register,
+		setFocus,
+		getValues,
 		formState: { errors },
 	} = form;
 
@@ -35,27 +36,17 @@ function Welcome({ form, setVerified, handleCloseModal }: any) {
 
 	const clickDemo = async () => {
 		try {
-			const email = document.querySelector(
-				'input[name="email"]'
-			) as HTMLInputElement;
-			const submitEmail = document.querySelector(
-				'button[type="submit"]'
-			) as HTMLElement;
-
-			email.focus();
+			setFocus('email');
 			await typeWriter("email", "demo@demo.com", setValue);
-			submitEmail.click();
+			await onSubmitEmail({ email: getValues('email')});
 
-			await sleep(1250);
+			await sleep(500);
 
-			const password = document.querySelector(
-				'input[name="passwordLogin"]'
-			) as HTMLInputElement;
 			const submitPassword = document.querySelector(
 				'button[type="submit"]'
 			) as HTMLElement;
 
-			password.focus();
+			setFocus('passwordLogin')
 			await typeWriter("passwordLogin", "1password", setValue);
 			submitPassword.click();
 		} catch (e) {
@@ -104,23 +95,9 @@ function Welcome({ form, setVerified, handleCloseModal }: any) {
 						/>
 					</div>
 					<div>
-						<button
-							className="EntryForm__main__form__submit-button"
-							type="submit"
-							disabled={verifyLoad}
-							onMouseMove={(e) => getCursorPos(e)}
-						>
-							<span className="gradient-container">
-								{verifyLoad ? (
-									<LoadingButton />
-								) : (
-									<span className="gradient"></span>
-								)}
-							</span>
-							<span className="submit-button__text">
-								Continue
-							</span>
-						</button>
+						<SubmitButton loading={verifyLoad}>
+							Continue
+						</SubmitButton>
 					</div>
 				</form>
 				<div className="EntryForm__main__divider">

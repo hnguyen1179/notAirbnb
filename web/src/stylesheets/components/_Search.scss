@@ -1,0 +1,33 @@
+.Search-container {
+	margin: 1.25rem 2rem;
+
+	&__button {
+		height: 4.8rem;
+		display: flex;
+		justify-content: center;
+    background-color: white;
+
+		button {
+      width: 100%;
+			border: 1px solid black;
+      border-radius: 3rem;
+		}
+
+		&__content {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+      span {
+        font-weight: 500;
+        font-size: 1.4rem;
+      }
+
+			svg {
+        padding-right: 0.8rem;
+        height: 1.6rem;
+				color: $main-color;
+			}
+		}
+	}
+}
