@@ -1,16 +1,19 @@
 .Search-container {
-	margin: 1.25rem 2rem;
+	z-index: 1000;
+	position: fixed;
+	width: 100%;
+	padding: 1.5rem 2rem;
+	transition: background-color 500ms ease-in-out;
 
 	&__button {
-		height: 4.8rem;
+		height: 5rem;
 		display: flex;
 		justify-content: center;
-    background-color: white;
 
 		button {
-      width: 100%;
-			border: 1px solid black;
-      border-radius: 3rem;
+			width: 100%;
+			border-radius: 3rem;
+			box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.2);
 		}
 
 		&__content {
@@ -18,15 +21,31 @@
 			justify-content: center;
 			align-items: center;
 
-      span {
-        font-weight: 500;
-        font-size: 1.4rem;
-      }
+			span {
+				font-weight: 500;
+				font-size: 1.4rem;
+			}
 
 			svg {
-        padding-right: 0.8rem;
-        height: 1.6rem;
+				padding-right: 0.8rem;
+				height: 1.6rem;
 				color: $main-color;
+			}
+		}
+	}
+
+	&.active {
+		transition: background-color 500ms ease-in-out;
+		background-color: white;
+		box-shadow: rgba(0, 0, 0, 0.08) 0px 1px 0px;
+
+		.Search-container__button {
+			button {
+				border: 1px solid rgb(247, 247, 247);
+				background-color: rgb(247, 247, 247);
+				box-shadow: none;
+				transition: background-color 250ms ease-in-out,
+					box-shadow 400ms ease-in;
 			}
 		}
 	}

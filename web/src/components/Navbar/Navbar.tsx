@@ -7,7 +7,6 @@ import useLogout from "../../hooks/useLogout";
 
 import Entry from "../Entry/Entry";
 import Fade from "../Fade";
-import Search from "./Search";
 
 function Navbar() {
 	const { user } = useContext(AppContext);
@@ -38,8 +37,6 @@ function Navbar() {
 					</div>
 				)}
 			</div>
-
-			<Search />
 
 			{/* Modal for the entry form */}
 			<Modal open={open} onClose={handleClose}>

@@ -1,9 +1,54 @@
 .Landing {
-  
 	&__hero {
-    height: 68rem;
-		background: url("https://res.cloudinary.com/dcufjeb5d/image/upload/v1630372469/assets/hero-image.webp");
-    background-position: center;
-    background-size: cover;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 80vh;
+    // Kinda hacky way to get a responsive image ?
+    aspect-ratio: 720 / 937;
+		background: url("https://res.cloudinary.com/dcufjeb5d/image/upload/v1630372469/assets/hero-image-small.webp");
+		background-size: cover;
+
+		&__content {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+
+			&__text {
+				font-size: 1.8rem;
+				font-weight: 500;
+				padding: 2rem;
+				margin-top: 3rem;
+				span {
+					display: block;
+					text-align: center;
+				}
+			}
+
+			&__button {
+				padding: 1.4rem 4rem;
+				border-radius: 2.5rem;
+				box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.12);
+
+				a {
+					text-decoration: none;
+
+					span {
+						font-size: 1.8rem;
+						font-weight: 800;
+						background: rgb(88, 152, 50);
+						background: linear-gradient(
+							90deg,
+							rgba(88, 152, 50, 1) 36%,
+							rgba(109, 165, 76, 1) 66%,
+							rgba(137, 184, 110, 1) 82%,
+							rgba(173, 207, 154, 1) 100%
+						);
+						-webkit-background-clip: text;
+						-webkit-text-fill-color: transparent;
+					}
+				}
+			}
+		}
 	}
 }

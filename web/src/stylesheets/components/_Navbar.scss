@@ -1,7 +1,6 @@
 .Navbar-container {
-  
-
-  &__profile {
-    display: none;
-  }
+  z-index: 1000;
+	&__profile {
+		display: none;
+	}
 }
