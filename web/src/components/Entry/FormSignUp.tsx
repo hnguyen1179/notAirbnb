@@ -7,7 +7,7 @@ import FormError from "./FormError";
 import { emailRegex, symbolRegex } from "../../utils/regex";
 import { containsInformation, isAdult } from "../../utils/validators";
 import ShowPasswordButton from "./ShowPasswordButton";
-import { ReactComponent as BackSvg } from "../../assets/svgs/back.svg";
+import { ReactComponent as BackSvg } from "../../assets/icons/back.svg";
 import SubmitButton from "./SubmitButton";
 
 function SignUp({

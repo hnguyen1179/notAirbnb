@@ -1,54 +1,130 @@
 .Landing {
+	section {
+		padding-left: 2.4rem;
+		margin: 3rem 0;
+
+		&:first-of-type {
+			padding-left: 0;
+			margin-top: 0;
+		}
+	}
+
 	&__hero {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		min-height: 80vh;
-    // Kinda hacky way to get a responsive image ?
-    aspect-ratio: 720 / 937;
-		background: url("https://res.cloudinary.com/dcufjeb5d/image/upload/v1630372469/assets/hero-image-small.webp");
-		background-size: cover;
+		width: 100%;
 
 		&__content {
+			width: 100%;
+			height: 100%;
+			position: relative;
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 
+			&__image {
+				width: 100%;
+				img {
+					z-index: -1;
+					width: 100%;
+				}
+			}
+
 			&__text {
+				position: absolute;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				top: 37.5%;
 				font-size: 1.8rem;
 				font-weight: 500;
 				padding: 2rem;
 				margin-top: 3rem;
+
 				span {
 					display: block;
 					text-align: center;
 				}
-			}
 
-			&__button {
-				padding: 1.4rem 4rem;
-				border-radius: 2.5rem;
-				box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.12);
+				button {
+					margin-top: 1.4rem;
+					padding: 1.4rem 3rem;
+					border-radius: 2.5rem;
+					box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.12);
 
-				a {
-					text-decoration: none;
+					a {
+						text-decoration: none;
 
-					span {
-						font-size: 1.8rem;
-						font-weight: 800;
-						background: rgb(88, 152, 50);
-						background: linear-gradient(
-							90deg,
-							rgba(88, 152, 50, 1) 36%,
-							rgba(109, 165, 76, 1) 66%,
-							rgba(137, 184, 110, 1) 82%,
-							rgba(173, 207, 154, 1) 100%
-						);
-						-webkit-background-clip: text;
-						-webkit-text-fill-color: transparent;
+						span {
+							font-size: 1.8rem;
+							font-weight: 800;
+							background: rgb(88, 152, 50);
+							background: linear-gradient(
+								90deg,
+								rgba(88, 152, 50, 1) 36%,
+								rgba(109, 165, 76, 1) 66%,
+								rgba(137, 184, 110, 1) 82%,
+								rgba(173, 207, 154, 1) 100%
+							);
+							-webkit-background-clip: text;
+							-webkit-text-fill-color: transparent;
+						}
 					}
 				}
 			}
 		}
+	}
+
+	&__try-hosting {
+		padding-right: 2.4rem;
+
+		&__content {
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+
+			&__image {
+				width: 100%;
+
+				img {
+					z-index: -1;
+					width: 100%;
+					border-radius: 2.5rem;
+				}
+			}
+
+			&__text {
+				width: 70%;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				text-align: center;
+				position: absolute;
+				top: 15%;
+				transform: translateY(-15%);
+				color: white;
+
+				&>h3 {
+					font-weight: 500;
+					font-size: 2.8rem;
+				}
+
+				&>span {
+					font-weight: 300;
+					margin: 1.4rem;
+				}
+
+				&>button {
+					padding: 0.8rem 1.6rem;
+					border-radius: 0.8rem;
+				}
+			}
+		}
+	}
+
+	&__inspirations {
+		
 	}
 }

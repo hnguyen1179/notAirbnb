@@ -1,0 +1,60 @@
+.Destinations {
+
+	&__header {
+		font-size: 1.8rem;
+		margin: 1.8rem 0;
+	}
+
+	&__list {
+		// Edit this based on the page width; widnow.addEventListner('resize' ...)
+		--column-count: 4;
+
+		overflow-x: auto;
+		display: grid;
+		gap: 12px;
+		grid-template-rows: repeat(2, auto);
+		grid-template-columns:
+			repeat(calc(var(--column-count) - 1), calc(100% - 108px))
+			100%;
+		grid-auto-flow: column;
+		scroll-snap-type: x mandatory;
+
+		&::-webkit-scrollbar {
+			width: 0;
+		}
+	}
+}
+
+.DestinationIcon {
+	scroll-snap-align: start;
+	height: 100%;
+
+	&__content {
+		display: flex;
+		align-items: center;
+
+		&__image {
+			width: 7.2rem;
+
+			img {
+				border-radius: 1.5rem;
+				width: 100% !important;
+			}
+		}
+
+		&__text {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			margin: 1.25rem;
+
+			&__location {
+				font-weight: 400;
+			}
+
+			&__distance {
+				font-weight: 300;
+			}
+		}
+	}
+}

@@ -1,0 +1,44 @@
+.ListingTypes {
+	width: 100%;
+
+	&__header {
+		font-size: 1.8rem;
+		margin: 1.8rem 0;
+	}
+
+	&__list {
+		overflow-x: auto;
+		display: grid;
+		gap: 12px;
+		grid-auto-flow: column;
+		scroll-snap-type: x mandatory;
+		// overflow: auto hidden;
+
+		&::-webkit-scrollbar {
+			width: 0;
+		}
+	}
+}
+
+.ListingTypeIcon {
+	scroll-snap-align: start;
+
+	&:last-child {
+		padding-right: 2.4rem;
+	}
+
+	&__content {
+		&__image {
+			width: 27.2rem;
+
+			img {
+				border-radius: 1.5rem;
+				width: 100%;
+			}
+		}
+
+		&__text {
+			font-size: 1.8rem;
+		}
+	}
+}

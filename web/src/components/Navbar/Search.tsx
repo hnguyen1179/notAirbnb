@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as SearchSvg } from "../../assets/svgs/search.svg";
+import { ReactComponent as SearchSvg } from "../../assets/icons/search.svg";
 
 // const Search = () => {
 // 	return (

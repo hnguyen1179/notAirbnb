@@ -1,6 +1,6 @@
 import React from "react";
-import { ReactComponent as FailSvg } from "../../assets/svgs/negative.svg";
-import { ReactComponent as PassSvg } from "../../assets/svgs/positive.svg";
+import { ReactComponent as FailSvg } from "../../assets/icons/negative.svg";
+import { ReactComponent as PassSvg } from "../../assets/icons/positive.svg";
 
 const ERROR_NAMES = [
 	"Can't contain your name or email address",

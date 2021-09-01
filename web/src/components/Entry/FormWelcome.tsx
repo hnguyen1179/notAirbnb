@@ -4,9 +4,9 @@ import FormError from "./FormError";
 import { useModal } from "../../context/ModalContext";
 import { emailRegex } from "../../utils/regex";
 
-import { ReactComponent as DemoSvg } from "../../assets/svgs/demo.svg";
-import { ReactComponent as ExitSvg } from "../../assets/svgs/exit.svg";
-import { ReactComponent as GoogleSvg } from "../../assets/svgs/google.svg";
+import { ReactComponent as DemoSvg } from "../../assets/icons/demo.svg";
+import { ReactComponent as ExitSvg } from "../../assets/icons/exit.svg";
+import { ReactComponent as GoogleSvg } from "../../assets/icons/google.svg";
 import { sleep, typeWriter } from "../../utils/typeWriter";
 import SubmitButton from "./SubmitButton";
 

@@ -3,7 +3,7 @@ import useLogin from "../../hooks/useLogin";
 import TextField from "@material-ui/core/TextField";
 import FormError from "./FormError";
 import ShowPasswordButton from "./ShowPasswordButton";
-import { ReactComponent as BackSvg } from "../../assets/svgs/back.svg";
+import { ReactComponent as BackSvg } from "../../assets/icons/back.svg";
 import SubmitButton from "./SubmitButton";
 
 function Login({ form, showPassword, clickShowPassword, resetForm }: any) {
