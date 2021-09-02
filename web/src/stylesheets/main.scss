@@ -10,7 +10,7 @@
 @import "base/base", "base/fonts", "base/typography", "base/animations";
 
 // 4. Layout-related sections
-@import "layout/header", "layout/footer";
+@import "layout/header", "layout/Footer";
 
 // 5. Components
 @import "components/LoadingButton", "components/Form",
@@ -19,7 +19,7 @@
 	"components/PasswordHints.scss", "components/Modal.scss",
 	"components/Navbar.scss", "components/Search.scss",
 	"components/Destinations.scss", "components/ListingTypes.scss",
-	"components/Inspirations.scss", "components/Footer.scss";
+	"components/Inspirations.scss";
 
 // 6. Page-specific styles
 @import "pages/Listing", "pages/Landing";

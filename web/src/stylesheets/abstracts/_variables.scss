@@ -4,8 +4,7 @@
 
 /// Regular font family
 /// @type List
-$text-font-stack: "Open Sans", "Helvetica Neue Light", "Helvetica Neue",
-	"Helvetica", "Arial", sans-serif !default;
+$text-font-stack: "Circular" !default;
 
 /// @type List
 $comment-font-stack: "Circular", "BlinkMacSystemFont", "Roboto",
@@ -27,6 +26,10 @@ $muted-line-color: #ebebeb;
 /// Muted text color
 /// @type Color
 $muted-text-color: #757575;
+
+/// Disabled text color
+/// @type Color
+$disabled-text-color: #36363679;
 
 /// Copy text color
 /// @type Color

@@ -14,9 +14,9 @@ const ListingTypes = () => {
 
 	return (
 		<div className="ListingTypes">
-			<header className="ListingTypes__header">
+			<div className="ListingTypes__header">
 				<h3>Live anywhere</h3>
-			</header>
+			</div>
 			<ul className="ListingTypes__list">
 				{types.map((type) => {
 					const filename =

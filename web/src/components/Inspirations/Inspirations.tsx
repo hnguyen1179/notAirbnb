@@ -11,9 +11,9 @@ const Inspirations = () => {
 
 	return (
 		<div className="Inspirations">
-			<header className="Inspirations__header">
+			<div className="Inspirations__header">
 				<h3>Inspiration for future getaways</h3>
-			</header>
+			</div>
 			<InspirationTabs
 				titles={titles}
 				panel={panel}

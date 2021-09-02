@@ -1,65 +1,81 @@
-// -----------------------------------------------------------------------------
-// This file contains all styles related to the footer of the site/application.
-// -----------------------------------------------------------------------------
-
 .Footer {
-  margin-bottom: 5%;
-  display: flex;
-  justify-content: flex-start;
+	& > div {
+		padding: 3.2rem 0;
+		border-top: 1px solid #dddddd;
 
-  &__link-container {
-    display: flex;
+		&:first-child {
+			border: none;
+			padding-top: 0;
+		}
 
-    a .Footer__icon {
-      margin: 0 1.5rem;
-      position: relative;
-      font-size: clamp(1rem, 0.8239rem + 0.7512vw, 1.5rem);      
-      font-family: $paragraphFont;
-      font-weight: 600;
-      color: $dark-grey;
+		&:last-child {
+			padding-top: 0.9rem;
+			padding-bottom: 0;
+		}
+	}
 
-      &:first-child {
-        margin-left: 0;
-      }
+	&__meta {
+		font-size: 1.4rem;
+		color: $muted-text-color;
 
-      &::before, 
-      &::after {
-        @include bottom-bar;
-      }
+		&__language {
+			margin: 1.8rem 0;
 
-      &::before {
-        @include bottom-bar-before;
-      }
+			button {
+				display: flex;
+				text-decoration: underline;
 
-      &:hover::before {
-        @include bottom-bar-hover-before;
-      }
+				svg {
+					margin-right: 0.8rem;
+				}
+			}
+		}
+		&__legal {
+		}
 
-      &:hover {
-        transition: 350ms;
-      }
-      
-      &--resume:hover {
-        color: white;
-      }
-
-      &--spotify:hover {
-        color: #1db954;
-      }
-
-      &--linkedin:hover {
-        color: #2867B2;
-      }
-
-      &--github:hover {
-        color: rgb(255, 255, 255); 
-      }
-    }
-  }
+		&__docs {
+			.spacer {
+				display: inline-block;
+				text-align: center;
+				width: 1.9rem;
+			}
+		}
+	}
 }
 
-@media screen and (max-width: 400px) {
-  .Footer {
-    margin-bottom: 10%;
-  }
+.FooterSection {
+	&__head,
+	&__list__item {
+		padding: 0.6rem 0;
+	}
+
+	&__head {
+		font-size: 1.6rem;
+	}
+
+	&__list {
+		&__item {
+			pointer-events: none;
+			font-size: 1.4rem;
+
+			a {
+				letter-spacing: 0.05rem;
+				font-weight: 400;
+				color: $disabled-text-color;
+			}
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+
+		&__item.defined {
+			pointer-events: all;
+
+			a {
+        font-weight: 400;
+				color: #222222 !important;
+			}
+		}
+	}
 }

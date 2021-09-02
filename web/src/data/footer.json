@@ -1,1 +1,51 @@
-[{"title":"ABOUT","list":["How Airbnb works","Newsroom","Airbnb 2021","Investors","Airbnb Plus","Airbnb Luxe","HotelTonight","Airbnb for Work","Made possible by Hosts","Careers","Founders' Letter"]},{"title":"COMMUNITY","list":["Diversity & Belonging","Against Discrimination","Accessibility","Airbnb Associates","Host Afghan refugees","Guest Referrals","Gift cards","Airbnb.org"]},{"title":"HOST","list":["Host your home","Host an Online Experience","Host an Experience","Responsible hosting","Resource Center","Community Center"]},{"title":"SUPPORT","list":["Our COVID-19 Response","Help Center","Cancellation options","Neighborhood Support","Trust & Safety"]}]
+[
+	{
+		"title": "ABOUT",
+		"list": [
+			"How notAirbnb works",
+			"Newsroom",
+			"notAirbnb 2021",
+			"Investors",
+			"notAirbnb Plus",
+			"notAirbnb Luxe",
+			"HotelTonight",
+			"notAirbnb for Work",
+			"Made possible by Hosts",
+			"Careers",
+			"Founders' Letter"
+		]
+	},
+	{
+		"title": "COMMUNITY",
+		"list": [
+			"Diversity & Belonging",
+			"Against Discrimination",
+			"Accessibility",
+			"notAirbnb Associates",
+			"Help Afghan refugees, https://www.refugeesinternational.org/donate-2020",
+			"Guest Referrals",
+			"Gift cards",
+			"notAirbnb.org"
+		]
+	},
+	{
+		"title": "DUKE NGUYEN",
+		"list": [
+			"Resume, https://docs.google.com/document/d/1rCZeMhlpgxN71z9JLBSQbSJFI73qomBeO9WWxWbHqJ0/edit?usp=sharing",
+			"Personal Site, https://dukenguyen.dev",
+			"LinkedIn, https://www.linkedin.com/in/nguyenduke/",
+			"GitHub, https://github.com/hnguyen1179",
+			"Spotify, https://open.spotify.com/user/duke603kid?si=c3dtOklqRhGcQc0ITDmwAA"
+		]
+	},
+	{
+		"title": "SUPPORT",
+		"list": [
+			"Our COVID-19 Response",
+			"Help Center",
+			"Cancellation options",
+			"Neighborhood Support",
+			"Trust & Safety"
+		]
+	}
+]

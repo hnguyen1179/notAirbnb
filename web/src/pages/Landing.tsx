@@ -9,6 +9,7 @@ import Search from "../components/Navbar/Search";
 import Destinations from "../components/Destinations/Destinations";
 import ListingTypes from "../components/ListingTypes/ListingTypes";
 import Inspirations from "../components/Inspirations/Inspirations";
+import Footer from "../components/Footer/Footer";
 
 function Landing() {
 	const searchRef = useRef<HTMLDivElement>(null);
@@ -90,9 +91,14 @@ function Landing() {
 				</div>
 			</section>
 
+			{/* Remove this section on login */}
 			<section className="Landing__inspirations">
 				<Inspirations />
 			</section>
+
+			<footer className="Landing__footer">
+				<Footer />
+			</footer>
 
 		</div>
 	);

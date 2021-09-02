@@ -18,9 +18,9 @@ const Destinations = () => {
 
 	return (
 		<div className="Destinations">
-			<header className="Destinations__header">
+			<div className="Destinations__header">
 				<h3>Explore nearby</h3>
-			</header>
+			</div>
 			<ul className="Destinations__list">
 				{LOCATIONS.map((location) => {
 					const filename =

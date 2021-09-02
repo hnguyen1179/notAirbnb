@@ -8,6 +8,7 @@ import useLogout from "../../hooks/useLogout";
 import Entry from "../Entry/Entry";
 import Fade from "../Fade";
 
+// This Navbar is for desktop view; contains a search
 function Navbar() {
 	const { user } = useContext(AppContext);
 	// Good react pattern in useModal; incorporate hooks within Context APIs that check for undefined
