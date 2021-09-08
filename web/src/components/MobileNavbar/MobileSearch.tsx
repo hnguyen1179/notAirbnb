@@ -1,7 +1,7 @@
 import React from "react";
 import { ReactComponent as SearchSvg } from "../../assets/icons/search.svg";
 
-const Search = React.forwardRef<HTMLDivElement>((props, ref) => {
+const MobileSearch = React.forwardRef<HTMLDivElement>((props, ref) => {
 	return (
 		<div className="Search-container" ref={ref}>
 			<div className="Search-container__button">
@@ -16,4 +16,4 @@ const Search = React.forwardRef<HTMLDivElement>((props, ref) => {
 	);
 });
 
-export default Search;
+export default MobileSearch;

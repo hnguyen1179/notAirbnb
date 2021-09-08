@@ -1,0 +1,64 @@
+.MobileNavbar {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	width: 100%;
+	height: 6.4rem;
+	background-color: white;
+	bottom: 0;
+	z-index: 9001;
+	border-top: 1px solid #dddddd;
+	transition: transform 200ms ease-in-out;
+
+	&__links {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		&__link {
+			flex: 1 1 0;
+			text-align: center;
+			width: 9.7rem;
+			max-width: 20%;
+
+			&:nth-child(2) {
+				color: $disabled-text-color;
+				pointer-events: none;
+			}
+
+			&:hover {
+				svg {
+					color: $main-color;
+				}
+			}
+
+			&__content {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+
+				svg {
+					color: #b0b0b0;
+					height: 2.4rem;
+				}
+
+				span {
+					font-size: 1.2rem;
+				}
+			}
+
+			&.active {
+				svg {
+					color: $main-color;
+				}
+			}
+		}
+	}
+
+	&.inactive {
+		transform: translateY(6.4rem);
+		transition: transform 200ms ease-in-out;
+	}
+}

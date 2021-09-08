@@ -16,14 +16,14 @@ const FooterSection = ({ data }: Props) => {
 				<h4>{data.title}</h4>
 			</div>
 			<ul className="FooterSection__list">
-				{data.list.map((item) => {
+				{data.list.map((item, idx) => {
 					const [text, url] = item.split(", ");
 
 					const defined = url ? "defined" : "";
 					// TODO: Update URL for resume with updated resume.
 					// Maybe just save the document within assets and host it
 					return (
-						<li className={`FooterSection__list__item ${defined}`}>
+						<li key={idx} className={`FooterSection__list__item ${defined}`}>
 							<a href={url || ""} target="_blank">
 								{text}
 							</a>

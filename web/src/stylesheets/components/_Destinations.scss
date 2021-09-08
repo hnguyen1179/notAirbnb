@@ -1,5 +1,4 @@
 .Destinations {
-
 	&__header {
 		font-size: 1.8rem;
 		margin: 1.8rem 0;
@@ -34,11 +33,11 @@
 		align-items: center;
 
 		&__image {
-			width: 7.2rem;
+			width: 7.2rem !important;
 
 			img {
 				border-radius: 1.5rem;
-				width: 100% !important;
+				width: 100%;
 			}
 		}
 
@@ -54,6 +53,26 @@
 			&__distance {
 				font-weight: 400;
 			}
+		}
+	}
+}
+
+@media (min-width: 744px) {
+	.Destinations__list {
+		padding: 8px;
+		scroll-padding: 0px;
+		gap: 8px;
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	.DestinationIcon {
+		&__image {
+			margin-right: 1.6rem;
+		}
+
+		&:nth-child(7),
+		&:nth-child(8) {
+			display: none;
 		}
 	}
 }

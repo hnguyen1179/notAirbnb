@@ -1,6 +1,262 @@
-.Navbar-container {
-  z-index: 1000;
-	&__profile {
-		display: none;
+.Navbar {
+	position: fixed;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 10;
+	height: 8rem;
+	width: 100%;
+	background-color: white;
+	box-shadow: rgba(0, 0, 0, 0.08) 0px 1px 12px;
+
+	&.active {
+		.background {
+			background-color: rgba(0, 0, 0, 0.25);
+			inset: 0px;
+			position: fixed;
+			z-index: -2;
+		}
+
+		.Navbar__left {
+			&::after {
+				transform: scaleY(3.05);
+			}
+		}
+	}
+
+	&__left {
+		display: flex;
+		align-items: center;
+		padding-left: 4rem;
+		margin-right: auto;
+		transition: all 1s ease-in-out;
+
+		&::after {
+			box-shadow: rgb(0 0 0 / 8%) 0px 1px 12px;
+			transform-origin: 50% 0%;
+			transition-duration: 150ms;
+			transition-property: opacity, -ms-transform, -webkit-transform,
+				transform;
+			transition-timing-function: ease;
+			background: rgb(255, 255, 255);
+			content: "";
+			height: 100%;
+			left: 0px;
+			position: absolute;
+			top: 0px;
+			width: 100%;
+			z-index: -1;
+			opacity: 1;
+		}
+
+		&__logo {
+			width: 3rem;
+		}
+
+		&__search {
+			padding: 0 2.4rem;
+
+			&__button {
+				width: 30rem;
+				height: 4.8rem;
+				display: flex;
+				align-items: center;
+				border: 1px solid rgb(221, 221, 221);
+				box-shadow: rgba(0, 0, 0, 0.08) 0px 1px 2px,
+					rgba(0, 0, 0, 0.05) 0px 4px 12px;
+				border-radius: 4rem;
+
+				& > div {
+					padding: 0 1.6rem;
+					font-size: 1.4rem;
+				}
+
+				& > svg {
+					box-sizing: content-box;
+					height: 1.2rem !important;
+					width: 1.2rem !important;
+					color: white;
+					padding: 1rem;
+					background-color: $main-color;
+					border-radius: 50%;
+					margin: 0.7rem;
+					margin-left: auto;
+				}
+			}
+		}
+	}
+
+	&__right {
+		display: flex;
+		align-items: center;
+		margin-left: auto;
+		padding-right: 4rem;
+
+		&__host {
+			padding: 0 1rem;
+
+			display: grid;
+			place-items: center;
+
+			& > span {
+				font-weight: 400;
+				font-size: 1.4rem;
+			}
+		}
+
+		&__globe {
+			display: grid;
+			place-items: center;
+			padding: 1.2rem;
+
+			& > button {
+				@include buttonSvgOutline;
+			}
+		}
+
+		&__profile {
+			padding-left: 1rem;
+			position: relative;
+
+			&__button {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				width: 8rem;
+				padding: 0.4rem 0.5rem 0.4rem 1.25rem;
+				border-radius: 2.1rem;
+				border: 0.1rem solid #dddddd;
+				transition: box-shadow 2ms ease;
+
+				&:hover {
+					transition: box-shadow 2ms ease;
+					box-shadow: rgba(0, 0, 0, 0.18) 0 0.2rem 0.4rem;
+				}
+
+				&__icon {
+					color: #717171;
+
+					&--profile {
+						height: 3.2rem;
+					}
+				}
+			}
+
+			&__dropdown {
+				display: none;
+				position: absolute;
+				flex-direction: column;
+				width: 25rem;
+				background-color: white;
+				box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 16px;
+				padding: 8px 0px;
+				border-radius: 1.2rem;
+				top: calc(100% + 1.2rem);
+				right: 0;
+
+				&.active {
+					display: flex;
+				}
+
+				&__link {
+					span {
+						color: rgb(0, 0, 0);
+					}
+
+					&--inactive {
+						pointer-events: none;
+						span {
+							color: $disabled-text-color;
+						}
+					}
+				}
+
+				.divider {
+					width: 100%;
+					height: 1px;
+					background-color: $muted-line-color;
+					margin: 0.8rem 0;
+				}
+
+				& > button {
+					height: 3rem;
+					padding: 0 1.2rem;
+					text-align: left;
+
+					&:hover {
+						background-color: rgba(128, 128, 128, 0.103);
+					}
+
+					&:first-child {
+						span {
+							font-weight: 300;
+						}
+					}
+
+					& > span {
+						font-size: 1.4rem;
+						font-weight: 400;
+					}
+				}
+			}
+		}
+	}
+}
+
+.Navbar__left__search__component {
+	position: absolute;
+	border: 1px solid #dddddd;
+	border-radius: 32px;
+	color: #222222;
+	display: flex;
+	align-items: center;
+	height: 66px;
+	width: 90%;
+	// box-shadow: 0px 16px 32px rgb(0 0 0 / 15%), 0px 3px 8px rgb(0 0 0 / 10%);
+	background-color: #ffffff;
+	left: 50%;
+	transform: translateX(-50%);
+	top: 15rem;
+
+	& > svg {
+		box-sizing: content-box;
+		height: 1.6rem !important;
+		width: 1.6rem !important;
+		color: white;
+		padding: 1.5rem;
+		background-color: $main-color;
+		border-radius: 50%;
+		margin: 0.7rem;
+		margin-left: auto;
+	}
+}
+
+.SearchForm {
+	width: 80%;
+	margin-left: 2rem;
+
+	&__container {
+		display: flex;
+		align-items: center;
+
+		&__input {
+			min-width: 3rem;
+			position: relative;
+			padding: 0;
+
+			& > label {
+				position: absolute;
+			}
+
+			& > input {
+				border: 0;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				width: 100%;
+				display: block;
+				overflow: hidden;
+				height: 5rem;
+			}
+		}
 	}
 }

@@ -7,7 +7,9 @@ const Footer = () => {
 	return (
 		<div className="Footer">
 			{data.map((sectionObj) => {
-				return <FooterSection data={sectionObj} />;
+				return (
+					<FooterSection key={sectionObj.title} data={sectionObj} />
+				);
 			})}
 			<div className="Footer__meta">
 				<div className="Footer__meta__language">

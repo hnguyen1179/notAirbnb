@@ -47,7 +47,9 @@
 }
 
 @mixin buttonSvgOutline {
+	outline: none;
 	position: relative;
+	
 	&::before {
 		content: "";
 		display: block;

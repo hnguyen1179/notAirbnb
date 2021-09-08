@@ -6,39 +6,104 @@
 		margin: 1.8rem 0;
 	}
 
-	&__list {
-		overflow-x: auto;
-		display: grid;
-		gap: 12px;
-		grid-auto-flow: column;
-		scroll-snap-type: x mandatory;
-		// overflow: auto hidden;
+	&__container {
+		display: flex;
+		position: relative;
 
-		&::-webkit-scrollbar {
-			width: 0;
+		&__button {
+			display: none;
+			position: absolute;
+			top: calc(50% - 2.5rem);
+			z-index: 9000;
+			
+			button {
+				height: 3.2rem;
+				width: 3.2rem;
+				background-color: white;
+				border-radius: 50%;
+				box-shadow: rgba(0, 0, 0, 0.14) 0px 1px 1px 1px;
+				
+				svg {
+					color: #484848;
+				}
+			}
+
+			&--left {
+				left: 0;
+				transform: translateX(-50%);
+			}
+
+			&--right {
+				right: 0rem;
+				transform: translateX(50%);
+			}
+		}
+
+		&__list {
+			overflow-x: auto;
+			display: grid;
+			gap: 12px;
+			grid-auto-flow: column;
+			scroll-snap-type: x mandatory;
+
+			&::-webkit-scrollbar {
+				width: 0;
+			}
 		}
 	}
 }
 
 .ListingTypeIcon {
 	scroll-snap-align: start;
+	width: 27.2rem;
 
 	&:last-child {
-		padding-right: 2.4rem;
+		// padding-right: 2.4rem;
 	}
 
 	&__content {
+		width: 100%;
 		&__image {
-			width: 27.2rem;
-
 			img {
-				border-radius: 1.5rem;
 				width: 100%;
+				border-radius: 1.5rem;
 			}
 		}
 
 		&__text {
 			font-size: 1.8rem;
 		}
+	}
+}
+
+@media (min-width: 744px) {
+	.ListingTypes {
+		// Setting overflow-x: visible removes some weird padding to the bottom
+		// Add margin-bottom to offset the removal of the padding
+		margin-bottom: 4rem;
+		// padding-right: 2.4rem;
+
+		&__container {
+			&__button {
+				place-items: center;
+
+				&--right.show {
+					display: grid;
+				}
+
+				&--left.show {
+					display: grid;
+				}
+			}
+
+			&__list {
+				overflow-x: visible;
+				grid-auto-columns: calc(33.3333% - 0.9rem);
+			}
+		}
+	}
+
+	.ListingTypeIcon {
+		width: 100%;
 	}
 }

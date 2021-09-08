@@ -75,8 +75,13 @@
 		}
 	}
 
+	&__destinations,
+	&__listing-types,
 	&__try-hosting {
 		padding-right: 2.4rem;
+	}
+
+	&__try-hosting {
 
 		&__content {
 			position: relative;
@@ -95,7 +100,7 @@
 			}
 
 			&__text {
-				width: 70%;
+				width: 90%;
 				display: flex;
 				flex-direction: column;
 				align-items: center;
@@ -104,30 +109,59 @@
 				top: 15%;
 				transform: translateY(-15%);
 				color: white;
+				font-weight: 400;
 
 				& > h3 {
-					font-weight: 500;
-					font-size: 2.8rem;
+					font-weight: 300;
+					font-size: 2.6rem;
 				}
 
 				& > span {
-					margin: 1.4rem;
+					margin: 0.9rem;
+					margin-top: 0.4rem;
 				}
 
 				& > button {
+					font-size: 1.4rem;
+					pointer-events: none;
 					padding: 0.8rem 1.6rem;
 					border-radius: 0.8rem;
+
+					a {
+						color: $disabled-text-color;
+					}
 				}
 			}
 		}
 	}
 
-	&__inspirations {
-	}
-
 	&__footer {
-		padding: 3.2rem 2.4rem 2.4rem 2.4rem;
+		padding: 3.2rem 0 2.4rem 2.4rem;
 		background-color: #f7f7f7;
 		border-top: 1px solid #dddddd;
+	}
+}
+
+@media (min-width: 744px) {
+	.Landing__try-hosting {
+
+		&__content {
+
+			&__text {
+				align-items: flex-start;
+				text-align: left;
+				top: 50%;
+				left: 7.5%;
+				transform: translateY(-50%);
+				width: 40%;
+
+				span {
+					margin: 1.5rem 0;
+					margin-top: 1.25rem;
+				}
+			}
+		}
+
+
 	}
 }

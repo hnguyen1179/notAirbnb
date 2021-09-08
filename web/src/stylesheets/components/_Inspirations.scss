@@ -23,6 +23,7 @@
 			position: absolute;
 			bottom: 0.3rem;
 			// Must subtract by section padding-left (2.4) and __tabs padding-left (1.4)
+			min-width: 908px;
 			width: calc(100% - (1.4rem + 2.4rem));
 			height: 0.1rem;
 			background-color: rgb(221, 221, 221);
@@ -132,5 +133,11 @@
 				color: rgba(63, 63, 63, 0.747);
 			}
 		}
+	}
+}
+
+@media (min-width: 744px) {
+	.InspirationPanel__item {
+		width: 33.3333%;
 	}
 }

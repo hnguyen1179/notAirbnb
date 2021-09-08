@@ -19,7 +19,7 @@ const InspirationTabs = ({ titles, panel, setPanel }: Props) => {
 					const active = idx === panel ? "active" : "";
 
 					return (
-						<div className={`InspirationTabs__tabs__tab ${active}`}>
+						<div key={idx} className={`InspirationTabs__tabs__tab ${active}`}>
 							<button tabIndex={idx} onClick={clickTab}>
 								<span>{title}</span>
 							</button>

@@ -1,4 +1,6 @@
 .Footer {
+	padding-right: 2.4rem;
+
 	& > div {
 		padding: 3.2rem 0;
 		border-top: 1px solid #dddddd;
@@ -77,5 +79,22 @@
 				color: #222222 !important;
 			}
 		}
+	}
+}
+
+@media (min-width: 744px) {
+	.Footer {
+		padding-right: 0;
+
+		&__meta {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+	}
+
+	.FooterSection__list {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
 	}
 }

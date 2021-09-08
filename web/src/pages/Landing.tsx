@@ -1,26 +1,43 @@
-import React, { useContext, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import { Cloudinary } from "@cloudinary/base";
 import { AdvancedImage, placeholder } from "@cloudinary/react";
 
 import { AppContext } from "../context/AppContext";
 import { ReactComponent as Logo } from "../assets/icons/logo.svg";
 import { ReactComponent as LogoWithName } from "../assets/icons/logo-with-name.svg";
-import Search from "../components/Navbar/Search";
 import Destinations from "../components/Destinations/Destinations";
 import ListingTypes from "../components/ListingTypes/ListingTypes";
 import Inspirations from "../components/Inspirations/Inspirations";
 import Footer from "../components/Footer/Footer";
+import MobileNavbar from "../components/MobileNavbar/MobileNavbar";
+import MobileSearch from "../components/MobileNavbar/MobileSearch";
+import Hero from "../components/Hero/Hero";
+import TryHosting from "../components/TryHosting/TryHosting";
+import Navbar from "../components/Navbar/Navbar";
 
 function Landing() {
+	const { mobile } = useContext(AppContext);
+
 	const searchRef = useRef<HTMLDivElement>(null);
+	const mobileNavbarRef = useRef<HTMLElement>(null);
 
-	// Adds white background on search button on scroll down
-	const handleScroll = () => {
-		// handlescroll should also take care of the showing and hiding of the navigation bar at the bottom on mobile
-		// scrolling up: reveal nav
-		// scrolling down: hide nav
+	const handleMobileNav = () => {
+		// Manages the bottom nav on mobile
+		// Hides bottom nav on scroll to bottom
+		const cutoff = document.documentElement.scrollHeight - 10;
+		if (
+			window.scrollY + window.innerHeight >= cutoff &&
+			mobileNavbarRef.current
+		) {
+			mobileNavbarRef.current?.classList.add("inactive");
+		} else {
+			mobileNavbarRef.current?.classList.remove("inactive");
+		}
+	};
 
-		// on small screens, not mobile: always show nav '!important' 
+	const handleMobileSearchBar = () => {
+		// Manages the top search bar on mobile
+		// Adds white background on search button on scroll down
 		if (window.scrollY > 0 && searchRef.current) {
 			searchRef.current?.classList.add("active");
 		} else {
@@ -28,6 +45,13 @@ function Landing() {
 		}
 	};
 
+	const handleScroll = () => {
+		// Should only run this on mobile
+		handleMobileNav();
+		handleMobileSearchBar();
+	};
+
+	// Fires for mobile, smaller screens
 	useEffect(() => {
 		document.addEventListener("scroll", handleScroll);
 
@@ -38,26 +62,19 @@ function Landing() {
 
 	return (
 		<div className="Landing">
-			<Search ref={searchRef} />
+			{mobile ? (
+				<>
+					<MobileNavbar ref={mobileNavbarRef} />
+					<MobileSearch ref={searchRef} />
+				</>
+			) : (
+				<Navbar />
+				//Search component, which overlaps with Navbar, but will pop out
+				// when scrolled to the very top
+			)}
 
 			<section className="Landing__hero">
-				<div className="Landing__hero__content">
-					<div className="Landing__hero__content__image">
-						<img
-							src="https://res.cloudinary.com/dcufjeb5d/image/upload/v1630378604/assets/hero-image-small.jpg"
-							alt=""
-						/>
-					</div>
-					<div className="Landing__hero__content__text">
-						<span>Not sure where to go?</span>
-						<span>Perfect.</span>
-						<button>
-							<a href="">
-								<span>I'm flexible</span>
-							</a>
-						</button>
-					</div>
-				</div>
+				<Hero />
 			</section>
 
 			<section className="Landing__destinations">
@@ -69,29 +86,10 @@ function Landing() {
 			</section>
 
 			<section className="Landing__try-hosting">
-				<div className="Landing__try-hosting__content">
-					<div className="Landing__try-hosting__content__image">
-						<img
-							src="https://res.cloudinary.com/dcufjeb5d/image/upload/v1630378678/assets/try-hosting-small.jpg"
-							alt=""
-						/>
-					</div>
-					<div className="Landing__try-hosting__content__text">
-						<h3>Try hosting</h3>
-						<span>
-							Earn extra income and unlock new opportunities by
-							sharing your space.
-						</span>
-						<button>
-							<a href="">
-								<span>Learn more</span>
-							</a>
-						</button>
-					</div>
-				</div>
+				<TryHosting />
 			</section>
 
-			{/* Remove this section on login */}
+			{/* TODO: Remove this section on login */}
 			<section className="Landing__inspirations">
 				<Inspirations />
 			</section>
@@ -99,7 +97,6 @@ function Landing() {
 			<footer className="Landing__footer">
 				<Footer />
 			</footer>
-
 		</div>
 	);
 }

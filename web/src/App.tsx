@@ -49,24 +49,23 @@ function App() {
 
 	return (
 		<ApolloProvider client={client}>
-			<Router>
+			<ModalProvider>
 				<AppState>
-					<ModalProvider>
-						<Navbar />
-					</ModalProvider>
-					<Switch>
-						<Route exact path={LANDING} component={Landing} />
-						<Route path={LISTINGS} component={Listings} />
-						<Route
-							path={LISTING}
-							render={(renderProps) => (
-								<Listing id={renderProps.match.params.id} />
-							)}
-						/>
-						<Route exact path="/users" component={Users} />
-					</Switch>
+					<Router>
+						<Switch>
+							<Route exact path={LANDING} component={Landing} />
+							<Route path={LISTINGS} component={Listings} />
+							<Route
+								path={LISTING}
+								render={(renderProps) => (
+									<Listing id={renderProps.match.params.id} />
+								)}
+							/>
+							<Route exact path="/users" component={Users} />
+						</Switch>
+					</Router>
 				</AppState>
-			</Router>
+			</ModalProvider>
 		</ApolloProvider>
 	);
 }
