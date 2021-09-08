@@ -3,8 +3,6 @@ import { Cloudinary } from "@cloudinary/base";
 import { AdvancedImage, placeholder } from "@cloudinary/react";
 
 import { AppContext } from "../context/AppContext";
-import { ReactComponent as Logo } from "../assets/icons/logo.svg";
-import { ReactComponent as LogoWithName } from "../assets/icons/logo-with-name.svg";
 import Destinations from "../components/Destinations/Destinations";
 import ListingTypes from "../components/ListingTypes/ListingTypes";
 import Inspirations from "../components/Inspirations/Inspirations";
@@ -17,6 +15,7 @@ import Navbar from "../components/Navbar/Navbar";
 
 function Landing() {
 	const { mobile } = useContext(AppContext);
+	const [isTop, setIsTop] = useState(true);
 
 	const searchRef = useRef<HTMLDivElement>(null);
 	const mobileNavbarRef = useRef<HTMLElement>(null);
@@ -38,9 +37,11 @@ function Landing() {
 	const handleMobileSearchBar = () => {
 		// Manages the top search bar on mobile
 		// Adds white background on search button on scroll down
-		if (window.scrollY > 0 && searchRef.current) {
+		if (window.scrollY > 0) {
+			setIsTop(false);
 			searchRef.current?.classList.add("active");
 		} else {
+			setIsTop(true);
 			searchRef.current?.classList.remove("active");
 		}
 	};
@@ -68,7 +69,7 @@ function Landing() {
 					<MobileSearch ref={searchRef} />
 				</>
 			) : (
-				<Navbar />
+				<Navbar isTop={isTop} />
 				//Search component, which overlaps with Navbar, but will pop out
 				// when scrolled to the very top
 			)}
