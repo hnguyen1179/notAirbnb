@@ -22,6 +22,16 @@
 			&::after {
 				transform: scaleY(3.05);
 			}
+
+			&__search__component__categories {
+				span {
+					color: black;
+
+					&::after {
+						background-color: black;
+					}
+				}
+			}
 		}
 	}
 
@@ -34,6 +44,7 @@
 		.Navbar__left {
 			&::after {
 				background-color: transparent;
+				transition: 300ms;
 			}
 
 			&__logo {
@@ -66,8 +77,8 @@
 			box-shadow: rgb(0 0 0 / 8%) 0px 1px 12px;
 			transform-origin: 50% 0%;
 			transition-duration: 250ms;
-			transition-property: opacity, -ms-transform, -webkit-transform,
-				transform;
+			transition-property: opacity, background-color, -ms-transform,
+				-webkit-transform, transform;
 			transition-timing-function: ease;
 			background: rgb(255, 255, 255);
 			content: "";
@@ -136,7 +147,8 @@
 			place-items: center;
 
 			& > span {
-				font-weight: 300;
+				pointer-events: none;
+				font-weight: 400;
 				font-size: 1.4rem;
 			}
 		}
@@ -261,6 +273,36 @@
 	margin-left: calc(min(85rem, 90%) / 2 * -1);
 	top: 14rem;
 
+	&__categories {
+		position: absolute;
+		width: 100%;
+		text-align: center;
+		top: -5rem;
+
+		span {
+			position: relative;
+			font-size: 1.4rem;
+			font-weight: 400;
+			margin: 0 1.2rem;
+			color: white;
+			pointer-events: none;
+
+			&:first-child {
+				&::after {
+					display: block;
+					content: "";
+					position: absolute;
+					bottom: -1rem;
+					left: 50%;
+					transform: translateX(-50%);
+					height: 0.2rem;
+					width: 20%;
+					background-color: white;
+				}
+			}
+		}
+	}
+
 	& > svg {
 		box-sizing: content-box;
 		height: 1.6rem !important;
@@ -363,5 +405,17 @@
 		top: 90px;
 		opacity: 0;
 		transition: 150ms ease;
+	}
+}
+
+@media (min-width: 950px) {
+	.Navbar__left__search {
+		&__button {
+
+		}
+
+		&__component {
+			top: 7.65rem;
+		}
 	}
 }

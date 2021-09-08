@@ -120,6 +120,11 @@ function Navbar({ isTop }: Props) {
 							className="Navbar__left__search__component"
 							ref={componentRef}
 						>
+							<div className="Navbar__left__search__component__categories">
+								<span>Places to stay</span>
+								<span>Experiences</span>
+								<span>Online Experiences</span>
+							</div>
 							<SearchForm />
 							<SearchSvg />
 						</div>
