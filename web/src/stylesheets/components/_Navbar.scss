@@ -8,8 +8,9 @@
 	width: 100%;
 	background-color: white;
 	box-shadow: rgba(0, 0, 0, 0.08) 0px 1px 12px;
+	transition: 300ms;
 
-	&.active {
+	&.active:not(.transparent) {
 		.background {
 			background-color: rgba(0, 0, 0, 0.25);
 			inset: 0px;
@@ -28,6 +29,7 @@
 		background-color: transparent;
 		box-shadow: none;
 		color: white;
+		transition: 300ms;
 
 		.Navbar__left {
 			&::after {
@@ -37,7 +39,7 @@
 			&__logo {
 				a svg {
 					fill: white;
-					transition: fill 200ms;
+					transition: fill 300ms;
 				}
 			}
 		}
@@ -45,6 +47,7 @@
 		.Navbar__right {
 			&__globe {
 				button svg {
+					transition: 300ms;
 					color: white;
 				}
 			}
@@ -57,6 +60,8 @@
 		padding-left: 4rem;
 		margin-right: auto;
 
+		// This is the bottom, stretched portion of the Navbar component
+		// when the Search component is active, but not at the top
 		&::after {
 			box-shadow: rgb(0 0 0 / 8%) 0px 1px 12px;
 			transform-origin: 50% 0%;
@@ -80,7 +85,7 @@
 
 			a svg {
 				fill: $main-color;
-				transition: fill 200ms;
+				transition: fill 300ms;
 			}
 		}
 
@@ -131,7 +136,7 @@
 			place-items: center;
 
 			& > span {
-				font-weight: 400;
+				font-weight: 300;
 				font-size: 1.4rem;
 			}
 		}
@@ -144,6 +149,10 @@
 			& > button {
 				background-color: transparent;
 				@include buttonSvgOutline;
+
+				svg {
+					transition: 300ms;
+				}
 			}
 		}
 
@@ -237,7 +246,6 @@
 }
 
 .Navbar__left__search__component {
-	// transform-origin: 86% 119%;
 	position: absolute;
 	border: 1px solid #dddddd;
 	border-radius: 32px;
@@ -245,12 +253,13 @@
 	display: flex;
 	align-items: center;
 	height: 66px;
-	width: 90%;
-	// box-shadow: 0px 16px 32px rgb(0 0 0 / 15%), 0px 3px 8px rgb(0 0 0 / 10%);
+	width: min(85rem, 90%);
 	background-color: #ffffff;
-	left: 5%;
-	// transform: translateX(-50%);
-	top: 15rem;
+	left: 50%;
+	// Cool way of centering an element without using transform: translateX,
+	// which messes with the transform: scale transition
+	margin-left: calc(min(85rem, 90%) / 2 * -1);
+	top: 14rem;
 
 	& > svg {
 		box-sizing: content-box;
@@ -305,14 +314,14 @@
 
 	&-enter-active {
 		transform-origin: 9% -30%;
-		top: 150px;
+		top: 140px;
 		opacity: 1;
 		transform: scaleX(1);
 		transition: 150ms ease;
 	}
 
 	&-exit {
-		top: 150px;
+		top: 140px;
 		transform: scaleX(1);
 		transform-origin: 9% -30%;
 		opacity: 1;

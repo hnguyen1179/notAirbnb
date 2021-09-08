@@ -1,7 +1,10 @@
 .EntryFormContainer {
 	width: min(100vw, 57rem);
-	min-height: 400px;
+	min-height: 40rem;
+	max-height: 100vh;
 	position: relative;
+	// TODO: Make scrolling only on the 'main' portion of the form
+	overflow-y: auto;
 
 	.EntryForm {
 		header {

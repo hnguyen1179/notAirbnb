@@ -11,6 +11,10 @@ interface FormValues {
 const SearchForm = () => {
 	const { handleSubmit, register } = useForm();
 
+	// https://www.daterangepicker.com/#options for calendar
+	// Use this option for smaller windows 
+	// singleDatePicker: (true/false) Show only a single calendar to choose one date, instead of a range picker with two calendars. The start and end dates provided to your callback will be the same single date chosen.
+
 	return (
 		<div className="SearchForm">
 			<form className="SearchForm__container">

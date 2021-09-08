@@ -1,8 +1,5 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, useRef } from "react";
 import Modal from "@material-ui/core/Modal";
-// import { useTransition } from "@react-spring/core";
-// import { animated } from "@react-spring/web";
-// import { useTransition, animated } from 'react-spring';
 import { CSSTransition } from "react-transition-group";
 
 import { useModal } from "../../context/ModalContext";
@@ -24,15 +21,13 @@ interface Props {
 
 // This Navbar is for desktop view; contains a search
 function Navbar({ isTop }: Props) {
+	console.log("isTop is now... ", isTop);
+
+	const componentRef = useRef(null);
+	const buttonRef = useRef(null);
 	const [profile, setProfile] = useState(false);
 	const [search, setSearch] = useState(false);
 	const { user } = useContext(AppContext);
-
-	// const transition = useTransition(search, {
-	// 	from: { y: 75, opacity: 0 },
-	// 	enter: { y: 0, opacity: 1 },
-	// 	leave: { y: 75, opacity: 0 },
-	// });
 
 	// Good react pattern in useModal; incorporate hooks within Context APIs that check for undefined
 	const { open, setOpen, setEntry } = useModal();
@@ -72,6 +67,7 @@ function Navbar({ isTop }: Props) {
 		setProfile(false);
 	};
 
+	// Activates the Search component if at the very top of screen
 	useEffect(() => {
 		if (isTop) {
 			setSearch(true);
@@ -99,7 +95,6 @@ function Navbar({ isTop }: Props) {
 
 	return (
 		<nav className={`Navbar ${active} ${transparent}`}>
-			{/* This is temporary to hold the profile compnent */}
 			<div
 				className="Navbar__left"
 				onClick={(e) => {
@@ -115,24 +110,30 @@ function Navbar({ isTop }: Props) {
 
 				<div className="Navbar__left__search">
 					<CSSTransition
-						in={search}
+						in={search || isTop}
 						timeout={150}
 						unmountOnExit
 						classNames="component"
+						nodeRef={componentRef}
 					>
-						<div className="Navbar__left__search__component">
+						<div
+							className="Navbar__left__search__component"
+							ref={componentRef}
+						>
 							<SearchForm />
 							<SearchSvg />
 						</div>
 					</CSSTransition>
 					<CSSTransition
-						in={!search}
+						in={!search && !isTop}
 						timeout={150}
 						unmountOnExit
 						classNames="button"
+						nodeRef={buttonRef}
 					>
 						<button
 							className="Navbar__left__search__button"
+							ref={buttonRef}
 							onClick={handleClickSearch}
 						>
 							<div>Start your search</div>
