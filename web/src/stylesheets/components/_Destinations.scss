@@ -58,10 +58,12 @@
 }
 
 @media (min-width: 744px) {
-	.Destinations__list {
-		scroll-padding: 0px;
-		gap: 8px;
-		grid-template-columns: repeat(3, 1fr);
+	.Destinations {
+		&__list {
+			scroll-padding: 0px;
+			gap: 8px;
+			grid-template-columns: repeat(3, 1fr);
+		}
 	}
 
 	.DestinationIcon {
@@ -76,11 +78,17 @@
 	}
 }
 
+@media (min-width: 950px) {
+
+}
+
 @media (min-width: 1128px) {
-	.Destinations__list {
-		scroll-padding: 0px;
-		gap: 8px;
-		grid-template-columns: repeat(4, 1fr);
+	.Destinations {
+		&__list {
+			scroll-padding: 0px;
+			gap: 8px;
+			grid-template-columns: repeat(4, 1fr);
+		}
 	}
 
 	.DestinationIcon {
@@ -88,7 +96,7 @@
 		&:nth-child(8) {
 			display: block;
 		}
-		
+
 		&__content__image {
 			width: 6.4rem;
 		}

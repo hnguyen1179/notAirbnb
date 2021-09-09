@@ -25,6 +25,23 @@
 
 			&__image {
 				width: 100%;
+				position: relative;
+
+				&::after {
+					display: none;
+					position: absolute;
+					content: "";
+					top: 0;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					background: linear-gradient(
+						to top,
+						transparent 80%,
+						rgba(0, 0, 0, 0.548) 100%
+					);
+				}
+
 				img {
 					z-index: -1;
 					width: 100%;
@@ -145,13 +162,34 @@
 	}
 
 	&__footer {
-		padding: 3.2rem 0 2.4rem 2.4rem;
+		padding-top: 3.2rem;
+		padding-bottom: 2.4rem;
 		background-color: #f7f7f7;
 		border-top: 1px solid #dddddd;
 	}
 }
 
 @media (min-width: 744px) {
+	section h3 {
+		font-size: 2rem;
+	}
+
+	.Landing__hero__content {
+		&__image {
+			&::after {
+				display: block;
+			}
+		}
+
+		&__text {
+			top: 42.5%;
+
+			button {
+				padding: 1.8rem 6rem;
+			}
+		}
+	}
+
 	.Landing__try-hosting {
 		&__content {
 			&__image {
@@ -169,6 +207,10 @@
 				transform: translateY(-50%);
 				width: 295px;
 
+				h3 {
+					font-size: 3rem;
+				}
+
 				span {
 					margin: 1.5rem 0;
 					margin-top: 1.25rem;
@@ -178,7 +220,29 @@
 	}
 }
 
+@media (min-width: 950px) {
+	section h3 {
+		font-size: 2.2rem;
+	}
+
+	.Landing__hero__content {
+		&__text {
+			top: 32.5%;
+		}
+	}
+
+	.Landing__try-hosting__content__text {
+		h3 {
+			font-size: 4rem;
+		}
+	}
+}
+
 @media (min-width: 1128px) {
+	section h3 {
+		font-size: 2.4rem;
+	}
+
 	.Landing {
 		section {
 			padding-left: 8rem;
@@ -191,18 +255,38 @@
 			padding-right: 8rem;
 		}
 
-		&__footer {
-			padding-left: 8rem;
-			padding-right: 8rem;
-		}
-
 		&__try-hosting {
 			&__content {
 				&__image {
 					height: 400px;
 				}
+				&__text {
+					h3 {
+						font-size: 5rem;
+					}
+				}
 			}
+		}
+	}
+}
 
+@media (min-width: 1390px) {
+	.Landing__hero__content__image {
+		width: 100%;
+		height: 687.5px;
+		display: inline-block;
+		position: relative;
+		overflow: hidden;
+
+		img {
+			pointer-events: none;
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			z-index: -1;
+			object-fit: cover;
+			object-position: 50% 100%;
+			vertical-align: bottom;
 		}
 	}
 }
@@ -211,6 +295,19 @@
 	.Landing {
 		&__try-hosting__content__image {
 			height: 480px;
+		}
+	}
+}
+
+@media (min-width: 1780px) {
+	.Landing {
+		&__destinations,
+		&__listing-types,
+		&__try-hosting,
+		&__inspirations {
+			max-width: 1760px !important;
+			margin-left: auto !important;
+			margin-right: auto !important;
 		}
 	}
 }

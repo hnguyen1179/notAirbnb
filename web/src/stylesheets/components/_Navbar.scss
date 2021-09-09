@@ -1,15 +1,19 @@
 .Navbar {
-	padding: 0 4rem;
 	position: fixed;
-	display: flex;
-	justify-content: center;
-	align-items: center;
 	z-index: 10;
-	height: 8rem;
 	width: 100%;
 	background-color: white;
 	box-shadow: rgba(0, 0, 0, 0.08) 0px 1px 12px;
 	transition: background-color 300ms;
+
+	&__container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 0 4rem;
+		z-index: 10;
+		height: 8rem;
+	}
 
 	&.active:not(.transparent) {
 		.background {
@@ -108,7 +112,6 @@
 		// This is the bottom, stretched portion of the Navbar component
 		// when the Search component is active, but not at the top
 		&::after {
-			box-shadow: rgb(0 0 0 / 8%) 0px 1px 12px;
 			transform-origin: 50% 0%;
 			transition-duration: 250ms;
 			transition-property: opacity, background-color, -ms-transform,
@@ -321,32 +324,125 @@
 }
 
 .SearchForm {
-	width: 80%;
-	margin-left: 2rem;
+	height: 100%;
+	width: 100%;
+	border-radius: 3.2rem;
+	overflow: hidden;
 
 	&__container {
 		display: flex;
 		align-items: center;
+		height: 100%;
 
-		&__input {
-			min-width: 3rem;
-			position: relative;
-			padding: 0;
-
-			& > label {
-				position: absolute;
-			}
-
-			& > input {
-				border: 0;
-				white-space: nowrap;
-				text-overflow: ellipsis;
-				width: 100%;
-				display: block;
-				overflow: hidden;
-				height: 5rem;
+		&:hover {
+			.divider {
+				opacity: 0;
 			}
 		}
+
+		.divider {
+			width: 1px;
+			height: 50%;
+			background-color: $muted-line-color;
+		}
+
+		&__input-container {
+			border-radius: 3.2rem;
+			padding: 0 1rem;
+			height: 100%;
+			flex: 1 0 0rem;
+
+			&:hover {
+				background-color: rgba(187, 187, 187, 0.199);
+			}
+
+			&:first-of-type {
+				flex: 1 0 5rem;
+
+				.SearchForm__container__input-container__input {
+					padding-left: 2.5rem;
+					padding-right: 2rem;
+				}
+			}
+
+			&:nth-of-type(2),
+			&:nth-of-type(3),
+			&:nth-of-type(4) {
+				.SearchForm__container__input-container__input {
+					padding-left: 1rem;
+				}
+			}
+
+			&:last-of-type {
+				flex: 1 0 5rem;
+				padding-right: 0;
+				display: flex;
+				align-items: center;
+
+				.SearchForm__container__input-container__input {
+					margin-right: 3rem;
+				}
+			}
+
+			&__input {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				height: 100%;
+				position: relative;
+				padding: 0;
+
+				& > label {
+					background-color: inherit;
+					font-size: 1.4rem;
+				}
+
+				& > input {
+					font-size: 1.4rem;
+					background-color: inherit;
+					border: none;
+					white-space: nowrap;
+					text-overflow: ellipsis;
+					width: 100%;
+					display: block;
+					overflow: hidden;
+					// height: 5rem;
+
+					&:focus {
+						outline: none;
+					}
+				}
+			}
+
+			&__button {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				height: 1.6rem;
+				width: 1.6rem;
+				padding: 2.4rem;
+				margin-right: 0.9rem;
+				border-radius: 50%;
+				background-color: $main-color;
+
+				svg {
+					color: white;
+					width: 1.6rem !important;
+					height: 1.6rem !important;
+				}
+			}
+		}
+	}
+}
+
+.SearchForm__container__input-container__button--decoy {
+	position: absolute;
+	right: 0;
+	transition: 200ms;
+
+	&:hover {
+		background-color: #007ea8;
+		transition: 200ms;
 	}
 }
 
@@ -412,6 +508,15 @@
 	}
 }
 
+@media (min-width: 744px) {
+	.Navbar {
+		&__search__component__categories span {
+			font-size: 1.6rem;
+			letter-spacing: 0.05rem;
+		}
+	}
+}
+
 @media (min-width: 950px) {
 	.Navbar {
 		justify-content: space-between;
@@ -434,6 +539,10 @@
 
 			&__component {
 				top: 8.65rem;
+
+				&__categories span {
+					font-size: 1.4rem;
+				}
 			}
 		}
 
@@ -509,7 +618,9 @@
 
 @media (min-width: 1128px) {
 	.Navbar {
-		padding: 0 8rem;
+		&__container {
+			padding: 0 8rem;
+		}
 
 		&__left {
 			&__logo {
@@ -522,6 +633,21 @@
 					display: none;
 				}
 			}
+		}
+
+		&__search__component__categories span {
+			font-size: 1.6rem;
+			letter-spacing: 0.05rem;
+		}
+	}
+}
+
+@media (min-width: 1780px) {
+	.Navbar {
+		&__container {
+			max-width: 1760px;
+			margin-left: auto;
+			margin-right: auto;
 		}
 	}
 }

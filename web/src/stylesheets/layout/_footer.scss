@@ -1,5 +1,6 @@
 .Footer {
 	padding-right: 2.4rem;
+	padding-left: 2.4rem;
 
 	.FooterSection {
 		padding: 3.2rem 0;
@@ -106,7 +107,8 @@
 
 @media (min-width: 1128px) {
 	.Footer {
-		padding: 0;
+		padding-left: 8rem;
+		padding-right: 8rem;
 
 		&__meta {
 			display: flex;
@@ -149,5 +151,13 @@
 				flex-direction: column;
 			}
 		}
+	}
+}
+
+@media (min-width: 1780px) {
+	.Footer {
+		max-width: 1760px !important;
+		margin-left: auto !important;
+		margin-right: auto !important;
 	}
 }

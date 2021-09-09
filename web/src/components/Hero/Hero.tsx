@@ -8,7 +8,7 @@ const Hero = () => {
 					<source
 						media="(min-width: 950px)"
 						type="image/webp"
-						srcSet="https://res.cloudinary.com/dcufjeb5d/image/upload/v1630378604/assets/hero-image-large.jpg"
+						srcSet="https://res.cloudinary.com/dcufjeb5d/image/upload/v1631167470/assets/hero-image-large_compressed.webp"
 					/>
 					<source
 						media="(min-width: 744px)"

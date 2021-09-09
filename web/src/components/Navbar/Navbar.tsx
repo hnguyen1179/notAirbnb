@@ -94,85 +94,86 @@ function Navbar({ isTop }: Props) {
 
 	return (
 		<nav className={`Navbar ${active} ${transparent}`}>
-			<div
-				className="Navbar__left"
-				onClick={(e) => {
-					setProfile(false);
-					e.stopPropagation();
-				}}
-			>
-				<div className="Navbar__left__logo">
-					<a href="/">
-						<LogoNameSvg className="logo-name" />
-						<LogoSvg className="logo" />
-					</a>
-				</div>
-			</div>
-			<div className="Navbar__search">
-				<CSSTransition
-					in={search || isTop}
-					timeout={150}
-					unmountOnExit
-					classNames="component"
-					nodeRef={componentRef}
+			<div className="Navbar__container">
+				<div
+					className="Navbar__left"
+					onClick={(e) => {
+						setProfile(false);
+						e.stopPropagation();
+					}}
 				>
-					<div
-						className="Navbar__search__component"
-						ref={componentRef}
+					<div className="Navbar__left__logo">
+						<a href="/">
+							<LogoNameSvg className="logo-name" />
+							<LogoSvg className="logo" />
+						</a>
+					</div>
+				</div>
+				<div className="Navbar__search">
+					<CSSTransition
+						in={search || isTop}
+						timeout={150}
+						unmountOnExit
+						classNames="component"
+						nodeRef={componentRef}
 					>
-						<div className="Navbar__search__component__categories">
-							<span>Places to stay</span>
-							<span>Experiences</span>
-							<span>Online Experiences</span>
+						<div
+							className="Navbar__search__component"
+							ref={componentRef}
+						>
+							<div className="Navbar__search__component__categories">
+								<span>Places to stay</span>
+								<span>Experiences</span>
+								<span>Online Experiences</span>
+							</div>
+							<SearchForm />
 						</div>
-						<SearchForm />
-						<SearchSvg />
-					</div>
-				</CSSTransition>
-				<CSSTransition
-					in={!search && !isTop}
-					timeout={150}
-					unmountOnExit
-					classNames="button"
-					nodeRef={buttonRef}
-				>
-					<button
-						className="Navbar__search__button"
-						ref={buttonRef}
-						onClick={handleClickSearch}
+					</CSSTransition>
+					<CSSTransition
+						in={!search && !isTop}
+						timeout={150}
+						unmountOnExit
+						classNames="button"
+						nodeRef={buttonRef}
 					>
-						<div>Start your search</div>
-						<SearchSvg />
-					</button>
-				</CSSTransition>
-			</div>
-			<div className="Navbar__right">
-				<div className="Navbar__right__host">
-					<span>Become a host</span>
+						<button
+							className="Navbar__search__button"
+							ref={buttonRef}
+							onClick={handleClickSearch}
+						>
+							<div>Start your search</div>
+							<SearchSvg />
+						</button>
+					</CSSTransition>
 				</div>
-				<div className="Navbar__right__globe">
-					<button>
-						<GlobeSvg />
-					</button>
-				</div>
-				<Profile
-					profile={profile}
-					setProfile={setProfile}
-					handleOpen={handleOpen}
-				/>
-			</div>
-
-			{/* Modal for the entry form */}
-			<Modal open={open} onClose={handleClose}>
-				<Fade in={open}>
-					<div className="Modal-container">
-						<Entry />
+				<div className="Navbar__right">
+					<div className="Navbar__right__host">
+						<span>Become a host</span>
 					</div>
-				</Fade>
-			</Modal>
-			{user ? <button onClick={handleLogout}>logout</button> : ""}
+					<div className="Navbar__right__globe">
+						<button>
+							<GlobeSvg />
+						</button>
+					</div>
+					<Profile
+						profile={profile}
+						setProfile={setProfile}
+						handleOpen={handleOpen}
+					/>
+				</div>
 
-			<div className="background"></div>
+				{/* Modal for the entry form */}
+				<Modal open={open} onClose={handleClose}>
+					<Fade in={open}>
+						<div className="Modal-container">
+							<Entry />
+						</div>
+					</Fade>
+				</Modal>
+				{user ? <button onClick={handleLogout}>logout</button> : ""}
+
+				<div className="background"></div>
+			</div>
 		</nav>
 	);
 }
