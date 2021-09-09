@@ -33,7 +33,7 @@
 		align-items: center;
 
 		&__image {
-			width: 7.2rem !important;
+			width: 7.2rem;
 
 			img {
 				border-radius: 1.5rem;
@@ -84,10 +84,13 @@
 	}
 
 	.DestinationIcon {
-
 		&:nth-child(7),
 		&:nth-child(8) {
 			display: block;
+		}
+		
+		&__content__image {
+			width: 6.4rem;
 		}
 	}
 }

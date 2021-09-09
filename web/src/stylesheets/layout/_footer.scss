@@ -2,26 +2,21 @@
 	padding-right: 2.4rem;
 
 	.FooterSection {
-		padding-bottom: 3.2rem;
+		padding: 3.2rem 0;
 	}
 
 	&__meta,
 	.FooterSection {
-		padding: 3.2rem 0;
 		border-top: 1px solid #dddddd;
 
 		&:first-child {
 			border: none;
 			padding-top: 0;
 		}
-
-		&:last-child {
-			padding-top: 0.9rem;
-			padding-bottom: 0;
-		}
 	}
 
 	&__meta {
+		padding-top: 1.2rem;
 		font-size: 1.4rem;
 		color: $muted-text-color;
 
@@ -46,6 +41,10 @@
 				display: inline-block;
 				text-align: center;
 				width: 1.9rem;
+
+				&--hidden {
+					display: none;
+				}
 			}
 		}
 	}
@@ -81,7 +80,7 @@
 			pointer-events: all;
 
 			a {
-        font-weight: 400;
+				font-weight: 400;
 				color: #222222 !important;
 			}
 		}
@@ -107,9 +106,48 @@
 
 @media (min-width: 1128px) {
 	.Footer {
+		padding: 0;
 
-		&>div {
+		&__meta {
+			display: flex;
+			flex-direction: row-reverse;
+			margin-top: 4rem;
+
+			&__docs {
+				order: 2;
+			}
+
+			&__legal {
+				order: 3;
+			}
+
+			&__language {
+				order: 1;
+			}
+
+			&__docs {
+				margin-right: auto;
+				.spacer--hidden {
+					display: inline-block;
+				}
+			}
+		}
+	}
+
+	.FooterSection-container {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+
+		.FooterSection {
+			width: 25%;
 			border: none;
+			padding: 0;
+
+			&__list {
+				display: flex;
+				flex-direction: column;
+			}
 		}
 	}
 }

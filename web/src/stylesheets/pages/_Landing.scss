@@ -90,11 +90,18 @@
 
 			&__image {
 				width: 100%;
+				// position: relative;
 
 				img {
 					z-index: -1;
 					width: 100%;
 					border-radius: 2.5rem;
+					// position: absolute;
+					// left: 0px;
+					// right: 0px;
+					// object-fit: cover;
+					// object-position: 50% 50%;
+					// vertical-align: bottom;
 				}
 			}
 
@@ -169,7 +176,8 @@
 
 		&__destinations,
 		&__listing-types,
-		&__try-hosting {
+		&__try-hosting,
+		&__inspirations {
 			padding-right: 8rem;
 		}
 

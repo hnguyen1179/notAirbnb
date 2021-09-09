@@ -15,14 +15,14 @@
 			position: absolute;
 			top: calc(50% - 2.5rem);
 			z-index: 5;
-			
+
 			button {
 				height: 3.2rem;
 				width: 3.2rem;
 				background-color: white;
 				border-radius: 50%;
 				box-shadow: rgba(0, 0, 0, 0.14) 0px 1px 1px 1px;
-				
+
 				svg {
 					color: #484848;
 				}
@@ -81,7 +81,6 @@
 		// Setting overflow-x: visible removes some weird padding to the bottom
 		// Add margin-bottom to offset the removal of the padding
 		margin-bottom: 4rem;
-		// padding-right: 2.4rem;
 
 		&__container {
 			&__button {
@@ -98,6 +97,7 @@
 
 			&__list {
 				overflow-x: visible;
+				// I have no idea where 0.9rem is from
 				grid-auto-columns: calc(33.3333% - 0.9rem);
 			}
 		}
@@ -105,5 +105,24 @@
 
 	.ListingTypeIcon {
 		width: 100%;
+	}
+}
+
+@media (min-width: 1128px) {
+	.ListingTypes {
+		&__container {
+			&__button {
+				&--right.show,
+				&--left.show {
+					display: none;
+				}
+			}
+
+			&__list {
+				// I have no idea where 1.2rem is from
+				gap: 1.6rem; // Added 0.4rem to this
+				grid-auto-columns: calc(25% - 1.2rem);
+			}
+		}
 	}
 }

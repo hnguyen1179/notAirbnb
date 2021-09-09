@@ -149,8 +149,8 @@
 
 	.InspirationTabs__tabs {
 		&::after {
-			// Must subtract by section padding-left (8) and __tabs padding-left (1.4)
-			width: calc(100% - (1.4rem + 8rem));
+			// Must subtract by  __tabs padding-left (1.4)
+			width: calc(100% - 1.4rem);
 		}
 	}
 }

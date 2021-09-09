@@ -27,6 +27,7 @@ const Footer = () => {
 					<span>© 2022 notAirbnb, Inc.</span>
 				</div>
 				<div className="Footer__meta__docs">
+					<span className="spacer spacer--hidden">·</span>
 					<span>Privacy</span>
 					<span className="spacer">·</span>
 					<span>Terms</span>
