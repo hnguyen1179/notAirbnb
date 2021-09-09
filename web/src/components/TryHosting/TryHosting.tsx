@@ -6,6 +6,11 @@ const TryHosting = () => {
 			<div className="Landing__try-hosting__content__image">
 				<picture>
 					<source
+						media="(min-width: 1440px)"
+						type="image/webp"
+						srcSet="https://res.cloudinary.com/dcufjeb5d/image/upload/v1631166028/assets/try-hosting-large.webp"
+					/>
+					<source
 						media="(min-width: 744px)"
 						type="image/webp"
 						srcSet="https://res.cloudinary.com/dcufjeb5d/image/upload/v1630378678/assets/try-hosting-medium.jpg"
