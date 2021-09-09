@@ -9,6 +9,7 @@ import useLogout from "../../hooks/useLogout";
 import Entry from "../Entry/Entry";
 import Fade from "../Fade";
 import { ReactComponent as LogoSvg } from "../../assets/icons/logo.svg";
+import { ReactComponent as LogoNameSvg } from "../../assets/icons/logo-with-name.svg";
 import { ReactComponent as GlobeSvg } from "../../assets/icons/globe.svg";
 
 import { ReactComponent as SearchSvg } from "../../assets/icons/thick-search.svg";
@@ -21,8 +22,6 @@ interface Props {
 
 // This Navbar is for desktop view; contains a search
 function Navbar({ isTop }: Props) {
-	console.log("isTop is now... ", isTop);
-
 	const componentRef = useRef(null);
 	const buttonRef = useRef(null);
 	const [profile, setProfile] = useState(false);
@@ -104,48 +103,48 @@ function Navbar({ isTop }: Props) {
 			>
 				<div className="Navbar__left__logo">
 					<a href="/">
-						<LogoSvg />
+						<LogoNameSvg className="logo-name" />
+						<LogoSvg className="logo" />
 					</a>
 				</div>
-
-				<div className="Navbar__left__search">
-					<CSSTransition
-						in={search || isTop}
-						timeout={150}
-						unmountOnExit
-						classNames="component"
-						nodeRef={componentRef}
+			</div>
+			<div className="Navbar__search">
+				<CSSTransition
+					in={search || isTop}
+					timeout={150}
+					unmountOnExit
+					classNames="component"
+					nodeRef={componentRef}
+				>
+					<div
+						className="Navbar__search__component"
+						ref={componentRef}
 					>
-						<div
-							className="Navbar__left__search__component"
-							ref={componentRef}
-						>
-							<div className="Navbar__left__search__component__categories">
-								<span>Places to stay</span>
-								<span>Experiences</span>
-								<span>Online Experiences</span>
-							</div>
-							<SearchForm />
-							<SearchSvg />
+						<div className="Navbar__search__component__categories">
+							<span>Places to stay</span>
+							<span>Experiences</span>
+							<span>Online Experiences</span>
 						</div>
-					</CSSTransition>
-					<CSSTransition
-						in={!search && !isTop}
-						timeout={150}
-						unmountOnExit
-						classNames="button"
-						nodeRef={buttonRef}
+						<SearchForm />
+						<SearchSvg />
+					</div>
+				</CSSTransition>
+				<CSSTransition
+					in={!search && !isTop}
+					timeout={150}
+					unmountOnExit
+					classNames="button"
+					nodeRef={buttonRef}
+				>
+					<button
+						className="Navbar__search__button"
+						ref={buttonRef}
+						onClick={handleClickSearch}
 					>
-						<button
-							className="Navbar__left__search__button"
-							ref={buttonRef}
-							onClick={handleClickSearch}
-						>
-							<div>Start your search</div>
-							<SearchSvg />
-						</button>
-					</CSSTransition>
-				</div>
+						<div>Start your search</div>
+						<SearchSvg />
+					</button>
+				</CSSTransition>
 			</div>
 			<div className="Navbar__right">
 				<div className="Navbar__right__host">

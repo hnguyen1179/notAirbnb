@@ -6,11 +6,16 @@ import { ReactComponent as GlobalSvg } from "../../assets/icons/globe.svg";
 const Footer = () => {
 	return (
 		<div className="Footer">
-			{data.map((sectionObj) => {
-				return (
-					<FooterSection key={sectionObj.title} data={sectionObj} />
-				);
-			})}
+			<div className="FooterSection-container">
+				{data.map((sectionObj) => {
+					return (
+						<FooterSection
+							key={sectionObj.title}
+							data={sectionObj}
+						/>
+					);
+				})}
+			</div>
 			<div className="Footer__meta">
 				<div className="Footer__meta__language">
 					<button>

@@ -75,3 +75,19 @@
 		}
 	}
 }
+
+@media (min-width: 1128px) {
+	.Destinations__list {
+		scroll-padding: 0px;
+		gap: 8px;
+		grid-template-columns: repeat(4, 1fr);
+	}
+
+	.DestinationIcon {
+
+		&:nth-child(7),
+		&:nth-child(8) {
+			display: block;
+		}
+	}
+}

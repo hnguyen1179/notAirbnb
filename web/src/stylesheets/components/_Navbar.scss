@@ -1,4 +1,5 @@
 .Navbar {
+	padding: 0 4rem;
 	position: fixed;
 	display: flex;
 	justify-content: center;
@@ -8,7 +9,7 @@
 	width: 100%;
 	background-color: white;
 	box-shadow: rgba(0, 0, 0, 0.08) 0px 1px 12px;
-	transition: 300ms;
+	transition: background-color 300ms;
 
 	&.active:not(.transparent) {
 		.background {
@@ -22,7 +23,9 @@
 			&::after {
 				transform: scaleY(3.05);
 			}
+		}
 
+		.Navbar {
 			&__search__component__categories {
 				span {
 					color: black;
@@ -39,7 +42,7 @@
 		background-color: transparent;
 		box-shadow: none;
 		color: white;
-		transition: 300ms;
+		transition: background-color 300ms;
 
 		.Navbar__left {
 			&::after {
@@ -65,11 +68,42 @@
 		}
 	}
 
+	&__search {
+		padding: 0 2.4rem;
+
+		&__button {
+			position: relative;
+			width: 30rem;
+			height: 4.8rem;
+			display: flex;
+			align-items: center;
+			border: 1px solid rgb(221, 221, 221);
+			box-shadow: rgba(0, 0, 0, 0.08) 0px 1px 2px,
+				rgba(0, 0, 0, 0.05) 0px 4px 12px;
+			border-radius: 4rem;
+
+			& > div {
+				padding: 0 1.6rem;
+				font-size: 1.4rem;
+			}
+
+			& > svg {
+				box-sizing: content-box;
+				height: 1.2rem !important;
+				width: 1.2rem !important;
+				color: white;
+				padding: 1rem;
+				background-color: $main-color;
+				border-radius: 50%;
+				margin: 0.7rem;
+				margin-left: auto;
+			}
+		}
+	}
+
 	&__left {
 		display: flex;
 		align-items: center;
-		padding-left: 4rem;
-		margin-right: auto;
 
 		// This is the bottom, stretched portion of the Navbar component
 		// when the Search component is active, but not at the top
@@ -94,42 +128,13 @@
 		&__logo {
 			width: 3rem;
 
-			a svg {
+			.logo-name {
+				display: none;
+			}
+
+			.logo {
 				fill: $main-color;
 				transition: fill 300ms;
-			}
-		}
-
-		&__search {
-			padding: 0 2.4rem;
-
-			&__button {
-				position: relative;
-				width: 30rem;
-				height: 4.8rem;
-				display: flex;
-				align-items: center;
-				border: 1px solid rgb(221, 221, 221);
-				box-shadow: rgba(0, 0, 0, 0.08) 0px 1px 2px,
-					rgba(0, 0, 0, 0.05) 0px 4px 12px;
-				border-radius: 4rem;
-
-				& > div {
-					padding: 0 1.6rem;
-					font-size: 1.4rem;
-				}
-
-				& > svg {
-					box-sizing: content-box;
-					height: 1.2rem !important;
-					width: 1.2rem !important;
-					color: white;
-					padding: 1rem;
-					background-color: $main-color;
-					border-radius: 50%;
-					margin: 0.7rem;
-					margin-left: auto;
-				}
 			}
 		}
 	}
@@ -138,7 +143,6 @@
 		display: flex;
 		align-items: center;
 		margin-left: auto;
-		padding-right: 4rem;
 
 		&__host {
 			padding: 0 1rem;
@@ -257,7 +261,7 @@
 	}
 }
 
-.Navbar__left__search__component {
+.Navbar__search__component {
 	position: absolute;
 	border: 1px solid #dddddd;
 	border-radius: 32px;
@@ -277,7 +281,7 @@
 		position: absolute;
 		width: 100%;
 		text-align: center;
-		top: -5rem;
+		top: -6rem;
 
 		span {
 			position: relative;
@@ -350,12 +354,12 @@
 	&-enter {
 		top: 40px;
 		opacity: 0.5;
-		transform-origin: 9% -30%;
+		transform-origin: 50% -13%;
 		transform: scaleX(0.3);
 	}
 
 	&-enter-active {
-		transform-origin: 9% -30%;
+		transform-origin: 50% -13%;
 		top: 140px;
 		opacity: 1;
 		transform: scaleX(1);
@@ -365,12 +369,12 @@
 	&-exit {
 		top: 140px;
 		transform: scaleX(1);
-		transform-origin: 9% -30%;
+		transform-origin: 50% -13%;
 		opacity: 1;
 	}
 
 	&-exit-active {
-		transform-origin: 9% -30%;
+		transform-origin: 50% -13%;
 		transform: scaleX(0.3);
 		top: 40px;
 		opacity: 0;
@@ -380,7 +384,7 @@
 
 .button {
 	&-enter {
-		transform-origin: 9% -30%;
+		transform-origin: 50% -13%;
 		top: 90px;
 		opacity: 0;
 		transform: scaleX(2);
@@ -394,7 +398,7 @@
 	}
 
 	&-exit {
-		transform-origin: 9% -30%;
+		transform-origin: 50% -13%;
 		transform: scaleX(1);
 		top: 0px;
 		opacity: 1;
@@ -409,13 +413,115 @@
 }
 
 @media (min-width: 950px) {
-	.Navbar__left__search {
-		&__button {
+	.Navbar {
+		justify-content: space-between;
 
+		&.active:not(.transparent) {
+			.Navbar__left {
+				&::after {
+					transform: scaleY(2.25);
+				}
+			}
 		}
 
-		&__component {
-			top: 7.65rem;
+		&__left {
+			flex: 1 0 140px;
+		}
+
+		&__search {
+			&__button {
+			}
+
+			&__component {
+				top: 8.65rem;
+			}
+		}
+
+		&__right {
+			justify-content: flex-end;
+			flex: 1 0 140px;
+			margin-left: none;
+		}
+	}
+
+	.component {
+		&-enter {
+			top: 40px;
+			opacity: 0.5;
+			transform-origin: 50% -13%;
+			transform: scaleX(0.3);
+		}
+
+		&-enter-active {
+			transform-origin: 50% -13%;
+			top: 86.5px;
+			opacity: 1;
+			transform: scaleX(1);
+			transition: 150ms ease;
+		}
+
+		&-exit {
+			top: 86.5px;
+			transform: scaleX(1);
+			transform-origin: 50% -13%;
+			opacity: 1;
+		}
+
+		&-exit-active {
+			transform-origin: 50% -13%;
+			transform: scaleX(0.3);
+			top: 40px;
+			opacity: 0;
+			transition: 150ms ease;
+		}
+	}
+
+	.button {
+		&-enter {
+			transform-origin: 50% -13%;
+			top: 40px;
+			opacity: 0;
+			transform: scaleX(2);
+		}
+
+		&-enter-active {
+			top: 0px;
+			opacity: 1;
+			transform: scaleX(1);
+			transition: 150ms ease;
+		}
+
+		&-exit {
+			transform-origin: 50% -13%;
+			transform: scaleX(1);
+			top: 0px;
+			opacity: 1;
+		}
+
+		&-exit-active {
+			transform: scaleX(2);
+			top: 40px;
+			opacity: 0;
+			transition: 150ms ease;
+		}
+	}
+}
+
+@media (min-width: 1128px) {
+	.Navbar {
+		padding: 0 8rem;
+
+		&__left {
+			&__logo {
+				.logo-name {
+					display: block;
+					height: 32px;
+					fill: $main-color;
+				}
+				.logo {
+					display: none;
+				}
+			}
 		}
 	}
 }

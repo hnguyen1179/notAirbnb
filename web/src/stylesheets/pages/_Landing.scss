@@ -1,4 +1,4 @@
-.Landing {	
+.Landing {
 	section {
 		padding-left: 2.4rem;
 		margin: 3rem 0;
@@ -82,7 +82,6 @@
 	}
 
 	&__try-hosting {
-
 		&__content {
 			position: relative;
 			display: flex;
@@ -144,9 +143,7 @@
 
 @media (min-width: 744px) {
 	.Landing__try-hosting {
-
 		&__content {
-
 			&__text {
 				align-items: flex-start;
 				text-align: left;
@@ -161,7 +158,24 @@
 				}
 			}
 		}
+	}
+}
 
+@media (min-width: 1128px) {
+	.Landing {
+		section {
+			padding-left: 8rem;
+		}
 
+		&__destinations,
+		&__listing-types,
+		&__try-hosting {
+			padding-right: 8rem;
+		}
+
+		&__footer {
+			padding-left: 8rem;
+			padding-right: 8rem;
+		}
 	}
 }
