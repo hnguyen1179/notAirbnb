@@ -22,8 +22,8 @@ interface Props {
 
 // This Navbar is for desktop view; contains a search
 function Navbar({ isTop }: Props) {
-	const componentRef = useRef(null);
-	const buttonRef = useRef(null);
+	const componentRef = useRef<HTMLDivElement>(null);
+	const buttonRef = useRef<HTMLButtonElement>(null);
 	const [profile, setProfile] = useState(false);
 	const [search, setSearch] = useState(false);
 	const { user } = useContext(AppContext);
@@ -94,7 +94,10 @@ function Navbar({ isTop }: Props) {
 
 	return (
 		<nav className={`Navbar ${active} ${transparent}`}>
-			<div className="Navbar__container">
+			<div
+				className="Navbar__container"
+				onClick={(e) => e.stopPropagation()}
+			>
 				<div
 					className="Navbar__left"
 					onClick={(e) => {
@@ -171,9 +174,8 @@ function Navbar({ isTop }: Props) {
 					</Fade>
 				</Modal>
 				{user ? <button onClick={handleLogout}>logout</button> : ""}
-
-				<div className="background"></div>
 			</div>
+			<div className="background"></div>
 		</nav>
 	);
 }
