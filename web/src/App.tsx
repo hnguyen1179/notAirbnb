@@ -18,10 +18,10 @@ import Landing from "./pages/Landing";
 import Listings from "./components/Listings";
 import Listing from "./components/Listing";
 import Users from "./components/Users";
-import Navbar from "./components/Navbar/Navbar";
 
 import "./stylesheets/main.scss";
 import { ModalProvider } from "./context/ModalContext";
+import Entry from "./pages/EntryPage";
 
 const httpLink = createHttpLink({
 	uri: process.env.REACT_APP_SERVER_URL,
@@ -62,6 +62,7 @@ function App() {
 								)}
 							/>
 							<Route exact path="/users" component={Users} />
+							<Route exact path="/entry" component={Entry} />
 						</Switch>
 					</Router>
 				</AppState>

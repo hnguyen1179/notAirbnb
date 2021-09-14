@@ -2,11 +2,12 @@ import React, { useEffect, useState, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { ReactComponent as SearchSvg } from "../../assets/icons/thick-search.svg";
 import { DateRange, OnDateRangeChangeProps } from "react-date-range";
-import { subDays } from "date-fns";
 
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import { selectionSetMatchesResult } from "@apollo/client/cache/inmemory/helpers";
+import { disableDay } from "../../utils/disableDays";
+import LocationSearch from "../LocationSearch/LocationSearch";
+import { regexLiteral } from "@babel/types";
 interface FormValues {
 	location: string;
 	startDate: Date;
@@ -21,16 +22,21 @@ interface IDate {
 }
 
 const ID_ARRAY = ["location", "startDate", "endDate", "guests"];
-
-// TODO: Get autocomplete working on my text field.
-// Create validations for text field to only accept enumerated locations
+const LOCATIONS = [
+	"Big Bear, CA",
+	"Henderson, NV",
+	"Las Vegas, NV",
+	"Los Angeles, CA",
+	"Palm Springs, CA",
+	"Paradise, NV",
+	"San Diego, CA",
+	"Santa Barbara, CA",
+];
 
 const SearchForm = () => {
-	const mql = window.matchMedia("(max-width: 950px)");
 	const [focusedRange, setFocusedRange] = useState<[number, number]>([0, 0]);
 	const [focusInput, setFocusInput] = useState(-1);
 	const [showRdr, setShowRdr] = useState(false);
-	const [hasSelected, setHasSelected] = useState(false);
 	const [dates, setDates] = useState<IDate>({
 		startDate: new Date(),
 		endDate: new Date(),
@@ -39,16 +45,25 @@ const SearchForm = () => {
 
 	const selectedRef = useRef(0);
 
-	const { register, setFocus } = useForm();
+	const form = useForm();
+
+	const next = () => {
+		setFocusInput(1);
+		setShowRdr(true);
+	};
 
 	const handleInputClick = (e: { currentTarget: HTMLElement }) => {
 		const id = e.currentTarget?.getAttribute("id") as string;
-		setFocus(id);
+		form.setFocus(id);
 		setFocusInput(ID_ARRAY.indexOf(id));
 
-		if (id === "location" || id === "guests") setShowRdr(false);
-		if (id === "startDate") handleClickStartDate(e);
-		if (id === "endDate") handleClickEndDate(e);
+		if (id === "startDate") {
+			handleClickStartDate(e);
+		} else if (id === "endDate") {
+			handleClickEndDate(e);
+		} else {
+			setShowRdr(false);
+		}
 	};
 
 	const handleBodyClick = () => {
@@ -108,12 +123,6 @@ const SearchForm = () => {
 		const start = ranges.selection.startDate as Date;
 		const end = ranges.selection.endDate as Date;
 
-		if (start.toString() !== end.toString()) {
-			setHasSelected(true);
-		} else {
-			setHasSelected(false);
-		}
-
 		if (
 			focusedRange.toString() === [0, 1].toString() &&
 			!selectedRef.current
@@ -126,9 +135,31 @@ const SearchForm = () => {
 		selectedRef.current += 1;
 	};
 
-	const disableDay = (date: Date) => {
-		const yesterday = subDays(new Date(), 1);
-		return date < yesterday;
+	const handleSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+
+		const location = form.getValues("location");
+		const checkIn = dates.startDate;
+		const checkOut = dates.endDate;
+		const guests = form.getValues("guests");
+
+		const locationRegex = new RegExp(location, "i");
+
+		if (
+			location === "" ||
+			!LOCATIONS.some((loc) => locationRegex.test(loc))
+		) {
+			setFocusInput(0);
+		} else if (
+			checkIn.toLocaleDateString() === new Date().toLocaleDateString() &&
+			checkOut.toLocaleDateString() === new Date().toLocaleDateString()
+		) {
+			setFocusInput(1);
+		} else if (guests < 1) {
+			setFocusInput(3);
+		} else {
+			// Submit this; it's successful
+		}
 	};
 
 	return (
@@ -147,13 +178,7 @@ const SearchForm = () => {
 				>
 					<div className="SearchForm__container__input-container__input">
 						<label htmlFor="location">Location</label>
-						<input
-							type="text"
-							placeholder="Where are you going?"
-							id="location"
-							autoComplete={"off"}
-							{...register("location")}
-						/>
+						<LocationSearch form={form} next={next} />
 					</div>
 				</div>
 
@@ -174,12 +199,12 @@ const SearchForm = () => {
 							placeholder="Add dates"
 							id="startDate"
 							value={
-								hasSelected
+								selectedRef.current >= 2
 									? dates.startDate?.toLocaleDateString()
 									: ""
 							}
 							readOnly={true}
-							{...register("startDate")}
+							{...form.register("startDate")}
 						/>
 					</div>
 				</div>
@@ -200,12 +225,12 @@ const SearchForm = () => {
 							placeholder="Add dates"
 							id="endDate"
 							value={
-								hasSelected
+								selectedRef.current >= 2
 									? dates.endDate?.toLocaleDateString()
 									: ""
 							}
 							readOnly={true}
-							{...register("endDate")}
+							{...form.register("endDate")}
 						/>
 					</div>
 				</div>
@@ -228,7 +253,7 @@ const SearchForm = () => {
 							placeholder="Add guests"
 							id="guests"
 							autoComplete={"off"}
-							{...register("guests")}
+							{...form.register("guests")}
 						/>
 					</div>
 					<div className="button-placeholder"></div>
@@ -237,6 +262,7 @@ const SearchForm = () => {
 				<button
 					className="SearchForm__container__input-container__button SearchForm__container__input-container__button--decoy"
 					type="submit"
+					onClick={handleSubmit}
 				>
 					<SearchSvg />
 				</button>

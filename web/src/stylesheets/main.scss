@@ -13,14 +13,13 @@
 @import "layout/Footer";
 
 // 5. Components
-@import "components/LoadingButton", "components/Form",
-	"components/FormError.scss", "components/FormSignUp",
-	"components/FormWelcome", "components/FormLogIn",
-	"components/PasswordHints.scss", "components/Modal.scss",
-	"components/Navbar.scss", "components/Search.scss",
-	"components/Destinations.scss", "components/ListingTypes.scss",
-	"components/Inspirations.scss", "components/MobileNavbar.scss",
-	"components/FormSearch.scss";
+@import "components/EntryForm/", "components/LoadingButton",
+	"components/EntryForm/", "components/PasswordHints.scss",
+	"components/Modal.scss", "components/Navbar.scss",
+	"components/MobileSearch.scss", "components/Destinations.scss",
+	"components/ListingTypes.scss", "components/Inspirations.scss",
+	"components/MobileNavbar.scss", "components/FormSearch.scss",
+	"components/FormSearchMobile.scss";
 
 // 6. Page-specific styles
-@import "pages/Listing", "pages/Landing";
+@import "pages/Listing", "pages/Landing", "pages/EntryPage";

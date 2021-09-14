@@ -21,7 +21,6 @@ test('allListings should correctly return all of the listings', async () => {
   const result = await testServer.executeOperation({
     query: ALL_LISTINGS,
   });
-  console.log('RESOLULT: ', result);
   const listingTitles = result.data?.allListings.map((x: any) => x.title);
   expect(listingTitles.length).toBe(NUM_LISTINGS);
 });

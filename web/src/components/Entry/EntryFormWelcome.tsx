@@ -1,6 +1,6 @@
 import TextField from "@material-ui/core/TextField";
 import useVerifyEmail from "../../hooks/useVerifyEmail";
-import FormError from "./FormError";
+import FormError from "./EntryFormError";
 import { useModal } from "../../context/ModalContext";
 import { emailRegex } from "../../utils/regex";
 
@@ -13,7 +13,7 @@ import SubmitButton from "./SubmitButton";
 const VERIFIED = "verified";
 const SIGNUP = "signup";
 
-function Welcome({ form, setVerified, handleCloseModal }: any) {
+function Welcome({ form, setVerified, handleCloseModal, isModal }: any) {
 	const { demoClicked, setDemoClicked } = useModal();
 
 	const {
@@ -36,17 +36,17 @@ function Welcome({ form, setVerified, handleCloseModal }: any) {
 
 	const clickDemo = async () => {
 		try {
-			setFocus('email');
+			setFocus("email");
 			await typeWriter("email", "demo@demo.com", setValue);
-			await onSubmitEmail({ email: getValues('email')});
+			await onSubmitEmail({ email: getValues("email") });
 
 			await sleep(500);
 
 			const submitPassword = document.querySelector(
-				'button[type="submit"]'
+				".EntryForm__main__form__submit-button"
 			) as HTMLElement;
 
-			setFocus('passwordLogin')
+			setFocus("passwordLogin");
 			await typeWriter("passwordLogin", "1password", setValue);
 			submitPassword.click();
 		} catch (e) {
@@ -55,11 +55,15 @@ function Welcome({ form, setVerified, handleCloseModal }: any) {
 	};
 
 	const inputProps = demoClicked ? { shrink: true } : undefined;
+	const hideClose = isModal ? "" : "hide";
 
 	return (
 		<div className="EntryForm EntryForm--welcome">
 			<header>
-				<button onClick={handleCloseModal}>
+				<button
+					className={`EntryForm__close ${hideClose}`}
+					onClick={handleCloseModal}
+				>
 					<ExitSvg />
 				</button>
 				<h1 className="EntryForm__title">Log in or sign up</h1>

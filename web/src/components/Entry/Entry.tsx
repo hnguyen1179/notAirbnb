@@ -1,16 +1,14 @@
 import React from "react";
 import { useModal } from "../../context/ModalContext";
-import AuthenticatedForm from "./Form";
+import EntryForm from "./EntryForm";
 
 function Entry() {
 	const { demoClicked } = useModal();
 
 	return (
 		<div className="EntryFormContainer">
-			<AuthenticatedForm />
-			<div
-				className={"cover" + (demoClicked ? ' active' : '')}
-			></div>
+			<EntryForm />
+			<div className={"cover" + (demoClicked ? " active" : "")}></div>
 		</div>
 	);
 }

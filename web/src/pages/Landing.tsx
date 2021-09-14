@@ -18,6 +18,7 @@ function Landing() {
 	const [isTop, setIsTop] = useState(true);
 
 	const searchRef = useRef<HTMLDivElement>(null);
+	const landingRef = useRef<HTMLDivElement>(null);
 	const mobileNavbarRef = useRef<HTMLElement>(null);
 
 	const handleMobileNav = () => {
@@ -62,7 +63,7 @@ function Landing() {
 	}, []);
 
 	return (
-		<div className="Landing">
+		<div className="Landing" ref={landingRef}>
 			{mobile ? (
 				<>
 					<MobileNavbar ref={mobileNavbarRef} />

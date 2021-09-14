@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useModal } from "../../context/ModalContext";
 
-import Welcome from "./FormWelcome";
-import Login from "./FormLogin";
-import SignUp from "./FormSignUp";
+import Welcome from "./EntryFormWelcome";
+import Login from "./EntryFormLogin";
+import SignUp from "./EntryFormSignUp";
 
 const VERIFIED = "verified";
 const UNVERIFIED = "unverified";
@@ -18,11 +18,16 @@ interface FormValues {
 	birthday: string;
 }
 
-function Form() {
-	const { entry, setOpen } = useModal();
+interface Props {
+	initialEntry?: string;
+	isModal?: boolean;
+}
+
+function EntryForm({ initialEntry, isModal }: Props) {
+	const { entry, setOpen, demoClicked } = useModal();
 	const [showPassword, setShowPassword] = useState(false);
 	const [showHints, setShowHints] = useState(false);
-	const [verified, setVerified] = useState(entry);
+	const [verified, setVerified] = useState(initialEntry || entry);
 
 	const form = useForm<FormValues>({
 		criteriaMode: "all",
@@ -40,8 +45,15 @@ function Form() {
 	};
 
 	const handleCloseModal = () => {
-		setOpen(false)
-	}
+		setOpen(false);
+	};
+
+	// Prevent the user from scrolling when demoClicked is true
+	useEffect(() => {
+		if (demoClicked) {
+			document.body.style.overflow = "hidden";
+		}
+	}, [demoClicked]);
 
 	// Email validator stage
 	if (verified === UNVERIFIED)
@@ -50,6 +62,7 @@ function Form() {
 				form={form}
 				setVerified={setVerified}
 				handleCloseModal={handleCloseModal}
+				isModal={isModal}
 			/>
 		);
 
@@ -62,6 +75,7 @@ function Form() {
 				showPassword={showPassword}
 				clickShowPassword={clickShowPassword}
 				resetForm={resetForm}
+				isModal={isModal}
 			/>
 		);
 
@@ -75,8 +89,9 @@ function Form() {
 			showPassword={showPassword}
 			clickShowPassword={clickShowPassword}
 			resetForm={resetForm}
+			isModal={isModal}
 		/>
 	);
 }
 
-export default Form;
+export default EntryForm;

@@ -51,6 +51,64 @@
 				.SearchForm__container__input-container__input {
 					padding-left: 2.5rem;
 					padding-right: 2rem;
+
+					.LocationSearch {
+						margin-top: -0.5rem;
+						position: relative;
+
+						.searchColumn {
+							font-size: 1.4rem;
+							background-color: inherit;
+							border: none;
+							outline: none;
+						}
+
+						.searchResults {
+							display: block;
+							opacity: 0;
+							z-index: -99;
+							position: absolute;
+							width: fit-content;
+							height: fit-content;
+							padding: 2rem;
+							background-color: white;
+							box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 20px !important;
+							border-radius: 1.6rem;
+							top: 5.1rem;
+							left: -2.2rem;
+							pointer-events: none;
+
+							&.active {
+								pointer-events: unset;
+								opacity: 1;
+								z-index: 10;
+							}
+
+							.radio {
+								button {
+									&:hover {
+										background-color: rgb(199, 199, 199);
+									}
+									height: 30px;
+									display: flex;
+									justify-self: center;
+									align-items: center;
+									width: 19rem;
+
+									svg {
+										margin: 0.8rem;
+										border-radius: 0.4rem;
+										background-color: rgb(228, 228, 228);
+									}
+
+									span {
+										font-weight: 400;
+										font-size: 1.4rem;
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 

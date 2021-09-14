@@ -1,0 +1,39 @@
+.EntryForm {
+	&__close {
+		&.hide {
+			position: relative;
+			bottom: 1000%;
+		}
+	}
+}
+
+@media screen and (min-width: 744px) {
+	.Entry {
+		display: flex;
+		flex-direction: column;
+
+		.Navbar {
+			display: block;
+		}
+
+		.Navbar-filler {
+			display: block;
+			height: 8rem;
+		}
+
+		.EntryForm {
+			border: 1px solid #b0b0b0;
+			border-radius: 12px;
+			margin: 6rem 0;
+			align-self: center;
+			width: 56.6rem;
+		}
+
+		.Footer {
+			padding-top: 3.2rem;
+			padding-bottom: 2.4rem;
+			background-color: #f7f7f7;
+			border-top: 1px solid #dddddd;
+		}
+	}
+}

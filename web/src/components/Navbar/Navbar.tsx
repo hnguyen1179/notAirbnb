@@ -17,25 +17,30 @@ import Profile from "./Profile";
 import SearchForm from "./SearchForm";
 
 interface Props {
-	isTop: boolean;
+	isTop?: boolean; // Denotes whether or not Navbar is at the top of page or not; used in Landing
+	notLanding?: boolean; // Denotes whether or not Navbar is used on LandingPage or not
+	disableEntry?: boolean; // Prevent login and signup modal from appearing
 }
 
 // This Navbar is for desktop view; contains a search
-function Navbar({ isTop }: Props) {
+function Navbar({ isTop, notLanding = false, disableEntry = false }: Props) {
 	const componentRef = useRef<HTMLDivElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const [profile, setProfile] = useState(false);
 	const [search, setSearch] = useState(false);
-	const { user } = useContext(AppContext);
 
 	// Good react pattern in useModal; incorporate hooks within Context APIs that check for undefined
 	const { open, setOpen, setEntry } = useModal();
 
-	const handleLogout = useLogout();
-
 	// Opens modal; closes profile and search components
 	const handleOpen = (e: React.SyntheticEvent<EventTarget>) => {
 		e.stopPropagation();
+		if (disableEntry) {
+			setProfile(false);
+			return;
+		}
+
+		document.body.style.overflow = "hidden";
 		setEntry("unverified");
 		setSearch(false);
 		setProfile(false);
@@ -44,6 +49,7 @@ function Navbar({ isTop }: Props) {
 
 	// Closes modal
 	const handleClose = () => {
+		document.body.style.overflow = "initial";
 		setOpen(false);
 	};
 
@@ -68,7 +74,7 @@ function Navbar({ isTop }: Props) {
 
 	// Activates the Search component if at the very top of screen
 	useEffect(() => {
-		if (isTop) {
+		if (!notLanding && isTop) {
 			setSearch(true);
 		} else {
 			setSearch(false);
@@ -81,6 +87,7 @@ function Navbar({ isTop }: Props) {
 		document.body.addEventListener("click", handleBodyClick);
 
 		return () => {
+			handleClose();
 			window.removeEventListener(
 				"closeNavigation",
 				handleCloseNavigation
@@ -112,43 +119,46 @@ function Navbar({ isTop }: Props) {
 						</a>
 					</div>
 				</div>
-				<div className="Navbar__search">
-					<CSSTransition
-						in={search || isTop}
-						timeout={150}
-						unmountOnExit
-						classNames="component"
-						nodeRef={componentRef}
-					>
-						<div
-							className="Navbar__search__component"
-							ref={componentRef}
+				{!notLanding && (
+					<div className="Navbar__search">
+						<CSSTransition
+							in={search || isTop}
+							timeout={150}
+							unmountOnExit
+							classNames="component"
+							nodeRef={componentRef}
 						>
-							<div className="Navbar__search__component__categories">
-								<span>Places to stay</span>
-								<span>Experiences</span>
-								<span>Online Experiences</span>
+							<div
+								className="Navbar__search__component"
+								ref={componentRef}
+							>
+								<div className="Navbar__search__component__categories">
+									<span>Places to stay</span>
+									<span>Experiences</span>
+									<span>Online Experiences</span>
+								</div>
+								<SearchForm />
 							</div>
-							<SearchForm />
-						</div>
-					</CSSTransition>
-					<CSSTransition
-						in={!search && !isTop}
-						timeout={150}
-						unmountOnExit
-						classNames="button"
-						nodeRef={buttonRef}
-					>
-						<button
-							className="Navbar__search__button"
-							ref={buttonRef}
-							onClick={handleClickSearch}
+						</CSSTransition>
+						<CSSTransition
+							in={!search && !isTop}
+							timeout={150}
+							unmountOnExit
+							classNames="button"
+							nodeRef={buttonRef}
 						>
-							<div>Start your search</div>
-							<SearchSvg />
-						</button>
-					</CSSTransition>
-				</div>
+							<button
+								className="Navbar__search__button"
+								ref={buttonRef}
+								onClick={handleClickSearch}
+							>
+								<div>Start your search</div>
+								<SearchSvg />
+							</button>
+						</CSSTransition>
+					</div>
+				)}
+
 				<div className="Navbar__right">
 					<div className="Navbar__right__host">
 						<span>Become a host</span>
@@ -166,14 +176,13 @@ function Navbar({ isTop }: Props) {
 				</div>
 
 				{/* Modal for the entry form */}
-				<Modal open={open} onClose={handleClose}>
+				<Modal open={open} onClose={handleClose} disableScrollLock>
 					<Fade in={open}>
 						<div className="Modal-container">
 							<Entry />
 						</div>
 					</Fade>
 				</Modal>
-				{user ? <button onClick={handleLogout}>logout</button> : ""}
 			</div>
 			<div className="background"></div>
 		</nav>

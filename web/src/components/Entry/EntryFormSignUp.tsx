@@ -2,13 +2,14 @@ import useSignup from "../../hooks/useSignup";
 import PasswordHints from "./PasswordHints";
 
 import TextField from "@material-ui/core/TextField";
-import FormError from "./FormError";
+import FormError from "./EntryFormError";
 
 import { emailRegex, symbolRegex } from "../../utils/regex";
 import { containsInformation, isAdult } from "../../utils/validators";
 import ShowPasswordButton from "./ShowPasswordButton";
 import { ReactComponent as BackSvg } from "../../assets/icons/back.svg";
 import SubmitButton from "./SubmitButton";
+import { withRouter } from "react-router";
 
 function SignUp({
 	form,
@@ -18,8 +19,9 @@ function SignUp({
 	resetForm,
 	showPassword,
 	clickShowPassword,
+	isModal,
+	history, // withRouter prop
 }: any) {
-
 	const {
 		register,
 		trigger,
@@ -38,7 +40,11 @@ function SignUp({
 			const { email, password, firstName, lastName } = payload;
 			await signup(email, password, firstName, lastName);
 			resetForm();
-		} catch (e) {
+
+			if (!isModal) {
+				history.push("/");
+			}
+		} catch (e: any) {
 			setError(
 				"email",
 				{ type: "Duplicate Email", message: e.message },
@@ -186,7 +192,8 @@ function SignUp({
 						/>
 						{!errors.email && (
 							<span className="MuiContainer__input-subtext">
-								We'll email you trip confirmations and receipts. (Not really)
+								We'll email you trip confirmations and receipts.
+								(Not really)
 							</span>
 						)}
 					</div>
@@ -248,4 +255,4 @@ function SignUp({
 	);
 }
 
-export default SignUp;
+export default withRouter(SignUp);

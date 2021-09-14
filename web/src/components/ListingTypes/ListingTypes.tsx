@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import { animated, useSpring, SpringValue, config } from "react-spring";
+import { useContext, useState } from "react";
+import { animated, useSpring } from "react-spring";
 
 import { AppContext } from "../../context/AppContext";
 import ListingTypeIcon from "./ListingTypeIcon";
@@ -20,17 +20,8 @@ const ListingTypes = () => {
 
 	const handleArrowClick = () => {
 		setRight(!right);
-		console.log("right is currently: ", !right);
-		console.log("mobile is currently: ", mobile);
 	};
 
-	// TODO: When on mobile, you must have it transformed back to 0%; there's a bug
-	// when you click to the end and shrink back into mobile view wherein it's still
-	// translatedX @ -33%
-
-	// Transfer back to 0% ?
-	// conditions are... if it's translated right && in mobile view
-	// if it's translated left and in mobile view; keep at 0%;
 	const props = useSpring({
 		transform:
 			(mobile && right) || !right ? "translateX(0%)" : "translateX(-33%)",
