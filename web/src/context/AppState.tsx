@@ -11,7 +11,7 @@ const width = window.innerWidth;
 
 function AppState(props: Props) {
 	const mql = window.matchMedia("(min-width: 744px)");
-	// TODO: run me query on login and once fetched, set the state of the user 
+	// TODO: run me query on login and once fetched, set the state of the user
 	// to the user setState object
 	const { data } = useQuery(meQuery);
 	const [message, setMessage] = useState(

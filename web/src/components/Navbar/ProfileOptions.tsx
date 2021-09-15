@@ -11,13 +11,13 @@ const ProfileOptions = ({ handleOpen }: Props) => {
 				className="Navbar__right__profile__dropdown__link"
 				onClick={handleOpen}
 			>
-				<span>Log in</span>
+				<div>Log in</div>
 			</button>
 			<button
 				className="Navbar__right__profile__dropdown__link"
 				onClick={handleOpen}
 			>
-				<span>Sign up</span>
+				<div>Sign up</div>
 			</button>
 		</>
 	);

@@ -136,7 +136,7 @@ const Mutation = objectType({
             token: sign({ userId: user.id }, APP_SECRET),
             user,
           };
-        } catch (e) {
+        } catch (e: any) {
           return e;
         }
       },
@@ -175,6 +175,7 @@ const Mutation = objectType({
               email,
             },
           });
+
           if (!user) throw new Error(`No user found for email: ${email}`);
 
           const passwordValid = await compare(password, user.password);
@@ -185,7 +186,7 @@ const Mutation = objectType({
             token: sign({ userId: user.id }, APP_SECRET),
             user,
           };
-        } catch (e) {
+        } catch (e: any) {
           return e;
         }
       },

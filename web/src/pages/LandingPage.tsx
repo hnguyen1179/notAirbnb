@@ -13,7 +13,7 @@ import Hero from "../components/Hero/Hero";
 import TryHosting from "../components/TryHosting/TryHosting";
 import Navbar from "../components/Navbar/Navbar";
 
-function Landing() {
+const LandingPage = () => {
 	const { mobile } = useContext(AppContext);
 	const [isTop, setIsTop] = useState(true);
 
@@ -103,4 +103,4 @@ function Landing() {
 	);
 }
 
-export default Landing;
+export default LandingPage;

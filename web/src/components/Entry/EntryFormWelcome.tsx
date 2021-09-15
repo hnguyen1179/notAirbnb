@@ -37,7 +37,7 @@ function Welcome({ form, setVerified, handleCloseModal, isModal }: any) {
 	const clickDemo = async () => {
 		try {
 			setFocus("email");
-			await typeWriter("email", "demo@demo.com", setValue);
+			await typeWriter("email", "ronald.cox@example.com", setValue);
 			await onSubmitEmail({ email: getValues("email") });
 
 			await sleep(500);
@@ -47,7 +47,7 @@ function Welcome({ form, setVerified, handleCloseModal, isModal }: any) {
 			) as HTMLElement;
 
 			setFocus("passwordLogin");
-			await typeWriter("passwordLogin", "1password", setValue);
+			await typeWriter("passwordLogin", "public", setValue);
 			submitPassword.click();
 		} catch (e) {
 			setDemoClicked(false);

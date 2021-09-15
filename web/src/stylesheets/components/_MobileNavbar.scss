@@ -18,19 +18,14 @@
 		align-items: center;
 
 		&__link {
-			flex: 1 1 0;
+			$self: &;
 			text-align: center;
 			width: 9.7rem;
-			max-width: 20%;
-
-			&:nth-child(2) {
-				color: $disabled-text-color;
-				pointer-events: none;
-			}
 
 			&:hover {
 				svg {
 					color: $main-color;
+					fill: $main-color;
 				}
 			}
 
@@ -40,7 +35,8 @@
 				align-items: center;
 
 				svg {
-					color: #b0b0b0;
+					color: #707070;
+					fill: #707070;
 					height: 2.4rem;
 				}
 
@@ -52,6 +48,18 @@
 			&.active {
 				svg {
 					color: $main-color;
+				}
+			}
+
+			&--inactive {
+				pointer-events: none;
+				
+				.MobileNavbar__links__link__content {
+					color: $disabled-text-color;
+
+					svg {
+						color: inherit;
+					}
 				}
 			}
 		}

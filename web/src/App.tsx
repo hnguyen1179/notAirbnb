@@ -12,16 +12,25 @@ import AppState from "./context/AppState";
 
 import useAuthToken from "./hooks/useAuthToken";
 
-import { LISTINGS, LISTING, LANDING } from "./constants/routes";
+import {
+	LISTINGS,
+	LISTING,
+	LANDING,
+	ENTRY,
+	USER_PROFILE,
+} from "./constants/routes";
 
-import Landing from "./pages/Landing";
+import NoAuthRedirectRoute from "./pages/NoAuthRedirectRoute";
+import LandingPage from "./pages/LandingPage";
+import EntryPage from "./pages/EntryPage";
+import UserPage from "./pages/UserPage";
+
 import Listings from "./components/Listings";
 import Listing from "./components/Listing";
 import Users from "./components/Users";
 
 import "./stylesheets/main.scss";
 import { ModalProvider } from "./context/ModalContext";
-import Entry from "./pages/EntryPage";
 
 const httpLink = createHttpLink({
 	uri: process.env.REACT_APP_SERVER_URL,
@@ -53,16 +62,36 @@ function App() {
 				<AppState>
 					<Router>
 						<Switch>
-							<Route exact path={LANDING} component={Landing} />
+							<Route
+								exact
+								path={LANDING}
+								component={LandingPage}
+							/>
 							<Route path={LISTINGS} component={Listings} />
+
 							<Route
 								path={LISTING}
 								render={(renderProps) => (
 									<Listing id={renderProps.match.params.id} />
 								)}
 							/>
+
+							<Route
+								path="user/:id"
+								render={(renderProps) => (
+									<UserPage
+										id={renderProps.match.params.id}
+									/>
+								)}
+							/>
+
 							<Route exact path="/users" component={Users} />
-							<Route exact path="/entry" component={Entry} />
+
+							<NoAuthRedirectRoute
+								path={ENTRY}
+								token={token}
+								component={EntryPage}
+							/>
 						</Switch>
 					</Router>
 				</AppState>

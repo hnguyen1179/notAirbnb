@@ -1,14 +1,19 @@
-import React from "react";
+interface Props {
+	user: any;
+}
 
-const UserProfileOptions = () => {
-
+const UserProfileOptions = ({ user }: Props) => {
 	return (
 		<>
 			<button className="Navbar__right__profile__dropdown__link">
-				<span>Profile</span>
+				<a href={`user/${user.id}`}>
+					<div>Profile</div>
+				</a>
 			</button>
 			<button className="Navbar__right__profile__dropdown__link">
-				<span>Trips</span>
+				<a href="">
+					<div>Trips</div>
+				</a>
 			</button>
 		</>
 	);

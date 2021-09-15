@@ -58,7 +58,7 @@ const Profile = ({ profile, setProfile, handleOpen }: Props) => {
 			>
 				{/* Display these conditionally on the presence of a 'user' */}
 				{user ? (
-					<UserProfileOptions />
+					<UserProfileOptions user={user} />
 				) : (
 					<ProfileOptions handleOpen={handleOpen} />
 				)}

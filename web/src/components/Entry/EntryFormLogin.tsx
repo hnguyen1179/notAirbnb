@@ -37,7 +37,7 @@ function Login({
 			if (!isModal) {
 				history.push("/");
 			}
-		} catch (e) {
+		} catch (e: any) {
 			setError(
 				"passwordLogin",
 				{ type: "Invalid Password", message: e.message },

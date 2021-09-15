@@ -8,8 +8,8 @@ const sleep = (milliseconds: number) => {
 
 const typeWriter = async (field: FieldName, input: Input, setter: Setter) => {
 	for (let i = 1; i <= input.length; i++) {
-    setter(field, input.slice(0, i))
-		await sleep(Math.random() * 75 + 50);
+		setter(field, input.slice(0, i));
+		await sleep(Math.random() * 20 + 10);
 	}
 };
 
