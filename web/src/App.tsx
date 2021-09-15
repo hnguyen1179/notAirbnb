@@ -7,7 +7,8 @@ import {
 	createHttpLink,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-
+import { useQuery } from "@apollo/client";
+import { userByIdQuery } from "./graphql/queries/userById";
 import AppState from "./context/AppState";
 
 import useAuthToken from "./hooks/useAuthToken";
@@ -77,7 +78,7 @@ function App() {
 							/>
 
 							<Route
-								path="user/:id"
+								path={USER_PROFILE}
 								render={(renderProps) => (
 									<UserPage
 										id={renderProps.match.params.id}
