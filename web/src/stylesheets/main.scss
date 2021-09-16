@@ -19,7 +19,7 @@
 	"components/MobileSearch.scss", "components/Destinations.scss",
 	"components/ListingTypes.scss", "components/Inspirations.scss",
 	"components/MobileNavbar.scss", "components/FormSearch.scss",
-	"components/FormSearchMobile.scss";
+	"components/FormSearchMobile.scss", "components/ReviewItem.scss";
 
 // 6. Page-specific styles
-@import "pages/Listing", "pages/Landing", "pages/EntryPage";
+@import "pages/Listing", "pages/Landing", "pages/EntryPage", "pages/UserPage";

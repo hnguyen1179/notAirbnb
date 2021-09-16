@@ -1,12 +1,12 @@
 import { useMutation } from "@apollo/client";
 import { Result } from "../types/mutations";
 import useAuthToken from "./useAuthToken";
-import { signUpMutation } from "../graphql/mutations/signup";
+import { SIGN_UP } from "../graphql/mutations/signup";
 
 const useSignup = () => {
 	const [_, setAuthToken] = useAuthToken();
 
-	const [mutation, mutationResults] = useMutation(signUpMutation, {
+	const [mutation, mutationResults] = useMutation(SIGN_UP, {
 		onCompleted: (data: Result) => {
 			setAuthToken(data.signup?.token);
 		},

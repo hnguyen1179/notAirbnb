@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Cloudinary } from "@cloudinary/base";
 import { AppContext } from "./AppContext";
-import { useQuery } from "@apollo/client";
-import { meQuery } from "../graphql/queries/me";
+import { useMeQuery } from "../generated/graphql";
 interface Props {
 	children: React.ReactNode;
 }
@@ -11,9 +10,8 @@ const width = window.innerWidth;
 
 function AppState(props: Props) {
 	const mql = window.matchMedia("(min-width: 744px)");
-	// TODO: run me query on login and once fetched, set the state of the user
-	// to the user setState object
-	const { data } = useQuery(meQuery);
+	const { data } = useMeQuery();
+
 	const [message, setMessage] = useState(
 		"This is a message from the Provider"
 	);
@@ -42,13 +40,15 @@ function AppState(props: Props) {
 		};
 	}, []);
 
+	console.log("WITHIN APPSTATE: ", data?.me);
+
 	return (
 		<AppContext.Provider
 			value={{
 				cloudinary,
 				message,
 				locale,
-				user: data ? data.me : null,
+				user: data?.me ? data.me : null,
 				setMessage,
 				setLocale,
 				mobile,

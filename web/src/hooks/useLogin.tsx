@@ -1,12 +1,12 @@
 import { useMutation } from "@apollo/client";
 import { Result } from "../types/mutations";
 import useAuthToken from "./useAuthToken";
-import { logInMutation } from "../graphql/mutations/login";
+import { LOG_IN } from "../graphql/mutations/login";
 
 const useLoginMutation = () => {
 	const [_, setAuthToken, removeAuthToken] = useAuthToken();
 
-	const [mutation, mutationResults] = useMutation(logInMutation, {
+	const [mutation, mutationResults] = useMutation(LOG_IN, {
 		onCompleted: (data: Result) => {
 			setAuthToken(data.login?.token);
 		},

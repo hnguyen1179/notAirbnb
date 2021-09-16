@@ -1,31 +1,16 @@
 import { gql } from "@apollo/client";
 
-const userByIdQuery = gql`
-	query userByIdQuery($id: String!) {
+const USER_BY_ID = gql`
+	query userById($id: String!) {
 		userById(id: $id) {
 			id
-      firstName
-      lastName
-      email
-      dateJoined
-      reviews {
-        listingId
-        date
-        content
-        scores
-        listing {
-          host {
-            id
-            firstName
-            dateJoined
-            listings {
-              city
-            }
-          }
-        }
-      }
+			firstName
+			lastName
+			email
+			dateJoined
+      reviewsCount
 		}
 	}
 `;
 
-export { userByIdQuery };
+export { USER_BY_ID };

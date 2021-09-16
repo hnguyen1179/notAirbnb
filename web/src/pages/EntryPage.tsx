@@ -20,12 +20,18 @@ const EntryPage = () => {
 					<div className="Navbar-filler"></div>
 				</>
 			)}
-
-			<EntryForm initialEntry="unverified" isModal={false} />
+			<div className="Entry__entryform-container">
+				<EntryForm initialEntry="unverified" isModal={false} />
+			</div>
 			<div className={"cover" + (demoClicked ? " active" : "")}></div>
 
-			{mobile ? <MobileNavbar /> : ""}
-			{mobile ? "" : <Footer />}
+			{mobile ? (
+				<MobileNavbar />
+			) : (
+				<div className="Footer-container">
+					<Footer />
+				</div>
+			)}
 		</div>
 	);
 };

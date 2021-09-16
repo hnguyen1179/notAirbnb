@@ -1,10 +1,8 @@
-import React, { useEffect, useContext, useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Modal from "@material-ui/core/Modal";
-import { CSSTransition } from "react-transition-group";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 import { useModal } from "../../context/ModalContext";
-import { AppContext } from "../../context/AppContext";
-import useLogout from "../../hooks/useLogout";
 
 import Entry from "../Entry/Entry";
 import Fade from "../Fade";
@@ -26,6 +24,7 @@ interface Props {
 function Navbar({ isTop, notLanding = false, disableEntry = false }: Props) {
 	const componentRef = useRef<HTMLDivElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
+	const modalRef = useRef<HTMLDivElement>(null);
 	const [profile, setProfile] = useState(false);
 	const [search, setSearch] = useState(false);
 
@@ -79,7 +78,7 @@ function Navbar({ isTop, notLanding = false, disableEntry = false }: Props) {
 		} else {
 			setSearch(false);
 		}
-	}, [isTop]);
+	}, [isTop, notLanding]);
 
 	// Creates event listeners to click out of profile and search components
 	useEffect(() => {
@@ -177,11 +176,13 @@ function Navbar({ isTop, notLanding = false, disableEntry = false }: Props) {
 
 				{/* Modal for the entry form */}
 				<Modal open={open} onClose={handleClose} disableScrollLock>
-					<Fade in={open}>
-						<div className="Modal-container">
-							<Entry />
-						</div>
-					</Fade>
+					<TransitionGroup>
+						<Fade in={open} ref={modalRef}>
+							<div className="Modal-container">
+								<Entry />
+							</div>
+						</Fade>
+					</TransitionGroup>
 				</Modal>
 			</div>
 			<div className="background"></div>

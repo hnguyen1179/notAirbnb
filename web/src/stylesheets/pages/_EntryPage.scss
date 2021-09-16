@@ -7,7 +7,17 @@
 	}
 }
 
+.Navbar-filler {
+	display: block;
+	height: 8rem;
+}
+
 @media screen and (min-width: 744px) {
+	.Entry__entryform-container {
+		height: calc(100vh - 8.4rem);
+		position: relative;
+	}
+
 	.Entry {
 		display: flex;
 		flex-direction: column;
@@ -16,12 +26,12 @@
 			display: block;
 		}
 
-		.Navbar-filler {
-			display: block;
-			height: 8rem;
-		}
-
 		.EntryForm {
+			position: absolute;
+			left: 50%;
+			top: -1%;
+			transform: translateX(-50%);
+
 			border: 1px solid #b0b0b0;
 			border-radius: 12px;
 			margin: 6rem 0;
@@ -29,7 +39,7 @@
 			width: 56.6rem;
 		}
 
-		.Footer {
+		.Footer-container {
 			padding-top: 3.2rem;
 			padding-bottom: 2.4rem;
 			background-color: #f7f7f7;

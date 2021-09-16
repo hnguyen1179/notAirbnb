@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { ReactComponent as SearchSvg } from "../../assets/icons/thick-search.svg";
 import { DateRange, OnDateRangeChangeProps } from "react-date-range";
 
@@ -7,7 +7,6 @@ import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { disableDay } from "../../utils/disableDays";
 import LocationSearch from "../LocationSearch/LocationSearch";
-import { regexLiteral } from "@babel/types";
 interface FormValues {
 	location: string;
 	startDate: Date;

@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-const signUpMutation = gql`
+const SIGN_UP = gql`
 	mutation signup(
 		$email: String!
 		$firstName: String!
@@ -18,4 +18,4 @@ const signUpMutation = gql`
 	}
 `;
 
-export { signUpMutation };
+export { SIGN_UP };

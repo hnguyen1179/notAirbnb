@@ -6,8 +6,7 @@ import ProfileOptions from "./ProfileOptions";
 import UserProfileOptions from "./UserProfileOptions";
 import useLogout from "../../hooks/useLogout";
 
-import { AdvancedImage, placeholder } from "@cloudinary/react";
-import { CloudinaryImage } from "@cloudinary/base";
+import { AdvancedImage } from "@cloudinary/react";
 
 interface Props {
 	profile: boolean;

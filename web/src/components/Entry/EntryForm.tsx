@@ -23,7 +23,7 @@ interface Props {
 	isModal?: boolean;
 }
 
-function EntryForm({ initialEntry, isModal }: Props) {
+function EntryForm({ initialEntry, isModal = true }: Props) {
 	const { entry, setOpen, demoClicked } = useModal();
 	const [showPassword, setShowPassword] = useState(false);
 	const [showHints, setShowHints] = useState(false);

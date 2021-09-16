@@ -21,20 +21,6 @@ const LandingPage = () => {
 	const landingRef = useRef<HTMLDivElement>(null);
 	const mobileNavbarRef = useRef<HTMLElement>(null);
 
-	const handleMobileNav = () => {
-		// Manages the bottom nav on mobile
-		// Hides bottom nav on scroll to bottom
-		const cutoff = document.documentElement.scrollHeight - 10;
-		if (
-			window.scrollY + window.innerHeight >= cutoff &&
-			mobileNavbarRef.current
-		) {
-			mobileNavbarRef.current?.classList.add("inactive");
-		} else {
-			mobileNavbarRef.current?.classList.remove("inactive");
-		}
-	};
-
 	const handleMobileSearchBar = () => {
 		// Manages the top search bar on mobile
 		// Adds white background on search button on scroll down
@@ -49,7 +35,6 @@ const LandingPage = () => {
 
 	const handleScroll = () => {
 		// Should only run this on mobile
-		handleMobileNav();
 		handleMobileSearchBar();
 	};
 

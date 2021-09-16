@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { AppContext } from "../../context/AppContext";
 
@@ -10,9 +10,32 @@ import { ReactComponent as LogoSvg } from "../../assets/icons/logo.svg";
 
 const MobileNavbar = React.forwardRef<HTMLElement>((props, ref) => {
 	const { user } = useContext(AppContext);
+	const mobileNavbarRef = useRef<HTMLElement>(null);
+
+	const handleMobileNav = () => {
+		// Manages the bottom nav on mobile
+		// Hides bottom nav on scroll to bottom
+		const cutoff = document.documentElement.scrollHeight - 10;
+		if (
+			window.scrollY + window.innerHeight >= cutoff &&
+			mobileNavbarRef.current
+		) {
+			mobileNavbarRef.current?.classList.add("inactive");
+		} else {
+			mobileNavbarRef.current?.classList.remove("inactive");
+		}
+	};
+
+	useEffect(() => {
+		window.addEventListener("scroll", handleMobileNav);
+
+		return () => {
+			window.removeEventListener("scroll", handleMobileNav);
+		};
+	}, []);
 
 	return (
-		<nav className="MobileNavbar" ref={ref}>
+		<nav className="MobileNavbar" ref={mobileNavbarRef}>
 			<div className="MobileNavbar__links">
 				<NavLink
 					to="/"
@@ -57,7 +80,7 @@ const MobileNavbar = React.forwardRef<HTMLElement>((props, ref) => {
 							</div>
 						</NavLink>
 						<NavLink
-							to={`users/${user.id}`}
+							to={`/user/${user.id}`}
 							className="MobileNavbar__links__link"
 							activeClassName="active"
 						>

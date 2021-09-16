@@ -7,8 +7,6 @@ import {
 	createHttpLink,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import { useQuery } from "@apollo/client";
-import { userByIdQuery } from "./graphql/queries/userById";
 import AppState from "./context/AppState";
 
 import useAuthToken from "./hooks/useAuthToken";
@@ -32,6 +30,7 @@ import Users from "./components/Users";
 
 import "./stylesheets/main.scss";
 import { ModalProvider } from "./context/ModalContext";
+import ScrollToTop from "./pages/ScrollToTop";
 
 const httpLink = createHttpLink({
 	uri: process.env.REACT_APP_SERVER_URL,
@@ -53,7 +52,20 @@ function App() {
 	const client = useMemo(() => {
 		return new ApolloClient({
 			link: authLink.concat(httpLink),
-			cache: new InMemoryCache(),
+			cache: new InMemoryCache({
+				typePolicies: {
+					Query: {
+						fields: {
+							reviewsByUserId: {
+								keyArgs: false,
+								merge(existing = [], incoming) {
+									return [...existing, ...incoming];
+								},
+							},
+						},
+					},
+				},
+			}),
 		});
 	}, [authLink]);
 
@@ -62,6 +74,7 @@ function App() {
 			<ModalProvider>
 				<AppState>
 					<Router>
+						<ScrollToTop />
 						<Switch>
 							<Route
 								exact
@@ -82,6 +95,7 @@ function App() {
 								render={(renderProps) => (
 									<UserPage
 										id={renderProps.match.params.id}
+										renderProps={renderProps}
 									/>
 								)}
 							/>
