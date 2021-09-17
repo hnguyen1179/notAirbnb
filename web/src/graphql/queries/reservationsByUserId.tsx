@@ -7,13 +7,10 @@ const RESERVATIONS_BY_USER_ID = gql`
 			listingId
 			dateStart
 			dateEnd
-			totalPrice
 			listing {
 				city
 				title
 				region
-				cleaningFee
-				price
 			}
 		}
 	}

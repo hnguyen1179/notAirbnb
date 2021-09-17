@@ -20,6 +20,7 @@ import {
 	USER_TRIPS,
 	USER_TRIP,
 	HOST_PROFILE,
+	ERROR,
 } from "./constants/routes";
 
 import NoAuthRedirectRoute from "./pages/NoAuthRedirectRoute";
@@ -37,6 +38,7 @@ import ScrollToTop from "./pages/ScrollToTop";
 import TripsPage from "./pages/TripsPage";
 import HostPage from "./pages/HostPage";
 import TripPage from "./pages/TripPage";
+import ErrorPage from "./pages/ErrorPage";
 
 const httpLink = createHttpLink({
 	uri: process.env.REACT_APP_SERVER_URL,
@@ -87,6 +89,13 @@ function App() {
 								path={LANDING}
 								component={LandingPage}
 							/>
+
+							<Route
+								exact
+								path={ERROR}
+								component={ErrorPage}
+							/>
+
 							<Route path={LISTINGS} component={Listings} />
 
 							<Route

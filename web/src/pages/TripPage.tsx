@@ -1,4 +1,6 @@
 import React from "react";
+import Loading from "../components/Loading";
+import { useReservationByIdQuery } from "../generated/graphql";
 
 interface Props {
 	id: string;
@@ -6,8 +8,24 @@ interface Props {
 }
 
 const TripPage = ({ id, renderProps }: Props) => {
-  return <div>
-  </div>;
+	const { loading, error, data } = useReservationByIdQuery({
+		variables: { id },
+	});
+
+	if (loading)
+		return (
+			<div className="page-loading">
+				<Loading />
+			</div>
+		);
+
+	if (error) {
+		renderProps.history.push("/404");
+	}
+
+	console.log(data);
+
+	return <div></div>;
 };
 
 export default TripPage;

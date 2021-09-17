@@ -132,6 +132,7 @@ export type Query = {
   listingById?: Maybe<Listing>;
   listingsByRegion: Array<Listing>;
   me?: Maybe<User>;
+  reservationById?: Maybe<Reservation>;
   reservationsByUserId: Array<Array<Maybe<Reservation>>>;
   reviewsByUserId: Array<Review>;
   userById?: Maybe<User>;
@@ -145,6 +146,11 @@ export type QueryListingByIdArgs = {
 
 export type QueryListingsByRegionArgs = {
   region: Scalars['String'];
+};
+
+
+export type QueryReservationByIdArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -236,12 +242,19 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeQuery = { __typename?: 'Query', me?: Maybe<{ __typename?: 'User', id: string, firstName: string, lastName: string }> };
 
+export type ReservationByIdQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type ReservationByIdQuery = { __typename?: 'Query', reservationById?: Maybe<{ __typename?: 'Reservation', id: string, listingId: string, dateStart: any, dateEnd: any, totalPrice: number, listing?: Maybe<{ __typename?: 'Listing', city: string, title: string, region: string, address: string, price: number, cleaningFee: number }> }> };
+
 export type ReservationsByUserIdQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type ReservationsByUserIdQuery = { __typename?: 'Query', reservationsByUserId: Array<Array<Maybe<{ __typename?: 'Reservation', id: string, listingId: string, dateStart: any, dateEnd: any, totalPrice: number, listing?: Maybe<{ __typename?: 'Listing', city: string, title: string, region: string, cleaningFee: number, price: number }> }>>> };
+export type ReservationsByUserIdQuery = { __typename?: 'Query', reservationsByUserId: Array<Array<Maybe<{ __typename?: 'Reservation', id: string, listingId: string, dateStart: any, dateEnd: any, listing?: Maybe<{ __typename?: 'Listing', city: string, title: string, region: string }> }>>> };
 
 export type ReviewsByUserIdQueryVariables = Exact<{
   id: Scalars['String'];
@@ -376,9 +389,9 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
-export const ReservationsByUserIdDocument = gql`
-    query reservationsByUserId($id: String!) {
-  reservationsByUserId(id: $id) {
+export const ReservationByIdDocument = gql`
+    query reservationById($id: String!) {
+  reservationById(id: $id) {
     id
     listingId
     dateStart
@@ -388,8 +401,52 @@ export const ReservationsByUserIdDocument = gql`
       city
       title
       region
-      cleaningFee
+      address
       price
+      cleaningFee
+    }
+  }
+}
+    `;
+
+/**
+ * __useReservationByIdQuery__
+ *
+ * To run a query within a React component, call `useReservationByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useReservationByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useReservationByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useReservationByIdQuery(baseOptions: Apollo.QueryHookOptions<ReservationByIdQuery, ReservationByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ReservationByIdQuery, ReservationByIdQueryVariables>(ReservationByIdDocument, options);
+      }
+export function useReservationByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ReservationByIdQuery, ReservationByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ReservationByIdQuery, ReservationByIdQueryVariables>(ReservationByIdDocument, options);
+        }
+export type ReservationByIdQueryHookResult = ReturnType<typeof useReservationByIdQuery>;
+export type ReservationByIdLazyQueryHookResult = ReturnType<typeof useReservationByIdLazyQuery>;
+export type ReservationByIdQueryResult = Apollo.QueryResult<ReservationByIdQuery, ReservationByIdQueryVariables>;
+export const ReservationsByUserIdDocument = gql`
+    query reservationsByUserId($id: String!) {
+  reservationsByUserId(id: $id) {
+    id
+    listingId
+    dateStart
+    dateEnd
+    listing {
+      city
+      title
+      region
     }
   }
 }

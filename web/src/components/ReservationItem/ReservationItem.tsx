@@ -2,8 +2,6 @@ import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 import { format } from "date-fns";
 import { AdvancedImage } from "@cloudinary/react";
-import { calculateTotal } from "../../utils/priceBreakdown";
-import { Reservation } from "../../generated/graphql";
 import { ReactComponent as RightSvg } from "../../assets/icons/right-arrow.svg";
 
 interface PartialListing {
@@ -17,7 +15,6 @@ interface ReservationPartial {
 	listingId: string;
 	dateStart: string;
 	dateEnd: string;
-	totalPrice: number;
 	listing?: PartialListing | undefined | null;
 }
 
@@ -38,10 +35,7 @@ const ReservationItem = ({ reservation }: Props) => {
 		listing: { region, city, title },
 		id,
 		listingId,
-		totalPrice: dbPrice,
 	} = reservation;
-
-	const priceBreakdown = calculateTotal(reservation as Reservation);
 
 	return (
 		<li className="ReservationItem">
