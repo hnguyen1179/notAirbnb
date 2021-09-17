@@ -55,6 +55,7 @@ type Listing {
   region: String!
   reservations: [Reservation]!
   reviews: [Review]!
+  reviewsCount: Int!
   score: Float!
   scores: [String]!
   smokingRule: Boolean!
@@ -81,6 +82,9 @@ type Query {
   listingById(id: String!): Listing
   listingsByRegion(region: String!): [Listing!]!
   me: User
+  reservationsById(id: String!): Reservation
+  reservationsByUserId(id: String!): [[Reservation]!]!
+  reviewsByUserId(id: String!, offset: Int): [Review!]!
   userById(id: String!): User
 }
 
@@ -128,4 +132,5 @@ type User {
   lastName: String!
   reservations: [Reservation]!
   reviews: [Review]!
+  reviewsCount: Int!
 }

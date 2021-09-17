@@ -8,6 +8,7 @@ import {
   nonNull,
   objectType,
   stringArg,
+  intArg,
   inputObjectType,
   arg,
   asNexusMethod,
@@ -51,6 +52,69 @@ const Query = objectType({
             id: args.id,
           },
         });
+      },
+    });
+
+    t.nullable.field('reservationsById', {
+      type: 'Reservation',
+      args: {
+        id: nonNull(stringArg()),
+      },
+      resolve: async (_parent, args, context: Context) => {
+        return context.prisma.reservation.findUnique({
+          where: {
+            id: args.id,
+          },
+        });
+      },
+    });
+
+    t.nonNull.list.nonNull.field('reservationsByUserId', {
+      type: list('Reservation'),
+      args: {
+        id: nonNull(stringArg()),
+      },
+      resolve: async (_parent, args, context: Context) => {
+        const future = await context.prisma.reservation.findMany({
+          where: {
+            userId: args.id,
+            dateStart: {
+              gte: new Date(),
+            },
+          },
+        });
+
+        const past = await context.prisma.reservation.findMany({
+          where: {
+            userId: args.id,
+            dateStart: {
+              lt: new Date(),
+            },
+          },
+        });
+
+        return [future, past];
+      },
+    });
+
+    t.nonNull.list.nonNull.field('reviewsByUserId', {
+      type: 'Review',
+      args: {
+        id: nonNull(stringArg()),
+        offset: intArg(),
+      },
+      resolve: async (_parent, args, context: Context) => {
+        const data = await context.prisma.review.findMany({
+          skip: args.offset || 0,
+          take: 3,
+          where: {
+            authorId: args.id,
+          },
+        });
+
+        await sleep(Math.random() * 50 + 100);
+
+        return data;
       },
     });
 
@@ -307,6 +371,18 @@ const User = objectType({
     t.nonNull.string('lastName');
     t.nonNull.string('email');
     t.nonNull.string('dateJoined');
+    t.nonNull.field('reviewsCount', {
+      type: 'Int',
+      resolve: async (parent, _args, context: Context) => {
+        const data = await context.prisma.user
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .reviews();
+
+        return data.length;
+      },
+    });
     t.nonNull.field('reviews', {
       type: list('Review'),
       resolve: (parent, _, context: Context) => {
@@ -430,6 +506,18 @@ const Listing = objectType({
     t.nonNull.float('score');
     t.nonNull.field('scores', { type: list('String') });
     t.nonNull.field('datesUnavailable', { type: 'JSONObject' });
+    t.nonNull.field('reviewsCount', {
+      type: 'Int',
+      resolve: async (parent, _args, context: Context) => {
+        const data = await context.prisma.listing
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .reviews();
+
+        return data.length;
+      },
+    });
     t.nonNull.field('reviews', {
       type: list('Review'),
       resolve: (parent, _, context: Context) => {
