@@ -1,5 +1,4 @@
-import React, { useState, useContext } from "react";
-import { RouteProps } from "react-router-dom";
+import { useState, useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import MobileNavbar from "../components/MobileNavbar/MobileNavbar";
 import { AdvancedImage } from "@cloudinary/react";
@@ -11,6 +10,7 @@ import {
 import { ReactComponent as StarSvg } from "../assets/icons/star.svg";
 import { ReactComponent as ShieldSvg } from "../assets/icons/shield.svg";
 import { ReactComponent as OutlinedStarSvg } from "../assets/icons/outlined-star.svg";
+
 import Loading from "../components/Loading";
 import useLogout from "../hooks/useLogout";
 import ReviewItem from "../components/ReviewItem/ReviewItem";
@@ -45,7 +45,7 @@ const UserPage = ({ id, renderProps }: Props) => {
 
 	if (userLoading)
 		return (
-			<div className="UserPage-loading">
+			<div className="page-loading">
 				<Loading />
 			</div>
 		);
@@ -58,16 +58,9 @@ const UserPage = ({ id, renderProps }: Props) => {
 			</div>
 		);
 
-	// TODO Figure out what destructuring doesn't work?
-	// Maybe these values are considered 'optional'? Hence they
-	// must be verified before? Below works
-	// if (userData?.userById) {
-	// 	const { firstName, lastName, dateJoined, reviews } = userData.userById;
-	// }
-
 	if (userData?.userById == null || reviewsData?.reviewsByUserId == null) {
 		return (
-			<div className="UserPage-loading">
+			<div className="page-loading">
 				<Loading />
 			</div>
 		);
@@ -92,10 +85,9 @@ const UserPage = ({ id, renderProps }: Props) => {
 
 	const isUser = currentUser && currentUser.id === id;
 
-	const { firstName, lastName, dateJoined, reviewsCount } =
+	const { firstName, dateJoined, reviewsCount } =
 		userData?.userById;
 	const reviews = reviewsData.reviewsByUserId;
-	console.log(currentUser);
 
 	return (
 		<div className="UserPage">
@@ -106,12 +98,10 @@ const UserPage = ({ id, renderProps }: Props) => {
 				</>
 			)}
 
-			<div className="UserPage-container">
+			<div className="UserPage-container UserPage-container--original">
 				<header className="UserPage__header">
 					<div className="UserPage__header__title">
-						<h1>
-							Hi, I'm {firstName} {lastName}
-						</h1>
+						<h1>Hi, I'm {firstName}</h1>
 						<span>{dateJoined}</span>
 					</div>
 					<div className="UserPage__header__avatar">
@@ -179,6 +169,84 @@ const UserPage = ({ id, renderProps }: Props) => {
 						</button>
 					</footer>
 				)}
+			</div>
+
+			<div className="UserPage-container UserPage-container--revised">
+				<div className="UserPage__badges">
+					<div className="UserPage__header__avatar">
+						<AdvancedImage
+							className="avatar"
+							cldImg={cloudinary.image(`user_avatars/${id}`)}
+						/>
+					</div>
+					<div>
+						<OutlinedStarSvg />
+						<span>{reviewsCount} reviews</span>
+					</div>
+					<div>
+						<ShieldSvg />
+						<span>Identity Verified</span>
+					</div>
+				</div>
+
+				<div>
+					<header className="UserPage__header">
+						<div className="UserPage__header__title">
+							<h1>Hi, I'm {firstName}</h1>
+							<span>{dateJoined}</span>
+						</div>
+					</header>
+
+					<div className="UserPage-divider" />
+
+					<div className="UserPage__reviews">
+						<div className="UserPage__reviews__title">
+							<StarSvg />
+							<h2>{isUser ? "Your" : "Their"} reviews</h2>
+						</div>
+						<ul className="UserPage__reviews__content">
+							{reviews.map((review) => {
+								return (
+									<ReviewItem
+										review={review}
+										key={review.id}
+									/>
+								);
+							})}
+						</ul>
+						{reviews.length !== reviewsCount &&
+							(loadingMoreReviews ? (
+								<button
+									className={`UserPage__reviews__more-button ${
+										loadingMoreReviews ? "loading" : ""
+									}`}
+									onClick={HandleFetchReviews}
+								>
+									<Loading />
+								</button>
+							) : (
+								<button
+									className="UserPage__reviews__more-button"
+									onClick={HandleFetchReviews}
+								>
+									<div>Show more reviews</div>
+								</button>
+							))}
+					</div>
+
+					{mobile && <div className="UserPage-divider" />}
+
+					{currentUser && mobile && (
+						<footer className="UserPage__footer">
+							<button
+								className="UserPage__footer__logout-button"
+								onClick={handleLogout}
+							>
+								Log out
+							</button>
+						</footer>
+					)}
+				</div>
 			</div>
 
 			{mobile ? (

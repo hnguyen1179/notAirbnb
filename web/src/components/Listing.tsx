@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { gql, useQuery } from "@apollo/client";
 import { Cloudinary } from "@cloudinary/base";
 import { AdvancedImage, placeholder } from "@cloudinary/react";
+import Loading from "./Loading";
 
 const LISTING = gql`
 	query LISTING($id: String!) {
@@ -99,8 +100,8 @@ function Listing({ id }: Props) {
 
 	if (loading)
 		return (
-			<div style={{ backgroundColor: "black", height: "100vh" }}>
-				loading
+			<div className="page-loading">
+				<Loading />
 			</div>
 		);
 	if (error) console.log(JSON.stringify(error, null, 2));

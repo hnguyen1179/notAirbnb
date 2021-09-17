@@ -175,6 +175,19 @@
 		font-size: 2rem;
 	}
 
+	.Landing {
+		section {
+			padding-left: 4rem;
+		}
+
+		&__destinations,
+		&__listing-types,
+		&__try-hosting,
+		&__inspirations {
+			padding-right: 4rem;
+		}
+	}
+
 	.Landing__hero__content {
 		&__image {
 			&::after {

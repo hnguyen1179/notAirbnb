@@ -1,6 +1,4 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
-import { Cloudinary } from "@cloudinary/base";
-import { AdvancedImage, placeholder } from "@cloudinary/react";
 
 import { AppContext } from "../context/AppContext";
 import Destinations from "../components/Destinations/Destinations";
@@ -86,6 +84,6 @@ const LandingPage = () => {
 			</footer>
 		</div>
 	);
-}
+};
 
 export default LandingPage;

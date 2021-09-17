@@ -40,8 +40,6 @@ function AppState(props: Props) {
 		};
 	}, []);
 
-	console.log("WITHIN APPSTATE: ", data?.me);
-
 	return (
 		<AppContext.Provider
 			value={{

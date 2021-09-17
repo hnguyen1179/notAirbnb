@@ -88,9 +88,17 @@
 	}
 }
 
+// Used for footer elements outside of the landing page
+.Footer-container {
+	padding-top: 3.2rem;
+	padding-bottom: 2.4rem;
+	background-color: #f7f7f7;
+	border-top: 1px solid #dddddd;
+}
+
 @media (min-width: 744px) {
 	.Footer {
-		// padding-right: 0;
+		padding-left: 4rem;
 
 		&__meta {
 			display: flex;

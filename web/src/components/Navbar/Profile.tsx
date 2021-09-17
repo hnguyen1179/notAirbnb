@@ -15,8 +15,8 @@ interface Props {
 }
 
 const Profile = ({ profile, setProfile, handleOpen }: Props) => {
-	const logout = useLogout();
 	const { cloudinary, user } = useContext(AppContext);
+	const logout = useLogout();
 
 	const handleClickProfile = (e: React.SyntheticEvent<EventTarget>) => {
 		e.stopPropagation();

@@ -71,14 +71,19 @@ function Navbar({ isTop, notLanding = false, disableEntry = false }: Props) {
 		setProfile(false);
 	};
 
-	// Activates the Search component if at the very top of screen
+	// Activates the Search component if at the very t op of screen
 	useEffect(() => {
-		if (!notLanding && isTop) {
+		if (notLanding) {
+			return;
+		}
+
+		console.log(" in here ");
+		if (isTop) {
 			setSearch(true);
 		} else {
 			setSearch(false);
 		}
-	}, [isTop, notLanding]);
+	}, [isTop]);
 
 	// Creates event listeners to click out of profile and search components
 	useEffect(() => {
@@ -86,12 +91,12 @@ function Navbar({ isTop, notLanding = false, disableEntry = false }: Props) {
 		document.body.addEventListener("click", handleBodyClick);
 
 		return () => {
-			handleClose();
 			window.removeEventListener(
 				"closeNavigation",
 				handleCloseNavigation
 			);
 			document.body.removeEventListener("click", handleBodyClick);
+			handleClose();
 		};
 	}, []);
 

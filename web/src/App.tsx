@@ -17,6 +17,9 @@ import {
 	LANDING,
 	ENTRY,
 	USER_PROFILE,
+	USER_TRIPS,
+	USER_TRIP,
+	HOST_PROFILE,
 } from "./constants/routes";
 
 import NoAuthRedirectRoute from "./pages/NoAuthRedirectRoute";
@@ -31,6 +34,9 @@ import Users from "./components/Users";
 import "./stylesheets/main.scss";
 import { ModalProvider } from "./context/ModalContext";
 import ScrollToTop from "./pages/ScrollToTop";
+import TripsPage from "./pages/TripsPage";
+import HostPage from "./pages/HostPage";
+import TripPage from "./pages/TripPage";
 
 const httpLink = createHttpLink({
 	uri: process.env.REACT_APP_SERVER_URL,
@@ -87,6 +93,36 @@ function App() {
 								path={LISTING}
 								render={(renderProps) => (
 									<Listing id={renderProps.match.params.id} />
+								)}
+							/>
+
+							<Route
+								path={USER_TRIPS}
+								render={(renderProps) => (
+									<TripsPage
+										id={renderProps.match.params.id}
+										renderProps={renderProps}
+									/>
+								)}
+							/>
+
+							<Route
+								path={USER_TRIP}
+								render={(renderProps) => (
+									<TripPage
+										id={renderProps.match.params.id}
+										renderProps={renderProps}
+									/>
+								)}
+							/>
+
+							<Route
+								path={HOST_PROFILE}
+								render={(renderProps) => (
+									<HostPage
+										id={renderProps.match.params.id}
+										renderProps={renderProps}
+									/>
 								)}
 							/>
 

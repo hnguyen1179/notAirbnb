@@ -61,7 +61,7 @@ const MobileNavbar = React.forwardRef<HTMLElement>((props, ref) => {
 				{user ? (
 					<>
 						<NavLink
-							to="/filler"
+							to={`/trips/${user.id}`}
 							className="MobileNavbar__links__link"
 							activeClassName="active"
 						>

@@ -4,6 +4,10 @@
 		margin-right: auto;
 		width: min(100%, 60rem);
 		padding: 3rem;
+
+		&--revised {
+			display: none;
+		}
 	}
 
 	&__header {
@@ -115,19 +119,13 @@
 	}
 }
 
-.UserPage-loading {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-}
-
 @media screen and (min-width: 744px) {
-	.Footer-container {
-		padding-top: 3.2rem;
-		padding-bottom: 2.4rem;
-		background-color: #f7f7f7;
-		border-top: 1px solid #dddddd;
+	.UserPage {
+		&__header {
+			h1 {
+				font-size: 3.6rem;
+			}
+		}
 	}
 }
 
@@ -139,9 +137,29 @@
 				height: 200px;
 			}
 		}
+
+		&__badges {
+			position: sticky;
+			top: 11rem;
+			margin-right: 5rem;
+			border: 1px solid $muted-line-color;
+			height: fit-content;
+			padding: 3rem;
+			border-radius: 0.8rem;
+		}
+
 		.UserPage-container {
 			padding: 3rem 8rem;
+			width: 80rem;
 			box-sizing: content-box;
+
+			&--original {
+				display: none;
+			}
+
+			&--revised {
+				display: flex;
+			}
 		}
 	}
 }

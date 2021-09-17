@@ -1,7 +1,7 @@
 .Loading-container {
 	width: fit-content;
 	height: fit-content;
-	
+
 	display: flex;
 
 	&__dot {
@@ -57,4 +57,11 @@
 	display: grid;
 	place-items: center;
 	z-index: 10;
+}
+
+.page-loading {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }

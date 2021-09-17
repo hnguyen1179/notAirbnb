@@ -11,7 +11,9 @@ function useAuthToken() {
 		expirationDate.setDate(expirationDate.getDate() + 7);
 		setCookie(TOKEN_NAME, authToken, { expires: expirationDate });
 	};
-	const removeAuthToken = () => removeCookie(TOKEN_NAME);
+	const removeAuthToken = () => {
+		removeCookie(TOKEN_NAME);
+	};
 
 	return [cookies[TOKEN_NAME], setAuthToken, removeAuthToken];
 }

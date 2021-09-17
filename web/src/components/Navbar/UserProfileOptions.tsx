@@ -9,12 +9,16 @@ const UserProfileOptions = ({ user }: Props) => {
 		<>
 			<button className="Navbar__right__profile__dropdown__link">
 				<NavLink to={`/user/${user.id}`}>
-					<div>Profile</div>
+					<div>
+						<span>Profile</span>
+					</div>
 				</NavLink>
 			</button>
 			<button className="Navbar__right__profile__dropdown__link">
-				<NavLink to={`/user/${user.id}/trips`}>
-					<div>Trips</div>
+				<NavLink to={`/trips/${user.id}`}>
+					<div>
+						<span>Trips</span>
+					</div>
 				</NavLink>
 			</button>
 		</>
