@@ -1,13 +1,22 @@
-import React from "react";
+import { useState, useContext } from "react";
 import { format, getDay } from "date-fns";
 import { Redirect } from "react-router";
 import Loading from "../components/Loading";
-import { useReservationByIdQuery } from "../generated/graphql";
+import { Reservation, useReservationByIdQuery } from "../generated/graphql";
 import { week } from "../constants/weekdays";
 import { ReactComponent as RightSvg } from "../assets/icons/right-arrow.svg";
 import { ReactComponent as MapSvg } from "../assets/icons/map.svg";
 import { ReactComponent as MobileSvg } from "../assets/icons/mobile.svg";
 import { ReactComponent as FilledSpeechSvg } from "../assets/icons/filled-speech.svg";
+import { ReactComponent as CopySvg } from "../assets/icons/copy.svg";
+import { ReactComponent as DoorSvg } from "../assets/icons/door.svg";
+import { ReactComponent as HospitalSvg } from "../assets/icons/hospital.svg";
+import { ReactComponent as QuestionSvg } from "../assets/icons/question.svg";
+import { calculateTotal } from "../utils/priceBreakdown";
+import { copyToClipboard } from "../utils/copyToClipboard";
+import { debounce } from "@material-ui/core";
+import { AppContext } from "../context/AppContext";
+import { AdvancedImage } from "@cloudinary/react";
 
 interface Props {
 	id: string;
@@ -15,6 +24,9 @@ interface Props {
 }
 
 const TripPage = ({ id, renderProps }: Props) => {
+	const { cloudinary } = useContext(AppContext);
+	const [copied, setCopied] = useState(false);
+
 	const { loading, error, data } = useReservationByIdQuery({
 		variables: { id },
 	});
@@ -34,14 +46,12 @@ const TripPage = ({ id, renderProps }: Props) => {
 			</div>
 		);
 
-	const { listing, dateStart, dateEnd } = data.reservationById;
+	const { listing, dateStart, dateEnd, listingId } = data.reservationById;
 	const { host, city, title, houseRules, address } = listing;
 
 	const start = format(new Date(dateStart), "MMM d");
 	const end = format(new Date(dateEnd), "MMM d");
 	const year = format(new Date(dateStart), "yyyy");
-
-	console.log(houseRules);
 
 	const checkInTime = houseRules[0]?.split(": ")[1];
 	const checkOutTime = houseRules[1]?.includes("Checkout")
@@ -56,6 +66,17 @@ const TripPage = ({ id, renderProps }: Props) => {
 
 	const googleMapLink = googleAPI + addressModded;
 
+	const total = calculateTotal(data.reservationById as Reservation);
+
+	const handleCopyAddress = debounce(() => {
+		copyToClipboard(listing.address);
+		setCopied(true);
+
+		setTimeout(() => {
+			setCopied(false);
+		}, 500);
+	}, 500);
+
 	return (
 		<div className="TripPage">
 			<div className="TripPage-container">
@@ -68,15 +89,15 @@ const TripPage = ({ id, renderProps }: Props) => {
 
 				<div className="divider" />
 
-				<div className="TripPage__carousel"></div>
+				<section className="TripPage__carousel">
+					{/* Add the pictures here */}
+				</section>
 
-				<div className="TripPage__listing-title">
+				<section className="TripPage__listing-title">
 					<h2>{title}</h2>
-				</div>
+				</section>
 
-				{/* <div className="divider" /> */}
-
-				<div className="TripPage__logistics">
+				<section className="TripPage__logistics">
 					<div className="TripPage__logistics__panel">
 						<div className="check-time">Check-in</div>
 						<div>
@@ -91,9 +112,9 @@ const TripPage = ({ id, renderProps }: Props) => {
 						</div>
 						<div>{checkOutTime}</div>
 					</div>
-				</div>
+				</section>
 
-				<div className="TripPage__contact">
+				<section className="TripPage__contact">
 					<button className="active">
 						<a
 							href={googleMapLink}
@@ -106,26 +127,142 @@ const TripPage = ({ id, renderProps }: Props) => {
 						</a>
 					</button>
 					<button>
-						<a>
+						<div>
 							<MobileSvg />
 							<span>Call host</span>
 							<RightSvg />
-						</a>
+						</div>
 					</button>
 					<button>
-						<a>
+						<div>
 							<FilledSpeechSvg />
 							<span>Message host</span>
 							<RightSvg />
-						</a>
+						</div>
 					</button>
-        </div>
-        
-        <div className="big-divider" />
-        
-        <div className="TripPage__details">
+				</section>
 
-        </div>
+				<div className="big-divider" />
+
+				<section className="TripPage__receipt">
+					<div className="TripPage__receipt__title">
+						<h2>Price breakdown</h2>
+					</div>
+					<div className="TripPage__receipt__breakdown">
+						<div className="breakdown-line">
+							<span>
+								${listing.price?.toFixed(2)} x{" "}
+								{total.totalNights} nights
+							</span>
+							<span>${total.price?.toFixed(2)}</span>
+						</div>
+						<div className="breakdown-line">
+							<span>Cleaning fee</span>
+							<span>${total.cleaningFee?.toFixed(2)}</span>
+						</div>
+						<div className="breakdown-line">
+							<span>Service fee</span>
+							<span>${total.serviceFee?.toFixed(2)}</span>
+						</div>
+						<div className="breakdown-line">
+							<span>Occupancy fees and taxes</span>
+							<span>${total.occupancyTax?.toFixed(2)}</span>
+						</div>
+						<div className="breakdown-line total">
+							<span>Total (USD)</span>
+							<span>${total.totalPrice?.toFixed(2)}</span>
+						</div>
+					</div>
+				</section>
+
+				<div className="big-divider" />
+
+				<section className="TripPage__directions">
+					<div className="TripPage__directions__title">
+						<h2>Getting there</h2>
+					</div>
+					<div className="TripPage__directions__map">
+						{/* Put the google maps integration here! */}
+					</div>
+					<div className="TripPage__directions__address">
+						<div>Address</div>
+						<div>{listing.address.split(/, (.+)/)[0]}</div>
+						<div>{listing.address.split(/, (.+)/)[1]}</div>
+					</div>
+					<div className="TripPage__directions__copy">
+						<button className="active" onClick={handleCopyAddress}>
+							<div>
+								<CopySvg />
+								<span>
+									{copied ? "Copied" : "Copy directions"}
+								</span>
+								<RightSvg />
+							</div>
+						</button>
+						<button className="active">
+							<a
+								href={googleMapLink}
+								target="_blank"
+								rel="noreferrer"
+							>
+								<MapSvg />
+								<span>Get directions</span>
+								<RightSvg />
+							</a>
+						</button>
+						<button className="active">
+							<a href={`/listing/${listingId}`}>
+								<DoorSvg />
+								<span>Show listing</span>
+								<RightSvg />
+							</a>
+						</button>
+					</div>
+				</section>
+
+				<div className="big-divider" />
+
+				<section className="TripPage__host">
+					<div className="TripPage__host__title">
+						<div className="host-details">
+							<h2>Your host, {host?.firstName}</h2>
+							<span>
+								<a href={`/host/${host?.id}`}>Show profile</a>
+							</span>
+						</div>
+						<div className="host-image">
+							<AdvancedImage
+								cldImg={cloudinary.image(
+									`host_avatars/${host?.id}`
+								)}
+							/>
+						</div>
+					</div>
+				</section>
+
+				<div className="big-divider" />
+
+				<section className="TripPage__support">
+					<div className="TripPage__support__title">
+						<h2>Support</h2>
+					</div>
+					<div className="TripPage__support__help">
+						<button>
+							<div>
+								<QuestionSvg />
+								<span>Help Center</span>
+								<RightSvg />
+							</div>
+						</button>
+						<button>
+							<div>
+								<HospitalSvg />
+								<span>Resolution Center</span>
+								<RightSvg />
+							</div>
+						</button>
+					</div>
+				</section>
 			</div>
 		</div>
 	);

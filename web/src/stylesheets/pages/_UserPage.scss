@@ -30,9 +30,8 @@
 		&__avatar {
 			width: 100px;
 			height: 100px;
-			border: 1px solid $muted-line-color;
 			border-radius: 50%;
-			background-color: rgb(243, 243, 243);
+			background-color: $avatar-background-color;
 		}
 	}
 
