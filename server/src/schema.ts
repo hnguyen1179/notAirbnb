@@ -61,11 +61,15 @@ const Query = objectType({
         id: nonNull(stringArg()),
       },
       resolve: async (_parent, args, context: Context) => {
-        return context.prisma.reservation.findUnique({
+        const data = await context.prisma.reservation.findUnique({
           where: {
             id: args.id,
           },
         });
+
+        if (!data) throw new Error('Reservation not found');
+
+        return data;
       },
     });
 
