@@ -1,0 +1,67 @@
+.Loading-container {
+	width: fit-content;
+	height: fit-content;
+
+	display: flex;
+
+	&__dot {
+		width: 0.7rem;
+		height: 0.7rem;
+		background: black;
+		opacity: 10%;
+		border-radius: 50%;
+		margin: 0.2rem;
+		animation: glow 0.5s ease-in-out;
+		animation-direction: alternate-reverse;
+		animation-iteration-count: infinite;
+
+		&:nth-child(1) {
+			animation-delay: 0.125s;
+		}
+
+		&:nth-child(2) {
+			animation-delay: 0.25s;
+		}
+
+		&:nth-child(3) {
+			animation-delay: 0.375s;
+		}
+
+		&:nth-child(4) {
+			animation-delay: 0.5s;
+		}
+	}
+}
+
+@keyframes glow {
+	0% {
+		opacity: 100%;
+	}
+	100% {
+		opacity: 10%;
+	}
+	0% {
+		opacity: 100%;
+	}
+}
+
+.LoadingButton-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	height: 100%;
+	width: 100%;
+	background-color: rgb(218, 218, 218);
+	display: grid;
+	place-items: center;
+	z-index: 10;
+}
+
+.page-loading {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}

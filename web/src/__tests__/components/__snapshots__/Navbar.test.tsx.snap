@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Navbar /> renders the <Navbar /> with login and signup buttons 1`] = `
+<div
+  class="Navbar-container"
+>
+  <div
+    class="Loading-container"
+  >
+    <div
+      class="Loading-container__dot"
+    />
+    <div
+      class="Loading-container__dot"
+    />
+    <div
+      class="Loading-container__dot"
+    />
+    <div
+      class="Loading-container__dot"
+    />
+  </div>
+  <div>
+    <button
+      value="signup"
+    >
+      sign up
+    </button>
+    <button
+      value="unverified"
+    >
+      log in
+    </button>
+  </div>
+  
+</div>
+`;

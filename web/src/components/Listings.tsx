@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import AppContext from "../context/app-context";
+import { AppContext } from "../context/AppContext";
 import { gql, useQuery } from "@apollo/client";
 
 const LISTINGS_QUERY = gql`

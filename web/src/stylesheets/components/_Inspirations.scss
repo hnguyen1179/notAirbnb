@@ -1,0 +1,156 @@
+.Inspirations {
+	&__header {
+		font-size: 1.8rem;
+		margin-top: 4rem;
+		margin-bottom: 0.9rem;
+	}
+}
+
+.InspirationTabs {
+	margin-left: -1.4rem;
+
+	&__tabs {
+		padding-left: 1.4rem;
+		overflow: visible;
+		position: relative;
+		display: flex;
+		white-space: nowrap;
+		overflow-x: auto;
+
+		&::after {
+			content: "";
+			display: block;
+			position: absolute;
+			bottom: 0.3rem;
+			min-width: 908px;
+			// Must subtract by __tabs padding-left (1.4)
+			width: calc(100% - 1.4rem);
+			height: 0.1rem;
+			background-color: rgb(221, 221, 221);
+		}
+
+		&__tab {
+			margin: 0 0.4rem;
+			padding-bottom: 1rem;
+
+			&:first-child {
+				// Offset the padding: 1rem of the button below in order to align
+				margin-left: -1rem;
+			}
+
+			button {
+				padding: 1rem;
+				border-radius: 1.2rem;
+
+				span {
+					font-size: 1.4rem;
+					color: rgb(156, 147, 147);
+				}
+
+				&:hover {
+					background-color: rgba(150, 150, 150, 0.082);
+				}
+
+				&:active {
+					transition: transform 200ms ease-in-out;
+					transform: scale(0.95);
+				}
+			}
+
+			&.active {
+				button {
+					pointer-events: none;
+
+					&:active {
+						transform: none;
+					}
+
+					span {
+						position: relative;
+						color: rgb(34, 34, 34);
+
+						&::after {
+							content: "";
+							display: block;
+							position: absolute;
+							bottom: -1.6rem;
+							width: 100%;
+							height: 0.3rem;
+							background-color: rgb(34, 34, 34);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	&__line {
+		display: none;
+		width: 100%;
+		height: 3px;
+		background: green;
+	}
+}
+
+.InspirationPanel {
+	-webkit-box-pack: start;
+	-webkit-box-align: stretch;
+	display: flex;
+	align-items: stretch;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+	margin-top: 0.9rem;
+
+	&__item {
+		// Change width based on screen size, 25%, 33%, etc.
+		width: 50%;
+		padding: 1.6rem 0;
+		pointer-events: none;
+
+		&__content {
+			font-weight: 400;
+			display: flex;
+			flex-direction: column;
+			font-size: 1.4rem;
+			letter-spacing: 0.02rem;
+			color: $disabled-text-color;
+
+			span:last-child {
+				color: rgb(197, 197, 197);
+			}
+		}
+	}
+	&__item.defined {
+		pointer-events: all;
+
+		.InspirationPanel__item__content {
+			font-weight: 300;
+			span:first-child {
+				color: black;
+			}
+
+			span:last-child {
+				color: rgba(63, 63, 63, 0.747);
+			}
+		}
+	}
+}
+
+@media (min-width: 744px) {
+	.InspirationPanel__item {
+		width: 33.3333%;
+	}
+}
+
+@media (min-width: 1128px) {
+	.InspirationPanel__item {
+		width: 25%;
+	}
+
+	.InspirationTabs__tabs {
+		&::after {
+			// Must subtract by  __tabs padding-left (1.4)
+			width: calc(100% - 1.4rem);
+		}
+	}
+}

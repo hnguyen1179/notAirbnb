@@ -1,65 +1,171 @@
-// -----------------------------------------------------------------------------
-// This file contains all styles related to the footer of the site/application.
-// -----------------------------------------------------------------------------
-
 .Footer {
-  margin-bottom: 5%;
-  display: flex;
-  justify-content: flex-start;
+	padding-right: 2.4rem;
+	padding-left: 2.4rem;
 
-  &__link-container {
-    display: flex;
+	.FooterSection {
+		padding: 3.2rem 0;
+	}
 
-    a .Footer__icon {
-      margin: 0 1.5rem;
-      position: relative;
-      font-size: clamp(1rem, 0.8239rem + 0.7512vw, 1.5rem);      
-      font-family: $paragraphFont;
-      font-weight: 600;
-      color: $dark-grey;
+	&__meta,
+	.FooterSection {
+		border-top: 1px solid #dddddd;
 
-      &:first-child {
-        margin-left: 0;
-      }
+		&:first-child {
+			border: none;
+			padding-top: 0;
+		}
+	}
 
-      &::before, 
-      &::after {
-        @include bottom-bar;
-      }
+	&__meta {
+		padding-top: 1.2rem;
+		font-size: 1.4rem;
+		color: $muted-text-color;
 
-      &::before {
-        @include bottom-bar-before;
-      }
+		&__language {
+			margin: 1.8rem 0;
 
-      &:hover::before {
-        @include bottom-bar-hover-before;
-      }
+			button {
+				display: flex;
+				text-decoration: underline;
 
-      &:hover {
-        transition: 350ms;
-      }
-      
-      &--resume:hover {
-        color: white;
-      }
+				svg {
+					margin-right: 0.8rem;
+				}
+			}
+		}
 
-      &--spotify:hover {
-        color: #1db954;
-      }
+		&__legal {
+		}
 
-      &--linkedin:hover {
-        color: #2867B2;
-      }
+		&__docs {
+			.spacer {
+				display: inline-block;
+				text-align: center;
+				width: 1.9rem;
 
-      &--github:hover {
-        color: rgb(255, 255, 255); 
-      }
-    }
-  }
+				&--hidden {
+					display: none;
+				}
+			}
+		}
+	}
 }
 
-@media screen and (max-width: 400px) {
-  .Footer {
-    margin-bottom: 10%;
-  }
+.FooterSection {
+	&__head,
+	&__list__item {
+		padding: 0.6rem 0;
+	}
+
+	&__head {
+		font-size: 1.4rem;
+	}
+
+	&__list {
+		&__item {
+			pointer-events: none;
+			font-size: 1.4rem;
+
+			a {
+				letter-spacing: 0.05rem;
+				font-weight: 400;
+				color: $disabled-text-color;
+			}
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+
+		&__item.defined {
+			pointer-events: all;
+
+			a {
+				font-weight: 400;
+				color: #222222 !important;
+			}
+		}
+	}
+}
+
+// Used for footer elements outside of the landing page
+.Footer-container {
+	padding-top: 3.2rem;
+	padding-bottom: 2.4rem;
+	background-color: #f7f7f7;
+	border-top: 1px solid #dddddd;
+}
+
+@media (min-width: 744px) {
+	.Footer {
+		padding-left: 4rem;
+
+		&__meta {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+	}
+
+	.FooterSection__list {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media (min-width: 1128px) {
+	.Footer {
+		padding-left: 8rem;
+		padding-right: 8rem;
+
+		&__meta {
+			display: flex;
+			flex-direction: row-reverse;
+			margin-top: 4rem;
+
+			&__docs {
+				order: 2;
+			}
+
+			&__legal {
+				order: 3;
+			}
+
+			&__language {
+				order: 1;
+			}
+
+			&__docs {
+				margin-right: auto;
+				.spacer--hidden {
+					display: inline-block;
+				}
+			}
+		}
+	}
+
+	.FooterSection-container {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+
+		.FooterSection {
+			width: 25%;
+			border: none;
+			padding: 0;
+
+			&__list {
+				display: flex;
+				flex-direction: column;
+			}
+		}
+	}
+}
+
+@media (min-width: 1780px) {
+	.Footer {
+		max-width: 1760px !important;
+		margin-left: auto !important;
+		margin-right: auto !important;
+	}
 }

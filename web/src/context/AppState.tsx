@@ -1,36 +1,55 @@
-import React, { useState } from "react";
-import AppContext from "./app-context";
-import useAuthToken from "../hooks/useAuthToken";
-import { gql, useQuery } from "@apollo/client";
-
+import React, { useState, useEffect } from "react";
+import { Cloudinary } from "@cloudinary/base";
+import { AppContext } from "./AppContext";
+import { useMeQuery } from "../generated/graphql";
 interface Props {
 	children: React.ReactNode;
 }
 
-const ME = gql`
-	query ME {
-		me {
-			firstName
-			lastName
-		}
-	}
-`;
+const width = window.innerWidth;
 
 function AppState(props: Props) {
-	const { loading, error, data } = useQuery(ME);
+	const mql = window.matchMedia("(min-width: 744px)");
+	const { data } = useMeQuery();
+
 	const [message, setMessage] = useState(
 		"This is a message from the Provider"
 	);
 	const [locale, setLocale] = useState("en");
+	const [mobile, setMobile] = useState(width <= 744);
+
+	const cloudinary = new Cloudinary({
+		cloud: {
+			cloudName: process.env.REACT_APP_CLOUDINARY_NAME,
+		},
+	});
+
+	const handleMobileChange = () => {
+		if (mql.matches) {
+			setMobile(false);
+		} else {
+			setMobile(true);
+		}
+	};
+
+	useEffect(() => {
+		mql.addEventListener("change", handleMobileChange);
+
+		return () => {
+			mql.removeEventListener("change", handleMobileChange);
+		};
+	}, []);
 
 	return (
 		<AppContext.Provider
 			value={{
+				cloudinary,
 				message,
 				locale,
-				user: data ? data.me : null,
+				user: data?.me ? data.me : null,
 				setMessage,
 				setLocale,
+				mobile,
 			}}
 		>
 			{props.children}

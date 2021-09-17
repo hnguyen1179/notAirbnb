@@ -1,32 +1,26 @@
 @charset "UTF-8";
 
 // 1. Configuration and helpers
-@import
-  'abstracts/variables',
-  'abstracts/mixins';
+@import "abstracts/variables", "abstracts/mixins";
 
 // 2. Vendors
-@import
-  'vendors/normalize';
+@import "vendors/normalize";
 
 // 3. Base stuff
-@import
-  'base/base',
-  'base/fonts',
-  'base/typography',
-  'base/animations';
+@import "base/base", "base/fonts", "base/typography", "base/animations";
 
 // 4. Layout-related sections
-@import
-  'layout/header',
-  'layout/footer';
+@import "layout/Footer";
 
 // 5. Components
-@import
-  'components/Loading';
-//   'components/title',
-//   'components/hamburger';
+@import "components/EntryForm/", "components/LoadingButton",
+	"components/EntryForm/", "components/PasswordHints.scss",
+	"components/Modal.scss", "components/Navbar.scss",
+	"components/MobileSearch.scss", "components/Destinations.scss",
+	"components/ListingTypes.scss", "components/Inspirations.scss",
+	"components/MobileNavbar.scss", "components/FormSearch.scss",
+	"components/FormSearchMobile.scss", "components/ReviewItem.scss";
 
 // 6. Page-specific styles
-@import
-  'pages/Listing'
+@import "pages/Listing", "pages/Landing", "pages/EntryPage", "pages/UserPage",
+	"pages/HostPage", "pages/TripsPage", "pages/TripPage";

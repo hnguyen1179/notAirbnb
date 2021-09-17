@@ -1,0 +1,104 @@
+.Destinations {
+	&__header {
+		font-size: 1.8rem;
+		margin: 1.8rem 0;
+	}
+
+	&__list {
+		// Edit this based on the page width; widnow.addEventListner('resize' ...)
+		--column-count: 4;
+
+		overflow-x: auto;
+		display: grid;
+		gap: 12px;
+		grid-template-rows: repeat(2, auto);
+		grid-template-columns:
+			repeat(calc(var(--column-count) - 1), calc(100% - 108px))
+			100%;
+		grid-auto-flow: column;
+		scroll-snap-type: x mandatory;
+
+		&::-webkit-scrollbar {
+			width: 0;
+		}
+	}
+}
+
+.DestinationIcon {
+	scroll-snap-align: start;
+	height: 100%;
+
+	&__content {
+		display: flex;
+		align-items: center;
+
+		&__image {
+			width: 7.2rem;
+
+			img {
+				border-radius: 1.5rem;
+				width: 100%;
+			}
+		}
+
+		&__text {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			margin: 1.25rem;
+
+			&__location {
+			}
+
+			&__distance {
+				font-weight: 400;
+			}
+		}
+	}
+}
+
+@media (min-width: 744px) {
+	.Destinations {
+		&__list {
+			scroll-padding: 0px;
+			gap: 8px;
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	.DestinationIcon {
+		&__image {
+			margin-right: 1.6rem;
+		}
+
+		&:nth-child(7),
+		&:nth-child(8) {
+			display: none;
+		}
+	}
+}
+
+@media (min-width: 950px) {
+
+}
+
+@media (min-width: 1128px) {
+	.Destinations {
+		&__list {
+			scroll-padding: 0px;
+			gap: 8px;
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+
+	.DestinationIcon {
+		&:nth-child(7),
+		&:nth-child(8) {
+			display: block;
+		}
+
+		&__content__image {
+			width: 6.4rem;
+		}
+	}
+}

@@ -8,16 +8,23 @@ import {
   nonNull,
   objectType,
   stringArg,
+  intArg,
   inputObjectType,
   arg,
   asNexusMethod,
   list,
 } from 'nexus';
 import { DateTimeResolver, JSONObjectResolver } from 'graphql-scalars';
+import objectHash from 'object-hash';
 import { Context } from './context';
 
 export const dateTimeScalar = asNexusMethod(DateTimeResolver, 'date');
 export const jsonScalar = asNexusMethod(JSONObjectResolver, 'json');
+
+// Artificially slows down requests to simulate an actual server and show loaders
+const sleep = (milliseconds: number) => {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+};
 
 const Query = objectType({
   name: 'Query',
@@ -41,6 +48,87 @@ const Query = objectType({
       },
       resolve: (_parent, args, context: Context) => {
         return context.prisma.listing.findUnique({
+          where: {
+            id: args.id,
+          },
+        });
+      },
+    });
+
+    t.nullable.field('reservationsById', {
+      type: 'Reservation',
+      args: {
+        id: nonNull(stringArg()),
+      },
+      resolve: async (_parent, args, context: Context) => {
+        const data = await context.prisma.reservation.findUnique({
+          where: {
+            id: args.id,
+          },
+        });
+
+        if (!data) throw new Error('Reservation not found');
+
+        return data;
+      },
+    });
+
+    t.nonNull.list.nonNull.field('reservationsByUserId', {
+      type: list('Reservation'),
+      args: {
+        id: nonNull(stringArg()),
+      },
+      resolve: async (_parent, args, context: Context) => {
+        const future = await context.prisma.reservation.findMany({
+          where: {
+            userId: args.id,
+            dateStart: {
+              gte: new Date(),
+            },
+          },
+        });
+
+        const past = await context.prisma.reservation.findMany({
+          where: {
+            userId: args.id,
+            dateStart: {
+              lt: new Date(),
+            },
+          },
+        });
+
+        return [future, past];
+      },
+    });
+
+    t.nonNull.list.nonNull.field('reviewsByUserId', {
+      type: 'Review',
+      args: {
+        id: nonNull(stringArg()),
+        offset: intArg(),
+      },
+      resolve: async (_parent, args, context: Context) => {
+        const data = await context.prisma.review.findMany({
+          skip: args.offset || 0,
+          take: 3,
+          where: {
+            authorId: args.id,
+          },
+        });
+
+        await sleep(Math.random() * 50 + 100);
+
+        return data;
+      },
+    });
+
+    t.nullable.field('userById', {
+      type: 'User',
+      args: {
+        id: nonNull(stringArg()),
+      },
+      resolve: (_parent, args, context: Context) => {
+        return context.prisma.user.findUnique({
           where: {
             id: args.id,
           },
@@ -77,29 +165,66 @@ const Mutation = objectType({
     t.field('signup', {
       type: 'AuthPayload',
       args: {
-        id: nonNull(stringArg()),
-        dateJoined: nonNull(stringArg()),
         firstName: nonNull(stringArg()),
         lastName: nonNull(stringArg()),
         email: nonNull(stringArg()),
         password: nonNull(stringArg()),
       },
       resolve: async (_parent, args, context: Context) => {
-        const hashedPassword = await hash(args.password, 10);
-        const user = await context.prisma.user.create({
-          data: {
-            id: args.id,
-            dateJoined: args.dateJoined,
-            firstName: args.firstName,
-            lastName: args.lastName,
-            email: args.email,
-            password: hashedPassword,
+        await sleep(Math.random() * 600 + 400);
+
+        try {
+          const userExists = await context.prisma.user.findUnique({
+            where: {
+              email: args.email,
+            },
+          });
+
+          if (userExists) {
+            throw new Error('User with this email already exists');
+          }
+
+          const hashedPassword = await hash(args.password, 10);
+
+          const dateJoined = `Joined in ${new Date().getFullYear()}`;
+          const id = objectHash(args);
+
+          const user = await context.prisma.user.create({
+            data: {
+              id,
+              dateJoined,
+              firstName: args.firstName,
+              lastName: args.lastName,
+              email: args.email,
+              password: hashedPassword,
+            },
+          });
+
+          return {
+            token: sign({ userId: user.id }, APP_SECRET),
+            user,
+          };
+        } catch (e: any) {
+          return e;
+        }
+      },
+    });
+
+    t.field('verifyEmail', {
+      type: 'Boolean',
+      args: {
+        email: nonNull(stringArg()),
+      },
+      resolve: async (_, { email }, context: Context) => {
+        await sleep(Math.random() * 600 + 400);
+
+        const user = await context.prisma.user.findUnique({
+          where: {
+            email,
           },
         });
-        return {
-          token: sign({ userId: user.id }, APP_SECRET),
-          user,
-        };
+
+        return !!user;
       },
     });
 
@@ -110,24 +235,26 @@ const Mutation = objectType({
         password: nonNull(stringArg()),
       },
       resolve: async (_parent, { email, password }, context: Context) => {
+        await sleep(Math.random() * 600 + 400);
+
         try {
           const user = await context.prisma.user.findUnique({
             where: {
               email,
             },
           });
-          if (!user) {
-            throw new Error(`No user found for email: ${email}`);
-          }
+
+          if (!user) throw new Error(`No user found for email: ${email}`);
+
           const passwordValid = await compare(password, user.password);
-          if (!passwordValid) {
-            throw new Error('Invalid password');
-          }
+
+          if (!passwordValid) throw new Error('Invalid password');
+
           return {
             token: sign({ userId: user.id }, APP_SECRET),
             user,
           };
-        } catch (e) {
+        } catch (e: any) {
           return e;
         }
       },
@@ -248,6 +375,18 @@ const User = objectType({
     t.nonNull.string('lastName');
     t.nonNull.string('email');
     t.nonNull.string('dateJoined');
+    t.nonNull.field('reviewsCount', {
+      type: 'Int',
+      resolve: async (parent, _args, context: Context) => {
+        const data = await context.prisma.user
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .reviews();
+
+        return data.length;
+      },
+    });
     t.nonNull.field('reviews', {
       type: list('Review'),
       resolve: (parent, _, context: Context) => {
@@ -371,6 +510,18 @@ const Listing = objectType({
     t.nonNull.float('score');
     t.nonNull.field('scores', { type: list('String') });
     t.nonNull.field('datesUnavailable', { type: 'JSONObject' });
+    t.nonNull.field('reviewsCount', {
+      type: 'Int',
+      resolve: async (parent, _args, context: Context) => {
+        const data = await context.prisma.listing
+          .findUnique({
+            where: { id: parent.id || undefined },
+          })
+          .reviews();
+
+        return data.length;
+      },
+    });
     t.nonNull.field('reviews', {
       type: list('Review'),
       resolve: (parent, _, context: Context) => {

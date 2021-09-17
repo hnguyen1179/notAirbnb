@@ -1,0 +1,293 @@
+.TripsPage {
+	.TripsPage-container {
+		margin-left: auto;
+		margin-right: auto;
+		padding: 3rem;
+	}
+
+	&__header {
+		h1 {
+			font-size: 2.6rem;
+			font-weight: 500;
+		}
+	}
+
+	&__navigator {
+		display: flex;
+		margin: 4.25rem 0;
+		position: relative;
+
+		&::after {
+			content: "";
+			display: block;
+			position: absolute;
+			height: 0.1rem;
+			width: 100%;
+			background-color: rgb(221, 221, 221);
+			bottom: -2rem;
+		}
+
+		&__tab {
+			position: relative;
+			margin: 0 2rem;
+			color: rgb(151, 151, 151);
+			width: fit-content;
+
+			&::before {
+				content: "";
+				display: none;
+				position: absolute;
+				left: -30%;
+				top: -100%;
+				width: 160%;
+				height: 300%;
+				background-color: inherit;
+				z-index: -1;
+			}
+
+			&:hover::before {
+				display: block;
+			}
+
+			&:hover {
+				color: black;
+				background-color: rgba(240, 240, 240, 0.5);
+			}
+
+			&:first-child {
+				margin-left: 0;
+			}
+
+			&.active {
+				color: black;
+				pointer-events: none;
+
+				&::after {
+					content: "";
+					display: block;
+					position: absolute;
+					height: 0.3rem;
+					width: 100%;
+					background-color: black;
+					bottom: -2rem;
+				}
+			}
+		}
+	}
+	&__content {
+		&__list {
+			margin-top: 5rem;
+			margin-bottom: 5rem;
+		}
+
+		&__list:empty {
+			+ .TripsPage__content__placeholder {
+				display: block;
+			}
+		}
+	}
+
+	&__content__placeholder {
+		display: none;
+
+		& > aside {
+			font-weight: 400;
+			font-size: 1.4rem;
+
+			& > span {
+				font-weight: 300;
+				text-decoration: underline;
+			}
+		}
+
+		& > button {
+			width: 100%;
+
+			background-color: black;
+			border-radius: 0.8rem;
+			transition: transform 100ms ease-in-out;
+
+			&:active {
+				transform: scale(0.95);
+				transition: transform 100ms ease-in-out;
+			}
+
+			& > a > div {
+				color: white;
+				padding: 1.5rem 0;
+			}
+		}
+
+		.divider {
+			margin: 3rem 0;
+			width: 100%;
+			height: 0.1rem;
+			background-color: $muted-line-color;
+		}
+	}
+}
+
+.ReservationItem {
+	display: flex;
+	flex-direction: column;
+	border-radius: 1.2rem;
+	overflow: hidden;
+	margin: 4rem 0;
+	box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px;
+	transition: box-shadow 200ms;
+
+	&:hover,
+	&:focus-within {
+		transition: box-shadow 200ms;
+		box-shadow: 0 6px 16px rgba(0, 0, 0, 0.38);
+	}
+
+	&:first-child {
+		margin-top: 0;
+	}
+
+	&__img-container {
+		height: 18rem;
+		width: 100%;
+		position: relative;
+		display: inline-block;
+		overflow: hidden;
+
+		&__img {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			z-index: -1;
+			object-fit: cover;
+			object-position: 50% 50%;
+			vertical-align: bottom;
+		}
+	}
+
+	&__description {
+		padding: 0.5rem 2rem;
+		margin-top: 1rem;
+
+		&__city {
+			& > span {
+				font-size: 1.2rem;
+				font-weight: 400;
+				color: $muted-text-color;
+			}
+			& > div {
+				font-size: 1.8rem;
+				font-weight: 300;
+			}
+		}
+	}
+
+	&__title {
+		padding: 2rem 2rem;
+
+		&:hover {
+			background-color: $highlight-hover-color;
+		}
+
+		& > a {
+			display: flex;
+			align-items: center;
+		}
+
+		svg {
+			margin-left: 1rem;
+		}
+
+		& > a > div {
+			width: 100%;
+			font-size: 1.6rem;
+			font-weight: 400;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow: hidden;
+		}
+	}
+
+	&__show-button {
+		margin-top: auto;
+		border-top: 1px solid $muted-line-color;
+		width: 100%;
+		height: fit-content;
+
+		&:hover {
+			background-color: $highlight-hover-color;
+		}
+
+		div {
+			padding: 2rem 0;
+			text-align: center;
+		}
+	}
+}
+
+@media screen and (min-width: 744px) {
+	.TripsPage {
+		.TripsPage-container {
+			padding: 3rem 4rem;
+		}
+
+		&__header {
+			h1 {
+				font-size: 3.2rem;
+			}
+		}
+
+		&__navigator {
+			& > button {
+				font-size: 1.8rem;
+			}
+		}
+
+		&__content__list {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 3rem;
+		}
+	}
+
+	.ReservationItem {
+		height: 38rem;
+		margin: 0;
+
+		&__description {
+			&__city {
+				span {
+					font-size: 1.4rem;
+				}
+				div {
+					font-size: 2rem;
+				}
+			}
+		}
+
+		&__img-container {
+			height: 22rem;
+		}
+	}
+}
+
+@media (min-width: 1128px) {
+	.TripsPage {
+		.TripsPage-container {
+			padding: 3rem 8rem;
+		}
+
+		&__content__list {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+}
+
+@media (min-width: 1780px) {
+	.TripsPage {
+		.TripsPage-container {
+			max-width: 1760px !important;
+			margin-left: auto !important;
+			margin-right: auto !important;
+		}
+	}
+}

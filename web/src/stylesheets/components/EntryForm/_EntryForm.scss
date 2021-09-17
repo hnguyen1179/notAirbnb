@@ -1,0 +1,273 @@
+.EntryFormContainer {
+	width: min(100vw, 57rem);
+	min-height: 40rem;
+	max-height: 100vh;
+	position: relative;
+	border-radius: 1.5rem;
+	// TODO: Make scrolling only on the 'main' portion of the form
+	overflow-y: auto;
+}
+
+.EntryForm {
+
+	header {
+		height: 6rem;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		border-bottom: 1px solid rgb(235, 235, 235);
+		padding: 0 2.4rem;
+
+		button {
+			outline: none;
+			appearance: none;
+			display: inline-block;
+			border-radius: 50%;
+			border: none;
+			outline: none;
+			margin: 0px;
+			padding: 0px;
+			color: rgb(34, 34, 34);
+			cursor: pointer;
+			touch-action: manipulation;
+			position: relative;
+			background: transparent;
+			transition: -ms-transform 0.25s ease 0s,
+				-webkit-transform 0.25s ease 0s, transform 0.25s ease 0s;
+			@include buttonSvgOutline;
+		}
+
+		div {
+			-webkit-box-flex: 0;
+			flex: 0 0 16px;
+			text-align: right;
+		}
+	}
+
+	&__title {
+		font-size: 1.6rem;
+		text-align: center;
+		font-weight: 500;
+	}
+
+	&__main {
+		padding: 2.4rem;
+		padding-top: 2rem;
+
+		&__form {
+			&__submit-button {
+				display: inline-block;
+				position: relative;
+				text-align: center;
+				text-decoration: none;
+				touch-action: manipulation;
+				font-size: 1.6rem;
+				line-height: 2rem;
+				border-radius: 0.8rem;
+				outline: none;
+				padding: 1.4rem 2.4rem;
+				transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s,
+					-webkit-transform 0.1s ease 0s, transform 0.1s ease 0s;
+				-webkit-tap-highlight-color: transparent;
+				border: none;
+				color: rgb(255, 255, 255);
+				width: 100%;
+				overflow: hidden;
+				background-image: linear-gradient(
+					to right,
+					#00a6de,
+					#2baada,
+					#41add5,
+					#53b1d1,
+					#63b4cd
+				);
+
+				@include focusOutline;
+
+				.gradient-container {
+					position: absolute;
+					top: 0;
+					left: 0;
+					bottom: 0;
+					right: 0;
+					width: 100%;
+					height: 100%;
+
+					.gradient {
+						--mouse-x: 0;
+						--mouse-y: 0;
+						display: block;
+						width: 100%;
+						height: 100%;
+						min-width: 200px;
+						background-position: calc(
+								(100 - var(--mouse-x, 0)) * 1%
+							)
+							calc((100 - var(--mouse-y, 0)) * 1%);
+						background-size: 200% 200%;
+						opacity: 0;
+						transition: opacity 1.25s ease 0s;
+						-webkit-tap-highlight-color: transparent !important;
+						background-image: radial-gradient(
+							circle,
+							#00a6de,
+							#36afe0,
+							#51b8e3,
+							#66c0e5,
+							#7ac9e8,
+							#7ac9e8,
+							#7ac9e8,
+							#7ac9e8,
+							#66c0e5,
+							#51b8e3,
+							#36afe0,
+							#00a6de
+						);
+
+						&:hover {
+							opacity: 1;
+						}
+					}
+				}
+
+				.submit-button__text {
+					display: block;
+					position: relative;
+					pointer-events: none;
+				}
+			}
+		}
+	}
+}
+
+.MuiContainer {
+	margin: 2rem 0;
+
+	&:first-child {
+		margin-top: 2.8rem;
+	}
+	&:last-child {
+		margin-bottom: 1.4rem;
+	}
+
+	&--password {
+		position: relative;
+
+		button {
+			position: absolute;
+			right: 1.2rem;
+			top: 1.7rem;
+			text-decoration: underline;
+			font-size: 1.4rem;
+			transform: translateY(-50%);
+			color: $muted-text-color;
+			border-radius: 0.4rem;
+			transition: box-shadow 0.2s ease 0s;
+			outline: none;
+
+			&:focus-visible {
+				box-shadow: rgb(255, 255, 255) 0px 0px 0px 2px,
+					rgb(34, 34, 34) 0px 0px 0px 4px;
+				transition: box-shadow 0.2s ease 0s;
+			}
+		}
+	}
+
+	&__input-subtext {
+		font-size: 1.2rem;
+		color: $muted-text-color;
+		margin-top: 0.6rem;
+		margin-bottom: 2.2rem;
+		padding: 0 0.2rem;
+	}
+}
+
+.MuiFormControl-root {
+	position: relative;
+
+	.MuiFormLabel-root {
+		&.Mui-error {
+			color: rgb(193, 53, 21) !important;
+		}
+	}
+
+	.MuiInputLabel {
+		&-outlined {
+			color: grey;
+			font-size: 1.6rem;
+			margin-left: 10px;
+			position: absolute;
+			transform: translateY(0);
+			top: 1.2rem;
+
+			&.MuiInputLabel-shrink {
+				transform: translateY(-7px) scale(0.65);
+			}
+		}
+	}
+
+	.MuiInputBase-root {
+		font-weight: 400;
+		position: relative;
+		font-size: 1.6rem;
+
+		input {
+			transform: translateY(5px);
+			margin: 10px;
+			margin: 1.2rem 1rem;
+			padding: 0;
+		}
+
+		.MuiOutlinedInput {
+			&-notchedOutline {
+				legend {
+					display: none;
+				}
+			}
+		}
+	}
+
+	.MuiFormHelperText-root {
+		margin: 0;
+		font-weight: 400;
+		font-size: 1.2rem;
+		&.Mui-error {
+			color: rgb(193, 53, 21) !important;
+		}
+	}
+}
+
+.MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+	border-color: black;
+}
+
+.MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline {
+	border-color: rgb(193, 53, 21) !important;
+}
+
+input[type="date"]:in-range::-webkit-datetime-edit-year-field,
+input[type="date"]:in-range::-webkit-datetime-edit-month-field,
+input[type="date"]:in-range::-webkit-datetime-edit-day-field,
+input[type="date"]:in-range::-webkit-datetime-edit-text {
+	color: transparent;
+}
+
+input[type="date"]:focus::-webkit-datetime-edit-year-field,
+input[type="date"]:focus::-webkit-datetime-edit-month-field,
+input[type="date"]:focus::-webkit-datetime-edit-day-field,
+input[type="date"]:focus::-webkit-datetime-edit-text {
+	color: black !important;
+}
+
+// .MuiFormLabel-root.Mui-error {
+// 	color: #f44336 !important;
+// }
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+	// It's a background image, and so color won't work. Inverting will, however, turn it white
+	filter: invert(1);
+}
+
+input[type="date"]:focus::-webkit-calendar-picker-indicator {
+	filter: none;
+}

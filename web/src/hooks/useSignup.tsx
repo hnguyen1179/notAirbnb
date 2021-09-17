@@ -1,29 +1,12 @@
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { Result } from "../types/mutations";
 import useAuthToken from "./useAuthToken";
-
-const signUpMutationGQL = gql`
-	mutation signup(
-		$email: String!
-		$firstName: String!
-		$lastName: String!
-		$password: String!
-	) {
-		signup(
-			email: $email
-			firstName: $firstName
-			lastName: $lastName
-			password: $password
-		) {
-			token
-		}
-	}
-`;
+import { SIGN_UP } from "../graphql/mutations/signup";
 
 const useSignup = () => {
 	const [_, setAuthToken] = useAuthToken();
 
-	const [mutation, mutationResults] = useMutation(signUpMutationGQL, {
+	const [mutation, mutationResults] = useMutation(SIGN_UP, {
 		onCompleted: (data: Result) => {
 			setAuthToken(data.signup?.token);
 		},

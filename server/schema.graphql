@@ -55,6 +55,7 @@ type Listing {
   region: String!
   reservations: [Reservation]!
   reviews: [Review]!
+  reviewsCount: Int!
   score: Float!
   scores: [String]!
   smokingRule: Boolean!
@@ -72,7 +73,8 @@ type Mutation {
   deleteReservation(id: String!): Reservation
   deleteReview(id: String!): Review
   login(email: String!, password: String!): AuthPayload
-  signup(dateJoined: String!, email: String!, firstName: String!, id: String!, lastName: String!, password: String!): AuthPayload
+  signup(email: String!, firstName: String!, lastName: String!, password: String!): AuthPayload
+  verifyEmail(email: String!): Boolean
 }
 
 type Query {
@@ -80,6 +82,10 @@ type Query {
   listingById(id: String!): Listing
   listingsByRegion(region: String!): [Listing!]!
   me: User
+  reservationsById(id: String!): Reservation
+  reservationsByUserId(id: String!): [[Reservation]!]!
+  reviewsByUserId(id: String!, offset: Int): [Review!]!
+  userById(id: String!): User
 }
 
 type Reservation {
@@ -126,4 +132,5 @@ type User {
   lastName: String!
   reservations: [Reservation]!
   reviews: [Review]!
+  reviewsCount: Int!
 }

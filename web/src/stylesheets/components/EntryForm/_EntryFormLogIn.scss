@@ -1,0 +1,12 @@
+.EntryForm__main__recover-password {
+	margin-top: 1.8rem;
+	button {
+		font-size: 1.4rem;
+		text-decoration: underline;
+		transition: box-shadow 0.2s ease 0s;
+    border-radius: 0.4rem;
+    outline: none;
+
+		@include focusOutline;
+	}
+}
