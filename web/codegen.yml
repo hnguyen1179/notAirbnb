@@ -2,8 +2,10 @@ overwrite: true
 schema: "../server/schema.graphql"
 documents: "src/graphql"
 generates:
-  src/generated/graphql.tsx:
-    plugins:
-      - "typescript"
-      - "typescript-operations"
-      - "typescript-react-apollo"
+    src/generated/graphql.tsx:
+        plugins:
+            - "typescript"
+            - "typescript-operations"
+            - "typescript-react-apollo"
+        config:
+            avoidOptionals: true

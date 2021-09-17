@@ -29,13 +29,11 @@ const TripsPage = ({ id, renderProps }: Props) => {
 			</div>
 		);
 
-	if (error) return <div>{error}</div>;
+	if (error || !data?.reservationsByUserId) return <div>{error}</div>;
 
 	const handleSetActiveTab = (e: any) => {
 		setOnUpcoming(!onUpcoming);
 	};
-
-	if (!data?.reservationsByUserId) return <div>something went wrong?</div>;
 
 	const [future, past] = data.reservationsByUserId;
 

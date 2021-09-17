@@ -15,6 +15,11 @@ const RESERVATION_BY__ID = gql`
 				address
 				price
 				cleaningFee
+				houseRules
+				host {
+					id
+					firstName
+				}
 			}
 		}
 	}

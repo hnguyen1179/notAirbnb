@@ -1,0 +1,153 @@
+.TripPage {
+	--container-padding: 3rem;
+
+	.TripPage-container {
+		padding: var(--container-padding);
+		margin-left: auto;
+		margin-right: auto;
+    overflow-x: hidden;
+	}
+
+	&__header {
+		span {
+			font-weight: 400;
+			color: $muted-text-color;
+		}
+		h1 {
+			font-weight: 300;
+		}
+	}
+
+	.divider {
+		margin: 3rem 0;
+		width: 100%;
+		height: 0.1rem;
+		background-color: $muted-line-color;
+	}
+
+	&__carousel {
+		height: 22.5rem;
+		border: 1px solid black;
+		border-radius: 0.8rem;
+		background: rgb(228, 228, 228);
+		margin-bottom: 2rem;
+	}
+
+	&__listing-title {
+		h2 {
+			font-weight: 300;
+		}
+	}
+
+	&__logistics {
+		padding: 3rem 0;
+		margin-top: 2rem;
+		border-top: 1px solid $muted-line-color;
+		border-bottom: 1px solid $muted-line-color;
+		width: 100%;
+		display: flex;
+
+		&__panel {
+			width: 50%;
+			font-weight: 400;
+
+			&:nth-child(2) {
+				padding-left: 3rem;
+				border-left: 1px solid $muted-line-color;
+			}
+
+			.check-time {
+				font-weight: 500;
+				margin-bottom: 0.5rem;
+			}
+		}
+	}
+
+	&__contact {
+		display: flex;
+		flex-direction: column;
+
+		.active {
+			cursor: default;
+			& > a {
+				& > span,
+				& > svg {
+					color: black;
+				}
+			}
+			&:first-child {
+				cursor: pointer;
+			}
+		}
+    
+    & > button:last-child {
+      & > a {
+        border-bottom: 0;
+      }
+    }
+
+		& > button > a {
+			width: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			padding: 1.5rem 0;
+			border-bottom: 1px solid $muted-line-color;
+			position: relative;
+			font-weight: 400;
+
+			& > span,
+			& > svg {
+				color: $disabled-text-color;
+			}
+
+			&:first-child {
+				color: black;
+			}
+
+			&::after {
+				position: absolute;
+				content: "";
+				width: 100vw;
+				height: 100%;
+				// offsets the 3rem padding on the container. Adjust this on changing container padding
+				left: calc(var(--container-padding) * -1);
+				background-color: inherit;
+				z-index: -1;
+			}
+
+			&:hover {
+				background-color: $highlight-hover-color;
+			}
+
+			& > svg:first-child {
+				display: flex;
+				justify-content: flex-start;
+				width: 20px !important;
+				margin-right: 2rem;
+			}
+
+			& > svg:last-child {
+				margin-left: auto;
+			}
+		}
+	}
+
+	.big-divider {
+		margin: 2rem 0;
+    position: relative;
+    
+    &::after {
+      background-color: $muted-line-color;
+      position: absolute;
+      content: "";
+      width: 100vw;
+      height: 1rem;
+      left: calc(var(--container-padding) * -1)
+    }
+	}
+
+  &__details {
+    
+  }
+}
