@@ -122,11 +122,11 @@ const TripPage = ({ id, renderProps }: Props) => {
 				<div className="divider" />
 
 				<section className="TripPage__carousel">
-					<a href={`/listing/${listingId}`}>
-						<div className="TripPage__carousel__image">
-							<span className="image-count">
-								1/{imageComments.length}
-							</span>
+					<div className="TripPage__carousel__image">
+						<span className="image-count">
+							1/{imageComments.length}
+						</span>
+						<a href={`/listing/${listingId}`}>
 							<AdvancedImage
 								cldImg={cloudinary.image(
 									`images/${region
@@ -137,8 +137,8 @@ const TripPage = ({ id, renderProps }: Props) => {
 										)}/${listingId}/image-0`
 								)}
 							/>
-						</div>
-					</a>
+						</a>
+					</div>
 					<div>
 						<a href={`/listing/${listingId}`}>
 							<h2>{title}</h2>
