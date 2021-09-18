@@ -247,7 +247,7 @@ export type ReservationByIdQueryVariables = Exact<{
 }>;
 
 
-export type ReservationByIdQuery = { __typename?: 'Query', reservationById: Maybe<{ __typename?: 'Reservation', id: string, listingId: string, dateStart: any, dateEnd: any, totalPrice: number, listing: Maybe<{ __typename?: 'Listing', city: string, title: string, region: string, address: string, price: number, cleaningFee: number, houseRules: Array<Maybe<string>>, host: Maybe<{ __typename?: 'Host', id: string, firstName: string }> }> }> };
+export type ReservationByIdQuery = { __typename?: 'Query', reservationById: Maybe<{ __typename?: 'Reservation', id: string, listingId: string, dateStart: any, dateEnd: any, totalPrice: number, listing: Maybe<{ __typename?: 'Listing', city: string, title: string, region: string, address: string, price: number, cleaningFee: number, houseRules: Array<Maybe<string>>, imageComments: Array<Maybe<string>>, host: Maybe<{ __typename?: 'Host', id: string, firstName: string }> }> }> };
 
 export type ReservationsByUserIdQueryVariables = Exact<{
   id: Scalars['String'];
@@ -405,6 +405,7 @@ export const ReservationByIdDocument = gql`
       price
       cleaningFee
       houseRules
+      imageComments
       host {
         id
         firstName

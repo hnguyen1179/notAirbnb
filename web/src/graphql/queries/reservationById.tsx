@@ -16,6 +16,7 @@ const RESERVATION_BY__ID = gql`
 				price
 				cleaningFee
 				houseRules
+				imageComments
 				host {
 					id
 					firstName

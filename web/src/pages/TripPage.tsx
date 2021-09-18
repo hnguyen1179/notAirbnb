@@ -47,7 +47,7 @@ const TripPage = ({ id, renderProps }: Props) => {
 		);
 
 	const { listing, dateStart, dateEnd, listingId } = data.reservationById;
-	const { host, city, title, houseRules, address } = listing;
+	const { host, city, title, houseRules, address, region } = listing;
 
 	const start = format(new Date(dateStart), "MMM d");
 	const end = format(new Date(dateEnd), "MMM d");
@@ -90,11 +90,25 @@ const TripPage = ({ id, renderProps }: Props) => {
 				<div className="divider" />
 
 				<section className="TripPage__carousel">
-					{/* Add the pictures here */}
-				</section>
-
-				<section className="TripPage__listing-title">
-					<h2>{title}</h2>
+					<a href={`/listing/${listingId}`}>
+						<div className="TripPage__carousel__image">
+							<AdvancedImage
+								cldImg={cloudinary.image(
+									`images/${region
+										.toLocaleLowerCase()
+										.replace(
+											" ",
+											"_"
+										)}/${listingId}/image-0`
+								)}
+							/>
+						</div>
+					</a>
+					<div>
+						<a href={`/listing/${listingId}`}>
+							<h2>{title}</h2>
+						</a>
+					</div>
 				</section>
 
 				<section className="TripPage__logistics">

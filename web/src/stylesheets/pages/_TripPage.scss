@@ -1,9 +1,9 @@
 .TripPage {
 	--container-padding: 3rem;
 
-  h2 {
-    font-weight: 300;
-  }
+	h2 {
+		font-weight: 300;
+	}
 
 	.TripPage-container {
 		padding: var(--container-padding);
@@ -30,11 +30,25 @@
 	}
 
 	&__carousel {
-		height: 22.5rem;
-		border: 1px solid black;
-		border-radius: 0.8rem;
-		background: rgb(228, 228, 228);
-		margin-bottom: 2rem;
+		&__image {
+			min-height: 22.5rem;
+      width: 100%;
+			border-radius: 0.8rem;
+			margin-bottom: 2rem;
+      position: relative;
+      display: inline-block;
+      overflow: hidden;
+      padding-bottom: 50%;
+
+      img {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        object-fit: cover;
+        object-position: 50% 50%;
+      }
+		}
 	}
 
 	&__logistics {
@@ -204,37 +218,37 @@
 		}
 	}
 
-  &__host {
-    margin: 3rem 0;
-    
-    &__title {
-      display: flex; 
-      justify-content: space-between;
-      align-items: center;
+	&__host {
+		margin: 3rem 0;
 
-      .host-details {
-        span {
-          text-decoration: underline;
-        }
-      }
+		&__title {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
 
-      .host-image {
-        width: 10rem;
-        height: 10rem;
-        background-color: $avatar-background-color;
-        border-radius: 50%;
-      }
-    }
-  }
+			.host-details {
+				span {
+					text-decoration: underline;
+				}
+			}
 
-  &__support {
-    margin-top: 3rem;
-    margin-bottom: 5rem;
+			.host-image {
+				width: 10rem;
+				height: 10rem;
+				background-color: $avatar-background-color;
+				border-radius: 50%;
+			}
+		}
+	}
 
-    &__help {
-      margin-top: 1rem;
-      display: flex;
-      flex-direction: column;
-    }
-  }
+	&__support {
+		margin-top: 3rem;
+		margin-bottom: 5rem;
+
+		&__help {
+			margin-top: 1rem;
+			display: flex;
+			flex-direction: column;
+		}
+	}
 }
