@@ -1,6 +1,10 @@
 import { useState, useContext } from "react";
 import { format, getDay } from "date-fns";
 import { Redirect } from "react-router";
+import { debounce } from "@material-ui/core";
+import { AdvancedImage } from "@cloudinary/react";
+import GoogleMapReact from "google-map-react";
+
 import Loading from "../components/Loading";
 import { Reservation, useReservationByIdQuery } from "../generated/graphql";
 import { week } from "../constants/weekdays";
@@ -12,11 +16,13 @@ import { ReactComponent as CopySvg } from "../assets/icons/copy.svg";
 import { ReactComponent as DoorSvg } from "../assets/icons/door.svg";
 import { ReactComponent as HospitalSvg } from "../assets/icons/hospital.svg";
 import { ReactComponent as QuestionSvg } from "../assets/icons/question.svg";
+import { ReactComponent as BoldNegativeSvg } from "../assets/icons/bold-negative.svg";
 import { calculateTotal } from "../utils/priceBreakdown";
 import { copyToClipboard } from "../utils/copyToClipboard";
-import { debounce } from "@material-ui/core";
 import { AppContext } from "../context/AppContext";
-import { AdvancedImage } from "@cloudinary/react";
+import { coordinates } from "../constants/coordinates";
+import HouseMarker from "../components/HouseMarker/HouseMarker";
+import { style } from "../constants/simpleMapStyle";
 
 interface Props {
 	id: string;
@@ -47,7 +53,8 @@ const TripPage = ({ id, renderProps }: Props) => {
 		);
 
 	const { listing, dateStart, dateEnd, listingId } = data.reservationById;
-	const { host, city, title, houseRules, address, region } = listing;
+	const { host, city, title, houseRules, address, region, imageComments } =
+		listing;
 
 	const start = format(new Date(dateStart), "MMM d");
 	const end = format(new Date(dateEnd), "MMM d");
@@ -68,6 +75,10 @@ const TripPage = ({ id, renderProps }: Props) => {
 
 	const total = calculateTotal(data.reservationById as Reservation);
 
+	const handleBackClick = () => {
+		renderProps.history.goBack();
+	};
+
 	const handleCopyAddress = debounce(() => {
 		copyToClipboard(listing.address);
 		setCopied(true);
@@ -75,10 +86,31 @@ const TripPage = ({ id, renderProps }: Props) => {
 		setTimeout(() => {
 			setCopied(false);
 		}, 500);
-	}, 500);
+	}, 200);
+
+	const createMapOptions = () => ({
+		gestureHandling: "none",
+		zoomControl: false,
+		fullscreenControl: false,
+		styles: style,
+	});
+
+	const mapOptions = {
+		zoom: 15,
+		center: coordinates[address],
+	};
 
 	return (
 		<div className="TripPage">
+			<div className="TripPage-back-button">
+				<button onClick={handleBackClick}>
+					<BoldNegativeSvg />
+				</button>
+				<div>Your home reservation</div>
+				<div></div>
+			</div>
+			<div className="TripPage-back-button-filler" />
+
 			<div className="TripPage-container">
 				<header className="TripPage__header">
 					<span>
@@ -92,6 +124,9 @@ const TripPage = ({ id, renderProps }: Props) => {
 				<section className="TripPage__carousel">
 					<a href={`/listing/${listingId}`}>
 						<div className="TripPage__carousel__image">
+							<span className="image-count">
+								1/{imageComments.length}
+							</span>
 							<AdvancedImage
 								cldImg={cloudinary.image(
 									`images/${region
@@ -196,7 +231,21 @@ const TripPage = ({ id, renderProps }: Props) => {
 						<h2>Getting there</h2>
 					</div>
 					<div className="TripPage__directions__map">
-						{/* Put the google maps integration here! */}
+						{/* GOOGLE MAP */}
+						<GoogleMapReact
+							bootstrapURLKeys={{
+								key: process.env
+									.REACT_APP_GOOGLE_API_KEY as string,
+							}}
+							defaultCenter={mapOptions.center}
+							defaultZoom={mapOptions.zoom}
+							options={createMapOptions}
+						>
+							<HouseMarker
+								lat={mapOptions.center.lat}
+								lng={mapOptions.center.lng}
+							/>
+						</GoogleMapReact>
 					</div>
 					<div className="TripPage__directions__address">
 						<div>Address</div>
