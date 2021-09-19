@@ -29,7 +29,7 @@ const sleep = (milliseconds: number) => {
 const Query = objectType({
   name: 'Query',
   definition(t) {
-    t.nullable.field('me', {
+    t.field('me', {
       type: 'User',
       resolve: (_parent, _args, context: Context) => {
         const userId = getUserId(context);
@@ -41,7 +41,7 @@ const Query = objectType({
       },
     });
 
-    t.nullable.field('listingById', {
+    t.field('listingById', {
       type: 'Listing',
       args: {
         id: nonNull(stringArg()),
@@ -55,21 +55,25 @@ const Query = objectType({
       },
     });
 
-    t.nullable.field('reservationsById', {
+    t.field('reservationById', {
       type: 'Reservation',
       args: {
         id: nonNull(stringArg()),
       },
       resolve: async (_parent, args, context: Context) => {
-        const data = await context.prisma.reservation.findUnique({
-          where: {
-            id: args.id,
-          },
-        });
+        try {
+          const data = await context.prisma.reservation.findUnique({
+            where: {
+              id: args.id,
+            },
+          });
 
-        if (!data) throw new Error('Reservation not found');
+          if (!data) throw new Error('Reservation not found');
 
-        return data;
+          return data;
+        } catch (e: any) {
+          return e;
+        }
       },
     });
 
@@ -122,7 +126,7 @@ const Query = objectType({
       },
     });
 
-    t.nullable.field('userById', {
+    t.field('userById', {
       type: 'User',
       args: {
         id: nonNull(stringArg()),

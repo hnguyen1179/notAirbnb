@@ -18,15 +18,11 @@
 		background-color: white;
 		z-index: 10;
 
-    & button {
-      width: 1.4rem !important;
-      height: 1.4rem !important;
-      position: relative;
-      @include buttonSvgOutline;
-
-    }
-    
-		& svg {
+		& button {
+			width: 1.4rem !important;
+			height: 1.4rem !important;
+			position: relative;
+			@include buttonSvgOutline;
 		}
 
 		&-filler {
@@ -129,7 +125,7 @@
 		flex-direction: column;
 	}
 
-	.active {
+	.button.active {
 		& > a,
 		& > div {
 			cursor: pointer;
@@ -143,15 +139,15 @@
 		}
 	}
 
-	button:last-child {
+	.button:last-child {
 		& > a,
 		& > div {
 			border-bottom: 0;
 		}
 	}
 
-	button > a,
-	button > div {
+	.button > a,
+	.button > div {
 		width: 100%;
 		display: flex;
 		align-items: center;
@@ -238,9 +234,14 @@
 		&__map {
 			margin: 2rem 0;
 			border-radius: 0.8rem;
+			background-color: grey;
 			overflow: hidden;
 			height: 22rem;
 			width: 100%;
+		}
+
+		&__map[aria-hidden="true"] {
+			display: none;
 		}
 
 		&__address {
@@ -291,6 +292,64 @@
 			margin-top: 1rem;
 			display: flex;
 			flex-direction: column;
+		}
+	}
+}
+
+@media screen and (min-width: 744px) {
+	.TripPage-outer {
+		display: flex;
+
+		.GoogleMap {
+			flex: 1;
+			background-color: grey;
+		}
+
+		.TripPage-container {
+			width: 44rem;
+			// 8rem is offset for Navbar-filler height; fixed; etc,
+			height: calc(100vh - 8rem);
+			background: $muted-line-color;
+			padding: 1.25rem;
+			padding-bottom: 0;
+
+			.TripPage-inner {
+				box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2) !important;
+				background: white;
+				padding: 2rem;
+				padding-bottom: 3rem;
+				border-radius: 0.8rem;
+				border-bottom-right-radius: 0;
+				border-bottom-left-radius: 0;
+
+				.button.active {
+					& > div,
+					& > a {
+						z-index: 1;
+
+						& > svg, &>span {
+							z-index: 1;
+						}
+						
+						&::after {
+							// 2rem is offset for the TripPage-inner padding
+							left: -2rem;
+							// 2.5rem is offset for the TripPage-container 1.25rem padding
+							width: calc(44rem - 2.5rem);
+							z-index: 0;
+						}
+					}
+				}
+
+				.big-divider {
+					&::after {
+						// 2rem is offset for the TripPage-inner padding
+						left: -2rem;
+						// 2.5rem is offset for the TripPage-container 1.25rem padding
+						width: calc(44rem - 2.5rem);
+					}
+				}
+			}
 		}
 	}
 }
