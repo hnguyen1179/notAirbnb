@@ -30,6 +30,10 @@
 		}
 	}
 
+	.GoogleMap {
+		display: none;
+	}
+
 	.TripPage-container {
 		padding: var(--container-padding-vertical)
 			var(--container-padding-horizontal);
@@ -301,6 +305,7 @@
 		display: flex;
 
 		.GoogleMap {
+			display: block;
 			flex: 1;
 			background-color: grey;
 		}
@@ -330,7 +335,7 @@
 						& > svg, &>span {
 							z-index: 1;
 						}
-						
+
 						&::after {
 							// 2rem is offset for the TripPage-inner padding
 							left: -2rem;

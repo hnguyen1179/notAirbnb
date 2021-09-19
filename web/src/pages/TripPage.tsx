@@ -21,6 +21,7 @@ import { calculateTotal } from "../utils/priceBreakdown";
 import { copyToClipboard } from "../utils/copyToClipboard";
 import { AppContext } from "../context/AppContext";
 import { coordinates } from "../constants/coordinates";
+import HouseMarkerBasic from "../components/HouseMarker/HouseMarkerBasic";
 import HouseMarker from "../components/HouseMarker/HouseMarker";
 import { style } from "../constants/simpleMapStyle";
 import Navbar from "../components/Navbar/Navbar";
@@ -90,14 +91,14 @@ const TripPage = ({ id, renderProps }: Props) => {
 	}, 200);
 
 	const createMapOptions = () => ({
-		gestureHandling: "none",
-		zoomControl: false,
+		gestureHandling: mobile ? "none" : "auto",
+		zoomControl: mobile ? false : true,
 		fullscreenControl: false,
 		styles: style,
 	});
 
 	const mapValues = {
-		zoom: 15,
+		zoom: 16,
 		center: coordinates[address],
 	};
 
@@ -250,20 +251,20 @@ const TripPage = ({ id, renderProps }: Props) => {
 								className="TripPage__directions__map"
 								aria-hidden={!mobile}
 							>
-								{/* <GoogleMapReact
-                bootstrapURLKeys={{
-                  key: process.env
-                    .REACT_APP_GOOGLE_API_KEY as string,
-                }}
-                defaultCenter={mapValues.center}
-                defaultZoom={mapValues.zoom}
-                options={createMapOptions}
-              >
-                <HouseMarker
-                  lat={mapValues.center.lat}
-                  lng={mapValues.center.lng}
-                />
-              </GoogleMapReact> */}
+								<GoogleMapReact
+									bootstrapURLKeys={{
+										key: process.env
+											.REACT_APP_GOOGLE_API_KEY as string,
+									}}
+									defaultCenter={mapValues.center}
+									defaultZoom={mapValues.zoom}
+									options={createMapOptions}
+								>
+									<HouseMarkerBasic
+										lat={mapValues.center.lat}
+										lng={mapValues.center.lng}
+									/>
+								</GoogleMapReact>
 							</div>
 							<div className="TripPage__directions__address">
 								<div>Address</div>
@@ -354,7 +355,22 @@ const TripPage = ({ id, renderProps }: Props) => {
 					</div>
 				</div>
 
-				<div className="GoogleMap">{/* Insert google maps here */}</div>
+				<div className="GoogleMap">
+					<GoogleMapReact
+						bootstrapURLKeys={{
+							key: process.env.REACT_APP_GOOGLE_API_KEY as string,
+						}}
+						defaultCenter={mapValues.center}
+						defaultZoom={mapValues.zoom}
+						options={createMapOptions}
+					>
+						<HouseMarker
+							lat={mapValues.center.lat}
+							lng={mapValues.center.lng}
+							details={`${start} - ${end}, ${year}`}
+						/>
+					</GoogleMapReact>
+				</div>
 			</div>
 		</div>
 	);
