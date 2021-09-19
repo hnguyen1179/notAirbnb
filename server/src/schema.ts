@@ -17,6 +17,7 @@ import {
 import { DateTimeResolver, JSONObjectResolver } from 'graphql-scalars';
 import objectHash from 'object-hash';
 import { Context } from './context';
+import { Listing } from '.prisma/client';
 
 export const dateTimeScalar = asNexusMethod(DateTimeResolver, 'date');
 export const jsonScalar = asNexusMethod(JSONObjectResolver, 'json');
@@ -105,6 +106,29 @@ const Query = objectType({
       },
     });
 
+    t.nonNull.list.nonNull.field('reviewsByHostId', {
+      type: 'Review',
+      args: {
+        id: nonNull(stringArg()),
+        offset: intArg(),
+      },
+      resolve: async (_parent, args, context: Context) => {
+        const reviews = await context.prisma.review.findMany({
+          skip: args.offset || 0,
+          take: 10,
+          where: {
+            listing: {
+              hostId: args.id,
+            },
+          },
+        });
+
+        await sleep(Math.random() * 50 + 100);
+
+        return reviews;
+      },
+    });
+
     t.nonNull.list.nonNull.field('reviewsByUserId', {
       type: 'Review',
       args: {
@@ -133,6 +157,20 @@ const Query = objectType({
       },
       resolve: (_parent, args, context: Context) => {
         return context.prisma.user.findUnique({
+          where: {
+            id: args.id,
+          },
+        });
+      },
+    });
+
+    t.field('hostById', {
+      type: 'Host',
+      args: {
+        id: nonNull(stringArg()),
+      },
+      resolve: (_parent, args, context: Context) => {
+        return context.prisma.host.findUnique({
           where: {
             id: args.id,
           },

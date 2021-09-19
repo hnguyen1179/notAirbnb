@@ -79,11 +79,13 @@ type Mutation {
 
 type Query {
   allListings: [Listing!]!
+  hostById(id: String!): Host
   listingById(id: String!): Listing
   listingsByRegion(region: String!): [Listing!]!
   me: User
   reservationById(id: String!): Reservation
   reservationsByUserId(id: String!): [[Reservation]!]!
+  reviewsByHostId(id: String!, offset: Int): [Review!]!
   reviewsByUserId(id: String!, offset: Int): [Review!]!
   userById(id: String!): User
 }
