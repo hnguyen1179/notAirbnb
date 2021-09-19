@@ -90,9 +90,12 @@ const TripPage = ({ id, renderProps }: Props) => {
 		}, 500);
 	}, 200);
 
-	const createMapOptions = () => ({
+	const createMapOptions = (maps: any) => ({
 		gestureHandling: mobile ? "none" : "auto",
 		zoomControl: mobile ? false : true,
+		zoomControlOptions: {
+			position: maps.ControlPosition.TOP_RIGHT,
+		},
 		fullscreenControl: false,
 		styles: style,
 	});
@@ -355,7 +358,7 @@ const TripPage = ({ id, renderProps }: Props) => {
 					</div>
 				</div>
 
-				<div className="GoogleMap">
+				<div className="TripPage-outer__map">
 					<GoogleMapReact
 						bootstrapURLKeys={{
 							key: process.env.REACT_APP_GOOGLE_API_KEY as string,

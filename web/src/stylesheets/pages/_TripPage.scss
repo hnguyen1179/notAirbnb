@@ -6,6 +6,10 @@
 		font-weight: 300;
 	}
 
+	.Navbar__container {
+		padding: 0 2rem !important;
+	}
+
 	.TripPage-back-button {
 		padding: 0 1.5rem;
 		height: 5.6rem;
@@ -30,7 +34,7 @@
 		}
 	}
 
-	.GoogleMap {
+	&-outer__map {
 		display: none;
 	}
 
@@ -304,7 +308,7 @@
 	.TripPage-outer {
 		display: flex;
 
-		.GoogleMap {
+		&__map {
 			display: block;
 			flex: 1;
 			background-color: grey;
@@ -332,7 +336,8 @@
 					& > a {
 						z-index: 1;
 
-						& > svg, &>span {
+						& > svg,
+						& > span {
 							z-index: 1;
 						}
 
@@ -352,6 +357,45 @@
 						left: -2rem;
 						// 2.5rem is offset for the TripPage-container 1.25rem padding
 						width: calc(44rem - 2.5rem);
+					}
+				}
+			}
+		}
+	}
+}
+
+@media (min-width: 1128px) {
+	.TripPage-outer {
+		.TripPage-container {
+			width: 62rem;
+
+			.TripPage-inner {
+				.button.active {
+					& > div,
+					& > a {
+						z-index: 1;
+
+						& > svg,
+						& > span {
+							z-index: 1;
+						}
+
+						&::after {
+							// 2rem is offset for the TripPage-inner padding
+							left: -2rem;
+							// 2.5rem is offset for the TripPage-container 1.25rem padding
+							width: calc(62rem - 2.5rem);
+							z-index: 0;
+						}
+					}
+				}
+
+				.big-divider {
+					&::after {
+						// 2rem is offset for the TripPage-inner padding
+						left: -2rem;
+						// 2.5rem is offset for the TripPage-container 1.25rem padding
+						width: calc(62rem - 2.5rem);
 					}
 				}
 			}
