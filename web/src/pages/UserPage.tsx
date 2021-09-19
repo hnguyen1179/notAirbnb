@@ -16,6 +16,7 @@ import useLogout from "../hooks/useLogout";
 import ReviewItem from "../components/ReviewItem/ReviewItem";
 import Footer from "../components/Footer/Footer";
 import Navbar from "../components/Navbar/Navbar";
+import { useFetchUserReviews } from "../hooks/useFetchUserReviews";
 
 interface Props {
 	id: string;
@@ -24,7 +25,12 @@ interface Props {
 
 const UserPage = ({ id, renderProps }: Props) => {
 	const { cloudinary, mobile, user: currentUser } = useContext(AppContext);
-	const [loadingMoreReviews, setLoadingMoreReviews] = useState(false);
+	const {
+		error: reviewsError,
+		data: reviewsData,
+		handleFetchMore,
+		fetchLoading,
+	} = useFetchUserReviews(id);
 	const logout = useLogout();
 
 	const {
@@ -33,14 +39,6 @@ const UserPage = ({ id, renderProps }: Props) => {
 		data: userData,
 	} = useUserByIdQuery({
 		variables: { id },
-	});
-
-	const {
-		error: reviewsError,
-		data: reviewsData,
-		fetchMore,
-	} = useReviewsByUserIdQuery({
-		variables: { id, offset: 0 },
 	});
 
 	if (userLoading)
@@ -69,18 +67,6 @@ const UserPage = ({ id, renderProps }: Props) => {
 	const handleLogout = async () => {
 		await logout();
 		renderProps.history.push("/");
-	};
-
-	const HandleFetchReviews = async () => {
-		setLoadingMoreReviews(true);
-
-		await fetchMore({
-			variables: {
-				offset: reviewsData.reviewsByUserId.length,
-			},
-		});
-
-		setLoadingMoreReviews(false);
 	};
 
 	const isUser = currentUser && currentUser.id === id;
@@ -137,19 +123,19 @@ const UserPage = ({ id, renderProps }: Props) => {
 						})}
 					</ul>
 					{reviews.length !== reviewsCount &&
-						(loadingMoreReviews ? (
+						(fetchLoading ? (
 							<button
 								className={`UserPage__reviews__more-button ${
-									loadingMoreReviews ? "loading" : ""
+									fetchLoading ? "loading" : ""
 								}`}
-								onClick={HandleFetchReviews}
+								onClick={handleFetchMore}
 							>
 								<Loading />
 							</button>
 						) : (
 							<button
 								className="UserPage__reviews__more-button"
-								onClick={HandleFetchReviews}
+								onClick={handleFetchMore}
 							>
 								<div>Show more reviews</div>
 							</button>
@@ -214,19 +200,19 @@ const UserPage = ({ id, renderProps }: Props) => {
 							})}
 						</ul>
 						{reviews.length !== reviewsCount &&
-							(loadingMoreReviews ? (
+							(fetchLoading ? (
 								<button
 									className={`UserPage__reviews__more-button ${
-										loadingMoreReviews ? "loading" : ""
+										fetchLoading ? "loading" : ""
 									}`}
-									onClick={HandleFetchReviews}
+									onClick={handleFetchMore}
 								>
 									<Loading />
 								</button>
 							) : (
 								<button
 									className="UserPage__reviews__more-button"
-									onClick={HandleFetchReviews}
+									onClick={handleFetchMore}
 								>
 									<div>Show more reviews</div>
 								</button>

@@ -63,7 +63,7 @@ const Profile = ({ profile, setProfile, handleOpen }: Props) => {
 				)}
 
 				{/* These are just placeholders */}
-				<div className="divider"></div>
+				<div className="navbar-divider"></div>
 				<button className="Navbar__right__profile__dropdown__link Navbar__right__profile__dropdown__link--inactive">
 					<span>Host your home</span>
 				</button>
@@ -71,7 +71,7 @@ const Profile = ({ profile, setProfile, handleOpen }: Props) => {
 					<span>Host an experience</span>
 				</button>
 
-				{user && <div className="divider"></div>}
+				{user && <div className="navbar-divider"></div>}
 
 				<button className="Navbar__right__profile__dropdown__link Navbar__right__profile__dropdown__link--inactive">
 					<span>Help</span>
