@@ -1,0 +1,59 @@
+.HouseMarker {
+	// Subtract by 0.3rem to offset the tip of the square
+	transform: translate(-50%, calc(-100% - 0.3rem));
+	height: 5.6rem;
+	width: 5.6rem;
+	position: relative;
+
+	&--basic {
+		transform: translate(-50%, calc(-50% - 0.3rem));
+	}
+
+	&__bubble {
+		height: 100%;
+		width: 100%;
+		border-radius: 50%;
+		background-color: black;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: relative;
+
+		svg {
+			fill: white !important;
+			width: 3.5rem !important;
+		}
+
+		&__square {
+			position: absolute;
+			background-color: black;
+			transform: rotate(45deg);
+			border-radius: 0.2rem;
+			bottom: -0.3rem;
+			height: 1rem;
+			width: 1rem;
+		}
+	}
+
+	&__text {
+		position: absolute;
+		width: fit-content;
+		top: 115%;
+
+		& > div {
+			color: rgb(61, 61, 61);
+			font-weight: 400;
+			font-size: 1.2rem;
+			position: relative;
+			left: -25%;
+			white-space: nowrap;
+			text-align: center;
+
+			&:first-child {
+				font-size: 1.4rem;
+				color: black;
+				font-weight: 500;
+			}
+		}
+	}
+}

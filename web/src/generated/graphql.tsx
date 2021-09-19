@@ -20,14 +20,14 @@ export type Scalars = {
 
 export type AuthPayload = {
   __typename?: 'AuthPayload';
-  token?: Maybe<Scalars['String']>;
-  user?: Maybe<User>;
+  token: Maybe<Scalars['String']>;
+  user: Maybe<User>;
 };
 
 export type Host = {
   __typename?: 'Host';
   dateJoined: Scalars['String'];
-  description?: Maybe<Scalars['String']>;
+  description: Maybe<Scalars['String']>;
   details: Array<Maybe<Scalars['String']>>;
   firstName: Scalars['String'];
   id: Scalars['String'];
@@ -45,16 +45,16 @@ export type Listing = {
   datesUnavailable: Scalars['JSONObject'];
   healthAndSafety: Array<Maybe<Scalars['String']>>;
   highlights: Array<Maybe<Scalars['String']>>;
-  host?: Maybe<Host>;
+  host: Maybe<Host>;
   hostId: Scalars['String'];
   houseRules: Array<Maybe<Scalars['String']>>;
   id: Scalars['String'];
   imageComments: Array<Maybe<Scalars['String']>>;
   languages: Array<Maybe<Scalars['String']>>;
-  listingDescription?: Maybe<Scalars['String']>;
+  listingDescription: Maybe<Scalars['String']>;
   listingType: Scalars['String'];
   location: Scalars['String'];
-  locationDescription?: Maybe<Scalars['String']>;
+  locationDescription: Maybe<Scalars['String']>;
   numBaths: Scalars['Int'];
   numBedrooms: Scalars['Int'];
   numBeds: Scalars['Int'];
@@ -69,7 +69,7 @@ export type Listing = {
   scores: Array<Maybe<Scalars['String']>>;
   smokingRule: Scalars['Boolean'];
   state: Scalars['String'];
-  stayDescription?: Maybe<Scalars['String']>;
+  stayDescription: Maybe<Scalars['String']>;
   street: Scalars['String'];
   superhost: Scalars['Boolean'];
   title: Scalars['String'];
@@ -78,13 +78,13 @@ export type Listing = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createReservation?: Maybe<Reservation>;
-  createReview?: Maybe<Review>;
-  deleteReservation?: Maybe<Reservation>;
-  deleteReview?: Maybe<Review>;
-  login?: Maybe<AuthPayload>;
-  signup?: Maybe<AuthPayload>;
-  verifyEmail?: Maybe<Scalars['Boolean']>;
+  createReservation: Maybe<Reservation>;
+  createReview: Maybe<Review>;
+  deleteReservation: Maybe<Reservation>;
+  deleteReview: Maybe<Review>;
+  login: Maybe<AuthPayload>;
+  signup: Maybe<AuthPayload>;
+  verifyEmail: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -129,13 +129,13 @@ export type MutationVerifyEmailArgs = {
 export type Query = {
   __typename?: 'Query';
   allListings: Array<Listing>;
-  listingById?: Maybe<Listing>;
+  listingById: Maybe<Listing>;
   listingsByRegion: Array<Listing>;
-  me?: Maybe<User>;
-  reservationById?: Maybe<Reservation>;
+  me: Maybe<User>;
+  reservationById: Maybe<Reservation>;
   reservationsByUserId: Array<Array<Maybe<Reservation>>>;
   reviewsByUserId: Array<Review>;
-  userById?: Maybe<User>;
+  userById: Maybe<User>;
 };
 
 
@@ -161,7 +161,7 @@ export type QueryReservationsByUserIdArgs = {
 
 export type QueryReviewsByUserIdArgs = {
   id: Scalars['String'];
-  offset?: Maybe<Scalars['Int']>;
+  offset: Maybe<Scalars['Int']>;
 };
 
 
@@ -174,10 +174,10 @@ export type Reservation = {
   dateEnd: Scalars['DateTime'];
   dateStart: Scalars['DateTime'];
   id: Scalars['String'];
-  listing?: Maybe<Listing>;
+  listing: Maybe<Listing>;
   listingId: Scalars['String'];
   totalPrice: Scalars['Float'];
-  user?: Maybe<User>;
+  user: Maybe<User>;
   userId: Scalars['String'];
 };
 
@@ -190,12 +190,12 @@ export type ReservationCreateInput = {
 
 export type Review = {
   __typename?: 'Review';
-  author?: Maybe<User>;
+  author: Maybe<User>;
   authorId: Scalars['String'];
   content: Scalars['String'];
   date: Scalars['DateTime'];
   id: Scalars['String'];
-  listing?: Maybe<Listing>;
+  listing: Maybe<Listing>;
   listingId: Scalars['String'];
   scores: Array<Maybe<Scalars['String']>>;
 };
@@ -225,7 +225,7 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login?: Maybe<{ __typename?: 'AuthPayload', token?: Maybe<string>, user?: Maybe<{ __typename?: 'User', id: string, firstName: string, lastName: string, email: string }> }> };
+export type LoginMutation = { __typename?: 'Mutation', login: Maybe<{ __typename?: 'AuthPayload', token: Maybe<string>, user: Maybe<{ __typename?: 'User', id: string, firstName: string, lastName: string, email: string }> }> };
 
 export type SignupMutationVariables = Exact<{
   email: Scalars['String'];
@@ -235,41 +235,41 @@ export type SignupMutationVariables = Exact<{
 }>;
 
 
-export type SignupMutation = { __typename?: 'Mutation', signup?: Maybe<{ __typename?: 'AuthPayload', token?: Maybe<string> }> };
+export type SignupMutation = { __typename?: 'Mutation', signup: Maybe<{ __typename?: 'AuthPayload', token: Maybe<string> }> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: Maybe<{ __typename?: 'User', id: string, firstName: string, lastName: string }> };
+export type MeQuery = { __typename?: 'Query', me: Maybe<{ __typename?: 'User', id: string, firstName: string, lastName: string }> };
 
 export type ReservationByIdQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type ReservationByIdQuery = { __typename?: 'Query', reservationById?: Maybe<{ __typename?: 'Reservation', id: string, listingId: string, dateStart: any, dateEnd: any, totalPrice: number, listing?: Maybe<{ __typename?: 'Listing', city: string, title: string, region: string, address: string, price: number, cleaningFee: number }> }> };
+export type ReservationByIdQuery = { __typename?: 'Query', reservationById: Maybe<{ __typename?: 'Reservation', id: string, listingId: string, dateStart: any, dateEnd: any, totalPrice: number, listing: Maybe<{ __typename?: 'Listing', city: string, title: string, region: string, address: string, price: number, cleaningFee: number, houseRules: Array<Maybe<string>>, imageComments: Array<Maybe<string>>, host: Maybe<{ __typename?: 'Host', id: string, firstName: string }> }> }> };
 
 export type ReservationsByUserIdQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type ReservationsByUserIdQuery = { __typename?: 'Query', reservationsByUserId: Array<Array<Maybe<{ __typename?: 'Reservation', id: string, listingId: string, dateStart: any, dateEnd: any, listing?: Maybe<{ __typename?: 'Listing', city: string, title: string, region: string }> }>>> };
+export type ReservationsByUserIdQuery = { __typename?: 'Query', reservationsByUserId: Array<Array<Maybe<{ __typename?: 'Reservation', id: string, listingId: string, dateStart: any, dateEnd: any, listing: Maybe<{ __typename?: 'Listing', city: string, title: string, region: string }> }>>> };
 
 export type ReviewsByUserIdQueryVariables = Exact<{
   id: Scalars['String'];
-  offset?: Maybe<Scalars['Int']>;
+  offset: Maybe<Scalars['Int']>;
 }>;
 
 
-export type ReviewsByUserIdQuery = { __typename?: 'Query', reviewsByUserId: Array<{ __typename?: 'Review', id: string, listingId: string, date: any, content: string, scores: Array<Maybe<string>>, listing?: Maybe<{ __typename?: 'Listing', host?: Maybe<{ __typename?: 'Host', id: string, firstName: string, dateJoined: string, listings: Array<Maybe<{ __typename?: 'Listing', city: string }>> }> }> }> };
+export type ReviewsByUserIdQuery = { __typename?: 'Query', reviewsByUserId: Array<{ __typename?: 'Review', id: string, listingId: string, date: any, content: string, scores: Array<Maybe<string>>, listing: Maybe<{ __typename?: 'Listing', host: Maybe<{ __typename?: 'Host', id: string, firstName: string, dateJoined: string, listings: Array<Maybe<{ __typename?: 'Listing', city: string }>> }> }> }> };
 
 export type UserByIdQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type UserByIdQuery = { __typename?: 'Query', userById?: Maybe<{ __typename?: 'User', id: string, firstName: string, lastName: string, email: string, dateJoined: string, reviewsCount: number }> };
+export type UserByIdQuery = { __typename?: 'Query', userById: Maybe<{ __typename?: 'User', id: string, firstName: string, lastName: string, email: string, dateJoined: string, reviewsCount: number }> };
 
 
 export const LoginDocument = gql`
@@ -404,6 +404,12 @@ export const ReservationByIdDocument = gql`
       address
       price
       cleaningFee
+      houseRules
+      imageComments
+      host {
+        id
+        firstName
+      }
     }
   }
 }

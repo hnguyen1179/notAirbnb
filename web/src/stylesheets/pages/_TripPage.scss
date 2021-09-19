@@ -1,0 +1,406 @@
+.TripPage {
+	--container-padding-vertical: 2rem;
+	--container-padding-horizontal: 3rem;
+
+	h2 {
+		font-weight: 300;
+	}
+
+	.Navbar__container {
+		padding: 0 2rem !important;
+	}
+
+	.TripPage-back-button {
+		padding: 0 1.5rem;
+		height: 5.6rem;
+		width: 100%;
+		position: fixed;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		border-bottom: 1px solid $muted-line-color;
+		background-color: white;
+		z-index: 10;
+
+		& button {
+			width: 1.4rem !important;
+			height: 1.4rem !important;
+			position: relative;
+			@include buttonSvgOutline;
+		}
+
+		&-filler {
+			height: 5.6rem;
+		}
+	}
+
+	&-outer__map {
+		display: none;
+	}
+
+	.TripPage-container {
+		padding: var(--container-padding-vertical)
+			var(--container-padding-horizontal);
+		margin-left: auto;
+		margin-right: auto;
+		overflow-x: hidden;
+	}
+
+	&__header {
+		span {
+			font-weight: 400;
+			color: $muted-text-color;
+		}
+		h1 {
+			font-weight: 300;
+		}
+	}
+
+	.divider {
+		margin: 3rem 0;
+		width: 100%;
+		height: 0.1rem;
+		background-color: $muted-line-color;
+	}
+
+	&__carousel {
+		&__image {
+			min-height: 22.5rem;
+			width: 100%;
+			border-radius: 0.8rem;
+			margin-bottom: 2rem;
+			position: relative;
+			display: inline-block;
+			overflow: hidden;
+			padding-bottom: 50%;
+
+			.image-count {
+				display: inline-block;
+				padding: 0.5rem 1.25rem;
+				margin: 1rem;
+				background-color: rgba(19, 19, 19, 0.548);
+				border-radius: 0.25rem;
+				position: absolute;
+				bottom: 0;
+				right: 0;
+				color: white;
+				font-weight: 400;
+				font-size: 1.2rem;
+				letter-spacing: 0.25rem;
+				z-index: 1;
+				pointer-events: none;
+			}
+
+			img {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				// z-index: -1;
+				object-fit: cover;
+				object-position: 50% 50%;
+			}
+		}
+
+		& h2 {
+			line-height: 1.2;
+		}
+	}
+
+	&__logistics {
+		padding: 3rem 0;
+		margin-top: 2rem;
+		border-top: 1px solid $muted-line-color;
+		border-bottom: 1px solid $muted-line-color;
+		width: 100%;
+		display: flex;
+
+		&__panel {
+			width: 50%;
+			font-weight: 400;
+
+			&:nth-child(2) {
+				padding-left: 3rem;
+				border-left: 1px solid $muted-line-color;
+			}
+
+			.check-time {
+				font-weight: 500;
+				margin-bottom: 0.5rem;
+			}
+		}
+	}
+
+	&__contact {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.button.active {
+		& > a,
+		& > div {
+			cursor: pointer;
+			&:hover {
+				background-color: $highlight-hover-color;
+			}
+			& > span,
+			& > svg {
+				color: black;
+			}
+		}
+	}
+
+	.button:last-child {
+		& > a,
+		& > div {
+			border-bottom: 0;
+		}
+	}
+
+	.button > a,
+	.button > div {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		padding: 1.5rem 0;
+		border-bottom: 1px solid $muted-line-color;
+		position: relative;
+		font-weight: 400;
+		cursor: default;
+
+		& > span,
+		& > svg {
+			color: $disabled-text-color;
+		}
+
+		&::after {
+			position: absolute;
+			content: "";
+			width: 100vw;
+			height: 100%;
+			// offsets the 3rem padding on the container. Adjust this on changing container padding
+			left: calc(var(--container-padding-horizontal) * -1);
+			background-color: inherit;
+			z-index: -1;
+		}
+
+		& > svg:first-child {
+			display: flex;
+			justify-content: flex-start;
+			width: 20px !important;
+			margin-right: 2rem;
+		}
+
+		& > svg:last-child {
+			margin-left: auto;
+		}
+	}
+
+	.big-divider {
+		margin: 2rem 0;
+		position: relative;
+		height: 0.75rem;
+
+		&::after {
+			background-color: $muted-line-color;
+			position: absolute;
+			content: "";
+			width: 100vw;
+			height: 100%;
+			left: calc(var(--container-padding-horizontal) * -1);
+		}
+	}
+
+	&__receipt {
+		margin: 3rem 0;
+
+		&__title {
+			margin-bottom: 2rem;
+		}
+
+		&__breakdown {
+			.breakdown-line {
+				&:last-child {
+					font-weight: 300;
+					border-top: 1px solid $muted-line-color;
+					padding-top: 1rem;
+				}
+
+				margin: 1rem 0;
+				font-weight: 400;
+				display: flex;
+				justify-content: space-between;
+			}
+		}
+	}
+
+	&__directions {
+		margin: 3rem 0;
+
+		&__title {
+			margin-bottom: 2;
+		}
+
+		&__map {
+			margin: 2rem 0;
+			border-radius: 0.8rem;
+			background-color: grey;
+			overflow: hidden;
+			height: 22rem;
+			width: 100%;
+		}
+
+		&__map[aria-hidden="true"] {
+			display: none;
+		}
+
+		&__address {
+			padding-bottom: 2rem;
+			font-weight: 400;
+			border-bottom: 1px solid $muted-line-color;
+
+			& > div:first-child {
+				margin: 1rem 0;
+				font-weight: 300;
+			}
+		}
+
+		&__copy {
+			display: flex;
+			flex-direction: column;
+		}
+	}
+
+	&__host {
+		margin: 3rem 0;
+
+		&__title {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			.host-details {
+				span {
+					text-decoration: underline;
+				}
+			}
+
+			.host-image {
+				width: 10rem;
+				height: 10rem;
+				background-color: $avatar-background-color;
+				border-radius: 50%;
+			}
+		}
+	}
+
+	&__support {
+		margin-top: 3rem;
+		margin-bottom: 5rem;
+
+		&__help {
+			margin-top: 1rem;
+			display: flex;
+			flex-direction: column;
+		}
+	}
+}
+
+@media screen and (min-width: 744px) {
+	.TripPage-outer {
+		display: flex;
+
+		&__map {
+			display: block;
+			flex: 1;
+			background-color: grey;
+		}
+
+		.TripPage-container {
+			width: 44rem;
+			// 8rem is offset for Navbar-filler height; fixed; etc,
+			height: calc(100vh - 8rem);
+			background: $muted-line-color;
+			padding: 1.25rem;
+			padding-bottom: 0;
+
+			.TripPage-inner {
+				box-shadow: 0 2px 16px 0 rgba(0, 0, 0, 0.2) !important;
+				background: white;
+				padding: 2rem;
+				padding-bottom: 3rem;
+				border-radius: 0.8rem;
+				border-bottom-right-radius: 0;
+				border-bottom-left-radius: 0;
+
+				.button.active {
+					& > div,
+					& > a {
+						z-index: 1;
+
+						& > svg,
+						& > span {
+							z-index: 1;
+						}
+
+						&::after {
+							// 2rem is offset for the TripPage-inner padding
+							left: -2rem;
+							// 2.5rem is offset for the TripPage-container 1.25rem padding
+							width: calc(44rem - 2.5rem);
+							z-index: 0;
+						}
+					}
+				}
+
+				.big-divider {
+					&::after {
+						// 2rem is offset for the TripPage-inner padding
+						left: -2rem;
+						// 2.5rem is offset for the TripPage-container 1.25rem padding
+						width: calc(44rem - 2.5rem);
+					}
+				}
+			}
+		}
+	}
+}
+
+@media (min-width: 1128px) {
+	.TripPage-outer {
+		.TripPage-container {
+			width: 62rem;
+
+			.TripPage-inner {
+				.button.active {
+					& > div,
+					& > a {
+						z-index: 1;
+
+						& > svg,
+						& > span {
+							z-index: 1;
+						}
+
+						&::after {
+							// 2rem is offset for the TripPage-inner padding
+							left: -2rem;
+							// 2.5rem is offset for the TripPage-container 1.25rem padding
+							width: calc(62rem - 2.5rem);
+							z-index: 0;
+						}
+					}
+				}
+
+				.big-divider {
+					&::after {
+						// 2rem is offset for the TripPage-inner padding
+						left: -2rem;
+						// 2.5rem is offset for the TripPage-container 1.25rem padding
+						width: calc(62rem - 2.5rem);
+					}
+				}
+			}
+		}
+	}
+}

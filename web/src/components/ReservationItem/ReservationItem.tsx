@@ -39,16 +39,18 @@ const ReservationItem = ({ reservation }: Props) => {
 
 	return (
 		<li className="ReservationItem">
-			<div className="ReservationItem__img-container">
-				<AdvancedImage
-					className="ReservationItem__img-container__img"
-					cldImg={cloudinary.image(
-						`images/${region
-							.toLocaleLowerCase()
-							.replace(" ", "_")}/${listingId}/image-0`
-					)}
-				/>
-			</div>
+			<a href={`/trip/${id}`}>
+				<div className="ReservationItem__img-container">
+					<AdvancedImage
+						className="ReservationItem__img-container__img"
+						cldImg={cloudinary.image(
+							`images/${region
+								.toLocaleLowerCase()
+								.replace(" ", "_")}/${listingId}/image-0`
+						)}
+					/>
+				</div>
+			</a>
 			<div className="ReservationItem__description">
 				<div className="ReservationItem__description__city">
 					<span>{`${dateStart} - ${dateEnd}, ${year}`}</span>
@@ -56,7 +58,7 @@ const ReservationItem = ({ reservation }: Props) => {
 				</div>
 			</div>
 			<div className="ReservationItem__title">
-				<a href={`/listing/${listingId}`}>
+				<a href={`/trip/${id}`}>
 					<div>{title}</div>
 					<RightSvg />
 				</a>

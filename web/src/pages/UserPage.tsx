@@ -7,9 +7,9 @@ import {
 	useReviewsByUserIdQuery,
 } from "../generated/graphql";
 
-import { ReactComponent as StarSvg } from "../assets/icons/star.svg";
+import { ReactComponent as FilledStarSvg } from "../assets/icons/filled-star.svg";
 import { ReactComponent as ShieldSvg } from "../assets/icons/shield.svg";
-import { ReactComponent as OutlinedStarSvg } from "../assets/icons/outlined-star.svg";
+import { ReactComponent as StarSvg } from "../assets/icons/star.svg";
 
 import Loading from "../components/Loading";
 import useLogout from "../hooks/useLogout";
@@ -40,7 +40,7 @@ const UserPage = ({ id, renderProps }: Props) => {
 		data: reviewsData,
 		fetchMore,
 	} = useReviewsByUserIdQuery({
-		variables: { id },
+		variables: { id, offset: 0 },
 	});
 
 	if (userLoading)
@@ -85,8 +85,7 @@ const UserPage = ({ id, renderProps }: Props) => {
 
 	const isUser = currentUser && currentUser.id === id;
 
-	const { firstName, dateJoined, reviewsCount } =
-		userData?.userById;
+	const { firstName, dateJoined, reviewsCount } = userData?.userById;
 	const reviews = reviewsData.reviewsByUserId;
 
 	return (
@@ -114,7 +113,7 @@ const UserPage = ({ id, renderProps }: Props) => {
 
 				<div className="UserPage__badges">
 					<div>
-						<OutlinedStarSvg />
+						<StarSvg />
 						<span>{reviewsCount} reviews</span>
 					</div>
 					<div>
@@ -127,7 +126,7 @@ const UserPage = ({ id, renderProps }: Props) => {
 
 				<div className="UserPage__reviews">
 					<div className="UserPage__reviews__title">
-						<StarSvg />
+						<FilledStarSvg />
 						<h2>{isUser ? "Your" : "Their"} reviews</h2>
 					</div>
 					<ul className="UserPage__reviews__content">
@@ -180,7 +179,7 @@ const UserPage = ({ id, renderProps }: Props) => {
 						/>
 					</div>
 					<div>
-						<OutlinedStarSvg />
+						<StarSvg />
 						<span>{reviewsCount} reviews</span>
 					</div>
 					<div>
@@ -201,7 +200,7 @@ const UserPage = ({ id, renderProps }: Props) => {
 
 					<div className="UserPage__reviews">
 						<div className="UserPage__reviews__title">
-							<StarSvg />
+							<FilledStarSvg />
 							<h2>{isUser ? "Your" : "Their"} reviews</h2>
 						</div>
 						<ul className="UserPage__reviews__content">

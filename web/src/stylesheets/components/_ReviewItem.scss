@@ -1,48 +1,44 @@
 .ReviewItem {
-  margin: 5rem 0;
+	margin: 5rem 0;
 
-  &:first-child {
-    margin-top: 2.5rem;
-  }
+	&:first-child {
+		margin-top: 2.5rem;
+	}
 
 	&__date {
-    color: $muted-text-color;
-    font-weight: 400;
-    font-size: 1.4rem;
+		color: $muted-text-color;
+		font-weight: 400;
+		font-size: 1.4rem;
 	}
 
 	&__content {
-    font-weight: 400;
-    margin-top: 1rem;
+		font-weight: 400;
+		margin-top: 1rem;
 	}
 
 	&__host {
-    margin-top: 1rem;
+		margin-top: 1rem;
 		display: flex;
-    align-items: center;
+		align-items: center;
 
 		&__avatar {
 			width: 5rem;
 			height: 5rem;
 			border-radius: 50%;
-			background-color: rgb(243, 243, 243);
-			border: 1px solid $muted-line-color;
-
-			img {
-			}
+			background-color: $avatar-background-color;
 		}
 
 		&__details {
-      margin-left: 1.25rem;
+			margin-left: 1.25rem;
 
 			&__name {
-        font-weight: 500;
+				font-weight: 500;
 			}
 
 			&__date-joined {
-        font-weight: 400;
-        font-size: 1.4rem;
-        color: $muted-text-color;
+				font-weight: 400;
+				font-size: 1.4rem;
+				color: $muted-text-color;
 			}
 		}
 	}
