@@ -87,6 +87,8 @@
 				font-weight: 400;
 				font-size: 1.2rem;
 				letter-spacing: 0.25rem;
+				z-index: 1;
+				pointer-events: none;
 			}
 
 			img {

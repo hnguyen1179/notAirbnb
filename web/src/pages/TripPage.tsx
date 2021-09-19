@@ -254,7 +254,7 @@ const TripPage = ({ id, renderProps }: Props) => {
 								className="TripPage__directions__map"
 								aria-hidden={!mobile}
 							>
-								<GoogleMapReact
+								{/* <GoogleMapReact
 									bootstrapURLKeys={{
 										key: process.env
 											.REACT_APP_GOOGLE_API_KEY as string,
@@ -267,7 +267,7 @@ const TripPage = ({ id, renderProps }: Props) => {
 										lat={mapValues.center.lat}
 										lng={mapValues.center.lng}
 									/>
-								</GoogleMapReact>
+								</GoogleMapReact> */}
 							</div>
 							<div className="TripPage__directions__address">
 								<div>Address</div>
@@ -359,7 +359,7 @@ const TripPage = ({ id, renderProps }: Props) => {
 				</div>
 
 				<div className="TripPage-outer__map">
-					<GoogleMapReact
+					{/* <GoogleMapReact
 						bootstrapURLKeys={{
 							key: process.env.REACT_APP_GOOGLE_API_KEY as string,
 						}}
@@ -372,7 +372,7 @@ const TripPage = ({ id, renderProps }: Props) => {
 							lng={mapValues.center.lng}
 							details={`${start} - ${end}, ${year}`}
 						/>
-					</GoogleMapReact>
+					</GoogleMapReact> */}
 				</div>
 			</div>
 		</div>
