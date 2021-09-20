@@ -70,6 +70,12 @@ function App() {
 									return [...existing, ...incoming];
 								},
 							},
+							reviewsByHostId: {
+								keyArgs: false,
+								merge(existing = [], incoming) {
+									return [...existing, ...incoming];
+								},
+							},
 						},
 					},
 				},
@@ -90,11 +96,7 @@ function App() {
 								component={LandingPage}
 							/>
 
-							<Route
-								exact
-								path={ERROR}
-								component={ErrorPage}
-							/>
+							<Route exact path={ERROR} component={ErrorPage} />
 
 							<Route path={LISTINGS} component={Listings} />
 

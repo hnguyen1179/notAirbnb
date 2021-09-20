@@ -13,6 +13,7 @@ const HOST_BY_ID = gql`
 				id
 				title
 				reviewsCount
+				region
 				languages
 				score
 				scores

@@ -1,12 +1,11 @@
-import { useContext } from "react";
-import { AppContext } from "../context/AppContext";
-
-import Navbar from "../components/Navbar/Navbar";
 import { useFetchHostReviews } from "../hooks/useFetchHostReviews";
 import { Review, useHostByIdQuery } from "../generated/graphql";
 import Loading from "../components/Loading";
 import ReviewItem from "../components/ReviewItem/ReviewItem";
-import Profile, { ITypeProps } from "../components/Profile/Profile";
+import Profile, { ITypeProps, IHostProps } from "../components/Profile/Profile";
+import { ReactComponent as SuperhostSvg } from "../assets/icons/superhost.svg";
+import { AdvancedImage } from "@cloudinary/react";
+import { Cloudinary } from "@cloudinary/base";
 
 interface Props {
 	id: string;
@@ -14,7 +13,6 @@ interface Props {
 }
 
 const HostPage = ({ id, renderProps }: Props) => {
-	const { cloudinary, mobile } = useContext(AppContext);
 	const { loading, error, data } = useHostByIdQuery({ variables: { id } });
 
 	const {
@@ -47,17 +45,21 @@ const HostPage = ({ id, renderProps }: Props) => {
 		);
 	}
 
-	//create reviesCount
-
 	const reviews = reviewsData.reviewsByHostId;
-	const { firstName, dateJoined } = data?.hostById;
-
-	console.log(reviews);
+	const { firstName, dateJoined, listings, description, medals } =
+		data?.hostById;
+	const reviewsCount =
+		listings
+			.map((listing) => listing?.reviewsCount)
+			.reduce((acc, cv) => {
+				return (acc as number) + (cv as number);
+			}, 0) || 0;
 
 	const renderReviewItems = () => {
 		return reviews.map((review) => {
 			return (
 				<ReviewItem
+					key={review.authorId}
 					id={review.authorId || ""}
 					review={review as Review}
 					firstName={review.author?.firstName || ""}
@@ -68,19 +70,96 @@ const HostPage = ({ id, renderProps }: Props) => {
 		});
 	};
 
+	const renderSuperhost = () => {
+		if (medals.includes("Superhost")) {
+			return (
+				<div className="badge">
+					<SuperhostSvg />
+					<span>Superhost</span>
+				</div>
+			);
+		} else {
+			return <div></div>;
+		}
+	};
+
+	const renderDescription = () => {
+		return (
+			<>
+				<div className="UserPage-divider" />
+
+				<div className="UserPage__about">
+					<div>
+						<h2>About</h2>
+					</div>
+
+					<p>{description}</p>
+				</div>
+			</>
+		);
+	};
+
+	const renderListings = (cloudinary: Cloudinary) => {
+		return (
+			<>
+				<div className="UserPage-divider" />
+
+				<div className="UserPage__listings">
+					<div>
+						<h2>{firstName}'s Listings</h2>
+					</div>
+
+					<ul>
+						{listings.map((listing) => {
+							const url = `images/${listing?.region
+								.replaceAll(" ", "_")
+								.toLowerCase()}/${listing?.id}/image-0`;
+
+							return (
+								<li>
+									<AdvancedImage
+										style={{ width: "100px" }}
+										cldImg={cloudinary.image(url)}
+									/>
+									{listing?.reviewsCount}
+									<div>{listing?.score}</div>
+									{listing?.title}
+								</li>
+							);
+						})}
+					</ul>
+				</div>
+			</>
+		);
+	};
+
 	const typeProps: ITypeProps = {
 		id,
 		type: "host",
 		firstName,
 		dateJoined,
-		reviewsCount: reviews.length,
+		reviewsCount,
 		fetchLoading,
 		handleFetchMore,
 		reviews: reviews as Review[],
 		renderReviewItems,
 	};
 
-	return <Profile typeProps={typeProps} renderProps={renderProps} />;
+	const hostProps: IHostProps = {
+		renderSuperhost,
+		renderDescription,
+		renderListings,
+	};
+
+	console.log(data);
+
+	return (
+		<Profile
+			typeProps={typeProps}
+			hostProps={hostProps}
+			renderProps={renderProps}
+		/>
+	);
 };
 
 export default HostPage;

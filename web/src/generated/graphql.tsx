@@ -255,7 +255,7 @@ export type HostByIdQueryVariables = Exact<{
 }>;
 
 
-export type HostByIdQuery = { __typename?: 'Query', hostById: Maybe<{ __typename?: 'Host', id: string, firstName: string, dateJoined: string, description: Maybe<string>, details: Array<Maybe<string>>, medals: Array<Maybe<string>>, listings: Array<Maybe<{ __typename?: 'Listing', id: string, title: string, reviewsCount: number, languages: Array<Maybe<string>>, score: number, scores: Array<Maybe<string>> }>> }> };
+export type HostByIdQuery = { __typename?: 'Query', hostById: Maybe<{ __typename?: 'Host', id: string, firstName: string, dateJoined: string, description: Maybe<string>, details: Array<Maybe<string>>, medals: Array<Maybe<string>>, listings: Array<Maybe<{ __typename?: 'Listing', id: string, title: string, reviewsCount: number, region: string, languages: Array<Maybe<string>>, score: number, scores: Array<Maybe<string>> }>> }> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -394,6 +394,7 @@ export const HostByIdDocument = gql`
       id
       title
       reviewsCount
+      region
       languages
       score
       scores

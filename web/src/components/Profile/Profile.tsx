@@ -4,7 +4,6 @@ import { AdvancedImage } from "@cloudinary/react";
 import { AppContext } from "../../context/AppContext";
 import Navbar from "../Navbar/Navbar";
 
-import { ReactComponent as FilledStarSvg } from "../../assets/icons/filled-star.svg";
 import { ReactComponent as ShieldSvg } from "../../assets/icons/shield.svg";
 import { ReactComponent as StarSvg } from "../../assets/icons/star.svg";
 
@@ -13,11 +12,8 @@ import MobileNavbar from "../MobileNavbar/MobileNavbar";
 import Footer from "../Footer/Footer";
 import useLogout from "../../hooks/useLogout";
 import { Review } from "../../generated/graphql";
+import { Cloudinary } from "@cloudinary/base";
 
-interface Props {
-	typeProps: ITypeProps;
-	renderProps: any;
-}
 export interface ITypeProps {
 	id: string;
 	type: "host" | "user";
@@ -30,7 +26,18 @@ export interface ITypeProps {
 	renderReviewItems: () => JSX.Element[];
 }
 
-const Profile = ({ typeProps, renderProps }: Props) => {
+export interface IHostProps {
+	renderSuperhost: () => JSX.Element;
+	renderDescription: () => JSX.Element;
+	renderListings: (cld: Cloudinary) => JSX.Element;
+}
+interface Props {
+	typeProps: ITypeProps;
+	renderProps: any;
+	hostProps?: IHostProps;
+}
+
+const Profile = ({ typeProps, renderProps, hostProps }: Props) => {
 	const { cloudinary, mobile, user: currentUser } = useContext(AppContext);
 	const logout = useLogout();
 
@@ -53,9 +60,11 @@ const Profile = ({ typeProps, renderProps }: Props) => {
 
 	const renderPronoun = () => {
 		if (type === "host") {
-      return `${firstName}'s`;
-		} else if (type === "user") {
-			return currentUser && currentUser.id === id ? "Your" : "Their";
+			return `Guest's reviews`;
+		} else {
+			return currentUser && currentUser.id === id
+				? "Your Reviews"
+				: "Their Reviews";
 		}
 	};
 
@@ -83,22 +92,28 @@ const Profile = ({ typeProps, renderProps }: Props) => {
 				</header>
 
 				<div className="UserPage__badges">
-					<div>
+					{type === "host" &&
+						hostProps &&
+						hostProps.renderSuperhost()}
+					<div className="badge">
 						<StarSvg />
 						<span>{reviewsCount} reviews</span>
 					</div>
-					<div>
+					<div className="badge">
 						<ShieldSvg />
 						<span>Identity Verified</span>
 					</div>
 				</div>
 
+				{type === "host" && hostProps && hostProps.renderDescription()}
+				{type === "host" &&
+					hostProps &&
+					hostProps.renderListings(cloudinary)}
 				<div className="UserPage-divider" />
 
 				<div className="UserPage__reviews">
 					<div className="UserPage__reviews__title">
-						<FilledStarSvg />
-						<h2>{renderPronoun()} reviews</h2>
+						<h2>{renderPronoun()}</h2>
 					</div>
 					<ul className="UserPage__reviews__content">
 						{renderReviewItems()}
@@ -106,9 +121,9 @@ const Profile = ({ typeProps, renderProps }: Props) => {
 					{reviews.length !== reviewsCount &&
 						(fetchLoading ? (
 							<button
-								className={`UserPage__reviews__more-button ${
-									fetchLoading ? "loading" : ""
-								}`}
+								className="UserPage__reviews__more-button"
+								role="alert"
+								aria-busy={fetchLoading}
 								onClick={handleFetchMore}
 							>
 								<Loading />
@@ -125,7 +140,7 @@ const Profile = ({ typeProps, renderProps }: Props) => {
 
 				{mobile && <div className="UserPage-divider" />}
 
-				{currentUser && mobile && (
+				{type === "user" && currentUser && mobile && (
 					<footer className="UserPage__footer">
 						<button
 							className="UserPage__footer__logout-button"
@@ -145,11 +160,15 @@ const Profile = ({ typeProps, renderProps }: Props) => {
 							cldImg={cloudinary.image(`${type}_avatars/${id}`)}
 						/>
 					</div>
-					<div>
+
+					{type === "host" &&
+						hostProps &&
+						hostProps.renderSuperhost()}
+					<div className="badge">
 						<StarSvg />
 						<span>{reviewsCount} reviews</span>
 					</div>
-					<div>
+					<div className="badge">
 						<ShieldSvg />
 						<span>Identity Verified</span>
 					</div>
@@ -163,12 +182,18 @@ const Profile = ({ typeProps, renderProps }: Props) => {
 						</div>
 					</header>
 
+					{type === "host" &&
+						hostProps &&
+						hostProps.renderDescription()}
+					{type === "host" &&
+						hostProps &&
+						hostProps.renderListings(cloudinary)}
+
 					<div className="UserPage-divider" />
 
 					<div className="UserPage__reviews">
 						<div className="UserPage__reviews__title">
-							<FilledStarSvg />
-							<h2>{renderPronoun()} reviews</h2>
+							<h2>{renderPronoun()}</h2>
 						</div>
 						<ul className="UserPage__reviews__content">
 							{renderReviewItems()}
@@ -176,9 +201,9 @@ const Profile = ({ typeProps, renderProps }: Props) => {
 						{reviews.length !== reviewsCount &&
 							(fetchLoading ? (
 								<button
-									className={`UserPage__reviews__more-button ${
-										fetchLoading ? "loading" : ""
-									}`}
+									className="UserPage__reviews__more-button"
+									role="alert"
+									aria-busy={fetchLoading}
 									onClick={handleFetchMore}
 								>
 									<Loading />

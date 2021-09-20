@@ -39,7 +39,7 @@
 		display: flex;
 		flex-direction: column;
 
-		div {
+		.badge {
 			margin: 1rem 0;
 			display: flex;
 			align-items: center;
@@ -48,6 +48,27 @@
 				margin-right: 1rem;
 			}
 		}
+	}
+
+	&__about {
+		& > div > h2 {
+			font-size: 2.4rem;
+			font-weight: 300;
+			margin: 2.5rem 0;
+		}
+
+		& > p {
+			font-weight: 400;
+		}
+	}
+
+	&__listings {
+		& > div > h2 {
+			font-size: 2.4rem;
+			font-weight: 300;
+			margin: 2.5rem 0;
+		}
+		
 	}
 
 	.UserPage-divider {
@@ -80,7 +101,7 @@
 			border-radius: 0.8rem;
 			transition: transform 100ms ease-in-out;
 
-			&.loading {
+			&[aria-busy="true"] {
 				background-color: white !important;
 				pointer-events: none;
 			}
@@ -123,6 +144,10 @@
 		&__header {
 			h1 {
 				font-size: 3.6rem;
+			}
+
+			&__avatar {
+				margin-bottom: 3rem;
 			}
 		}
 	}

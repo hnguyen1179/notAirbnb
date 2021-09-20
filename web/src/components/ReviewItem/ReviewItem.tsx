@@ -37,18 +37,11 @@ const ReviewItem = ({ id, review, type, firstName, dateJoined }: Props) => {
 
 	const renderNamePrefix = () => {
 		if (type === "host") {
-			return "";
+			return "Review from";
 		} else {
 			return "Review for";
 		}
 	};
-
-	// id
-	// date
-	// content
-	// listing > host > id
-	// authorId
-	// type
 
 	const urlType = () => {
 		if (type === "user") {
