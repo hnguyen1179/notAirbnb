@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 import { AdvancedImage } from "@cloudinary/react";
+import { Review } from "../../generated/graphql";
 
 // interface HostPartial {
 // 	id: string;
@@ -22,13 +23,30 @@ import { AdvancedImage } from "@cloudinary/react";
 // 	listing: ListingPartial | undefined | null;
 // }
 
-// interface Props {
-//   review: ReviewPartial;
-// }
+interface Props {
+	review: Review;
+	type: "host" | "user";
+}
 
-const ReviewItem = ({ review }: any) => {
+const ReviewItem = ({ review, type }: Props) => {
 	const { cloudinary } = useContext(AppContext);
 	const date = new Date(review?.date);
+
+	const renderNamePrefix = () => {
+		if (type === "host") {
+			return "";
+		} else {
+			return "Review for";
+		}
+	};
+
+	// id
+	// date
+	// content
+	// listing > host > id
+	// authorId
+	// type
+	//
 
 	return (
 		<li key={review?.id} className="ReviewItem">
@@ -36,17 +54,17 @@ const ReviewItem = ({ review }: any) => {
 			<div className="ReviewItem__content">{review?.content}</div>
 			<div className="ReviewItem__host">
 				<div className="ReviewItem__host__avatar">
-					<a href={`/host/${review.listing.host.id}`}>
+					<a href={`/${type}/${review.listing.host.id}`}>
 						<AdvancedImage
 							cldImg={cloudinary.image(
-								`host_avatars/${review.listing.host.id}`
+								`${type}_avatars/${review.listing.host.id}`
 							)}
 						/>
 					</a>
 				</div>
 				<div className="ReviewItem__host__details">
 					<div className="ReviewItem__host__details__name">
-						Review for {review?.listing?.host?.firstName}
+						{renderNamePrefix()} {review?.listing?.host?.firstName}
 					</div>
 					<div className="ReviewItem__host__details__date-joined">
 						{review?.listing?.host?.dateJoined}

@@ -1,77 +1,50 @@
-import { useState, useContext } from "react";
-import { AppContext } from "../context/AppContext";
-import MobileNavbar from "../components/MobileNavbar/MobileNavbar";
+import { useContext } from "react";
 import { AdvancedImage } from "@cloudinary/react";
-import {
-	useUserByIdQuery,
-} from "../generated/graphql";
+
+import { AppContext } from "../../context/AppContext";
+import Navbar from "../Navbar/Navbar";
 
 import { ReactComponent as FilledStarSvg } from "../assets/icons/filled-star.svg";
 import { ReactComponent as ShieldSvg } from "../assets/icons/shield.svg";
 import { ReactComponent as StarSvg } from "../assets/icons/star.svg";
-
-import Loading from "../components/Loading";
-import useLogout from "../hooks/useLogout";
-import ReviewItem from "../components/ReviewItem/ReviewItem";
-import Footer from "../components/Footer/Footer";
-import Navbar from "../components/Navbar/Navbar";
-import { useFetchUserReviews } from "../hooks/useFetchUserReviews";
+import ReviewItem from "../ReviewItem/ReviewItem";
+import Loading from "../Loading";
+import MobileNavbar from "../MobileNavbar/MobileNavbar";
+import Footer from "../Footer/Footer";
+import useLogout from "../../hooks/useLogout";
+import { Review } from "../../generated/graphql";
 
 interface Props {
-	id: string;
+	id: string; // this will either be userId or hostId
+	type: "host" | "user";
 	renderProps: any;
 }
 
-const UserPage = ({ id, renderProps }: Props) => {
+const Profile = (props: Props) => {
 	const { cloudinary, mobile, user: currentUser } = useContext(AppContext);
-	const {
-		error: reviewsError,
-		data: reviewsData,
-		handleFetchMore,
-		fetchLoading,
-	} = useFetchUserReviews(id);
 	const logout = useLogout();
-
-	const {
-		loading: userLoading,
-		error: userError,
-		data: userData,
-	} = useUserByIdQuery({
-		variables: { id },
-	});
-
-	if (userLoading)
-		return (
-			<div className="page-loading">
-				<Loading />
-			</div>
-		);
-
-	if (userError || reviewsError)
-		return (
-			<div>
-				{userError}
-				{reviewsError}
-			</div>
-		);
-
-	if (userData?.userById == null || reviewsData?.reviewsByUserId == null) {
-		return (
-			<div className="page-loading">
-				<Loading />
-			</div>
-		);
-	}
 
 	const handleLogout = async () => {
 		await logout();
-		renderProps.history.push("/");
+		props.renderProps.history.push("/");
 	};
 
-	const isUser = currentUser && currentUser.id === id;
+	// firstName
+	// dateJoined
+	// reviewsCount
+	// fetchLoading
+	// handleFetchMore
+	// reviews
 
-	const { firstName, dateJoined, reviewsCount } = userData?.userById;
-	const reviews = reviewsData.reviewsByUserId;
+	const renderPronoun = () => {
+		if (props.type === "host") {
+			return firstName;
+		} else if (props.type === "user") {
+			return currentUser && currentUser.id === props.id
+				? "Your"
+				: "Their";
+		}
+	};
 
 	return (
 		<div className="UserPage">
@@ -91,7 +64,9 @@ const UserPage = ({ id, renderProps }: Props) => {
 					<div className="UserPage__header__avatar">
 						<AdvancedImage
 							className="avatar"
-							cldImg={cloudinary.image(`user_avatars/${id}`)}
+							cldImg={cloudinary.image(
+								`${props.type}_avatars/${props.id}`
+							)}
 						/>
 					</div>
 				</header>
@@ -112,12 +87,12 @@ const UserPage = ({ id, renderProps }: Props) => {
 				<div className="UserPage__reviews">
 					<div className="UserPage__reviews__title">
 						<FilledStarSvg />
-						<h2>{isUser ? "Your" : "Their"} reviews</h2>
+						<h2>{renderPronoun()} reviews</h2>
 					</div>
 					<ul className="UserPage__reviews__content">
-						{reviews.map((review) => {
+						{reviews.map((review: Review) => {
 							return (
-								<ReviewItem review={review} key={review.id} />
+								<ReviewItem review={review} type={props.type} key={review.id} />
 							);
 						})}
 					</ul>
@@ -160,7 +135,9 @@ const UserPage = ({ id, renderProps }: Props) => {
 					<div className="UserPage__header__avatar">
 						<AdvancedImage
 							className="avatar"
-							cldImg={cloudinary.image(`user_avatars/${id}`)}
+							cldImg={cloudinary.image(
+								`${props.type}_avatars/${props.id}`
+							)}
 						/>
 					</div>
 					<div>
@@ -189,7 +166,7 @@ const UserPage = ({ id, renderProps }: Props) => {
 							<h2>{isUser ? "Your" : "Their"} reviews</h2>
 						</div>
 						<ul className="UserPage__reviews__content">
-							{reviews.map((review) => {
+							{reviews.map((review: Review) => {
 								return (
 									<ReviewItem
 										review={review}
@@ -220,7 +197,7 @@ const UserPage = ({ id, renderProps }: Props) => {
 
 					{mobile && <div className="UserPage-divider" />}
 
-					{currentUser && mobile && (
+					{props.type === "user" && mobile && currentUser && (
 						<footer className="UserPage__footer">
 							<button
 								className="UserPage__footer__logout-button"
@@ -244,4 +221,4 @@ const UserPage = ({ id, renderProps }: Props) => {
 	);
 };
 
-export default UserPage;
+export default Profile;
