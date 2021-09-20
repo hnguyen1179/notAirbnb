@@ -115,7 +115,7 @@ const Query = objectType({
       resolve: async (_parent, args, context: Context) => {
         const reviews = await context.prisma.review.findMany({
           skip: args.offset || 0,
-          take: 5,
+          take: 3,
           where: {
             listing: {
               hostId: args.id,

@@ -25,10 +25,13 @@ import { Review } from "../../generated/graphql";
 
 interface Props {
 	review: Review;
+	id: string; // of host or user for url purposes
+	firstName: string;
+	dateJoined: string;
 	type: "host" | "user";
 }
 
-const ReviewItem = ({ review, type }: Props) => {
+const ReviewItem = ({ id, review, type, firstName, dateJoined }: Props) => {
 	const { cloudinary } = useContext(AppContext);
 	const date = new Date(review?.date);
 
@@ -46,7 +49,14 @@ const ReviewItem = ({ review, type }: Props) => {
 	// listing > host > id
 	// authorId
 	// type
-	//
+
+	const urlType = () => {
+		if (type === "user") {
+			return "host";
+		} else {
+			return "user";
+		}
+	};
 
 	return (
 		<li key={review?.id} className="ReviewItem">
@@ -54,20 +64,20 @@ const ReviewItem = ({ review, type }: Props) => {
 			<div className="ReviewItem__content">{review?.content}</div>
 			<div className="ReviewItem__host">
 				<div className="ReviewItem__host__avatar">
-					<a href={`/${type}/${review.listing.host.id}`}>
+					<a href={`/${urlType()}/${id}`}>
 						<AdvancedImage
 							cldImg={cloudinary.image(
-								`${type}_avatars/${review.listing.host.id}`
+								`${urlType()}_avatars/${id}`
 							)}
 						/>
 					</a>
 				</div>
 				<div className="ReviewItem__host__details">
 					<div className="ReviewItem__host__details__name">
-						{renderNamePrefix()} {review?.listing?.host?.firstName}
+						{renderNamePrefix()} {firstName}
 					</div>
 					<div className="ReviewItem__host__details__date-joined">
-						{review?.listing?.host?.dateJoined}
+						{dateJoined}
 					</div>
 				</div>
 			</div>

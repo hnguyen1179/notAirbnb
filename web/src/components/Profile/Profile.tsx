@@ -4,10 +4,10 @@ import { AdvancedImage } from "@cloudinary/react";
 import { AppContext } from "../../context/AppContext";
 import Navbar from "../Navbar/Navbar";
 
-import { ReactComponent as FilledStarSvg } from "../assets/icons/filled-star.svg";
-import { ReactComponent as ShieldSvg } from "../assets/icons/shield.svg";
-import { ReactComponent as StarSvg } from "../assets/icons/star.svg";
-import ReviewItem from "../ReviewItem/ReviewItem";
+import { ReactComponent as FilledStarSvg } from "../../assets/icons/filled-star.svg";
+import { ReactComponent as ShieldSvg } from "../../assets/icons/shield.svg";
+import { ReactComponent as StarSvg } from "../../assets/icons/star.svg";
+
 import Loading from "../Loading";
 import MobileNavbar from "../MobileNavbar/MobileNavbar";
 import Footer from "../Footer/Footer";
@@ -15,34 +15,47 @@ import useLogout from "../../hooks/useLogout";
 import { Review } from "../../generated/graphql";
 
 interface Props {
-	id: string; // this will either be userId or hostId
-	type: "host" | "user";
+	typeProps: ITypeProps;
 	renderProps: any;
 }
+export interface ITypeProps {
+	id: string;
+	type: "host" | "user";
+	firstName: string;
+	dateJoined: string;
+	reviewsCount: number;
+	fetchLoading: boolean;
+	handleFetchMore: () => void;
+	reviews: Review[];
+	renderReviewItems: () => JSX.Element[];
+}
 
-const Profile = (props: Props) => {
+const Profile = ({ typeProps, renderProps }: Props) => {
 	const { cloudinary, mobile, user: currentUser } = useContext(AppContext);
 	const logout = useLogout();
 
 	const handleLogout = async () => {
 		await logout();
-		props.renderProps.history.push("/");
+		renderProps.history.push("/");
 	};
 
-	// firstName
-	// dateJoined
-	// reviewsCount
-	// fetchLoading
-	// handleFetchMore
-	// reviews
+	const {
+		id,
+		type,
+		firstName,
+		dateJoined,
+		reviewsCount,
+		reviews,
+		fetchLoading,
+		handleFetchMore,
+		renderReviewItems,
+	} = typeProps;
 
 	const renderPronoun = () => {
-		if (props.type === "host") {
-			return firstName;
-		} else if (props.type === "user") {
-			return currentUser && currentUser.id === props.id
-				? "Your"
-				: "Their";
+		if (type === "host") {
+      return `${firstName}'s`;
+		} else if (type === "user") {
+			return currentUser && currentUser.id === id ? "Your" : "Their";
 		}
 	};
 
@@ -64,9 +77,7 @@ const Profile = (props: Props) => {
 					<div className="UserPage__header__avatar">
 						<AdvancedImage
 							className="avatar"
-							cldImg={cloudinary.image(
-								`${props.type}_avatars/${props.id}`
-							)}
+							cldImg={cloudinary.image(`${type}_avatars/${id}`)}
 						/>
 					</div>
 				</header>
@@ -90,11 +101,7 @@ const Profile = (props: Props) => {
 						<h2>{renderPronoun()} reviews</h2>
 					</div>
 					<ul className="UserPage__reviews__content">
-						{reviews.map((review: Review) => {
-							return (
-								<ReviewItem review={review} type={props.type} key={review.id} />
-							);
-						})}
+						{renderReviewItems()}
 					</ul>
 					{reviews.length !== reviewsCount &&
 						(fetchLoading ? (
@@ -135,9 +142,7 @@ const Profile = (props: Props) => {
 					<div className="UserPage__header__avatar">
 						<AdvancedImage
 							className="avatar"
-							cldImg={cloudinary.image(
-								`${props.type}_avatars/${props.id}`
-							)}
+							cldImg={cloudinary.image(`${type}_avatars/${id}`)}
 						/>
 					</div>
 					<div>
@@ -163,17 +168,10 @@ const Profile = (props: Props) => {
 					<div className="UserPage__reviews">
 						<div className="UserPage__reviews__title">
 							<FilledStarSvg />
-							<h2>{isUser ? "Your" : "Their"} reviews</h2>
+							<h2>{renderPronoun()} reviews</h2>
 						</div>
 						<ul className="UserPage__reviews__content">
-							{reviews.map((review: Review) => {
-								return (
-									<ReviewItem
-										review={review}
-										key={review.id}
-									/>
-								);
-							})}
+							{renderReviewItems()}
 						</ul>
 						{reviews.length !== reviewsCount &&
 							(fetchLoading ? (
@@ -197,7 +195,7 @@ const Profile = (props: Props) => {
 
 					{mobile && <div className="UserPage-divider" />}
 
-					{props.type === "user" && mobile && currentUser && (
+					{type === "user" && mobile && currentUser && (
 						<footer className="UserPage__footer">
 							<button
 								className="UserPage__footer__logout-button"
