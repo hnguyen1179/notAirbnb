@@ -28,10 +28,10 @@ import Navbar from "../components/Navbar/Navbar";
 
 interface Props {
 	id: string;
-	renderProps: any;
+	routeProps: any;
 }
 
-const TripPage = ({ id, renderProps }: Props) => {
+const TripPage = ({ id, routeProps }: Props) => {
 	const { cloudinary, mobile } = useContext(AppContext);
 	const [copied, setCopied] = useState(false);
 
@@ -78,7 +78,7 @@ const TripPage = ({ id, renderProps }: Props) => {
 	const total = calculateTotal(data.reservationById as Reservation);
 
 	const handleBackClick = () => {
-		renderProps.history.goBack();
+		routeProps.history.goBack();
 	};
 
 	const handleCopyAddress = debounce(() => {

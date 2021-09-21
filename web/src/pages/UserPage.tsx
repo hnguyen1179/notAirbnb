@@ -3,13 +3,34 @@ import Loading from "../components/Loading";
 import { useFetchUserReviews } from "../hooks/useFetchUserReviews";
 import Profile, { ITypeProps } from "../components/Profile/Profile";
 import ReviewItem from "../components/ReviewItem/ReviewItem";
+import { Cloudinary } from "@cloudinary/base";
 
 interface Props {
 	id: string;
-	renderProps: any;
+	routeProps: any;
 }
 
-const UserPage = ({ id, renderProps }: Props) => {
+const RenderReviewItems = (props: { reviews: Review[], cloudinary: Cloudinary }) => {
+	return (
+		<>
+			{props.reviews.map((review) => {
+				return (
+					<ReviewItem
+						key={review.listing?.host?.id}
+						id={review.listing?.host?.id || ""}
+						review={review}
+						firstName={review.listing?.host?.firstName || ""}
+						dateJoined={review.listing?.host?.dateJoined || ""}
+						type={"user"}
+						cloudinary={props.cloudinary}
+					/>
+				);
+			})}
+		</>
+	);
+};
+
+const UserPage = ({ id, routeProps }: Props) => {
 	const {
 		error: reviewsError,
 		data: reviewsData,
@@ -51,20 +72,6 @@ const UserPage = ({ id, renderProps }: Props) => {
 	const { firstName, dateJoined, reviewsCount } = userData?.userById;
 	const reviews = reviewsData.reviewsByUserId;
 
-	const renderReviewItems = () => {
-		return reviews.map((review) => {
-			return (
-				<ReviewItem
-					id={review.listing?.host?.id || ""}
-					review={review as Review}
-					firstName={review.listing?.host?.firstName || ""}
-					dateJoined={review.listing?.host?.dateJoined || ""}
-					type={"user"}
-				/>
-			);
-		});
-	};
-
 	const typeProps: ITypeProps = {
 		id,
 		type: "user",
@@ -74,10 +81,10 @@ const UserPage = ({ id, renderProps }: Props) => {
 		fetchLoading,
 		handleFetchMore,
 		reviews: reviews as Review[],
-		renderReviewItems,
+		RenderReviewItems,
 	};
 
-	return <Profile typeProps={typeProps} renderProps={renderProps} />;
+	return <Profile typeProps={typeProps} routeProps={routeProps} />;
 };
 
 export default UserPage;

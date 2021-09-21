@@ -1,8 +1,7 @@
 import { format } from "date-fns";
-import { useContext } from "react";
-import { AppContext } from "../../context/AppContext";
 import { AdvancedImage } from "@cloudinary/react";
 import { Review } from "../../generated/graphql";
+import { Cloudinary } from "@cloudinary/base";
 
 // interface HostPartial {
 // 	id: string;
@@ -29,15 +28,22 @@ interface Props {
 	firstName: string;
 	dateJoined: string;
 	type: "host" | "user";
+	cloudinary: Cloudinary;
 }
 
-const ReviewItem = ({ id, review, type, firstName, dateJoined }: Props) => {
-	const { cloudinary } = useContext(AppContext);
+const ReviewItem = ({
+	id,
+	review,
+	type,
+	firstName,
+	dateJoined,
+	cloudinary,
+}: Props) => {
 	const date = new Date(review?.date);
 
 	const renderNamePrefix = () => {
 		if (type === "host") {
-			return "Review from";
+			return "";
 		} else {
 			return "Review for";
 		}
@@ -53,6 +59,15 @@ const ReviewItem = ({ id, review, type, firstName, dateJoined }: Props) => {
 
 	return (
 		<li key={review?.id} className="ReviewItem">
+			{type === "host" && (
+				<div className="ReviewItem__listing">
+					<a href={`/listing/${review.listingId}`}>
+						<div className="ReviewItem__listing__title">
+							{review.listing?.title}
+						</div>
+					</a>
+				</div>
+			)}
 			<div className="ReviewItem__date">{format(date, "MMMM yyyy")}</div>
 			<div className="ReviewItem__content">{review?.content}</div>
 			<div className="ReviewItem__host">

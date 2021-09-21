@@ -178,6 +178,40 @@ const Query = objectType({
       },
     });
 
+    t.field('basicSearch', {
+      type: nonNull(list('Listing')),
+      args: {
+        region: nonNull(stringArg()),
+        numGuests: nonNull(intArg()),
+        daysRequested: nonNull(list(stringArg())),
+      },
+      resolve: async (_parent, args, context: Context) => {
+        const listings = await context.prisma.listing.findMany({
+          where: {
+            region: args.region,
+            numGuests: {
+              gte: args.numGuests,
+            },
+          },
+        });
+
+        if (!listings || listings.length === 0) return [];
+
+        if (args.daysRequested.length != 0) {
+          console.log(listings[0].datesUnavailable);
+          // listings = listings.filter((listing) => {
+          // if (!listing.datesUnavailable || !listing) return false;
+
+          // return args.daysRequested.every((day) => {
+          //   return !listing?.datesUnavailable.hasOwnProperty(day as string);
+          // });
+          // });
+        }
+
+        return [];
+      },
+    });
+
     t.nonNull.list.nonNull.field('allListings', {
       type: 'Listing',
       resolve: (_parent, _args, context: Context) => {
@@ -550,6 +584,86 @@ const Listing = objectType({
     t.nonNull.field('healthAndSafety', { type: list('String') });
     t.nonNull.field('highlights', { type: list('String') });
     t.nonNull.float('score');
+    t.nonNull.field('averageScore', {
+      type: 'Float',
+      resolve: async (parent, _args, context: Context) => {
+        const reviews = await context.prisma.listing
+          .findUnique({
+            where: { id: parent.id },
+          })
+          .reviews();
+
+        if (reviews == null || reviews.length === 0) return 0;
+
+        const averagedReviews = reviews.map((review) => {
+          return (
+            review.scores
+              .map((cat) => {
+                return Number(cat.split('||')[1]);
+              })
+              .reduce((acc, cv) => {
+                return acc + cv;
+              }, 0) / 6
+          );
+        });
+
+        const output =
+          averagedReviews.reduce((acc, cv) => acc + cv, 0) /
+          averagedReviews.length;
+
+        return Number(output.toFixed(2));
+      },
+    });
+    t.nonNull.field('averageScores', {
+      type: ReviewScores,
+      resolve: async (parent, _args, context: Context) => {
+        const reviews = await context.prisma.listing
+          .findUnique({
+            where: { id: parent.id },
+          })
+          .reviews();
+
+        if (reviews.length === 0) {
+          return {
+            cleanliness: 0.0,
+            accuracy: 0.0,
+            communication: 0.0,
+            location: 0.0,
+            checkin: 0.0,
+            value: 0,
+          };
+        }
+
+        const averagedReviews = reviews
+          .map((review) => {
+            return review.scores.map((cat) => {
+              return Number(cat.split('||')[1]);
+            });
+          })
+          .reduce((acc, cv) => {
+            for (let i = 0; i < acc.length; i++) {
+              acc[i] += cv[i];
+            }
+
+            return acc;
+          });
+
+        for (let i = 0; i < averagedReviews.length; i++) {
+          averagedReviews[i] = +(averagedReviews[i] / reviews.length).toFixed(
+            2,
+          );
+        }
+
+        return {
+          cleanliness: averagedReviews[0],
+          accuracy: averagedReviews[1],
+          communication: averagedReviews[2],
+          location: averagedReviews[3],
+          checkin: averagedReviews[4],
+          value: averagedReviews[5],
+        };
+      },
+    });
     t.nonNull.field('scores', { type: list('String') });
     t.nonNull.field('datesUnavailable', { type: 'JSONObject' });
     t.nonNull.field('reviewsCount', {
@@ -619,6 +733,18 @@ const Review = objectType({
   },
 });
 
+const ReviewScores = objectType({
+  name: 'ReviewScores',
+  definition(t) {
+    t.nonNull.float('cleanliness');
+    t.nonNull.float('accuracy');
+    t.nonNull.float('communication');
+    t.nonNull.float('location');
+    t.nonNull.float('checkin');
+    t.nonNull.float('value');
+  },
+});
+
 const ReservationCreateInput = inputObjectType({
   name: 'ReservationCreateInput',
   definition(t) {
@@ -663,6 +789,7 @@ const schemaWithoutPermissions = makeSchema({
     AuthPayload,
     dateTimeScalar,
     jsonScalar,
+    ReviewScores,
     ReservationCreateInput,
     ReviewCreateInput,
   ],

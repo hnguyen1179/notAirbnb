@@ -10,12 +10,12 @@ import Footer from "../components/Footer/Footer";
 
 interface Props {
 	id: string;
-	renderProps: any;
+	routeProps: any;
 }
 
-const TripsPage = ({ id, renderProps }: Props) => {
+const TripsPage = ({ id, routeProps }: Props) => {
 	const [onUpcoming, setOnUpcoming] = useState(true);
-	const { cloudinary, mobile, user: currentUser } = useContext(AppContext);
+	const { mobile } = useContext(AppContext);
 
 	const { loading, error, data } = useReservationsByUserIdQuery({
 		variables: { id },
@@ -39,16 +39,26 @@ const TripsPage = ({ id, renderProps }: Props) => {
 
 	const renderFuture = (
 		<ul className="TripsPage__content__list">
-			{future.map((reservation) => {
-				return <ReservationItem reservation={reservation} />;
+			{future.map((reservation, idx) => {
+				return (
+					<ReservationItem
+						key={idx}
+						reservation={reservation}
+					/>
+				);
 			})}
 		</ul>
 	);
 
 	const renderPast = (
 		<ul className="TripsPage__content__list">
-			{past.map((reservation) => {
-				return <ReservationItem reservation={reservation} />;
+			{past.map((reservation, idx) => {
+				return (
+					<ReservationItem
+						key={idx}
+						reservation={reservation}
+					/>
+				);
 			})}
 		</ul>
 	);

@@ -24,7 +24,7 @@ const Footer = () => {
 					</button>
 				</div>
 				<div className="Footer__meta__legal">
-					<span>© 2022 notAirbnb, Inc.</span>
+					<div>© 2022 notAirbnb, Inc.</div>
 				</div>
 				<div className="Footer__meta__docs">
 					<span className="spacer spacer--hidden">·</span>

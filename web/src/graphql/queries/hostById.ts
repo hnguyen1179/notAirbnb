@@ -7,16 +7,14 @@ const HOST_BY_ID = gql`
 			firstName
 			dateJoined
 			description
-			details
 			medals
 			listings {
 				id
 				title
 				reviewsCount
+				listingType
 				region
-				languages
-				score
-				scores
+				averageScore
 			}
 		}
 	}

@@ -77,7 +77,6 @@ function Navbar({ isTop, notLanding = false, disableEntry = false }: Props) {
 			return;
 		}
 
-		console.log(" in here ");
 		if (isTop) {
 			setSearch(true);
 		} else {

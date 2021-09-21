@@ -27,14 +27,12 @@
 			button {
 				display: flex;
 				text-decoration: underline;
+				background-color: inherit;
 
 				svg {
 					margin-right: 0.8rem;
 				}
 			}
-		}
-
-		&__legal {
 		}
 
 		&__docs {

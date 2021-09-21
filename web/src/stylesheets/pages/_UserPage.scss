@@ -1,5 +1,6 @@
 .UserPage {
 	.UserPage-container {
+		max-width: 1200px !important;
 		margin-left: auto;
 		margin-right: auto;
 		width: min(100%, 60rem);
@@ -50,6 +51,7 @@
 		}
 	}
 
+	// Host Specific
 	&__about {
 		& > div > h2 {
 			font-size: 2.4rem;
@@ -62,13 +64,101 @@
 		}
 	}
 
+	// Host Specific
 	&__listings {
 		& > div > h2 {
 			font-size: 2.4rem;
 			font-weight: 300;
 			margin: 2.5rem 0;
 		}
-		
+
+		&__list {
+			display: flex;
+			flex-direction: column;
+
+			& .ListingPreview {
+				box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px;
+				margin: 1rem 0;
+				border-radius: 0.8rem;
+				overflow: hidden;
+				transition: box-shadow 200ms;
+
+				&:hover,
+				&:focus-within {
+					transition: box-shadow 200ms;
+					box-shadow: 0 6px 16px rgba(0, 0, 0, 0.38);
+				}
+
+				&:first-child {
+					margin-top: 0.5rem;
+				}
+
+				&__image {
+					position: relative;
+					height: 200px;
+					width: 100%;
+					display: inline-block;
+					overflow: hidden;
+
+					& > img {
+						position: absolute;
+						height: 100%;
+						width: 100%;
+						object-fit: cover;
+						object-position: 50% 50%;
+					}
+				}
+
+				&__details,
+				&__title {
+					padding-left: 1rem;
+					padding-right: 1rem;
+				}
+
+				&__details {
+					padding-top: 0.5rem;
+					display: flex;
+					align-items: center;
+					font-weight: 400;
+					margin: 0.5rem 0;
+					position: relative;
+
+					& > div > svg {
+						width: 1.5rem !important;
+						height: 1.5rem !important;
+						color: $main-color;
+					}
+
+					& > div {
+						font-size: 1.4rem;
+
+						&:first-child {
+							position: relative;
+						}
+
+						&:nth-child(2) {
+							margin: 0 0.4rem;
+						}
+
+						&:last-child {
+							color: $muted-text-color;
+						}
+					}
+				}
+
+				&__title {
+					padding-bottom: 1rem;
+					font-weight: 400;
+
+					& > div:last-child {
+						width: 95%;
+						white-space: nowrap;
+						text-overflow: ellipsis;
+						overflow: hidden;
+					}
+				}
+			}
+		}
 	}
 
 	.UserPage-divider {
@@ -172,9 +262,30 @@
 			border-radius: 0.8rem;
 		}
 
+		&__listings {
+			&__list {
+				display: grid;
+				grid-template-columns: repeat(2, calc(50% - 2rem));
+				gap: 2rem;
+
+				& .ListingPreview {
+					margin: 0;
+					&:first-child {
+						margin-top: 0;
+					}
+
+					&__image {
+						width: 100%;
+						max-height: 250px;
+						// padding-top: 100%;
+					}
+				}
+			}
+		}
+
 		.UserPage-container {
+			width: unset;
 			padding: 3rem 8rem;
-			width: 80rem;
 			box-sizing: content-box;
 
 			&--original {
@@ -183,6 +294,12 @@
 
 			&--revised {
 				display: flex;
+				justify-content: center;
+
+				& > div:last-child {
+					flex: 1;
+					max-width: 915px;
+				}
 			}
 		}
 	}
@@ -191,8 +308,6 @@
 @media (min-width: 1780px) {
 	.UserPage {
 		.UserPage-container {
-			padding: 3rem 20rem;
-			max-width: 1760px !important;
 			margin-left: auto !important;
 			margin-right: auto !important;
 		}

@@ -4,18 +4,19 @@ const REVIEWS_BY_HOST_ID = gql`
 	query reviewsByHostId($id: String!, $offset: Int) {
 		reviewsByHostId(id: $id, offset: $offset) {
 			id
-      listingId
-      authorId
+			listingId
+			authorId
 			date
 			content
-			scores
-      listing {
-        title
-      }
-      author {
-        firstName
-        dateJoined
-      }
+			listing {
+				id
+				title
+				region
+			}
+			author {
+				firstName
+				dateJoined
+			}
 		}
 	}
 `;

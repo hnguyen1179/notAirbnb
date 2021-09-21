@@ -1,18 +1,16 @@
 import { useContext } from "react";
 import { AdvancedImage } from "@cloudinary/react";
+import { Cloudinary } from "@cloudinary/base";
 
 import { AppContext } from "../../context/AppContext";
 import Navbar from "../Navbar/Navbar";
-
-import { ReactComponent as ShieldSvg } from "../../assets/icons/shield.svg";
-import { ReactComponent as StarSvg } from "../../assets/icons/star.svg";
-
 import Loading from "../Loading";
 import MobileNavbar from "../MobileNavbar/MobileNavbar";
 import Footer from "../Footer/Footer";
 import useLogout from "../../hooks/useLogout";
-import { Review } from "../../generated/graphql";
-import { Cloudinary } from "@cloudinary/base";
+import { Review, Listing } from "../../generated/graphql";
+import { ReactComponent as ShieldSvg } from "../../assets/icons/shield.svg";
+import { ReactComponent as StarSvg } from "../../assets/icons/star.svg";
 
 export interface ITypeProps {
 	id: string;
@@ -23,27 +21,37 @@ export interface ITypeProps {
 	fetchLoading: boolean;
 	handleFetchMore: () => void;
 	reviews: Review[];
-	renderReviewItems: () => JSX.Element[];
+	RenderReviewItems: (props: {
+		reviews: Review[];
+		cloudinary: Cloudinary;
+	}) => JSX.Element;
 }
 
 export interface IHostProps {
-	renderSuperhost: () => JSX.Element;
-	renderDescription: () => JSX.Element;
-	renderListings: (cld: Cloudinary) => JSX.Element;
+	RenderSuperhost: (props: { medals: string[] }) => JSX.Element;
+	RenderDescription: (props: { description: string }) => JSX.Element;
+	RenderListings: (props: {
+		cloudinary: Cloudinary;
+		listings: Listing[];
+		firstName: string;
+	}) => JSX.Element;
+	medals: string[];
+	description: string;
+	listings: Listing[];
 }
 interface Props {
 	typeProps: ITypeProps;
-	renderProps: any;
+	routeProps: any;
 	hostProps?: IHostProps;
 }
 
-const Profile = ({ typeProps, renderProps, hostProps }: Props) => {
+const Profile = ({ typeProps, routeProps, hostProps }: Props) => {
 	const { cloudinary, mobile, user: currentUser } = useContext(AppContext);
 	const logout = useLogout();
 
 	const handleLogout = async () => {
 		await logout();
-		renderProps.history.push("/");
+		routeProps.history.push("/");
 	};
 
 	const {
@@ -55,12 +63,12 @@ const Profile = ({ typeProps, renderProps, hostProps }: Props) => {
 		reviews,
 		fetchLoading,
 		handleFetchMore,
-		renderReviewItems,
+		RenderReviewItems,
 	} = typeProps;
 
 	const renderPronoun = () => {
 		if (type === "host") {
-			return `Guest's reviews`;
+			return "Guest's reviews";
 		} else {
 			return currentUser && currentUser.id === id
 				? "Your Reviews"
@@ -92,9 +100,9 @@ const Profile = ({ typeProps, renderProps, hostProps }: Props) => {
 				</header>
 
 				<div className="UserPage__badges">
-					{type === "host" &&
-						hostProps &&
-						hostProps.renderSuperhost()}
+					{type === "host" && hostProps && (
+						<hostProps.RenderSuperhost medals={hostProps.medals} />
+					)}
 					<div className="badge">
 						<StarSvg />
 						<span>{reviewsCount} reviews</span>
@@ -105,10 +113,18 @@ const Profile = ({ typeProps, renderProps, hostProps }: Props) => {
 					</div>
 				</div>
 
-				{type === "host" && hostProps && hostProps.renderDescription()}
-				{type === "host" &&
-					hostProps &&
-					hostProps.renderListings(cloudinary)}
+				{type === "host" && hostProps && (
+					<hostProps.RenderDescription
+						description={hostProps.description}
+					/>
+				)}
+				{type === "host" && hostProps && (
+					<hostProps.RenderListings
+						cloudinary={cloudinary}
+						listings={hostProps.listings}
+						firstName={firstName}
+					/>
+				)}
 				<div className="UserPage-divider" />
 
 				<div className="UserPage__reviews">
@@ -116,7 +132,12 @@ const Profile = ({ typeProps, renderProps, hostProps }: Props) => {
 						<h2>{renderPronoun()}</h2>
 					</div>
 					<ul className="UserPage__reviews__content">
-						{renderReviewItems()}
+						{
+							<RenderReviewItems
+								reviews={reviews}
+								cloudinary={cloudinary}
+							/>
+						}
 					</ul>
 					{reviews.length !== reviewsCount &&
 						(fetchLoading ? (
@@ -161,9 +182,9 @@ const Profile = ({ typeProps, renderProps, hostProps }: Props) => {
 						/>
 					</div>
 
-					{type === "host" &&
-						hostProps &&
-						hostProps.renderSuperhost()}
+					{type === "host" && hostProps && (
+						<hostProps.RenderSuperhost medals={hostProps.medals} />
+					)}
 					<div className="badge">
 						<StarSvg />
 						<span>{reviewsCount} reviews</span>
@@ -182,12 +203,18 @@ const Profile = ({ typeProps, renderProps, hostProps }: Props) => {
 						</div>
 					</header>
 
-					{type === "host" &&
-						hostProps &&
-						hostProps.renderDescription()}
-					{type === "host" &&
-						hostProps &&
-						hostProps.renderListings(cloudinary)}
+					{type === "host" && hostProps && (
+						<hostProps.RenderDescription
+							description={hostProps.description}
+						/>
+					)}
+					{type === "host" && hostProps && (
+						<hostProps.RenderListings
+							cloudinary={cloudinary}
+							listings={hostProps.listings}
+							firstName={firstName}
+						/>
+					)}
 
 					<div className="UserPage-divider" />
 
@@ -196,7 +223,12 @@ const Profile = ({ typeProps, renderProps, hostProps }: Props) => {
 							<h2>{renderPronoun()}</h2>
 						</div>
 						<ul className="UserPage__reviews__content">
-							{renderReviewItems()}
+							{
+								<RenderReviewItems
+									reviews={reviews}
+									cloudinary={cloudinary}
+								/>
+							}
 						</ul>
 						{reviews.length !== reviewsCount &&
 							(fetchLoading ? (

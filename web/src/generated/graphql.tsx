@@ -39,6 +39,8 @@ export type Listing = {
   __typename?: 'Listing';
   address: Scalars['String'];
   amenities: Array<Maybe<Scalars['String']>>;
+  averageScore: Scalars['Float'];
+  averageScores: ReviewScores;
   basicAmenities: Array<Maybe<Scalars['String']>>;
   city: Scalars['String'];
   cleaningFee: Scalars['Int'];
@@ -220,6 +222,16 @@ export type ReviewCreateInput = {
   scores: Array<Scalars['String']>;
 };
 
+export type ReviewScores = {
+  __typename?: 'ReviewScores';
+  accuracy: Scalars['Float'];
+  checkin: Scalars['Float'];
+  cleanliness: Scalars['Float'];
+  communication: Scalars['Float'];
+  location: Scalars['Float'];
+  value: Scalars['Float'];
+};
+
 export type User = {
   __typename?: 'User';
   dateJoined: Scalars['String'];
@@ -255,7 +267,7 @@ export type HostByIdQueryVariables = Exact<{
 }>;
 
 
-export type HostByIdQuery = { __typename?: 'Query', hostById: Maybe<{ __typename?: 'Host', id: string, firstName: string, dateJoined: string, description: Maybe<string>, details: Array<Maybe<string>>, medals: Array<Maybe<string>>, listings: Array<Maybe<{ __typename?: 'Listing', id: string, title: string, reviewsCount: number, region: string, languages: Array<Maybe<string>>, score: number, scores: Array<Maybe<string>> }>> }> };
+export type HostByIdQuery = { __typename?: 'Query', hostById: Maybe<{ __typename?: 'Host', id: string, firstName: string, dateJoined: string, description: Maybe<string>, details: Array<Maybe<string>>, medals: Array<Maybe<string>>, listings: Array<Maybe<{ __typename?: 'Listing', id: string, title: string, reviewsCount: number, listingType: string, region: string, averageScore: number, averageScores: { __typename?: 'ReviewScores', cleanliness: number } }>> }> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -282,7 +294,7 @@ export type ReviewsByHostIdQueryVariables = Exact<{
 }>;
 
 
-export type ReviewsByHostIdQuery = { __typename?: 'Query', reviewsByHostId: Array<{ __typename?: 'Review', id: string, listingId: string, authorId: string, date: any, content: string, scores: Array<Maybe<string>>, listing: Maybe<{ __typename?: 'Listing', title: string }>, author: Maybe<{ __typename?: 'User', firstName: string, dateJoined: string }> }> };
+export type ReviewsByHostIdQuery = { __typename?: 'Query', reviewsByHostId: Array<{ __typename?: 'Review', id: string, listingId: string, authorId: string, date: any, content: string, listing: Maybe<{ __typename?: 'Listing', id: string, title: string, region: string }>, author: Maybe<{ __typename?: 'User', firstName: string, dateJoined: string }> }> };
 
 export type ReviewsByUserIdQueryVariables = Exact<{
   id: Scalars['String'];
@@ -394,10 +406,12 @@ export const HostByIdDocument = gql`
       id
       title
       reviewsCount
+      listingType
       region
-      languages
-      score
-      scores
+      averageScore
+      averageScores {
+        cleanliness
+      }
     }
   }
 }
@@ -570,9 +584,10 @@ export const ReviewsByHostIdDocument = gql`
     authorId
     date
     content
-    scores
     listing {
+      id
       title
+      region
     }
     author {
       firstName
