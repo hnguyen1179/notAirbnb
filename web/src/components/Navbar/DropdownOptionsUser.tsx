@@ -4,7 +4,7 @@ interface Props {
 	user: any;
 }
 
-const UserProfileOptions = ({ user }: Props) => {
+const DropdownOptionsUser = ({ user }: Props) => {
 	return (
 		<>
 			<button className="Navbar__right__profile__dropdown__link">
@@ -25,4 +25,4 @@ const UserProfileOptions = ({ user }: Props) => {
 	);
 };
 
-export default UserProfileOptions;
+export default DropdownOptionsUser;

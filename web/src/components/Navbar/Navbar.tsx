@@ -11,7 +11,7 @@ import { ReactComponent as LogoNameSvg } from "../../assets/icons/logo-with-name
 import { ReactComponent as GlobeSvg } from "../../assets/icons/globe.svg";
 
 import { ReactComponent as SearchSvg } from "../../assets/icons/thick-search.svg";
-import Profile from "./Profile";
+import Dropdown from "./Dropdown";
 import SearchForm from "./SearchForm";
 
 interface Props {
@@ -25,7 +25,7 @@ function Navbar({ isTop, notLanding = false, disableEntry = false }: Props) {
 	const componentRef = useRef<HTMLDivElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const modalRef = useRef<HTMLDivElement>(null);
-	const [profile, setProfile] = useState(false);
+	const [dropdown, setDropdown] = useState(false);
 	const [search, setSearch] = useState(false);
 
 	// Good react pattern in useModal; incorporate hooks within Context APIs that check for undefined
@@ -35,14 +35,14 @@ function Navbar({ isTop, notLanding = false, disableEntry = false }: Props) {
 	const handleOpen = (e: React.SyntheticEvent<EventTarget>) => {
 		e.stopPropagation();
 		if (disableEntry) {
-			setProfile(false);
+			setDropdown(false);
 			return;
 		}
 
 		document.body.style.overflow = "hidden";
 		setEntry("unverified");
 		setSearch(false);
-		setProfile(false);
+		setDropdown(false);
 		setOpen(true);
 	};
 
@@ -55,7 +55,7 @@ function Navbar({ isTop, notLanding = false, disableEntry = false }: Props) {
 	// Opens search component
 	const handleClickSearch = (e: React.SyntheticEvent<EventTarget>) => {
 		e.stopPropagation();
-		setProfile(false);
+		setDropdown(false);
 		setSearch(true);
 	};
 
@@ -68,7 +68,7 @@ function Navbar({ isTop, notLanding = false, disableEntry = false }: Props) {
 	// Clicking on the body while search or profile is opened will close either
 	const handleCloseNavigation = () => {
 		setSearch(false);
-		setProfile(false);
+		setDropdown(false);
 	};
 
 	// Activates the Search component if at the very t op of screen
@@ -77,7 +77,6 @@ function Navbar({ isTop, notLanding = false, disableEntry = false }: Props) {
 			return;
 		}
 
-		console.log(" in here ");
 		if (isTop) {
 			setSearch(true);
 		} else {
@@ -112,7 +111,7 @@ function Navbar({ isTop, notLanding = false, disableEntry = false }: Props) {
 				<div
 					className="Navbar__left"
 					onClick={(e) => {
-						setProfile(false);
+						setDropdown(false);
 						e.stopPropagation();
 					}}
 				>
@@ -172,9 +171,9 @@ function Navbar({ isTop, notLanding = false, disableEntry = false }: Props) {
 							<GlobeSvg />
 						</button>
 					</div>
-					<Profile
-						profile={profile}
-						setProfile={setProfile}
+					<Dropdown
+						dropdown={dropdown}
+						setDropdown={setDropdown}
 						handleOpen={handleOpen}
 					/>
 				</div>

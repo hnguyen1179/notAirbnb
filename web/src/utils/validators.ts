@@ -17,8 +17,8 @@ const containsInformation = (value: string, getValues: any) => {
 	const lastName = getValues("lastName");
 
 	const emailCond = !value.includes(email.split("@")[0]);
-	const firstNameCond = !value.includes(firstName);
-	const lastNameCond = !value.includes(lastName);
+	const firstNameCond = !new RegExp(firstName, "i").test(value);
+	const lastNameCond = !new RegExp(lastName, "i").test(value);
 
 	const condition =
 		(email.length > 0 ? emailCond : true) &&

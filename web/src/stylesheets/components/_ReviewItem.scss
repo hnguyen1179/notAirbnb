@@ -5,10 +5,18 @@
 		margin-top: 2.5rem;
 	}
 
+	&__listing {
+		position: relative;
+		&__title {
+			font-size: 1.8rem;
+		}
+	}
+
 	&__date {
 		color: $muted-text-color;
 		font-weight: 400;
 		font-size: 1.4rem;
+		margin-bottom: 1.5rem;
 	}
 
 	&__content {

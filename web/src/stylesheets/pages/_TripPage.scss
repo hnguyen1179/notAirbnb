@@ -8,6 +8,7 @@
 
 	.Navbar__container {
 		padding: 0 2rem !important;
+		max-width: unset;
 	}
 
 	.TripPage-back-button {
@@ -44,6 +45,11 @@
 		margin-left: auto;
 		margin-right: auto;
 		overflow-x: hidden;
+
+		--scrollbar-width: 0px;
+
+		&::-webkit-scrollbar {
+		}
 	}
 
 	&__header {
@@ -329,6 +335,7 @@
 				background: white;
 				padding: 2rem;
 				padding-bottom: 3rem;
+				overflow: hidden;
 				border-radius: 0.8rem;
 				border-bottom-right-radius: 0;
 				border-bottom-left-radius: 0;

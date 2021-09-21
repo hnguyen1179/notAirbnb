@@ -4,7 +4,7 @@ interface Props {
 	handleOpen: (e: React.SyntheticEvent<EventTarget>) => void;
 }
 
-const ProfileOptions = ({ handleOpen }: Props) => {
+const DropdownOptions = ({ handleOpen }: Props) => {
 	return (
 		<>
 			<button
@@ -23,4 +23,4 @@ const ProfileOptions = ({ handleOpen }: Props) => {
 	);
 };
 
-export default ProfileOptions;
+export default DropdownOptions;

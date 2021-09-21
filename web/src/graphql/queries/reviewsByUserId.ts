@@ -13,9 +13,6 @@ const REVIEWS_BY_USER_ID = gql`
 					id
 					firstName
 					dateJoined
-					listings {
-						city
-					}
 				}
 			}
 		}

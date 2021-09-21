@@ -30,6 +30,8 @@ scalar JSONObject @specifiedBy(url: "http://www.ecma-international.org/publicati
 type Listing {
   address: String!
   amenities: [String]!
+  averageScore: Float!
+  averageScores: ReviewScores!
   basicAmenities: [String]!
   city: String!
   cleaningFee: Int!
@@ -79,11 +81,14 @@ type Mutation {
 
 type Query {
   allListings: [Listing!]!
+  basicSearch(daysRequested: [String]!, numGuests: Int!, region: String!): [Listing]!
+  hostById(id: String!): Host
   listingById(id: String!): Listing
   listingsByRegion(region: String!): [Listing!]!
   me: User
   reservationById(id: String!): Reservation
   reservationsByUserId(id: String!): [[Reservation]!]!
+  reviewsByHostId(id: String!, offset: Int): [Review!]!
   reviewsByUserId(id: String!, offset: Int): [Review!]!
   userById(id: String!): User
 }
@@ -122,6 +127,15 @@ input ReviewCreateInput {
   content: String!
   listingId: String!
   scores: [String!]!
+}
+
+type ReviewScores {
+  accuracy: Float!
+  checkin: Float!
+  cleanliness: Float!
+  communication: Float!
+  location: Float!
+  value: Float!
 }
 
 type User {

@@ -16,6 +16,7 @@ import {
 	LISTING,
 	LANDING,
 	ENTRY,
+	SEARCH,
 	USER_PROFILE,
 	USER_TRIPS,
 	USER_TRIP,
@@ -39,6 +40,7 @@ import TripsPage from "./pages/TripsPage";
 import HostPage from "./pages/HostPage";
 import TripPage from "./pages/TripPage";
 import ErrorPage from "./pages/ErrorPage";
+import SearchPage from "./pages/SearchPage";
 
 const httpLink = createHttpLink({
 	uri: process.env.REACT_APP_SERVER_URL,
@@ -70,6 +72,12 @@ function App() {
 									return [...existing, ...incoming];
 								},
 							},
+							reviewsByHostId: {
+								keyArgs: false,
+								merge(existing = [], incoming) {
+									return [...existing, ...incoming];
+								},
+							},
 						},
 					},
 				},
@@ -90,57 +98,55 @@ function App() {
 								component={LandingPage}
 							/>
 
-							<Route
-								exact
-								path={ERROR}
-								component={ErrorPage}
-							/>
+							<Route path={SEARCH} component={SearchPage} />
+
+							<Route exact path={ERROR} component={ErrorPage} />
 
 							<Route path={LISTINGS} component={Listings} />
 
 							<Route
 								path={LISTING}
-								render={(renderProps) => (
-									<Listing id={renderProps.match.params.id} />
+								render={(routeProps) => (
+									<Listing id={routeProps.match.params.id} />
 								)}
 							/>
 
 							<Route
 								path={USER_TRIPS}
-								render={(renderProps) => (
+								render={(routeProps) => (
 									<TripsPage
-										id={renderProps.match.params.id}
-										renderProps={renderProps}
+										id={routeProps.match.params.id}
+										routeProps={routeProps}
 									/>
 								)}
 							/>
 
 							<Route
 								path={USER_TRIP}
-								render={(renderProps) => (
+								render={(routeProps) => (
 									<TripPage
-										id={renderProps.match.params.id}
-										renderProps={renderProps}
+										id={routeProps.match.params.id}
+										routeProps={routeProps}
 									/>
 								)}
 							/>
 
 							<Route
 								path={HOST_PROFILE}
-								render={(renderProps) => (
+								render={(routeProps) => (
 									<HostPage
-										id={renderProps.match.params.id}
-										renderProps={renderProps}
+										id={routeProps.match.params.id}
+										routeProps={routeProps}
 									/>
 								)}
 							/>
 
 							<Route
 								path={USER_PROFILE}
-								render={(renderProps) => (
+								render={(routeProps) => (
 									<UserPage
-										id={renderProps.match.params.id}
-										renderProps={renderProps}
+										id={routeProps.match.params.id}
+										routeProps={routeProps}
 									/>
 								)}
 							/>

@@ -2,39 +2,39 @@ import React, { useContext } from "react";
 import { ReactComponent as ProfileSvg } from "../../assets/icons/dark-profile.svg";
 import { ReactComponent as HamburgerSvg } from "../../assets/icons/hamburger.svg";
 import { AppContext } from "../../context/AppContext";
-import ProfileOptions from "./ProfileOptions";
-import UserProfileOptions from "./UserProfileOptions";
+import DropdownOptions from "./DropdownOptions";
+import DropdownOptionsUser from "./DropdownOptionsUser";
 import useLogout from "../../hooks/useLogout";
 
 import { AdvancedImage } from "@cloudinary/react";
 
 interface Props {
-	profile: boolean;
-	setProfile: (x: boolean) => void;
+	dropdown: boolean;
+	setDropdown: (x: boolean) => void;
 	handleOpen: (e: React.SyntheticEvent<EventTarget>) => void;
 }
 
-const Profile = ({ profile, setProfile, handleOpen }: Props) => {
+const Dropdown = ({ dropdown, setDropdown, handleOpen }: Props) => {
 	const { cloudinary, user } = useContext(AppContext);
 	const logout = useLogout();
 
-	const handleClickProfile = (e: React.SyntheticEvent<EventTarget>) => {
+	const handleClickDropdown = (e: React.SyntheticEvent<EventTarget>) => {
 		e.stopPropagation();
-		setProfile(!profile);
+		setDropdown(!dropdown);
 	};
 
 	const handleLogOut = async () => {
 		await logout();
-		setProfile(false);
+		setDropdown(false);
 	};
 
-	const profileActive = profile ? "active" : "";
+	const dropdownActive = dropdown ? "active" : "";
 
 	return (
 		<div className="Navbar__right__profile">
 			<button
 				className="Navbar__right__profile__button"
-				onClick={handleClickProfile}
+				onClick={handleClickDropdown}
 			>
 				<div className="Navbar__right__profile__button__icon Navbar__right__profile__button__icon--hamburger">
 					<HamburgerSvg />
@@ -52,18 +52,18 @@ const Profile = ({ profile, setProfile, handleOpen }: Props) => {
 			</button>
 
 			<div
-				className={`Navbar__right__profile__dropdown ${profileActive}`}
+				className={`Navbar__right__profile__dropdown ${dropdownActive}`}
 				onClick={(e) => e.stopPropagation()}
 			>
 				{/* Display these conditionally on the presence of a 'user' */}
 				{user ? (
-					<UserProfileOptions user={user} />
+					<DropdownOptionsUser user={user} />
 				) : (
-					<ProfileOptions handleOpen={handleOpen} />
+					<DropdownOptions handleOpen={handleOpen} />
 				)}
 
 				{/* These are just placeholders */}
-				<div className="divider"></div>
+				<div className="navbar-divider"></div>
 				<button className="Navbar__right__profile__dropdown__link Navbar__right__profile__dropdown__link--inactive">
 					<span>Host your home</span>
 				</button>
@@ -71,7 +71,7 @@ const Profile = ({ profile, setProfile, handleOpen }: Props) => {
 					<span>Host an experience</span>
 				</button>
 
-				{user && <div className="divider"></div>}
+				{user && <div className="navbar-divider"></div>}
 
 				<button className="Navbar__right__profile__dropdown__link Navbar__right__profile__dropdown__link--inactive">
 					<span>Help</span>
@@ -90,4 +90,4 @@ const Profile = ({ profile, setProfile, handleOpen }: Props) => {
 	);
 };
 
-export default Profile;
+export default Dropdown;

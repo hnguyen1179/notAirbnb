@@ -39,6 +39,8 @@ export type Listing = {
   __typename?: 'Listing';
   address: Scalars['String'];
   amenities: Array<Maybe<Scalars['String']>>;
+  averageScore: Scalars['Float'];
+  averageScores: ReviewScores;
   basicAmenities: Array<Maybe<Scalars['String']>>;
   city: Scalars['String'];
   cleaningFee: Scalars['Int'];
@@ -129,13 +131,20 @@ export type MutationVerifyEmailArgs = {
 export type Query = {
   __typename?: 'Query';
   allListings: Array<Listing>;
+  hostById: Maybe<Host>;
   listingById: Maybe<Listing>;
   listingsByRegion: Array<Listing>;
   me: Maybe<User>;
   reservationById: Maybe<Reservation>;
   reservationsByUserId: Array<Array<Maybe<Reservation>>>;
+  reviewsByHostId: Array<Review>;
   reviewsByUserId: Array<Review>;
   userById: Maybe<User>;
+};
+
+
+export type QueryHostByIdArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -156,6 +165,12 @@ export type QueryReservationByIdArgs = {
 
 export type QueryReservationsByUserIdArgs = {
   id: Scalars['String'];
+};
+
+
+export type QueryReviewsByHostIdArgs = {
+  id: Scalars['String'];
+  offset: Maybe<Scalars['Int']>;
 };
 
 
@@ -207,6 +222,16 @@ export type ReviewCreateInput = {
   scores: Array<Scalars['String']>;
 };
 
+export type ReviewScores = {
+  __typename?: 'ReviewScores';
+  accuracy: Scalars['Float'];
+  checkin: Scalars['Float'];
+  cleanliness: Scalars['Float'];
+  communication: Scalars['Float'];
+  location: Scalars['Float'];
+  value: Scalars['Float'];
+};
+
 export type User = {
   __typename?: 'User';
   dateJoined: Scalars['String'];
@@ -237,6 +262,13 @@ export type SignupMutationVariables = Exact<{
 
 export type SignupMutation = { __typename?: 'Mutation', signup: Maybe<{ __typename?: 'AuthPayload', token: Maybe<string> }> };
 
+export type HostByIdQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type HostByIdQuery = { __typename?: 'Query', hostById: Maybe<{ __typename?: 'Host', id: string, firstName: string, dateJoined: string, description: Maybe<string>, details: Array<Maybe<string>>, medals: Array<Maybe<string>>, listings: Array<Maybe<{ __typename?: 'Listing', id: string, title: string, reviewsCount: number, listingType: string, region: string, averageScore: number, averageScores: { __typename?: 'ReviewScores', cleanliness: number } }>> }> };
+
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -256,13 +288,21 @@ export type ReservationsByUserIdQueryVariables = Exact<{
 
 export type ReservationsByUserIdQuery = { __typename?: 'Query', reservationsByUserId: Array<Array<Maybe<{ __typename?: 'Reservation', id: string, listingId: string, dateStart: any, dateEnd: any, listing: Maybe<{ __typename?: 'Listing', city: string, title: string, region: string }> }>>> };
 
+export type ReviewsByHostIdQueryVariables = Exact<{
+  id: Scalars['String'];
+  offset: Maybe<Scalars['Int']>;
+}>;
+
+
+export type ReviewsByHostIdQuery = { __typename?: 'Query', reviewsByHostId: Array<{ __typename?: 'Review', id: string, listingId: string, authorId: string, date: any, content: string, listing: Maybe<{ __typename?: 'Listing', id: string, title: string, region: string }>, author: Maybe<{ __typename?: 'User', firstName: string, dateJoined: string }> }> };
+
 export type ReviewsByUserIdQueryVariables = Exact<{
   id: Scalars['String'];
   offset: Maybe<Scalars['Int']>;
 }>;
 
 
-export type ReviewsByUserIdQuery = { __typename?: 'Query', reviewsByUserId: Array<{ __typename?: 'Review', id: string, listingId: string, date: any, content: string, scores: Array<Maybe<string>>, listing: Maybe<{ __typename?: 'Listing', host: Maybe<{ __typename?: 'Host', id: string, firstName: string, dateJoined: string, listings: Array<Maybe<{ __typename?: 'Listing', city: string }>> }> }> }> };
+export type ReviewsByUserIdQuery = { __typename?: 'Query', reviewsByUserId: Array<{ __typename?: 'Review', id: string, listingId: string, date: any, content: string, scores: Array<Maybe<string>>, listing: Maybe<{ __typename?: 'Listing', host: Maybe<{ __typename?: 'Host', id: string, firstName: string, dateJoined: string }> }> }> };
 
 export type UserByIdQueryVariables = Exact<{
   id: Scalars['String'];
@@ -353,6 +393,57 @@ export function useSignupMutation(baseOptions?: Apollo.MutationHookOptions<Signu
 export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
 export type SignupMutationResult = Apollo.MutationResult<SignupMutation>;
 export type SignupMutationOptions = Apollo.BaseMutationOptions<SignupMutation, SignupMutationVariables>;
+export const HostByIdDocument = gql`
+    query hostById($id: String!) {
+  hostById(id: $id) {
+    id
+    firstName
+    dateJoined
+    description
+    details
+    medals
+    listings {
+      id
+      title
+      reviewsCount
+      listingType
+      region
+      averageScore
+      averageScores {
+        cleanliness
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useHostByIdQuery__
+ *
+ * To run a query within a React component, call `useHostByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHostByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHostByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useHostByIdQuery(baseOptions: Apollo.QueryHookOptions<HostByIdQuery, HostByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<HostByIdQuery, HostByIdQueryVariables>(HostByIdDocument, options);
+      }
+export function useHostByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HostByIdQuery, HostByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<HostByIdQuery, HostByIdQueryVariables>(HostByIdDocument, options);
+        }
+export type HostByIdQueryHookResult = ReturnType<typeof useHostByIdQuery>;
+export type HostByIdLazyQueryHookResult = ReturnType<typeof useHostByIdLazyQuery>;
+export type HostByIdQueryResult = Apollo.QueryResult<HostByIdQuery, HostByIdQueryVariables>;
 export const MeDocument = gql`
     query me {
   me {
@@ -485,6 +576,55 @@ export function useReservationsByUserIdLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type ReservationsByUserIdQueryHookResult = ReturnType<typeof useReservationsByUserIdQuery>;
 export type ReservationsByUserIdLazyQueryHookResult = ReturnType<typeof useReservationsByUserIdLazyQuery>;
 export type ReservationsByUserIdQueryResult = Apollo.QueryResult<ReservationsByUserIdQuery, ReservationsByUserIdQueryVariables>;
+export const ReviewsByHostIdDocument = gql`
+    query reviewsByHostId($id: String!, $offset: Int) {
+  reviewsByHostId(id: $id, offset: $offset) {
+    id
+    listingId
+    authorId
+    date
+    content
+    listing {
+      id
+      title
+      region
+    }
+    author {
+      firstName
+      dateJoined
+    }
+  }
+}
+    `;
+
+/**
+ * __useReviewsByHostIdQuery__
+ *
+ * To run a query within a React component, call `useReviewsByHostIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useReviewsByHostIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useReviewsByHostIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useReviewsByHostIdQuery(baseOptions: Apollo.QueryHookOptions<ReviewsByHostIdQuery, ReviewsByHostIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ReviewsByHostIdQuery, ReviewsByHostIdQueryVariables>(ReviewsByHostIdDocument, options);
+      }
+export function useReviewsByHostIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ReviewsByHostIdQuery, ReviewsByHostIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ReviewsByHostIdQuery, ReviewsByHostIdQueryVariables>(ReviewsByHostIdDocument, options);
+        }
+export type ReviewsByHostIdQueryHookResult = ReturnType<typeof useReviewsByHostIdQuery>;
+export type ReviewsByHostIdLazyQueryHookResult = ReturnType<typeof useReviewsByHostIdLazyQuery>;
+export type ReviewsByHostIdQueryResult = Apollo.QueryResult<ReviewsByHostIdQuery, ReviewsByHostIdQueryVariables>;
 export const ReviewsByUserIdDocument = gql`
     query reviewsByUserId($id: String!, $offset: Int) {
   reviewsByUserId(id: $id, offset: $offset) {
@@ -498,9 +638,6 @@ export const ReviewsByUserIdDocument = gql`
         id
         firstName
         dateJoined
-        listings {
-          city
-        }
       }
     }
   }

@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
 import { DateRange, OnDateRangeChangeProps } from "react-date-range";
+import { formatDistance, addDays, format } from "date-fns";
 
+import NumberGuests from "./NumberGuests";
+import LocationSearch from "../LocationSearch/LocationSearch";
+import { disableDay } from "../../utils/disableDays";
 import { ReactComponent as BackSvg } from "../../assets/icons/back.svg";
 import { ReactComponent as SearchSvg } from "../../assets/icons/search.svg";
-
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import { disableDay } from "../../utils/disableDays";
-import LocationSearch from "../LocationSearch/LocationSearch";
-import NumberGuests from "./NumberGuests";
+import { Redirect } from "react-router";
 
 interface Props {
 	handleFormClose: (e: React.SyntheticEvent) => void;
@@ -21,6 +22,14 @@ interface IDate {
 	key: string;
 }
 
+export interface ISearchPayload {
+	region: string;
+	checkIn: Date;
+	checkOut: Date;
+	numGuests: number;
+	daysRequested: string[];
+}
+
 const MobileSearchForm = ({ handleFormClose }: Props) => {
 	const [location, setLocation] = useState("");
 	const [dates, setDates] = useState<IDate>({
@@ -29,8 +38,25 @@ const MobileSearchForm = ({ handleFormClose }: Props) => {
 		key: "selection",
 	});
 	const [guests, setGuests] = useState(0);
-
+	const [searchPayload, setSearchPayload] = useState<ISearchPayload>();
 	const [stage, setStage] = useState("location");
+
+	console.log("RERENDERED");
+	console.log("Region: ", searchPayload?.region);
+
+	if (searchPayload?.region !== undefined) {
+		return (
+			<Redirect
+				to={{
+					pathname: "/search",
+					search: `?region=${searchPayload?.region}`,
+					state: {
+						searchPayload,
+					},
+				}}
+			/>
+		);
+	}
 
 	const handleDateChange = (ranges: OnDateRangeChangeProps) => {
 		const start = ranges.selection.startDate as Date;
@@ -40,24 +66,43 @@ const MobileSearchForm = ({ handleFormClose }: Props) => {
 	};
 
 	const handleSubmit = (e: React.FormEvent) => {
+		console.log("submitted");
+		const daysRequested = [];
+		const distance = +formatDistance(dates.startDate, dates.endDate).split(
+			" "
+		)[0];
+
+		for (let i = 0; i < distance; i++) {
+			daysRequested.push(format(addDays(dates.startDate, i), "M/d/yyyy"));
+		}
+
+		const payload = {
+			region: location.split(", ")[0],
+			checkIn: dates.startDate,
+			checkOut: dates.endDate,
+			numGuests: guests,
+			daysRequested,
+		};
+
+		console.log(payload);
 		e.preventDefault();
 		// checkIn & checkOut are Date format
-		handleFormClose(e);
+		// handleFormClose(e);
+		setSearchPayload(payload);
+
+		//this.props.location.state in the redirect component can get the state
 	};
 
 	const renderNumGuests = () => {
 		let string = " ";
-
 		if (guests > 0) {
 			string = guests.toString();
-
 			if (guests > 1) {
 				string += " guests";
 			} else {
 				string += " guest";
 			}
 		}
-
 		return string;
 	};
 
@@ -85,6 +130,7 @@ const MobileSearchForm = ({ handleFormClose }: Props) => {
 						</div>
 					</div>
 				);
+
 			case "dates":
 				return (
 					<div className="MobileSearchForm__form__stage MobileSearchForm__form__stage--dates">
