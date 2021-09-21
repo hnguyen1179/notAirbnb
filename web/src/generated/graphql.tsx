@@ -20,14 +20,14 @@ export type Scalars = {
 
 export type AuthPayload = {
   __typename?: 'AuthPayload';
-  token: Maybe<Scalars['String']>;
-  user: Maybe<User>;
+  token?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
 };
 
 export type Host = {
   __typename?: 'Host';
   dateJoined: Scalars['String'];
-  description: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
   details: Array<Maybe<Scalars['String']>>;
   firstName: Scalars['String'];
   id: Scalars['String'];
@@ -47,16 +47,16 @@ export type Listing = {
   datesUnavailable: Scalars['JSONObject'];
   healthAndSafety: Array<Maybe<Scalars['String']>>;
   highlights: Array<Maybe<Scalars['String']>>;
-  host: Maybe<Host>;
+  host?: Maybe<Host>;
   hostId: Scalars['String'];
   houseRules: Array<Maybe<Scalars['String']>>;
   id: Scalars['String'];
   imageComments: Array<Maybe<Scalars['String']>>;
   languages: Array<Maybe<Scalars['String']>>;
-  listingDescription: Maybe<Scalars['String']>;
+  listingDescription?: Maybe<Scalars['String']>;
   listingType: Scalars['String'];
   location: Scalars['String'];
-  locationDescription: Maybe<Scalars['String']>;
+  locationDescription?: Maybe<Scalars['String']>;
   numBaths: Scalars['Int'];
   numBedrooms: Scalars['Int'];
   numBeds: Scalars['Int'];
@@ -71,7 +71,7 @@ export type Listing = {
   scores: Array<Maybe<Scalars['String']>>;
   smokingRule: Scalars['Boolean'];
   state: Scalars['String'];
-  stayDescription: Maybe<Scalars['String']>;
+  stayDescription?: Maybe<Scalars['String']>;
   street: Scalars['String'];
   superhost: Scalars['Boolean'];
   title: Scalars['String'];
@@ -80,13 +80,13 @@ export type Listing = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createReservation: Maybe<Reservation>;
-  createReview: Maybe<Review>;
-  deleteReservation: Maybe<Reservation>;
-  deleteReview: Maybe<Review>;
-  login: Maybe<AuthPayload>;
-  signup: Maybe<AuthPayload>;
-  verifyEmail: Maybe<Scalars['Boolean']>;
+  createReservation?: Maybe<Reservation>;
+  createReview?: Maybe<Review>;
+  deleteReservation?: Maybe<Reservation>;
+  deleteReview?: Maybe<Review>;
+  login?: Maybe<AuthPayload>;
+  signup?: Maybe<AuthPayload>;
+  verifyEmail?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -131,15 +131,23 @@ export type MutationVerifyEmailArgs = {
 export type Query = {
   __typename?: 'Query';
   allListings: Array<Listing>;
-  hostById: Maybe<Host>;
-  listingById: Maybe<Listing>;
+  basicSearch: Array<Maybe<Listing>>;
+  hostById?: Maybe<Host>;
+  listingById?: Maybe<Listing>;
   listingsByRegion: Array<Listing>;
-  me: Maybe<User>;
-  reservationById: Maybe<Reservation>;
+  me?: Maybe<User>;
+  reservationById?: Maybe<Reservation>;
   reservationsByUserId: Array<Array<Maybe<Reservation>>>;
   reviewsByHostId: Array<Review>;
   reviewsByUserId: Array<Review>;
-  userById: Maybe<User>;
+  userById?: Maybe<User>;
+};
+
+
+export type QueryBasicSearchArgs = {
+  daysRequested: Array<Maybe<Scalars['String']>>;
+  numGuests: Scalars['Int'];
+  region: Scalars['String'];
 };
 
 
@@ -170,13 +178,13 @@ export type QueryReservationsByUserIdArgs = {
 
 export type QueryReviewsByHostIdArgs = {
   id: Scalars['String'];
-  offset: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
 };
 
 
 export type QueryReviewsByUserIdArgs = {
   id: Scalars['String'];
-  offset: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
 };
 
 
@@ -189,10 +197,10 @@ export type Reservation = {
   dateEnd: Scalars['DateTime'];
   dateStart: Scalars['DateTime'];
   id: Scalars['String'];
-  listing: Maybe<Listing>;
+  listing?: Maybe<Listing>;
   listingId: Scalars['String'];
   totalPrice: Scalars['Float'];
-  user: Maybe<User>;
+  user?: Maybe<User>;
   userId: Scalars['String'];
 };
 
@@ -205,12 +213,12 @@ export type ReservationCreateInput = {
 
 export type Review = {
   __typename?: 'Review';
-  author: Maybe<User>;
+  author?: Maybe<User>;
   authorId: Scalars['String'];
   content: Scalars['String'];
   date: Scalars['DateTime'];
   id: Scalars['String'];
-  listing: Maybe<Listing>;
+  listing?: Maybe<Listing>;
   listingId: Scalars['String'];
   scores: Array<Maybe<Scalars['String']>>;
 };
@@ -250,7 +258,7 @@ export type LoginMutationVariables = Exact<{
 }>;
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: Maybe<{ __typename?: 'AuthPayload', token: Maybe<string>, user: Maybe<{ __typename?: 'User', id: string, firstName: string, lastName: string, email: string }> }> };
+export type LoginMutation = { __typename?: 'Mutation', login?: Maybe<{ __typename?: 'AuthPayload', token?: Maybe<string>, user?: Maybe<{ __typename?: 'User', id: string, firstName: string, lastName: string, email: string }> }> };
 
 export type SignupMutationVariables = Exact<{
   email: Scalars['String'];
@@ -260,56 +268,65 @@ export type SignupMutationVariables = Exact<{
 }>;
 
 
-export type SignupMutation = { __typename?: 'Mutation', signup: Maybe<{ __typename?: 'AuthPayload', token: Maybe<string> }> };
+export type SignupMutation = { __typename?: 'Mutation', signup?: Maybe<{ __typename?: 'AuthPayload', token?: Maybe<string> }> };
+
+export type BasicSearchQueryVariables = Exact<{
+  region: Scalars['String'];
+  numGuests: Scalars['Int'];
+  daysRequested: Array<Maybe<Scalars['String']>> | Maybe<Scalars['String']>;
+}>;
+
+
+export type BasicSearchQuery = { __typename?: 'Query', basicSearch: Array<Maybe<{ __typename?: 'Listing', title: string, region: string }>> };
 
 export type HostByIdQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type HostByIdQuery = { __typename?: 'Query', hostById: Maybe<{ __typename?: 'Host', id: string, firstName: string, dateJoined: string, description: Maybe<string>, details: Array<Maybe<string>>, medals: Array<Maybe<string>>, listings: Array<Maybe<{ __typename?: 'Listing', id: string, title: string, reviewsCount: number, listingType: string, region: string, averageScore: number, averageScores: { __typename?: 'ReviewScores', cleanliness: number } }>> }> };
+export type HostByIdQuery = { __typename?: 'Query', hostById?: Maybe<{ __typename?: 'Host', id: string, firstName: string, dateJoined: string, description?: Maybe<string>, medals: Array<Maybe<string>>, listings: Array<Maybe<{ __typename?: 'Listing', id: string, title: string, reviewsCount: number, listingType: string, region: string, averageScore: number }>> }> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me: Maybe<{ __typename?: 'User', id: string, firstName: string, lastName: string }> };
+export type MeQuery = { __typename?: 'Query', me?: Maybe<{ __typename?: 'User', id: string, firstName: string, lastName: string }> };
 
 export type ReservationByIdQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type ReservationByIdQuery = { __typename?: 'Query', reservationById: Maybe<{ __typename?: 'Reservation', id: string, listingId: string, dateStart: any, dateEnd: any, totalPrice: number, listing: Maybe<{ __typename?: 'Listing', city: string, title: string, region: string, address: string, price: number, cleaningFee: number, houseRules: Array<Maybe<string>>, imageComments: Array<Maybe<string>>, host: Maybe<{ __typename?: 'Host', id: string, firstName: string }> }> }> };
+export type ReservationByIdQuery = { __typename?: 'Query', reservationById?: Maybe<{ __typename?: 'Reservation', id: string, listingId: string, dateStart: any, dateEnd: any, totalPrice: number, listing?: Maybe<{ __typename?: 'Listing', city: string, title: string, region: string, address: string, price: number, cleaningFee: number, houseRules: Array<Maybe<string>>, imageComments: Array<Maybe<string>>, host?: Maybe<{ __typename?: 'Host', id: string, firstName: string }> }> }> };
 
 export type ReservationsByUserIdQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type ReservationsByUserIdQuery = { __typename?: 'Query', reservationsByUserId: Array<Array<Maybe<{ __typename?: 'Reservation', id: string, listingId: string, dateStart: any, dateEnd: any, listing: Maybe<{ __typename?: 'Listing', city: string, title: string, region: string }> }>>> };
+export type ReservationsByUserIdQuery = { __typename?: 'Query', reservationsByUserId: Array<Array<Maybe<{ __typename?: 'Reservation', id: string, listingId: string, dateStart: any, dateEnd: any, listing?: Maybe<{ __typename?: 'Listing', city: string, title: string, region: string }> }>>> };
 
 export type ReviewsByHostIdQueryVariables = Exact<{
   id: Scalars['String'];
-  offset: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
 }>;
 
 
-export type ReviewsByHostIdQuery = { __typename?: 'Query', reviewsByHostId: Array<{ __typename?: 'Review', id: string, listingId: string, authorId: string, date: any, content: string, listing: Maybe<{ __typename?: 'Listing', id: string, title: string, region: string }>, author: Maybe<{ __typename?: 'User', firstName: string, dateJoined: string }> }> };
+export type ReviewsByHostIdQuery = { __typename?: 'Query', reviewsByHostId: Array<{ __typename?: 'Review', id: string, listingId: string, authorId: string, date: any, content: string, listing?: Maybe<{ __typename?: 'Listing', id: string, title: string, region: string }>, author?: Maybe<{ __typename?: 'User', firstName: string, dateJoined: string }> }> };
 
 export type ReviewsByUserIdQueryVariables = Exact<{
   id: Scalars['String'];
-  offset: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
 }>;
 
 
-export type ReviewsByUserIdQuery = { __typename?: 'Query', reviewsByUserId: Array<{ __typename?: 'Review', id: string, listingId: string, date: any, content: string, scores: Array<Maybe<string>>, listing: Maybe<{ __typename?: 'Listing', host: Maybe<{ __typename?: 'Host', id: string, firstName: string, dateJoined: string }> }> }> };
+export type ReviewsByUserIdQuery = { __typename?: 'Query', reviewsByUserId: Array<{ __typename?: 'Review', id: string, listingId: string, date: any, content: string, scores: Array<Maybe<string>>, listing?: Maybe<{ __typename?: 'Listing', host?: Maybe<{ __typename?: 'Host', id: string, firstName: string, dateJoined: string }> }> }> };
 
 export type UserByIdQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
 
 
-export type UserByIdQuery = { __typename?: 'Query', userById: Maybe<{ __typename?: 'User', id: string, firstName: string, lastName: string, email: string, dateJoined: string, reviewsCount: number }> };
+export type UserByIdQuery = { __typename?: 'Query', userById?: Maybe<{ __typename?: 'User', id: string, firstName: string, lastName: string, email: string, dateJoined: string, reviewsCount: number }> };
 
 
 export const LoginDocument = gql`
@@ -393,6 +410,48 @@ export function useSignupMutation(baseOptions?: Apollo.MutationHookOptions<Signu
 export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
 export type SignupMutationResult = Apollo.MutationResult<SignupMutation>;
 export type SignupMutationOptions = Apollo.BaseMutationOptions<SignupMutation, SignupMutationVariables>;
+export const BasicSearchDocument = gql`
+    query basicSearch($region: String!, $numGuests: Int!, $daysRequested: [String]!) {
+  basicSearch(
+    region: $region
+    numGuests: $numGuests
+    daysRequested: $daysRequested
+  ) {
+    title
+    region
+  }
+}
+    `;
+
+/**
+ * __useBasicSearchQuery__
+ *
+ * To run a query within a React component, call `useBasicSearchQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBasicSearchQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBasicSearchQuery({
+ *   variables: {
+ *      region: // value for 'region'
+ *      numGuests: // value for 'numGuests'
+ *      daysRequested: // value for 'daysRequested'
+ *   },
+ * });
+ */
+export function useBasicSearchQuery(baseOptions: Apollo.QueryHookOptions<BasicSearchQuery, BasicSearchQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<BasicSearchQuery, BasicSearchQueryVariables>(BasicSearchDocument, options);
+      }
+export function useBasicSearchLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BasicSearchQuery, BasicSearchQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<BasicSearchQuery, BasicSearchQueryVariables>(BasicSearchDocument, options);
+        }
+export type BasicSearchQueryHookResult = ReturnType<typeof useBasicSearchQuery>;
+export type BasicSearchLazyQueryHookResult = ReturnType<typeof useBasicSearchLazyQuery>;
+export type BasicSearchQueryResult = Apollo.QueryResult<BasicSearchQuery, BasicSearchQueryVariables>;
 export const HostByIdDocument = gql`
     query hostById($id: String!) {
   hostById(id: $id) {
@@ -400,7 +459,6 @@ export const HostByIdDocument = gql`
     firstName
     dateJoined
     description
-    details
     medals
     listings {
       id
@@ -409,9 +467,6 @@ export const HostByIdDocument = gql`
       listingType
       region
       averageScore
-      averageScores {
-        cleanliness
-      }
     }
   }
 }
