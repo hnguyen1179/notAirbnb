@@ -184,31 +184,48 @@ const Query = objectType({
         region: nonNull(stringArg()),
         numGuests: nonNull(intArg()),
         daysRequested: nonNull(list(stringArg())),
+        offset: intArg(),
       },
       resolve: async (_parent, args, context: Context) => {
-        const listings = await context.prisma.listing.findMany({
-          where: {
-            region: args.region,
-            numGuests: {
-              gte: args.numGuests,
+        let listings;
+
+        if (args.region !== 'Anywhere') {
+          listings = await context.prisma.listing.findMany({
+            skip: args.offset || 0,
+            take: 10,
+            where: {
+              region: args.region,
+              numGuests: {
+                gte: args.numGuests,
+              },
             },
-          },
-        });
+          });
+        } else {
+          listings = await context.prisma.listing.findMany({
+            skip: args.offset || 0,
+            take: 10,
+            where: {
+              numGuests: {
+                gte: args.numGuests,
+              },
+            },
+          });
+        }
 
         if (!listings || listings.length === 0) return [];
 
         if (args.daysRequested.length != 0) {
-          console.log(listings[0].datesUnavailable);
-          // listings = listings.filter((listing) => {
-          // if (!listing.datesUnavailable || !listing) return false;
+          listings = listings.filter((listing) => {
+            if (!listing.datesUnavailable || !listing) return false;
+            const datesUnavailable = listing.datesUnavailable;
 
-          // return args.daysRequested.every((day) => {
-          //   return !listing?.datesUnavailable.hasOwnProperty(day as string);
-          // });
-          // });
+            return args.daysRequested.every((day) => {
+              return !datesUnavailable.hasOwnProperty(day as string);
+            });
+          });
         }
 
-        return [];
+        return listings;
       },
     });
 

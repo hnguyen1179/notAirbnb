@@ -81,7 +81,7 @@ type Mutation {
 
 type Query {
   allListings: [Listing!]!
-  basicSearch(daysRequested: [String]!, numGuests: Int!, region: String!): [Listing]!
+  basicSearch(daysRequested: [String]!, numGuests: Int!, offset: Int, region: String!): [Listing]!
   hostById(id: String!): Host
   listingById(id: String!): Listing
   listingsByRegion(region: String!): [Listing!]!

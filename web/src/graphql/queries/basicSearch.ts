@@ -11,8 +11,16 @@ const BASIC_SEARCH = gql`
 			numGuests: $numGuests
 			daysRequested: $daysRequested
 		) {
+			id
 			title
+			listingType
+			city
 			region
+			cleaningFee
+			price
+			superhost
+			averageScore
+			reviewsCount
 		}
 	}
 `;

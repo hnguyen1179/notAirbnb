@@ -1,0 +1,153 @@
+.SearchPage {
+	&-container {
+		padding: 3rem 2rem;
+	}
+
+	.divider {
+		height: 0.1rem;
+		width: 100%;
+		background-color: $muted-line-color;
+		margin: 3rem 0;
+	}
+
+	&__top-bar {
+		background-color: white;
+		position: fixed;
+		height: 6.4rem;
+		width: 100%;
+		border-bottom: 1px solid $muted-line-color;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 0.5rem 2rem;
+
+		& > .button {
+			&--back {
+				display: relative;
+
+				svg > g {
+					stroke: black !important;
+					stroke-width: 4 !important;
+				}
+
+				@include buttonSvgOutline;
+			}
+
+			&--edit-search {
+				display: flex;
+				width: 100%;
+				justify-content: space-between;
+
+				.region {
+					margin-left: 1rem;
+					font-size: 1.4rem;
+					text-decoration: underline;
+				}
+
+				.date {
+					margin-right: 2rem;
+					font-size: 1.4rem;
+					color: $muted-text-color;
+				}
+			}
+
+			&--edit-filter {
+			}
+		}
+
+		&--filler {
+			height: 6.4rem;
+		}
+	}
+
+	&__results-details {
+		> span {
+			color: $muted-text-color;
+		}
+		> h1 {
+			font-weight: 500;
+			font-size: 2.8rem;
+		}
+	}
+
+	&__button-filter {
+		margin: 3rem 0;
+		border: 0.1rem solid $muted-text-color;
+		border-radius: 2rem;
+
+		&:hover {
+			border-color: black;
+		}
+
+		> div {
+			padding: 0.9rem 1.5rem;
+			font-weight: 400;
+			font-size: 1.4rem;
+			color: $muted-text-color;
+		}
+	}
+
+	&__results {
+		&__list {
+			.no-results {
+				height: 80vh;
+
+				> div {
+					font-size: 2.2rem;
+					margin-bottom: 0.5rem;
+				}
+				> span {
+					color: $muted-text-color;
+					font-weight: 400;
+					font-size: 1.6rem;
+				}
+			}
+		}
+	}
+}
+
+.SearchResultsItem {
+	font-weight: 400;
+
+	&__image {
+	}
+
+	&__details {
+		> .score {
+			display: flex;
+			align-items: center;
+
+			> svg {
+				position: relative;
+				top: -0.1rem;
+				color: $main-color;
+				height: 1.4rem !important;
+				width: 1.4rem !important;
+			}
+			> span {
+				font-size: 1.4rem;
+
+				&:first-of-type {
+					margin-left: 0.5rem;
+					margin-right: 0.25rem;
+				}
+
+				&:last-of-type {
+					color: $muted-text-color;
+				}
+			}
+		}
+
+		> .type {
+
+		}
+
+    > .price {
+      span {
+        &:first-of-type {
+          font-weight: 500;
+        }
+      }
+    }
+	}
+}

@@ -41,9 +41,6 @@ const MobileSearchForm = ({ handleFormClose }: Props) => {
 	const [searchPayload, setSearchPayload] = useState<ISearchPayload>();
 	const [stage, setStage] = useState("location");
 
-	console.log("RERENDERED");
-	console.log("Region: ", searchPayload?.region);
-
 	if (searchPayload?.region !== undefined) {
 		return (
 			<Redirect
@@ -54,6 +51,7 @@ const MobileSearchForm = ({ handleFormClose }: Props) => {
 						searchPayload,
 					},
 				}}
+				push
 			/>
 		);
 	}
@@ -66,11 +64,19 @@ const MobileSearchForm = ({ handleFormClose }: Props) => {
 	};
 
 	const handleSubmit = (e: React.FormEvent) => {
-		console.log("submitted");
 		const daysRequested = [];
-		const distance = +formatDistance(dates.startDate, dates.endDate).split(
-			" "
-		)[0];
+		let distance;
+
+		if (dates.startDate.toDateString() === dates.endDate.toDateString()) {
+			distance = +formatDistance(
+				dates.startDate,
+				addDays(dates.endDate, 1)
+			).split(" ")[0];
+		} else {
+			distance = +formatDistance(dates.startDate, dates.endDate).split(
+				" "
+			)[0];
+		}
 
 		for (let i = 0; i < distance; i++) {
 			daysRequested.push(format(addDays(dates.startDate, i), "M/d/yyyy"));
@@ -84,7 +90,6 @@ const MobileSearchForm = ({ handleFormClose }: Props) => {
 			daysRequested,
 		};
 
-		console.log(payload);
 		e.preventDefault();
 		// checkIn & checkOut are Date format
 		// handleFormClose(e);

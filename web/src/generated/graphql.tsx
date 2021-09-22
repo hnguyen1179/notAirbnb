@@ -147,6 +147,7 @@ export type Query = {
 export type QueryBasicSearchArgs = {
   daysRequested: Array<Maybe<Scalars['String']>>;
   numGuests: Scalars['Int'];
+  offset?: Maybe<Scalars['Int']>;
   region: Scalars['String'];
 };
 
@@ -277,7 +278,7 @@ export type BasicSearchQueryVariables = Exact<{
 }>;
 
 
-export type BasicSearchQuery = { __typename?: 'Query', basicSearch: Array<Maybe<{ __typename?: 'Listing', title: string, region: string }>> };
+export type BasicSearchQuery = { __typename?: 'Query', basicSearch: Array<Maybe<{ __typename?: 'Listing', id: string, title: string, listingType: string, city: string, region: string, cleaningFee: number, price: number, superhost: boolean, averageScore: number, reviewsCount: number }>> };
 
 export type HostByIdQueryVariables = Exact<{
   id: Scalars['String'];
@@ -417,8 +418,16 @@ export const BasicSearchDocument = gql`
     numGuests: $numGuests
     daysRequested: $daysRequested
   ) {
+    id
     title
+    listingType
+    city
     region
+    cleaningFee
+    price
+    superhost
+    averageScore
+    reviewsCount
   }
 }
     `;

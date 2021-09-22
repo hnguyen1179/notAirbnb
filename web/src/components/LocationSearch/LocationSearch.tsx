@@ -11,6 +11,7 @@ const LOCATIONS = [
 	"Paradise, NV",
 	"San Diego, CA",
 	"Santa Barbara, CA",
+	"Anywhere"
 ];
 
 interface Props {
