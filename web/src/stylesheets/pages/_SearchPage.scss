@@ -112,6 +112,33 @@
 				}
 			}
 		}
+
+		.SRP {
+			&__list {
+				display: flex;
+				width: 100%;
+				justify-content: center;
+
+				&__item {
+					margin: 0 0.5rem;
+
+					&[aria-current="true"] {
+						background-color: rgb(0, 0, 0);
+						border-radius: 50%;
+						overflow: hidden;
+						color: white;
+						pointer-events: none;
+					}
+
+					> button {
+						height: 3.2rem;
+						width: 3.2rem;
+						color: inherit;
+						background-color: inherit;
+					}
+				}
+			}
+		}
 	}
 }
 

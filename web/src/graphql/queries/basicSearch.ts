@@ -3,13 +3,15 @@ import { gql } from "@apollo/client";
 const BASIC_SEARCH = gql`
 	query basicSearch(
 		$region: String!
-		$numGuests: Int!
-		$daysRequested: [String]!
+		$guests: Int!
+		$checkIn: String!
+		$checkOut: String!
 	) {
 		basicSearch(
 			region: $region
-			numGuests: $numGuests
-			daysRequested: $daysRequested
+			guests: $guests
+			checkIn: $checkIn
+			checkOut: $checkOut
 		) {
 			count
 			listings {

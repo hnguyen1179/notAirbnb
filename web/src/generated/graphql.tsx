@@ -151,9 +151,9 @@ export type Query = {
 
 
 export type QueryBasicSearchArgs = {
-  daysRequested: Array<Maybe<Scalars['String']>>;
-  numGuests: Scalars['Int'];
-  offset?: Maybe<Scalars['Int']>;
+  checkIn: Scalars['String'];
+  checkOut: Scalars['String'];
+  guests: Scalars['Int'];
   region: Scalars['String'];
 };
 
@@ -279,8 +279,9 @@ export type SignupMutation = { __typename?: 'Mutation', signup?: Maybe<{ __typen
 
 export type BasicSearchQueryVariables = Exact<{
   region: Scalars['String'];
-  numGuests: Scalars['Int'];
-  daysRequested: Array<Maybe<Scalars['String']>> | Maybe<Scalars['String']>;
+  guests: Scalars['Int'];
+  checkIn: Scalars['String'];
+  checkOut: Scalars['String'];
 }>;
 
 
@@ -418,11 +419,12 @@ export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
 export type SignupMutationResult = Apollo.MutationResult<SignupMutation>;
 export type SignupMutationOptions = Apollo.BaseMutationOptions<SignupMutation, SignupMutationVariables>;
 export const BasicSearchDocument = gql`
-    query basicSearch($region: String!, $numGuests: Int!, $daysRequested: [String]!) {
+    query basicSearch($region: String!, $guests: Int!, $checkIn: String!, $checkOut: String!) {
   basicSearch(
     region: $region
-    numGuests: $numGuests
-    daysRequested: $daysRequested
+    guests: $guests
+    checkIn: $checkIn
+    checkOut: $checkOut
   ) {
     count
     listings {
@@ -454,8 +456,9 @@ export const BasicSearchDocument = gql`
  * const { data, loading, error } = useBasicSearchQuery({
  *   variables: {
  *      region: // value for 'region'
- *      numGuests: // value for 'numGuests'
- *      daysRequested: // value for 'daysRequested'
+ *      guests: // value for 'guests'
+ *      checkIn: // value for 'checkIn'
+ *      checkOut: // value for 'checkOut'
  *   },
  * });
  */

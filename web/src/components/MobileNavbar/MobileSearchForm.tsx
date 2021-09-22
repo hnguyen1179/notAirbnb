@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
 import { DateRange, OnDateRangeChangeProps } from "react-date-range";
-import { formatDistance, addDays, format } from "date-fns";
+import { addDays, format } from "date-fns";
 
 import NumberGuests from "./NumberGuests";
 import LocationSearch from "../LocationSearch/LocationSearch";
@@ -10,10 +10,12 @@ import { ReactComponent as BackSvg } from "../../assets/icons/back.svg";
 import { ReactComponent as SearchSvg } from "../../assets/icons/search.svg";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import { Redirect } from "react-router";
-
-interface Props {
+import { RouteComponentProps, withRouter } from "react-router";
+import { stringifyUrl } from "query-string";
+import { History } from "history";
+interface Props extends RouteComponentProps {
 	handleFormClose: (e: React.SyntheticEvent) => void;
+	history: History;
 }
 
 interface IDate {
@@ -24,13 +26,12 @@ interface IDate {
 
 export interface ISearchPayload {
 	region: string;
-	checkIn: Date;
-	checkOut: Date;
-	numGuests: number;
-	daysRequested: string[];
+	checkIn: string;
+	checkOut: string;
+	guests: number;
 }
 
-const MobileSearchForm = ({ handleFormClose }: Props) => {
+const MobileSearchForm = ({ handleFormClose, history }: Props) => {
 	const [location, setLocation] = useState("");
 	const [dates, setDates] = useState<IDate>({
 		startDate: new Date(),
@@ -38,25 +39,26 @@ const MobileSearchForm = ({ handleFormClose }: Props) => {
 		key: "selection",
 	});
 	const [guests, setGuests] = useState(0);
-	const [searchPayload, setSearchPayload] = useState<ISearchPayload>();
 	const [stage, setStage] = useState("location");
 
-	if (searchPayload?.region !== undefined) {
-		document.body.style.overflow = "initial";
+	// if (searchPayload?.region !== undefined) {
+	// 	document.body.style.overflow = "initial";
+	// 	const checkInURL = format(searchPayload.checkIn, "M-d-yyy");
+	// 	const checkOutURL = format(searchPayload.checkOut, "M-d-yyy");
 
-		return (
-			<Redirect
-				to={{
-					pathname: "/search",
-					search: `?region=${searchPayload?.region}`,
-					state: {
-						searchPayload,
-					},
-				}}
-				push
-			/>
-		);
-	}
+	// 	return (
+	// 		<Redirect
+	// 			to={{
+	// 				pathname: "/search",
+	// 				search: `?region=${searchPayload?.region}&checkin=${checkInURL}&checkout=${checkOutURL}&num_guests=${searchPayload.numGuests}`,
+	// 				state: {
+	// 					searchPayload,
+	// 				},
+	// 			}}
+	// 			push
+	// 		/>
+	// 	);
+	// }
 
 	const handleDateChange = (ranges: OnDateRangeChangeProps) => {
 		const start = ranges.selection.startDate as Date;
@@ -66,41 +68,28 @@ const MobileSearchForm = ({ handleFormClose }: Props) => {
 	};
 
 	const handleSubmit = (e: React.FormEvent) => {
-		const daysRequested = [];
-		let distance;
+		e.preventDefault();
 
 		const sameDates =
 			dates.startDate.toDateString() === dates.endDate.toDateString();
 
-		if (sameDates) {
-			distance = +formatDistance(
-				dates.startDate,
-				addDays(dates.endDate, 1)
-			).split(" ")[0];
-		} else {
-			distance = +formatDistance(dates.startDate, dates.endDate).split(
-				" "
-			)[0];
-		}
+		const checkIn = format(dates.startDate, "M-d-yyyy");
+		const checkOut = sameDates
+			? format(addDays(dates.endDate, 1), "M-d-yyyy")
+			: format(dates.endDate, "M-d-yyyy");
 
-		for (let i = 0; i < distance; i++) {
-			daysRequested.push(format(addDays(dates.startDate, i), "M/d/yyyy"));
-		}
+		const url = stringifyUrl({
+			url: "/search",
+			query: {
+				region: location.split(", ")[0],
+				"check-in": checkIn,
+				"check-out": checkOut,
+				guests: guests,
+			},
+		});
 
-		const payload = {
-			region: location.split(", ")[0],
-			checkIn: dates.startDate,
-			checkOut: sameDates ? addDays(dates.endDate, 1) : dates.endDate,
-			numGuests: guests,
-			daysRequested,
-		};
-
-		e.preventDefault();
-		// checkIn & checkOut are Date format
-		// handleFormClose(e);
-		setSearchPayload(payload);
-
-		//this.props.location.state in the redirect component can get the state
+		document.body.style.overflow = "initial";
+		history.push(url);
 	};
 
 	const renderNumGuests = () => {
@@ -258,4 +247,4 @@ const MobileSearchForm = ({ handleFormClose }: Props) => {
 	);
 };
 
-export default MobileSearchForm;
+export default withRouter(MobileSearchForm);
