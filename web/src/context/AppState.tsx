@@ -11,11 +11,7 @@ const width = window.innerWidth;
 function AppState(props: Props) {
 	const mql = window.matchMedia("(min-width: 744px)");
 	const { data } = useMeQuery();
-
-	const [message, setMessage] = useState(
-		"This is a message from the Provider"
-	);
-	const [locale, setLocale] = useState("en");
+	// LOGIN Bug, maybe look into how people store the current user object?
 	const [mobile, setMobile] = useState(width <= 744);
 
 	const cloudinary = new Cloudinary({
@@ -44,11 +40,7 @@ function AppState(props: Props) {
 		<AppContext.Provider
 			value={{
 				cloudinary,
-				message,
-				locale,
 				user: data?.me ? data.me : null,
-				setMessage,
-				setLocale,
 				mobile,
 			}}
 		>

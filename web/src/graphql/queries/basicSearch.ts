@@ -6,12 +6,14 @@ const BASIC_SEARCH = gql`
 		$guests: Int!
 		$checkIn: String!
 		$checkOut: String!
+		$offset: Int
 	) {
 		basicSearch(
 			region: $region
 			guests: $guests
 			checkIn: $checkIn
 			checkOut: $checkOut
+			offset: $offset
 		) {
 			count
 			listings {

@@ -11,11 +11,7 @@ interface UserPartial {
 
 export type GlobalState = {
 	cloudinary: Cloudinary;
-	message: string;
-	locale: string;
 	user: UserPartial | null;
-	setMessage: React.Dispatch<React.SetStateAction<string>>;
-	setLocale: React.Dispatch<React.SetStateAction<string>>;
 	mobile: boolean;
 };
 

@@ -21,18 +21,14 @@ const SearchPage = ({ history }: Props) => {
 	const [currentPage, setCurrentPage] = useState(1);
 
 	const parsed = parse(history.location.search);
-	console.log("PARSED: ", parsed);
 	const region = parsed.region as string;
-	const checkIn = new Date(parsed['check-in'] as string);
-	const checkOut = new Date(parsed['check-out'] as string);
+	const checkIn = new Date(parsed["check-in"] as string);
+	const checkOut = new Date(parsed["check-out"] as string);
 	const numGuests = parseInt(parsed.guests as string);
-
-	console.log(region);
-	console.log(numGuests);
 
 	// const payload = history.location.state.searchPayload as ISearchPayload;
 
-	const { loading, error, data } = useBasicSearchQuery({
+	const { loading, error, data, fetchMore } = useBasicSearchQuery({
 		variables: {
 			region: parsed.region as string,
 			guests: parseInt(parsed.guests as string),
@@ -43,7 +39,6 @@ const SearchPage = ({ history }: Props) => {
 
 	if (error) {
 		console.log(JSON.stringify(error, null, 2));
-		console.log("PARSED again: ", parsed);
 		return <>uh oh</>;
 	}
 
@@ -61,8 +56,13 @@ const SearchPage = ({ history }: Props) => {
 	const handlePageClick = async (e: MouseEvent<HTMLLIElement>) => {
 		const nextPage = parseInt(e?.currentTarget?.innerText);
 		setCurrentPage(nextPage);
-		window.scrollTo({
-			top: 0,
+
+		console.log(" clicking next page ");
+		console.log("new offset: ", (nextPage - 1) * 10);
+		await fetchMore({
+			variables: {
+				offset: (nextPage - 1) * 10,
+			},
 		});
 
 		// pagination should push to the router history, thereby allowing you
@@ -134,10 +134,11 @@ const SearchPage = ({ history }: Props) => {
 										/>
 									);
 								})
-								.slice(
+								?.slice(
 									(currentPage - 1) * 10,
-									(currentPage - 1) * 10 + 10
+									((currentPage - 1) * 10) + 10
 								)
+								// This slice essentially acts as your 'read' within typePolicies 
 						)}
 					</ul>
 

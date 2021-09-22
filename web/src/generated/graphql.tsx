@@ -154,6 +154,7 @@ export type QueryBasicSearchArgs = {
   checkIn: Scalars['String'];
   checkOut: Scalars['String'];
   guests: Scalars['Int'];
+  offset?: Maybe<Scalars['Int']>;
   region: Scalars['String'];
 };
 
@@ -282,6 +283,7 @@ export type BasicSearchQueryVariables = Exact<{
   guests: Scalars['Int'];
   checkIn: Scalars['String'];
   checkOut: Scalars['String'];
+  offset?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -419,12 +421,13 @@ export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
 export type SignupMutationResult = Apollo.MutationResult<SignupMutation>;
 export type SignupMutationOptions = Apollo.BaseMutationOptions<SignupMutation, SignupMutationVariables>;
 export const BasicSearchDocument = gql`
-    query basicSearch($region: String!, $guests: Int!, $checkIn: String!, $checkOut: String!) {
+    query basicSearch($region: String!, $guests: Int!, $checkIn: String!, $checkOut: String!, $offset: Int) {
   basicSearch(
     region: $region
     guests: $guests
     checkIn: $checkIn
     checkOut: $checkOut
+    offset: $offset
   ) {
     count
     listings {
@@ -459,6 +462,7 @@ export const BasicSearchDocument = gql`
  *      guests: // value for 'guests'
  *      checkIn: // value for 'checkIn'
  *      checkOut: // value for 'checkOut'
+ *      offset: // value for 'offset'
  *   },
  * });
  */

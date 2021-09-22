@@ -67,6 +67,21 @@ function App() {
 				typePolicies: {
 					Query: {
 						fields: {
+							// me: {
+							// 	keyArgs: false,
+							// 	merge(existing = {}, incoming) {
+							// 		console.log(
+							// 			"ME QUERY EXISTING: ",
+							// 			existing
+							// 		);
+							// 		console.log(
+							// 			"ME QUERY INCOMING: ",
+							// 			incoming
+							// 		);
+
+							// 		return incoming;
+							// 	},
+							// },
 							reviewsByUserId: {
 								keyArgs: false,
 								merge(existing = [], incoming) {
@@ -79,7 +94,32 @@ function App() {
 									return [...existing, ...incoming];
 								},
 							},
-							// basicSearch: offsetLimitPagination,
+							basicSearch: {
+								keyArgs: false,
+								merge(
+									existing = { count: 0, listings: [] },
+									incoming,
+									{ args }
+								) {
+									const offset = args?.offset || 0;
+									const mergedListings = existing
+										? existing.listings.slice(0)
+										: [];
+
+									for (
+										let i = 0;
+										i < incoming.listings.length;
+										++i
+									) {
+										mergedListings[offset + i] =
+											incoming.listings[i];
+									}
+									return {
+										count: incoming.count,
+										listings: mergedListings,
+									};
+								},
+							},
 						},
 					},
 				},

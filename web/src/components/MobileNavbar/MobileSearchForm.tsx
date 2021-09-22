@@ -41,25 +41,6 @@ const MobileSearchForm = ({ handleFormClose, history }: Props) => {
 	const [guests, setGuests] = useState(0);
 	const [stage, setStage] = useState("location");
 
-	// if (searchPayload?.region !== undefined) {
-	// 	document.body.style.overflow = "initial";
-	// 	const checkInURL = format(searchPayload.checkIn, "M-d-yyy");
-	// 	const checkOutURL = format(searchPayload.checkOut, "M-d-yyy");
-
-	// 	return (
-	// 		<Redirect
-	// 			to={{
-	// 				pathname: "/search",
-	// 				search: `?region=${searchPayload?.region}&checkin=${checkInURL}&checkout=${checkOutURL}&num_guests=${searchPayload.numGuests}`,
-	// 				state: {
-	// 					searchPayload,
-	// 				},
-	// 			}}
-	// 			push
-	// 		/>
-	// 	);
-	// }
-
 	const handleDateChange = (ranges: OnDateRangeChangeProps) => {
 		const start = ranges.selection.startDate as Date;
 		const end = ranges.selection.endDate as Date;
