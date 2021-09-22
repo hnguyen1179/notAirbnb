@@ -42,6 +42,8 @@ const MobileSearchForm = ({ handleFormClose }: Props) => {
 	const [stage, setStage] = useState("location");
 
 	if (searchPayload?.region !== undefined) {
+		document.body.style.overflow = "initial";
+
 		return (
 			<Redirect
 				to={{
@@ -67,7 +69,10 @@ const MobileSearchForm = ({ handleFormClose }: Props) => {
 		const daysRequested = [];
 		let distance;
 
-		if (dates.startDate.toDateString() === dates.endDate.toDateString()) {
+		const sameDates =
+			dates.startDate.toDateString() === dates.endDate.toDateString();
+
+		if (sameDates) {
 			distance = +formatDistance(
 				dates.startDate,
 				addDays(dates.endDate, 1)
@@ -85,7 +90,7 @@ const MobileSearchForm = ({ handleFormClose }: Props) => {
 		const payload = {
 			region: location.split(", ")[0],
 			checkIn: dates.startDate,
-			checkOut: dates.endDate,
+			checkOut: sameDates ? addDays(dates.endDate, 1) : dates.endDate,
 			numGuests: guests,
 			daysRequested,
 		};

@@ -30,7 +30,7 @@ const calculateTotalRes = (reservation: Reservation) => {
 	const serviceFee = (price + cleaningFee + occupancyTax) * 0.12;
 
 	return {
-		totalPrice: +(price + cleaningFee + occupancyTax + serviceFee).toFixed(
+		totalPrice: (price + cleaningFee + occupancyTax + serviceFee).toFixed(
 			2
 		),
 		totalNights: numNights,
@@ -68,8 +68,8 @@ const calculateTotalArgs = ({
 	const serviceFee = (price + cleaningFee + occupancyTax) * 0.12;
 
 	return {
-		totalPrice: +(price + cleaningFee + occupancyTax + serviceFee).toFixed(
-			2
+		totalPrice: (price + cleaningFee + occupancyTax + serviceFee).toFixed(
+			0
 		),
 		totalNights: numNights,
 		price,

@@ -179,7 +179,7 @@ const Query = objectType({
     });
 
     t.field('basicSearch', {
-      type: nonNull(list('Listing')),
+      type: BasicSearchResults,
       args: {
         region: nonNull(stringArg()),
         numGuests: nonNull(intArg()),
@@ -188,11 +188,21 @@ const Query = objectType({
       },
       resolve: async (_parent, args, context: Context) => {
         let listings;
+        let count;
 
         if (args.region !== 'Anywhere') {
           listings = await context.prisma.listing.findMany({
             skip: args.offset || 0,
             take: 10,
+            where: {
+              region: args.region,
+              numGuests: {
+                gte: args.numGuests,
+              },
+            },
+          });
+
+          count = await context.prisma.listing.count({
             where: {
               region: args.region,
               numGuests: {
@@ -210,9 +220,18 @@ const Query = objectType({
               },
             },
           });
+
+          count = await context.prisma.listing.count({
+            where: {
+              numGuests: {
+                gte: args.numGuests,
+              },
+            },
+          });
         }
 
-        if (!listings || listings.length === 0) return [];
+        if (!listings || listings.length === 0)
+          return { count: 0, listings: [] };
 
         if (args.daysRequested.length != 0) {
           listings = listings.filter((listing) => {
@@ -225,7 +244,7 @@ const Query = objectType({
           });
         }
 
-        return listings;
+        return { count, listings };
       },
     });
 
@@ -762,6 +781,16 @@ const ReviewScores = objectType({
   },
 });
 
+const BasicSearchResults = objectType({
+  name: 'BasicSearchResults',
+  definition(t) {
+    t.nonNull.int('count');
+    t.nonNull.field('listings', {
+      type: nonNull(list('Listing')),
+    });
+  },
+});
+
 const ReservationCreateInput = inputObjectType({
   name: 'ReservationCreateInput',
   definition(t) {
@@ -807,6 +836,7 @@ const schemaWithoutPermissions = makeSchema({
     dateTimeScalar,
     jsonScalar,
     ReviewScores,
+    BasicSearchResults,
     ReservationCreateInput,
     ReviewCreateInput,
   ],

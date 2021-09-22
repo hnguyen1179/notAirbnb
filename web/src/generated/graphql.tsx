@@ -24,6 +24,12 @@ export type AuthPayload = {
   user?: Maybe<User>;
 };
 
+export type BasicSearchResults = {
+  __typename?: 'BasicSearchResults';
+  count: Scalars['Int'];
+  listings: Array<Maybe<Listing>>;
+};
+
 export type Host = {
   __typename?: 'Host';
   dateJoined: Scalars['String'];
@@ -131,7 +137,7 @@ export type MutationVerifyEmailArgs = {
 export type Query = {
   __typename?: 'Query';
   allListings: Array<Listing>;
-  basicSearch: Array<Maybe<Listing>>;
+  basicSearch?: Maybe<BasicSearchResults>;
   hostById?: Maybe<Host>;
   listingById?: Maybe<Listing>;
   listingsByRegion: Array<Listing>;
@@ -278,7 +284,7 @@ export type BasicSearchQueryVariables = Exact<{
 }>;
 
 
-export type BasicSearchQuery = { __typename?: 'Query', basicSearch: Array<Maybe<{ __typename?: 'Listing', id: string, title: string, listingType: string, city: string, region: string, cleaningFee: number, price: number, superhost: boolean, averageScore: number, reviewsCount: number }>> };
+export type BasicSearchQuery = { __typename?: 'Query', basicSearch?: Maybe<{ __typename?: 'BasicSearchResults', count: number, listings: Array<Maybe<{ __typename?: 'Listing', id: string, title: string, listingType: string, city: string, region: string, cleaningFee: number, price: number, superhost: boolean, averageScore: number, reviewsCount: number }>> }> };
 
 export type HostByIdQueryVariables = Exact<{
   id: Scalars['String'];
@@ -418,16 +424,19 @@ export const BasicSearchDocument = gql`
     numGuests: $numGuests
     daysRequested: $daysRequested
   ) {
-    id
-    title
-    listingType
-    city
-    region
-    cleaningFee
-    price
-    superhost
-    averageScore
-    reviewsCount
+    count
+    listings {
+      id
+      title
+      listingType
+      city
+      region
+      cleaningFee
+      price
+      superhost
+      averageScore
+      reviewsCount
+    }
   }
 }
     `;

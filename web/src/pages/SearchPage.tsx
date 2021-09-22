@@ -42,7 +42,6 @@ const SearchPage = ({ history }: Props) => {
 	const handleEditFilter = () => {};
 
 	if (error) console.log(JSON.stringify(error, null, 2));
-	console.log(data);
 
 	const searchDetails = `${format(payload.checkIn, "MMM d")} –
 								${format(payload.checkOut, "MMM d")} · ${payload.numGuests} guest${
@@ -99,6 +98,8 @@ const SearchPage = ({ history }: Props) => {
 									<SearchResultsItem
 										cloudinary={cloudinary}
 										listing={listing}
+										checkIn={payload.checkIn}
+										checkOut={payload.checkOut}
 									/>
 								);
 							})
@@ -108,6 +109,7 @@ const SearchPage = ({ history }: Props) => {
 			</div>
 
 			{mobile && <MobileNavbar />}
+
 			<div className="Footer-container">
 				<Footer />
 			</div>

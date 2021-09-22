@@ -2,7 +2,7 @@ import { Cloudinary } from "@cloudinary/base";
 import { AdvancedImage } from "@cloudinary/react";
 import { ReactComponent as StarSvg } from "../../assets/icons/filled-star.svg";
 import React from "react";
-import { calculateTotal } from "../../utils/priceBreakdown";
+import { calculateTotalArgs } from "../../utils/priceBreakdown";
 
 interface PartialListing {
 	__typename?: "Listing" | undefined;
@@ -11,50 +11,80 @@ interface PartialListing {
 	listingType: string;
 	city: string;
 	region: string;
-	datesUnavailable: any;
 	price: number;
 	superhost: boolean;
 	averageScore: number;
 	reviewsCount: number;
+	cleaningFee: number;
 }
 
 interface Props {
 	listing: PartialListing;
 	cloudinary: Cloudinary;
+	checkIn: Date;
+	checkOut: Date;
 }
 
-const SearchResultsItem = ({ listing, cloudinary }: Props) => {
+const SearchResultsItem = ({
+	listing,
+	cloudinary,
+	checkIn,
+	checkOut,
+}: Props) => {
 	const url = `images/${listing.region.replaceAll(" ", "_").toLowerCase()}/${
 		listing.id
 	}/image-0`;
 
 	return (
-		<div className="SearchResultsItem">
-			<div className="SearchResultsItem__image">
-				<AdvancedImage cldImg={cloudinary.image(url)} />
-			</div>
-			<div className="SearchResultsItem__details">
-				<div className="score">
-					<StarSvg />
-					<span>{listing.averageScore}</span>
-					<span>({listing.reviewsCount})</span>
+		<li className="SearchResultsItem">
+			<a href={`/listing/${listing.id}`}>
+				<div className="SearchResultsItem__image">
+					{listing.superhost && (
+						<div className="superhost">
+							<span>superhost</span>
+						</div>
+					)}
+					<AdvancedImage cldImg={cloudinary.image(url)} />
 				</div>
-				<div className="type">
-					<span>{listing.listingType}</span>
-					<span> · </span>
-					<span>{listing.city}</span>
+				<div className="SearchResultsItem__details">
+					<div className="score">
+						<StarSvg />
+						<span>
+							{listing.reviewsCount === 0
+								? "No reviews"
+								: listing.averageScore}
+						</span>
+						<span>({listing.reviewsCount})</span>
+					</div>
+					<div className="type">
+						<span>{listing.listingType}</span>
+						<span> · </span>
+						<span>{listing.city}</span>
+					</div>
+					<div className="title">
+						<span>{listing.title}</span>
+					</div>
+					<div className="price">
+						<span>${listing.price}</span>
+						<span> / </span>
+						<span>night</span>
+						<div className="total-price">
+							$
+							{
+								calculateTotalArgs({
+									checkIn,
+									checkOut,
+									pricePerNight: listing.price,
+									cleaningFee: listing.cleaningFee,
+									region: listing.region,
+								}).totalPrice
+							}{" "}
+							total
+						</div>
+					</div>
 				</div>
-				<div className="title">
-					<span>{listing.title}</span>
-				</div>
-        <div className="price">
-          <span>${listing.price}</span>
-          <span> / </span>
-          <span>night</span>
-          <div>{calculateTotal()}</div>
-        </div>
-			</div>
-		</div>
+			</a>
+		</li>
 	);
 };
 

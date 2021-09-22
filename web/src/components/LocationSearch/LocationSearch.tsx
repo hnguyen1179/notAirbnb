@@ -3,6 +3,7 @@ import RadioButton from "./RadioButton";
 import { UseFormReturn } from "react-hook-form";
 
 const LOCATIONS = [
+	"Anywhere",
 	"Big Bear, CA",
 	"Henderson, NV",
 	"Las Vegas, NV",
@@ -11,7 +12,6 @@ const LOCATIONS = [
 	"Paradise, NV",
 	"San Diego, CA",
 	"Santa Barbara, CA",
-	"Anywhere"
 ];
 
 interface Props {

@@ -21,7 +21,7 @@ const SearchPageTopBar = ({
 	handleEditFilter,
 }: Props) => {
 	return (
-		<div>
+		<>
 			{mobile ? (
 				<>
 					<div className="SearchPage__top-bar">
@@ -38,6 +38,7 @@ const SearchPageTopBar = ({
 							<div className="region">{region}</div>
 							<div className="date">{searchDetails}</div>
 						</button>
+						<div className="pipe-divider">|</div>
 						<button
 							className="button button--edit-filter"
 							onClick={handleEditFilter}
@@ -53,7 +54,7 @@ const SearchPageTopBar = ({
 					<div className="Navbar-filler" />
 				</>
 			)}
-		</div>
+		</>
 	);
 };
 
