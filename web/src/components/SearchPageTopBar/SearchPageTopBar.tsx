@@ -37,6 +37,7 @@ const SearchPageTopBar = ({
 						>
 							<div className="region">{region}</div>
 							<div className="date">{searchDetails}</div>
+							
 						</button>
 						<div className="pipe-divider">|</div>
 						<button

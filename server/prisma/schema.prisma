@@ -79,8 +79,7 @@ model Listing {
   highlights          String[]
   score               Float
   scores              String[]
-  datesUnavailable    Json
-  reviewsCount        Int           @default(0)
+  datesUnavailable    String[]
   reviews             Review[]
   reservations        Reservation[]
 }

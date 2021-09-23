@@ -89,9 +89,9 @@ const SearchPage = ({ history }: Props) => {
 	const handleEditFilter = () => {};
 
 	const searchDetails = `${format(new Date(checkIn), "MMM d")} –
-								${format(new Date(checkOut), "MMM d")} · ${guests} guest${
-		guests === 1 ? "" : "s"
-	}`;
+								${format(new Date(checkOut), "MMM d")}${
+		format(new Date(checkOut), "yyyy") === "2022" ? ", 2022 " : " "
+	}· ${guests} guest${guests === 1 ? "" : "s"}`;
 
 	const renderRegion = () => {
 		if (region === "Anywhere") {

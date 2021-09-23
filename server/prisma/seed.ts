@@ -1,9 +1,9 @@
 import users from './user_and_reviews_reservations.json';
-import hosts from './host_and_listings.json';
-import proper_dates_unavailable from './proper_dates_unavailable.json';
+import hosts from './host_and_listings_final.json';
+// import proper_dates_unavailable from './proper_dates_unavailable.json';
 import { PrismaClient, Prisma } from '@prisma/client';
 
-// const prisma = new PrismaClient();
+const prisma = new PrismaClient();
 
 // const userData = users.map((user) => {
 //   const userObj: Prisma.UserCreateInput = {
@@ -167,66 +167,66 @@ import { PrismaClient, Prisma } from '@prisma/client';
 // ];
 // console.log(users[0]);
 
-// async function main() {
-//   console.log(`Start seeding ...`);
-// for (const u of userData) {
-//   const user = await prisma.user.create({
-//     data: u,
-//   });
-//   console.log(`Created user with id: ${user.id}`);
-// }
+async function main() {
+  console.log(`Start seeding ...`);
+  // for (const u of userData) {
+  //   const user = await prisma.user.create({
+  //     data: u,
+  //   });
+  //   console.log(`Created user with id: ${user.id}`);
+  // }
 
-// for (const h of hostData) {
-//   const host = await prisma.host.create({
-//     data: h,
-//   });
-//   console.log(`Created host with id: ${host.id}`);
-// }
+  // for (const h of hostData) {
+  //   const host = await prisma.host.create({
+  //     data: h,
+  //   });
+  //   console.log(`Created host with id: ${host.id}`);
+  // }
 
 //seeding listings
-// for (const host of hosts) {
-//   const listings = host.listings;
-//   for (const listing of listings) {
-//     const item = await prisma.listing.create({
-//       data: {
-//         id: listing.id,
-//         hostId: listing.hostId,
-//         title: listing.title,
-//         street: listing.street,
-//         city: listing.city,
-//         state: listing.state,
-//         zipCode: listing.zipcode,
-//         address: listing.address,
-//         location: listing.location,
-//         region: listing.region,
-//         listingDescription: listing.listingDescription,
-//         locationDescription: listing.locationDescription,
-//         stayDescription: listing.stayDescription,
-//         price: listing.price,
-//         cleaningFee: listing.cleaningFee,
-//         numGuests: listing.numGuests,
-//         numBedrooms: listing.numBedrooms,
-//         numBeds: listing.numBeds,
-//         numBaths: listing.numBaths,
-//         smokingRule: listing.smokingRule,
-//         petsRule: listing.petsRule,
-//         superhost: listing.superhost,
-//         languages: listing.languages,
-//         imageComments: listing.imageComments,
-//         listingType: listing.listingType,
-//         basicAmenities: listing.basicAmenities,
-//         amenities: listing.amenities,
-//         houseRules: listing.houseRules,
-//         healthAndSafety: listing.healthAndSafety,
-//         highlights: listing.highlights,
-//         score: listing.score,
-//         scores: listing.scoreBreakdown,
-//         datesUnavailable: listing.datesUnavailable,
-//       },
-//     });
-//     console.log(`Created listing with id: ${item.id}`);
-//   }
-// }
+  // for (const host of hosts) {
+  //   const listings = host.listings;
+  //   for (const listing of listings) {
+  //     const item = await prisma.listing.create({
+  //       data: {
+  //         id: listing.id,
+  //         hostId: listing.hostId,
+  //         title: listing.title,
+  //         street: listing.street,
+  //         city: listing.city,
+  //         state: listing.state,
+  //         zipCode: listing.zipcode,
+  //         address: listing.address,
+  //         location: listing.location,
+  //         region: listing.region,
+  //         listingDescription: listing.listingDescription,
+  //         locationDescription: listing.locationDescription,
+  //         stayDescription: listing.stayDescription,
+  //         price: listing.price,
+  //         cleaningFee: listing.cleaningFee,
+  //         numGuests: listing.numGuests,
+  //         numBedrooms: listing.numBedrooms,
+  //         numBeds: listing.numBeds,
+  //         numBaths: listing.numBaths,
+  //         smokingRule: listing.smokingRule,
+  //         petsRule: listing.petsRule,
+  //         superhost: listing.superhost,
+  //         languages: listing.languages,
+  //         imageComments: listing.imageComments,
+  //         listingType: listing.listingType,
+  //         basicAmenities: listing.basicAmenities,
+  //         amenities: listing.amenities,
+  //         houseRules: listing.houseRules,
+  //         healthAndSafety: listing.healthAndSafety,
+  //         highlights: listing.highlights,
+  //         score: listing.score,
+  //         scores: listing.scoreBreakdown,
+  //         datesUnavailable: listing.datesUnavailable,
+  //       },
+  //     });
+  //     console.log(`Created listing with id: ${item.id}`);
+  //   }
+  // }
 
 // Seeding Reviews
 // for (const user of users) {
@@ -271,11 +271,11 @@ import { PrismaClient, Prisma } from '@prisma/client';
 //   console.log(`Seeding finished.`);
 // }
 
-// main()
-//   .catch((e) => {
-//     console.error(e);
-//     process.exit(1);
-//   })
-//   .finally(async () => {
-//     await prisma.$disconnect();
-//   });
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

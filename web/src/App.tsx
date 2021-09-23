@@ -8,7 +8,6 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import AppState from "./context/AppState";
-import { offsetLimitPagination } from "@apollo/client/utilities";
 
 import useAuthToken from "./hooks/useAuthToken";
 
@@ -59,7 +58,7 @@ function App() {
 			},
 		};
 	});
-
+	
 	const client = useMemo(() => {
 		return new ApolloClient({
 			link: authLink.concat(httpLink),

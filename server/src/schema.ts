@@ -17,8 +17,8 @@ import {
 import { DateTimeResolver, JSONObjectResolver } from 'graphql-scalars';
 import objectHash from 'object-hash';
 import { Context } from './context';
-import { Listing, Prisma } from '.prisma/client';
-import { addDays, format, formatDistance } from 'date-fns';
+import { Listing } from '.prisma/client';
+import { addDays, format, differenceInDays } from 'date-fns';
 
 export const dateTimeScalar = asNexusMethod(DateTimeResolver, 'date');
 export const jsonScalar = asNexusMethod(JSONObjectResolver, 'json');
@@ -190,55 +190,96 @@ const Query = objectType({
       },
       resolve: async (_parent, args, context: Context) => {
         let listings: Listing[];
-
+        let count: number;
+        console.log(' in here ');
         const daysRequested: string[] = [];
         const checkIn = new Date(args.checkIn);
         const checkOut = new Date(args.checkOut);
 
-        const distance = parseInt(
-          formatDistance(checkIn, checkOut).split(' ')[0],
-        );
+        const distance = differenceInDays(checkIn, checkOut) * -1;
+        console.log(differenceInDays(checkIn, checkOut) * -1);
 
         for (let i = 0; i < distance; i++) {
-          daysRequested.push(format(addDays(checkIn, i), 'M-d-yyyy'));
+          daysRequested.push(format(addDays(checkIn, i), 'M/d/yyyy'));
         }
+
+        console.log('daysRequested: ', daysRequested);
+
+        const allListings = await context.prisma.listing.findMany();
 
         if (args.region !== 'Anywhere') {
           listings = await context.prisma.listing.findMany({
+            skip: args.offset,
+            take: 10,
             where: {
               region: args.region,
               numGuests: {
                 gte: args.guests,
               },
+              NOT: {
+                datesUnavailable: {
+                  hasSome: daysRequested,
+                },
+              },
+            },
+          });
+
+          count = await context.prisma.listing.count({
+            where: {
+              region: args.region,
+              numGuests: {
+                gte: args.guests,
+              },
+              NOT: {
+                datesUnavailable: {
+                  hasSome: daysRequested,
+                },
+              },
             },
           });
         } else {
           listings = await context.prisma.listing.findMany({
+            skip: args.offset,
+            take: 10,
             where: {
               numGuests: {
                 gte: args.guests,
+              },
+              NOT: {
+                datesUnavailable: {
+                  hasSome: daysRequested,
+                },
+              },
+            },
+          });
+
+          count = await context.prisma.listing.count({
+            where: {
+              numGuests: {
+                gte: args.guests,
+              },
+              NOT: {
+                datesUnavailable: {
+                  hasSome: daysRequested,
+                },
               },
             },
           });
         }
 
-        console.log('before: ', listings.length);
-        console.log(daysRequested);
-        if (daysRequested.length != 0) {
-          listings = listings.filter((listing) => {
-            const datesUnavailable = listing.datesUnavailable;
-
-            if (!datesUnavailable) return false;
-
-            return daysRequested.every((day) => {
-              return !datesUnavailable.hasOwnProperty(day);
-            });
+        const filtered = allListings.filter((listing) => {
+          return listing.datesUnavailable.every((date) => {
+            return !daysRequested.includes(date);
           });
-        }
+        });
 
-        console.log('after: ', listings.length);
+        console.log(
+          'left: ',
+          filtered.map((x) => x.title),
+        );
 
-        return { count: listings.length, listings, offset: args.offset };
+        console.log('LISTINGS: ', listings);
+        return { count, listings, offset: args.offset };
       },
     });
 
@@ -695,7 +736,7 @@ const Listing = objectType({
       },
     });
     t.nonNull.field('scores', { type: list('String') });
-    t.nonNull.field('datesUnavailable', { type: 'JSONObject' });
+    t.nonNull.field('datesUnavailable', { type: list('String') });
     t.nonNull.field('reviewsCount', {
       type: 'Int',
       resolve: async (parent, _args, context: Context) => {

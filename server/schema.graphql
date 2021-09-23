@@ -41,7 +41,7 @@ type Listing {
   basicAmenities: [String]!
   city: String!
   cleaningFee: Int!
-  datesUnavailable: JSONObject!
+  datesUnavailable: [String]!
   healthAndSafety: [String]!
   highlights: [String]!
   host: Host
