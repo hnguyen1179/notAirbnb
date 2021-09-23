@@ -13,8 +13,20 @@ const InspirationPanel = ({ locations, panel }: Props) => {
 				const defined = url ? "defined" : "";
 
 				return (
-					<div key={idx} className={`InspirationPanel__item ${defined}`}>
-						<a href={url || ""}>
+					<div
+						key={idx}
+						className={`InspirationPanel__item ${defined}`}
+					>
+						<a
+							href={
+								url
+									? `/search?region=${city.replaceAll(
+											" ",
+											"+"
+									  )}&page=1`
+									: ""
+							}
+						>
 							<div className="InspirationPanel__item__content">
 								<span>{city}</span>
 								<span>{region}</span>

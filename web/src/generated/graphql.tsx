@@ -51,7 +51,7 @@ export type Listing = {
   basicAmenities: Array<Maybe<Scalars['String']>>;
   city: Scalars['String'];
   cleaningFee: Scalars['Int'];
-  datesUnavailable: Scalars['JSONObject'];
+  datesUnavailable: Array<Maybe<Scalars['String']>>;
   healthAndSafety: Array<Maybe<Scalars['String']>>;
   highlights: Array<Maybe<Scalars['String']>>;
   host?: Maybe<Host>;
@@ -152,9 +152,9 @@ export type Query = {
 
 
 export type QueryBasicSearchArgs = {
-  checkIn: Scalars['String'];
-  checkOut: Scalars['String'];
-  guests: Scalars['Int'];
+  checkIn?: Maybe<Scalars['String']>;
+  checkOut?: Maybe<Scalars['String']>;
+  guests?: Maybe<Scalars['Int']>;
   offset: Scalars['Int'];
   region: Scalars['String'];
 };
@@ -281,9 +281,9 @@ export type SignupMutation = { __typename?: 'Mutation', signup?: Maybe<{ __typen
 
 export type BasicSearchQueryVariables = Exact<{
   region: Scalars['String'];
-  guests: Scalars['Int'];
-  checkIn: Scalars['String'];
-  checkOut: Scalars['String'];
+  guests?: Maybe<Scalars['Int']>;
+  checkIn?: Maybe<Scalars['String']>;
+  checkOut?: Maybe<Scalars['String']>;
   offset: Scalars['Int'];
 }>;
 
@@ -422,7 +422,7 @@ export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
 export type SignupMutationResult = Apollo.MutationResult<SignupMutation>;
 export type SignupMutationOptions = Apollo.BaseMutationOptions<SignupMutation, SignupMutationVariables>;
 export const BasicSearchDocument = gql`
-    query basicSearch($region: String!, $guests: Int!, $checkIn: String!, $checkOut: String!, $offset: Int!) {
+    query basicSearch($region: String!, $guests: Int, $checkIn: String, $checkOut: String, $offset: Int!) {
   basicSearch(
     region: $region
     guests: $guests

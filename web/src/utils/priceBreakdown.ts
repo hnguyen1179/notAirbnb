@@ -1,5 +1,6 @@
 import { formatDistance } from "date-fns";
 import { Reservation } from "../generated/graphql";
+import { numberWithCommas } from "./numberWithCommas";
 
 const occupancyTaxRate: { [region: string]: number } = {
 	"San Diego": 0.105,
@@ -30,9 +31,11 @@ const calculateTotalRes = (reservation: Reservation) => {
 	const serviceFee = (price + cleaningFee + occupancyTax) * 0.12;
 
 	return {
-		totalPrice: (price + cleaningFee + occupancyTax + serviceFee).toFixed(
-			2
-		),
+		totalPrice:
+			"$" +
+			numberWithCommas(
+				(price + cleaningFee + occupancyTax + serviceFee).toFixed(2)
+			),
 		totalNights: numNights,
 		price,
 		cleaningFee,
@@ -68,9 +71,11 @@ const calculateTotalArgs = ({
 	const serviceFee = (price + cleaningFee + occupancyTax) * 0.12;
 
 	return {
-		totalPrice: (price + cleaningFee + occupancyTax + serviceFee).toFixed(
-			0
-		),
+		totalPrice:
+			"$" +
+			numberWithCommas(
+				(price + cleaningFee + occupancyTax + serviceFee).toFixed(0)
+			),
 		totalNights: numNights,
 		price,
 		cleaningFee,

@@ -3,9 +3,9 @@ import { gql } from "@apollo/client";
 const BASIC_SEARCH = gql`
 	query basicSearch(
 		$region: String!
-		$guests: Int!
-		$checkIn: String!
-		$checkOut: String!
+		$guests: Int
+		$checkIn: String
+		$checkOut: String
 		$offset: Int!
 	) {
 		basicSearch(

@@ -1,4 +1,4 @@
-import { useContext, useEffect, MouseEvent } from "react";
+import { useContext, useState, useEffect, MouseEvent } from "react";
 import { History } from "history";
 import { useBasicSearchQuery } from "../generated/graphql";
 import { AppContext } from "../context/AppContext";
@@ -16,12 +16,11 @@ interface Props {
 
 const SearchPage = ({ history }: Props) => {
 	const searchParams = new URLSearchParams(history.location.search);
-
+	const isRegionSearch = !history.location.search.includes("guests");
 	const { cloudinary, mobile } = useContext(AppContext);
-	// const [currentPage, setCurrentPage] = useState(
-	// 	parseInt(searchParams.get("page") as string) || 1
-	// );
+	const [ isLoading, setIsLoading ] = useState(false);
 
+	console.log("guests: ", searchParams.get("guests"));
 	// const region = parsed.region as string;
 	// const checkIn = new Date(parsed["check-in"] as string);
 	// const checkOut = new Date(parsed["check-out"] as string);
@@ -31,6 +30,8 @@ const SearchPage = ({ history }: Props) => {
 	const guests = parseInt(searchParams.get("guests") as string);
 	const checkIn = searchParams.get("check-in") as string;
 	const checkOut = searchParams.get("check-out") as string;
+
+	console.log(region, guests, checkIn, checkOut);
 
 	const { loading, error, data, fetchMore } = useBasicSearchQuery({
 		variables: {
@@ -45,7 +46,7 @@ const SearchPage = ({ history }: Props) => {
 	useEffect(() => {
 		// Any time the url params change, it'll fetch a new dataset
 		const currentPage = parseInt(searchParams.get("page") as string);
-
+		setIsLoading(true);
 		fetchMore({
 			variables: {
 				region,
@@ -55,6 +56,7 @@ const SearchPage = ({ history }: Props) => {
 				offset: (currentPage - 1) * 10,
 			},
 		});
+		setIsLoading(false);
 	}, [searchParams]);
 
 	if (error) {
@@ -62,7 +64,7 @@ const SearchPage = ({ history }: Props) => {
 		return <>uh oh</>;
 	}
 
-	if (loading)
+	if (loading || isLoading)
 		return (
 			<div className="page-loading">
 				<Loading />
@@ -88,10 +90,12 @@ const SearchPage = ({ history }: Props) => {
 	const handleEditSearch = () => {};
 	const handleEditFilter = () => {};
 
-	const searchDetails = `${format(new Date(checkIn), "MMM d")} –
+	const searchDetails = isRegionSearch
+		? "Add dates"
+		: `${format(new Date(checkIn), "MMM d")} –
 								${format(new Date(checkOut), "MMM d")}${
-		format(new Date(checkOut), "yyyy") === "2022" ? ", 2022 " : " "
-	}· ${guests} guest${guests === 1 ? "" : "s"}`;
+				format(new Date(checkOut), "yyyy") === "2022" ? ", 2022 " : " "
+		  }· ${guests} guest${guests === 1 ? "" : "s"}`;
 
 	const renderRegion = () => {
 		if (region === "Anywhere") {
@@ -115,7 +119,8 @@ const SearchPage = ({ history }: Props) => {
 			<div className="SearchPage-container">
 				<div className="SearchPage__results-details">
 					<span>
-						{data?.basicSearch?.count} stays · {searchDetails}
+						{data?.basicSearch?.count} stays{" "}
+						{isRegionSearch ? "" : `· ${searchDetails}`}
 					</span>
 					<h1>Stays {renderRegion()}</h1>
 				</div>
@@ -144,8 +149,8 @@ const SearchPage = ({ history }: Props) => {
 										key={listing.id}
 										cloudinary={cloudinary}
 										listing={listing}
-										checkIn={new Date(checkIn)}
-										checkOut={new Date(checkOut)}
+										checkIn={new Date(checkIn as string)}
+										checkOut={new Date(checkOut as string)}
 									/>
 								);
 							})

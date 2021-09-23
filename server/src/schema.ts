@@ -183,21 +183,71 @@ const Query = objectType({
       type: BasicSearchResults,
       args: {
         region: nonNull(stringArg()),
-        guests: nonNull(intArg()),
-        checkIn: nonNull(stringArg()),
-        checkOut: nonNull(stringArg()),
+        guests: intArg(),
+        checkIn: stringArg(),
+        checkOut: stringArg(),
         offset: nonNull(intArg()),
       },
       resolve: async (_parent, args, context: Context) => {
-        let listings: Listing[];
-        let count: number;
-        console.log(' in here ');
+        const renderOptions = ({ isCount }: { isCount: boolean }) => {
+          let options: any;
+
+          if (/anywhere/i.test(args.region)) {
+            options = {
+              skip: isCount ? 0 : args.offset,
+              take: isCount ? 100 : 10,
+              where: {
+                numGuests: {
+                  gte: args.guests ? args.guests : 0,
+                },
+                NOT: {
+                  datesUnavailable: {
+                    hasSome: args.checkIn ? daysRequested : [],
+                  },
+                },
+              },
+            };
+          } else {
+            options = {
+              skip: isCount ? 0 : args.offset,
+              take: isCount ? 100 : 10,
+              where: {
+                region: args.region,
+                numGuests: {
+                  gte: args.guests ? args.guests : 0,
+                },
+                NOT: {
+                  datesUnavailable: {
+                    hasSome: args.checkIn ? daysRequested : [],
+                  },
+                },
+              },
+            };
+          }
+
+          return options;
+        };
+
+        if (!args.guests && !args.checkIn && !args.checkOut) {
+          const regionListings = await context.prisma.listing.findMany(
+            renderOptions({ isCount: false }),
+          );
+          const regionCount = await context.prisma.listing.count(
+            renderOptions({ isCount: true }),
+          );
+
+          return {
+            count: regionCount,
+            listings: regionListings,
+            offset: args.offset,
+          };
+        }
+
         const daysRequested: string[] = [];
-        const checkIn = new Date(args.checkIn);
-        const checkOut = new Date(args.checkOut);
+        const checkIn = new Date(args.checkIn as string);
+        const checkOut = new Date(args.checkOut as string);
 
         const distance = differenceInDays(checkIn, checkOut) * -1;
-        console.log(differenceInDays(checkIn, checkOut) * -1);
 
         for (let i = 0; i < distance; i++) {
           daysRequested.push(format(addDays(checkIn, i), 'M/d/yyyy'));
@@ -207,65 +257,13 @@ const Query = objectType({
 
         const allListings = await context.prisma.listing.findMany();
 
-        if (args.region !== 'Anywhere') {
-          listings = await context.prisma.listing.findMany({
-            skip: args.offset,
-            take: 10,
-            where: {
-              region: args.region,
-              numGuests: {
-                gte: args.guests,
-              },
-              NOT: {
-                datesUnavailable: {
-                  hasSome: daysRequested,
-                },
-              },
-            },
-          });
+        const listings = await context.prisma.listing.findMany(
+          renderOptions({ isCount: false }),
+        );
 
-          count = await context.prisma.listing.count({
-            where: {
-              region: args.region,
-              numGuests: {
-                gte: args.guests,
-              },
-              NOT: {
-                datesUnavailable: {
-                  hasSome: daysRequested,
-                },
-              },
-            },
-          });
-        } else {
-          listings = await context.prisma.listing.findMany({
-            skip: args.offset,
-            take: 10,
-            where: {
-              numGuests: {
-                gte: args.guests,
-              },
-              NOT: {
-                datesUnavailable: {
-                  hasSome: daysRequested,
-                },
-              },
-            },
-          });
-
-          count = await context.prisma.listing.count({
-            where: {
-              numGuests: {
-                gte: args.guests,
-              },
-              NOT: {
-                datesUnavailable: {
-                  hasSome: daysRequested,
-                },
-              },
-            },
-          });
-        }
+        const count = await context.prisma.listing.count(
+          renderOptions({ isCount: true }),
+        );
 
         const filtered = allListings.filter((listing) => {
           return listing.datesUnavailable.every((date) => {
@@ -278,7 +276,15 @@ const Query = objectType({
           filtered.map((x) => x.title),
         );
 
-        console.log('LISTINGS: ', listings);
+        console.log(
+          'LISTINGS: ',
+          listings.map((x) =>
+            x.datesUnavailable.sort(
+              (a, b) => new Date(a).valueOf() - new Date(b).valueOf(),
+            ),
+          ),
+        );
+
         return { count, listings, offset: args.offset };
       },
     });

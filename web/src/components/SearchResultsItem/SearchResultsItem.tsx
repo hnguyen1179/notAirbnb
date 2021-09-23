@@ -3,6 +3,7 @@ import { AdvancedImage, placeholder, lazyload } from "@cloudinary/react";
 import { ReactComponent as StarSvg } from "../../assets/icons/filled-star.svg";
 import React from "react";
 import { calculateTotalArgs } from "../../utils/priceBreakdown";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 
 interface PartialListing {
 	__typename?: "Listing" | undefined;
@@ -68,21 +69,19 @@ const SearchResultsItem = ({
 						<span>{listing.title}</span>
 					</div>
 					<div className="price">
-						<span>${listing.price}</span>
+						<span>${numberWithCommas(listing.price)}</span>
 						<span> / </span>
 						<span>night</span>
 						<div className="total-price">
-							$
-							{
-								calculateTotalArgs({
-									checkIn,
-									checkOut,
-									pricePerNight: listing.price,
-									cleaningFee: listing.cleaningFee,
-									region: listing.region,
-								}).totalPrice
-							}{" "}
-							total
+							{checkIn < new Date()
+								? ""
+								: calculateTotalArgs({
+										checkIn,
+										checkOut,
+										pricePerNight: listing.price,
+										cleaningFee: listing.cleaningFee,
+										region: listing.region,
+								  }).totalPrice + " total"}
 						</div>
 					</div>
 				</div>
