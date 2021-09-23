@@ -6,7 +6,7 @@ const BASIC_SEARCH = gql`
 		$guests: Int!
 		$checkIn: String!
 		$checkOut: String!
-		$offset: Int
+		$offset: Int!
 	) {
 		basicSearch(
 			region: $region
@@ -28,6 +28,7 @@ const BASIC_SEARCH = gql`
 				averageScore
 				reviewsCount
 			}
+			offset
 		}
 	}
 `;

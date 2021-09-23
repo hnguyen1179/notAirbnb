@@ -158,7 +158,7 @@ const HostPage = ({ id, routeProps }: Props) => {
 		description: description as string,
 		listings: listings as Listing[],
 	};
-	console.log(data);
+	
 	return (
 		<Profile
 			typeProps={typeProps}

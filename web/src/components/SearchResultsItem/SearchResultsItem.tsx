@@ -1,5 +1,5 @@
 import { Cloudinary } from "@cloudinary/base";
-import { AdvancedImage } from "@cloudinary/react";
+import { AdvancedImage, placeholder, lazyload } from "@cloudinary/react";
 import { ReactComponent as StarSvg } from "../../assets/icons/filled-star.svg";
 import React from "react";
 import { calculateTotalArgs } from "../../utils/priceBreakdown";
@@ -44,7 +44,10 @@ const SearchResultsItem = ({
 							<span>superhost</span>
 						</div>
 					)}
-					<AdvancedImage cldImg={cloudinary.image(url)} />
+					<AdvancedImage
+						cldImg={cloudinary.image(url)}
+						plugins={[placeholder("predominant-color"), lazyload()]}
+					/>
 				</div>
 				<div className="SearchResultsItem__details">
 					<div className="score">

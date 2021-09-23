@@ -17,7 +17,7 @@ import {
 import { DateTimeResolver, JSONObjectResolver } from 'graphql-scalars';
 import objectHash from 'object-hash';
 import { Context } from './context';
-import { Listing } from '.prisma/client';
+import { Listing, Prisma } from '.prisma/client';
 import { addDays, format, formatDistance } from 'date-fns';
 
 export const dateTimeScalar = asNexusMethod(DateTimeResolver, 'date');
@@ -186,36 +186,10 @@ const Query = objectType({
         guests: nonNull(intArg()),
         checkIn: nonNull(stringArg()),
         checkOut: nonNull(stringArg()),
+        offset: nonNull(intArg()),
       },
       resolve: async (_parent, args, context: Context) => {
-        let listings;
-        console.log(args);
-
-        // TODO: clean up formatting...
-        // MobileSearchForm should only grab the most basic information
-        // All the data formatting should take place in the back end,
-        // including establashing the daysRequested array. Reason being is that the
-        // front end rerenders and reruns code a lot and so it's better to offload
-        // computation to the back end
-
-        // Scrapping filtering everything via prisma, can't detect a key's
-        // existence, therefore unable to filter by days requested.
-        // equals: undefined does not work. Maybe if I got this working?
-        // Not sure if it even returns a value for undefined keys or it
-        // can't check a key's existence?
-
-        // const daysRequestedOptions = () => {
-        //   const output = [];
-        //   for (let i = 0; i < args.daysRequested.length; i++) {
-        //     output.push({
-        //       datesUnavailable: {
-        //         path: [args.daysRequested[i]],
-        //         equals: undefined,
-        //       },
-        //     });
-        //   }
-        //   return output;
-        // };
+        let listings: Listing[];
 
         const daysRequested: string[] = [];
         const checkIn = new Date(args.checkIn);
@@ -229,59 +203,32 @@ const Query = objectType({
           daysRequested.push(format(addDays(checkIn, i), 'M-d-yyyy'));
         }
 
-        if (args.region !== 'anywhere') {
+        if (args.region !== 'Anywhere') {
           listings = await context.prisma.listing.findMany({
             where: {
               region: args.region,
               numGuests: {
                 gte: args.guests,
               },
-              // AND: daysRequestedOptions(),
-            },
-            orderBy: {
-              reviewsCount: 'desc',
             },
           });
-
-          // count = await context.prisma.listing.count({
-          //   where: {
-          //     region: args.region,
-          //     numGuests: {
-          //       gte: args.numGuests,
-          //     },
-          //     // AND: daysRequestedOptions(),
-          //   },
-          // });
         } else {
           listings = await context.prisma.listing.findMany({
             where: {
               numGuests: {
                 gte: args.guests,
               },
-              // AND: daysRequestedOptions(),
-            },
-            orderBy: {
-              reviewsCount: 'desc',
             },
           });
-
-          // count = await context.prisma.listing.count({
-          //   where: {
-          //     numGuests: {
-          //       gte: args.numGuests,
-          //     },
-          //     // AND: daysRequestedOptions(),
-          //   },
-          // });
         }
 
-        if (!listings || listings.length === 0)
-          return { count: 0, listings: [] };
-
+        console.log('before: ', listings.length);
+        console.log(daysRequested);
         if (daysRequested.length != 0) {
           listings = listings.filter((listing) => {
-            if (!listing.datesUnavailable || !listing) return false;
             const datesUnavailable = listing.datesUnavailable;
+
+            if (!datesUnavailable) return false;
 
             return daysRequested.every((day) => {
               return !datesUnavailable.hasOwnProperty(day);
@@ -289,7 +236,9 @@ const Query = objectType({
           });
         }
 
-        return { count: listings.length, listings };
+        console.log('after: ', listings.length);
+
+        return { count: listings.length, listings, offset: args.offset };
       },
     });
 
@@ -833,6 +782,7 @@ const BasicSearchResults = objectType({
     t.nonNull.field('listings', {
       type: nonNull(list('Listing')),
     });
+    t.nonNull.int('offset');
   },
 });
 

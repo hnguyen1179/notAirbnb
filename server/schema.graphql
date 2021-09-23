@@ -10,6 +10,7 @@ type AuthPayload {
 type BasicSearchResults {
   count: Int!
   listings: [Listing]!
+  offset: Int!
 }
 
 """
@@ -86,7 +87,7 @@ type Mutation {
 
 type Query {
   allListings: [Listing!]!
-  basicSearch(checkIn: String!, checkOut: String!, guests: Int!, region: String!): BasicSearchResults
+  basicSearch(checkIn: String!, checkOut: String!, guests: Int!, offset: Int!, region: String!): BasicSearchResults
   hostById(id: String!): Host
   listingById(id: String!): Listing
   listingsByRegion(region: String!): [Listing!]!

@@ -95,6 +95,19 @@ function App() {
 								},
 							},
 							basicSearch: {
+								read(existing) {
+									if (!existing) return undefined;
+									// {args} wasn't returning correct offset field, and so just
+									// returned the correct offset within query results
+									return {
+										count: existing.count,
+										listings: existing.listings.slice(
+											existing.offset,
+											existing.offset + 10
+										),
+										offset: existing.offset,
+									};
+								},
 								keyArgs: false,
 								merge(
 									existing = { count: 0, listings: [] },
@@ -117,6 +130,7 @@ function App() {
 									return {
 										count: incoming.count,
 										listings: mergedListings,
+										offset: incoming.offset,
 									};
 								},
 							},

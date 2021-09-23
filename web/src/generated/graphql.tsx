@@ -28,6 +28,7 @@ export type BasicSearchResults = {
   __typename?: 'BasicSearchResults';
   count: Scalars['Int'];
   listings: Array<Maybe<Listing>>;
+  offset: Scalars['Int'];
 };
 
 export type Host = {
@@ -154,7 +155,7 @@ export type QueryBasicSearchArgs = {
   checkIn: Scalars['String'];
   checkOut: Scalars['String'];
   guests: Scalars['Int'];
-  offset?: Maybe<Scalars['Int']>;
+  offset: Scalars['Int'];
   region: Scalars['String'];
 };
 
@@ -283,11 +284,11 @@ export type BasicSearchQueryVariables = Exact<{
   guests: Scalars['Int'];
   checkIn: Scalars['String'];
   checkOut: Scalars['String'];
-  offset?: Maybe<Scalars['Int']>;
+  offset: Scalars['Int'];
 }>;
 
 
-export type BasicSearchQuery = { __typename?: 'Query', basicSearch?: Maybe<{ __typename?: 'BasicSearchResults', count: number, listings: Array<Maybe<{ __typename?: 'Listing', id: string, title: string, listingType: string, city: string, region: string, cleaningFee: number, price: number, superhost: boolean, averageScore: number, reviewsCount: number }>> }> };
+export type BasicSearchQuery = { __typename?: 'Query', basicSearch?: Maybe<{ __typename?: 'BasicSearchResults', count: number, offset: number, listings: Array<Maybe<{ __typename?: 'Listing', id: string, title: string, listingType: string, city: string, region: string, cleaningFee: number, price: number, superhost: boolean, averageScore: number, reviewsCount: number }>> }> };
 
 export type HostByIdQueryVariables = Exact<{
   id: Scalars['String'];
@@ -421,7 +422,7 @@ export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
 export type SignupMutationResult = Apollo.MutationResult<SignupMutation>;
 export type SignupMutationOptions = Apollo.BaseMutationOptions<SignupMutation, SignupMutationVariables>;
 export const BasicSearchDocument = gql`
-    query basicSearch($region: String!, $guests: Int!, $checkIn: String!, $checkOut: String!, $offset: Int) {
+    query basicSearch($region: String!, $guests: Int!, $checkIn: String!, $checkOut: String!, $offset: Int!) {
   basicSearch(
     region: $region
     guests: $guests
@@ -442,6 +443,7 @@ export const BasicSearchDocument = gql`
       averageScore
       reviewsCount
     }
+    offset
   }
 }
     `;

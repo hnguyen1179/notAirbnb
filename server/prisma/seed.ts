@@ -279,5 +279,3 @@ import { PrismaClient, Prisma } from '@prisma/client';
 //   .finally(async () => {
 //     await prisma.$disconnect();
 //   });
-
-console.log('hi');

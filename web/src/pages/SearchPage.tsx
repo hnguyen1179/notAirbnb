@@ -1,9 +1,7 @@
-import { useContext, useState, MouseEvent } from "react";
+import { useContext, useEffect, MouseEvent } from "react";
 import { History } from "history";
 import { useBasicSearchQuery } from "../generated/graphql";
 import { AppContext } from "../context/AppContext";
-import { ISearchPayload } from "../components/MobileNavbar/MobileSearchForm";
-import { parse } from "query-string";
 import SearchPageTopBar from "../components/SearchPageTopBar/SearchPageTopBar";
 import Loading from "../components/Loading";
 import { format } from "date-fns";
@@ -17,25 +15,47 @@ interface Props {
 }
 
 const SearchPage = ({ history }: Props) => {
+	const searchParams = new URLSearchParams(history.location.search);
+
 	const { cloudinary, mobile } = useContext(AppContext);
-	const [currentPage, setCurrentPage] = useState(1);
+	// const [currentPage, setCurrentPage] = useState(
+	// 	parseInt(searchParams.get("page") as string) || 1
+	// );
 
-	const parsed = parse(history.location.search);
-	const region = parsed.region as string;
-	const checkIn = new Date(parsed["check-in"] as string);
-	const checkOut = new Date(parsed["check-out"] as string);
-	const numGuests = parseInt(parsed.guests as string);
+	// const region = parsed.region as string;
+	// const checkIn = new Date(parsed["check-in"] as string);
+	// const checkOut = new Date(parsed["check-out"] as string);
+	// const numGuests = parseInt(parsed.guests as string);
 
-	// const payload = history.location.state.searchPayload as ISearchPayload;
+	const region = searchParams.get("region") as string;
+	const guests = parseInt(searchParams.get("guests") as string);
+	const checkIn = searchParams.get("check-in") as string;
+	const checkOut = searchParams.get("check-out") as string;
 
 	const { loading, error, data, fetchMore } = useBasicSearchQuery({
 		variables: {
-			region: parsed.region as string,
-			guests: parseInt(parsed.guests as string),
-			checkIn: parsed["check-in"] as string,
-			checkOut: parsed["check-out"] as string,
+			region,
+			guests,
+			checkIn,
+			checkOut,
+			offset: (parseInt(searchParams.get("page") as string) - 1) * 10,
 		},
 	});
+
+	useEffect(() => {
+		// Any time the url params change, it'll fetch a new dataset
+		const currentPage = parseInt(searchParams.get("page") as string);
+
+		fetchMore({
+			variables: {
+				region,
+				guests,
+				checkIn,
+				checkOut,
+				offset: (currentPage - 1) * 10,
+			},
+		});
+	}, [searchParams]);
 
 	if (error) {
 		console.log(JSON.stringify(error, null, 2));
@@ -55,27 +75,23 @@ const SearchPage = ({ history }: Props) => {
 
 	const handlePageClick = async (e: MouseEvent<HTMLLIElement>) => {
 		const nextPage = parseInt(e?.currentTarget?.innerText);
-		setCurrentPage(nextPage);
+		const nextSearch = new URLSearchParams(history.location.search);
+		window.scrollTo({ top: 0 });
+		nextSearch.set("page", nextPage.toString());
 
-		console.log(" clicking next page ");
-		console.log("new offset: ", (nextPage - 1) * 10);
-		await fetchMore({
-			variables: {
-				offset: (nextPage - 1) * 10,
-			},
+		history.push({
+			pathname: history.location.pathname,
+			search: nextSearch.toString(),
 		});
-
-		// pagination should push to the router history, thereby allowing you
-		// to navigate with browser back and forward buttons
-
-		// https://stackoverflow.com/questions/57463578/how-to-use-the-history-to-update-the-pagination-bar-with-react-router
 	};
 
 	const handleEditSearch = () => {};
 	const handleEditFilter = () => {};
 
-	const searchDetails = `${format(checkIn, "MMM d")} –
-								${format(checkOut, "MMM d")} · ${numGuests} guest${numGuests === 1 ? "" : "s"}`;
+	const searchDetails = `${format(new Date(checkIn), "MMM d")} –
+								${format(new Date(checkOut), "MMM d")} · ${guests} guest${
+		guests === 1 ? "" : "s"
+	}`;
 
 	const renderRegion = () => {
 		if (region === "Anywhere") {
@@ -121,31 +137,29 @@ const SearchPage = ({ history }: Props) => {
 								<div className="divider" />
 							</div>
 						) : (
-							data?.basicSearch?.listings
-								.map((listing) => {
-									if (!listing) return "";
-									return (
-										<SearchResultsItem
-											key={listing.id}
-											cloudinary={cloudinary}
-											listing={listing}
-											checkIn={checkIn}
-											checkOut={checkOut}
-										/>
-									);
-								})
-								?.slice(
-									(currentPage - 1) * 10,
-									((currentPage - 1) * 10) + 10
-								)
-								// This slice essentially acts as your 'read' within typePolicies 
+							data?.basicSearch?.listings.map((listing) => {
+								if (!listing) return "";
+								return (
+									<SearchResultsItem
+										key={listing.id}
+										cloudinary={cloudinary}
+										listing={listing}
+										checkIn={new Date(checkIn)}
+										checkOut={new Date(checkOut)}
+									/>
+								);
+							})
+							// This slice essentially acts as your 'read' within typePolicies
 						)}
 					</ul>
 
 					{(data?.basicSearch?.count || 0) > 10 && (
 						<SearchResultsPagination
 							count={data?.basicSearch?.count || 0}
-							currentPage={currentPage}
+							currentPage={
+								parseInt(searchParams.get("page") as string) ||
+								1
+							}
 							handlePageClick={handlePageClick}
 						/>
 					)}

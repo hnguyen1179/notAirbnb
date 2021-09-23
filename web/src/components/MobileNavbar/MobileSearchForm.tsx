@@ -11,7 +11,6 @@ import { ReactComponent as SearchSvg } from "../../assets/icons/search.svg";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { RouteComponentProps, withRouter } from "react-router";
-import { stringifyUrl } from "query-string";
 import { History } from "history";
 interface Props extends RouteComponentProps {
 	handleFormClose: (e: React.SyntheticEvent) => void;
@@ -59,18 +58,19 @@ const MobileSearchForm = ({ handleFormClose, history }: Props) => {
 			? format(addDays(dates.endDate, 1), "M-d-yyyy")
 			: format(dates.endDate, "M-d-yyyy");
 
-		const url = stringifyUrl({
-			url: "/search",
-			query: {
-				region: location.split(", ")[0],
-				"check-in": checkIn,
-				"check-out": checkOut,
-				guests: guests,
-			},
+		const search = new URLSearchParams({
+			region: location.split(", ")[0],
+			"check-in": checkIn,
+			"check-out": checkOut,
+			guests: guests.toString(),
+			page: "1",
 		});
 
 		document.body.style.overflow = "initial";
-		history.push(url);
+		history.push({
+			pathname: '/search',
+			search: search.toString()
+		});
 	};
 
 	const renderNumGuests = () => {
