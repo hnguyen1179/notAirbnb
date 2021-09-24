@@ -61,7 +61,9 @@ const SearchPageTopBar = ({
 							className="button button--edit-search"
 							onClick={handleOpenEdit}
 						>
-							<div className="region">{region}</div>
+							<div className="region">
+								{region ? region : "Nearby"}
+							</div>
 							<div className="date">{searchDetails}</div>
 						</button>
 						<div className="pipe-divider">|</div>
@@ -84,7 +86,9 @@ const SearchPageTopBar = ({
 									<button className="lower__region">
 										<div className="item">
 											<SearchSvg />
-											<span>{region}</span>
+											<span>
+												{region ? region : "Nearby"}
+											</span>
 										</div>
 									</button>
 									<div className="lower__date-guests">

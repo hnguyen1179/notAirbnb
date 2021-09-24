@@ -16,150 +16,6 @@
 		margin-right: 1rem;
 	}
 
-	&__top-bar {
-		z-index: 10;
-		background-color: white;
-		position: fixed;
-		height: 6.4rem;
-		width: 100%;
-		border-bottom: 1px solid $muted-line-color;
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 0.5rem 2rem;
-
-		&__edit-menu {
-			display: none;
-			position: absolute;
-			height: 18rem;
-			background-color: white;
-			top: 0;
-			left: 0;
-			width: 100%;
-			border-bottom: 1px solid $outline-color;
-			z-index: 5;
-
-			&[aria-hidden="false"] {
-				display: block;
-			}
-
-			.item {
-				display: flex;
-				> span {
-					font-size: 1.4rem;
-				}
-
-				> svg {
-					position: relative;
-					top: -0.2rem;
-					height: 2rem !important;
-					width: 2rem !important;
-					margin: 0 1rem;
-				}
-			}
-
-			& > .upper {
-				height: 6.4rem;
-				display: grid;
-				place-items: center;
-
-				> h2 {
-					font-size: 1.6rem;
-					font-weight: 300;
-				}
-			}
-
-			& > .lower {
-				height: calc(100% - 6.4rem);
-				padding: 2.4rem;
-				padding-top: 0;
-
-				& > div {
-					overflow: hidden;
-					border-radius: 1.2rem;
-					height: 100%;
-
-					@include hover;
-				}
-				.lower__region {
-					width: 100%;
-					height: 50%;
-					border-bottom: 0.1rem solid $outline-color;
-					display: flex;
-					align-items: center;
-				}
-
-				.lower__date-guests {
-					display: flex;
-					height: 50%;
-
-					> button {
-						height: 100%;
-						width: 50%;
-						display: flex;
-						align-items: center;
-					}
-
-					> .date {
-						border-right: 0.1rem solid $outline-color;
-					}
-				}
-			}
-		}
-
-		& > .button {
-			&--back {
-				z-index: 6;
-				display: relative;
-
-				> #close {
-					height: 1.2rem !important;
-					width: 1.2rem !important;
-					margin: 0.2rem;
-					stroke: black !important;
-					stroke-width: 3 !important;
-				}
-
-				svg > g {
-					stroke: black !important;
-					stroke-width: 4 !important;
-				}
-
-				@include buttonSvgOutline;
-			}
-
-			&--edit-search {
-				display: flex;
-				width: 100%;
-				height: 100%;
-				justify-content: space-between;
-				align-items: center;
-
-				.region {
-					margin-left: 1rem;
-					font-size: 1.4rem;
-					text-decoration: underline;
-				}
-
-				.date {
-					margin-right: 1rem;
-					font-size: 1.4rem;
-					color: $muted-text-color;
-				}
-			}
-
-			&--edit-filter {
-				z-index: 6;
-				display: relative;
-				@include buttonSvgOutline;
-			}
-		}
-
-		&--filler {
-			height: 6.4rem;
-		}
-	}
-
 	&__results-details {
 		> span {
 			color: $muted-text-color;
@@ -234,6 +90,157 @@
 
 	#search-svg > svg > g {
 		color: $main-color !important;
+	}
+}
+
+.SearchPage__top-bar {
+	z-index: 10;
+	background-color: white;
+	position: fixed;
+	height: 6.4rem;
+	width: 100%;
+	border-bottom: 1px solid $muted-line-color;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0.5rem 2rem;
+
+	&__edit-menu {
+		display: none;
+		position: absolute;
+		height: 18rem;
+		background-color: white;
+		top: 0;
+		left: 0;
+		width: 100%;
+		border-bottom: 1px solid $outline-color;
+		z-index: 5;
+
+		&[aria-hidden="false"] {
+			display: block;
+		}
+
+		button:hover {
+			> div span {
+				color: black;
+			}
+		}
+
+		.item {
+			display: flex;
+			> span {
+				font-size: 1.4rem;
+				color: $muted-text-color;
+			}
+
+			> svg {
+				position: relative;
+				top: -0.2rem;
+				height: 2rem !important;
+				width: 2rem !important;
+				margin: 0 1rem;
+			}
+		}
+
+		& > .upper {
+			height: 6.4rem;
+			display: grid;
+			place-items: center;
+
+			> h2 {
+				font-size: 1.6rem;
+				font-weight: 300;
+			}
+		}
+
+		& > .lower {
+			height: calc(100% - 6.4rem);
+			padding: 2.4rem;
+			padding-top: 0;
+
+			& > div {
+				overflow: hidden;
+				border-radius: 1.2rem;
+				height: 100%;
+
+				@include hover;
+			}
+			.lower__region {
+				width: 100%;
+				height: 50%;
+				border-bottom: 0.1rem solid $outline-color;
+				display: flex;
+				align-items: center;
+			}
+
+			.lower__date-guests {
+				display: flex;
+				height: 50%;
+
+				> button {
+					height: 100%;
+					width: 50%;
+					display: flex;
+					align-items: center;
+				}
+
+				> .date {
+					border-right: 0.1rem solid $outline-color;
+				}
+			}
+		}
+	}
+
+	& > .button {
+		&--back {
+			z-index: 6;
+			display: relative;
+
+			> #close {
+				height: 1.2rem !important;
+				width: 1.2rem !important;
+				margin: 0.2rem;
+				stroke: black !important;
+				stroke-width: 3 !important;
+			}
+
+			svg > g {
+				stroke: black !important;
+				stroke-width: 4 !important;
+			}
+
+			@include buttonSvgOutline;
+		}
+
+		&--edit-search {
+			display: flex;
+			width: 100%;
+			height: 100%;
+			justify-content: space-between;
+			align-items: center;
+
+			.region {
+				margin-left: 1rem;
+				font-size: 1.4rem;
+				text-decoration: underline;
+			}
+
+			.date {
+				margin-right: 1rem;
+				font-size: 1.4rem;
+				color: $muted-text-color;
+			}
+		}
+
+		&--edit-filter {
+			z-index: 6;
+			display: relative;
+			@include buttonSvgOutline;
+		}
+	}
+
+	&--filler {
+		height: 6.4rem;
 	}
 }
 
