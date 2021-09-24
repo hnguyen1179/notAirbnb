@@ -133,14 +133,7 @@
 	border-radius: 1.2rem;
 	overflow: hidden;
 	margin: 4rem 0;
-	box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px;
-	transition: box-shadow 200ms;
-
-	&:hover,
-	&:focus-within {
-		transition: box-shadow 200ms;
-		box-shadow: 0 6px 16px rgba(0, 0, 0, 0.38);
-	}
+	@include hover;
 
 	&:first-child {
 		margin-top: 0;

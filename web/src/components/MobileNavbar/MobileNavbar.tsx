@@ -43,7 +43,10 @@ const MobileNavbar = React.forwardRef<HTMLElement>((props, ref) => {
 					activeClassName="active"
 					exact
 				>
-					<div className="MobileNavbar__links__link__content">
+					<div
+						className="MobileNavbar__links__link__content"
+						id="search-svg"
+					>
 						<SearchSvg />
 						<span>Explore</span>
 					</div>

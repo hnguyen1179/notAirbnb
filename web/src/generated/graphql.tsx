@@ -155,8 +155,14 @@ export type QueryBasicSearchArgs = {
   checkIn?: Maybe<Scalars['String']>;
   checkOut?: Maybe<Scalars['String']>;
   guests?: Maybe<Scalars['Int']>;
+  languages?: Maybe<Array<Scalars['String']>>;
+  listingType?: Maybe<Array<Scalars['String']>>;
   offset: Scalars['Int'];
-  region: Scalars['String'];
+  pets?: Maybe<Scalars['Boolean']>;
+  region?: Maybe<Scalars['String']>;
+  smoking?: Maybe<Scalars['Boolean']>;
+  superhost?: Maybe<Scalars['Boolean']>;
+  tags?: Maybe<Array<Scalars['String']>>;
 };
 
 
@@ -280,11 +286,17 @@ export type SignupMutationVariables = Exact<{
 export type SignupMutation = { __typename?: 'Mutation', signup?: Maybe<{ __typename?: 'AuthPayload', token?: Maybe<string> }> };
 
 export type BasicSearchQueryVariables = Exact<{
-  region: Scalars['String'];
+  region?: Maybe<Scalars['String']>;
   guests?: Maybe<Scalars['Int']>;
   checkIn?: Maybe<Scalars['String']>;
   checkOut?: Maybe<Scalars['String']>;
   offset: Scalars['Int'];
+  tags?: Maybe<Array<Scalars['String']> | Scalars['String']>;
+  languages?: Maybe<Array<Scalars['String']> | Scalars['String']>;
+  listingType?: Maybe<Array<Scalars['String']> | Scalars['String']>;
+  superhost?: Maybe<Scalars['Boolean']>;
+  pets?: Maybe<Scalars['Boolean']>;
+  smoking?: Maybe<Scalars['Boolean']>;
 }>;
 
 
@@ -422,13 +434,19 @@ export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
 export type SignupMutationResult = Apollo.MutationResult<SignupMutation>;
 export type SignupMutationOptions = Apollo.BaseMutationOptions<SignupMutation, SignupMutationVariables>;
 export const BasicSearchDocument = gql`
-    query basicSearch($region: String!, $guests: Int, $checkIn: String, $checkOut: String, $offset: Int!) {
+    query basicSearch($region: String, $guests: Int, $checkIn: String, $checkOut: String, $offset: Int!, $tags: [String!], $languages: [String!], $listingType: [String!], $superhost: Boolean, $pets: Boolean, $smoking: Boolean) {
   basicSearch(
     region: $region
     guests: $guests
     checkIn: $checkIn
     checkOut: $checkOut
     offset: $offset
+    tags: $tags
+    languages: $languages
+    listingType: $listingType
+    superhost: $superhost
+    pets: $pets
+    smoking: $smoking
   ) {
     count
     listings {
@@ -465,6 +483,12 @@ export const BasicSearchDocument = gql`
  *      checkIn: // value for 'checkIn'
  *      checkOut: // value for 'checkOut'
  *      offset: // value for 'offset'
+ *      tags: // value for 'tags'
+ *      languages: // value for 'languages'
+ *      listingType: // value for 'listingType'
+ *      superhost: // value for 'superhost'
+ *      pets: // value for 'pets'
+ *      smoking: // value for 'smoking'
  *   },
  * });
  */

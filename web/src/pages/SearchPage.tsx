@@ -9,6 +9,7 @@ import Footer from "../components/Footer/Footer";
 import MobileNavbar from "../components/MobileNavbar/MobileNavbar";
 import SearchResultsItem from "../components/SearchResultsItem/SearchResultsItem";
 import SearchResultsPagination from "../components/SearchResultsPagination/SearchResultsPagination";
+import ListingTypes from "../components/ListingTypes/ListingTypes";
 
 interface Props {
 	history: History<any>;
@@ -18,20 +19,18 @@ const SearchPage = ({ history }: Props) => {
 	const searchParams = new URLSearchParams(history.location.search);
 	const isRegionSearch = !history.location.search.includes("guests");
 	const { cloudinary, mobile } = useContext(AppContext);
-	const [ isLoading, setIsLoading ] = useState(false);
-
-	console.log("guests: ", searchParams.get("guests"));
-	// const region = parsed.region as string;
-	// const checkIn = new Date(parsed["check-in"] as string);
-	// const checkOut = new Date(parsed["check-out"] as string);
-	// const numGuests = parseInt(parsed.guests as string);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const region = searchParams.get("region") as string;
 	const guests = parseInt(searchParams.get("guests") as string);
 	const checkIn = searchParams.get("check-in") as string;
 	const checkOut = searchParams.get("check-out") as string;
-
-	console.log(region, guests, checkIn, checkOut);
+	const tags = (searchParams.get("tags") as string)?.split(";");
+	const listingType = (searchParams.get("listingType") as string)?.split(";");
+	const languages = (searchParams.get("languages") as string)?.split(";");
+	const smoking = !!searchParams.get("smoking");
+	const pets = !!searchParams.get("pets");
+	const superhost = !!searchParams.get("superhost");
 
 	const { loading, error, data, fetchMore } = useBasicSearchQuery({
 		variables: {
@@ -40,6 +39,12 @@ const SearchPage = ({ history }: Props) => {
 			checkIn,
 			checkOut,
 			offset: (parseInt(searchParams.get("page") as string) - 1) * 10,
+			tags,
+			listingType,
+			languages,
+			smoking,
+			pets,
+			superhost,
 		},
 	});
 
@@ -97,11 +102,25 @@ const SearchPage = ({ history }: Props) => {
 				format(new Date(checkOut), "yyyy") === "2022" ? ", 2022 " : " "
 		  }· ${guests} guest${guests === 1 ? "" : "s"}`;
 
+	const generateCategory = () => {
+		if (listingType?.includes("Entire residential home")) {
+			return "Entire homes";
+		} else if (pets) {
+			return "Pets allowed";
+		} else if (tags?.includes("Summer")) {
+			return "Summer stays";
+		} else if (tags?.includes("Nature")) {
+			return "Nature getaways";
+		}
+	};
+
 	const renderRegion = () => {
-		if (region === "Anywhere") {
-			return "anywhere";
+		if (!region) {
+			return generateCategory();
+		} else if (region === "Anywhere") {
+			return "Stays anywhere";
 		} else {
-			return `in ${region}`;
+			return `Stays in ${region}`;
 		}
 	};
 
@@ -122,7 +141,7 @@ const SearchPage = ({ history }: Props) => {
 						{data?.basicSearch?.count} stays{" "}
 						{isRegionSearch ? "" : `· ${searchDetails}`}
 					</span>
-					<h1>Stays {renderRegion()}</h1>
+					<h1>{renderRegion()}</h1>
 				</div>
 
 				<button className="SearchPage__button-filter">
