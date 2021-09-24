@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, FormEvent } from "react";
 import RadioButton from "./RadioButton";
 import { UseFormReturn } from "react-hook-form";
 
@@ -15,7 +15,7 @@ const LOCATIONS = [
 ];
 
 interface Props {
-	next: () => void;
+	next: (e: FormEvent) => void;
 	form?: UseFormReturn;
 	location?: string;
 	setLocation?: (x: string) => void;
@@ -36,7 +36,7 @@ const LocationSearch = ({ form, location, setLocation, next }: Props) => {
 
 		if (setLocation) setLocation(e.currentTarget.value);
 		if (form) form.setValue("location", e.currentTarget.value);
-		next();
+		next(e);
 	};
 
 	const handleEnter = (e: React.KeyboardEvent) => {

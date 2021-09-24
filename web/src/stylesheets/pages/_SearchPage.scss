@@ -10,14 +10,10 @@
 		margin: 3rem 0;
 	}
 
-	.pipe-divider {
-		color: $muted-line-color;
-		font-size: 1.8rem;
-		margin-right: 1rem;
-	}
-
 	&__results-details {
 		> span {
+			font-weight: 400;
+			font-size: 1.4rem;
 			color: $muted-text-color;
 		}
 		> h1 {
@@ -105,7 +101,7 @@
 	align-items: center;
 	padding: 0.5rem 2rem;
 
-	&__edit-menu {
+	&__edit-dropdown {
 		display: none;
 		position: absolute;
 		height: 18rem;
@@ -194,7 +190,6 @@
 	& > .button {
 		&--back {
 			z-index: 6;
-			display: relative;
 
 			> #close {
 				height: 1.2rem !important;
@@ -220,21 +215,22 @@
 			align-items: center;
 
 			.region {
-				margin-left: 1rem;
+				margin-left: 1.5rem;
 				font-size: 1.4rem;
 				text-decoration: underline;
 			}
 
 			.date {
-				margin-right: 1rem;
+				padding-right: 1.5rem;
+				margin-right: 1.5rem;
 				font-size: 1.4rem;
 				color: $muted-text-color;
+				border-right: 1px solid $disabled-text-color;
 			}
 		}
 
 		&--edit-filter {
 			z-index: 6;
-			display: relative;
 			@include buttonSvgOutline;
 		}
 	}
@@ -341,5 +337,24 @@
 				}
 			}
 		}
+	}
+}
+
+.edit-menu {
+	position: fixed;
+	z-index: 100;
+	background-color: white;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	border-top-left-radius: 32px;
+	border-top-right-radius: 32px;
+	padding: 3rem;
+	overflow-y: auto;
+	display: none;
+
+	&--location[aria-hidden="false"] {
+		display: block;
 	}
 }

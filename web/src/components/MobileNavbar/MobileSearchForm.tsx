@@ -76,24 +76,12 @@ const MobileSearchForm = ({ handleFormClose, history }: Props) => {
 		});
 	};
 
-	const renderNumGuests = () => {
-		let string = " ";
-		if (guests > 0) {
-			string = guests.toString();
-			if (guests > 1) {
-				string += " guests";
-			} else {
-				string += " guest";
-			}
-		}
-		return string;
-	};
-
 	const renderStage = (page: string) => {
 		switch (page) {
 			case "location":
 				return (
 					<MobileEditLocation
+						handleFormClose={handleFormClose}
 						location={location}
 						setLocation={setLocation}
 						setStage={setStage}

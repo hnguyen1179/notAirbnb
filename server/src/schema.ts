@@ -196,6 +196,7 @@ const Query = objectType({
         superhost: booleanArg(),
       },
       resolve: async (_parent, args, context: Context) => {
+        console.log('BASIC SEARCH');
         const renderOptions = ({ isCount }: { isCount: boolean }) => {
           let options: {
             skip: number;
@@ -291,20 +292,16 @@ const Query = objectType({
 
         // Debugging comments
         // const allListings = await context.prisma.listing.findMany();
-
         // const filtered = allListings.filter((listing) => {
         //   return listing.datesUnavailable.every((date) => {
         //     return !daysRequested.includes(date);
         //   });
         // });
-
         // console.log('daysRequested: ', daysRequested);
-
         // console.log(
         //   'left: ',
         //   filtered.map((x) => x.title),
         // );
-
         // console.log(
         //   'LISTINGS: ',
         //   listings.map((x) =>
@@ -313,6 +310,8 @@ const Query = objectType({
         //     ),
         //   ),
         // );
+
+        console.log("Listings Length: ", listings.length);
 
         return { count, listings, offset: args.offset };
       },

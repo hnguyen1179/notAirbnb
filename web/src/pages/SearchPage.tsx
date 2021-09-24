@@ -9,7 +9,6 @@ import Footer from "../components/Footer/Footer";
 import MobileNavbar from "../components/MobileNavbar/MobileNavbar";
 import SearchResultsItem from "../components/SearchResultsItem/SearchResultsItem";
 import SearchResultsPagination from "../components/SearchResultsPagination/SearchResultsPagination";
-import ListingTypes from "../components/ListingTypes/ListingTypes";
 
 interface Props {
 	history: History<any>;
@@ -59,6 +58,12 @@ const SearchPage = ({ history }: Props) => {
 				checkIn,
 				checkOut,
 				offset: (currentPage - 1) * 10,
+				tags,
+				listingType,
+				languages,
+				smoking,
+				pets,
+				superhost,
 			},
 		});
 		setIsLoading(false);
@@ -76,10 +81,6 @@ const SearchPage = ({ history }: Props) => {
 			</div>
 		);
 
-	const handleBack = () => {
-		history.goBack();
-	};
-
 	const handlePageClick = async (e: MouseEvent<HTMLLIElement>) => {
 		const nextPage = parseInt(e?.currentTarget?.innerText);
 		const nextSearch = new URLSearchParams(history.location.search);
@@ -91,9 +92,6 @@ const SearchPage = ({ history }: Props) => {
 			search: nextSearch.toString(),
 		});
 	};
-
-	const handleEditSearch = () => {};
-	const handleEditFilter = () => {};
 
 	const searchDetails = isRegionSearch
 		? "Add dates"
@@ -129,10 +127,11 @@ const SearchPage = ({ history }: Props) => {
 			<SearchPageTopBar
 				mobile={mobile}
 				region={region}
+				guests={guests}
+				checkIn={checkIn}
+				checkOut={checkOut}
 				searchDetails={searchDetails}
-				handleBack={handleBack}
-				handleEditSearch={handleEditSearch}
-				handleEditFilter={handleEditFilter}
+				history={history}
 			/>
 
 			<div className="SearchPage-container">
@@ -168,7 +167,7 @@ const SearchPage = ({ history }: Props) => {
 										key={listing.id}
 										cloudinary={cloudinary}
 										listing={listing}
-										checkIn={new Date(checkIn as string)}
+										checkIn={new Date(checkIn)}
 										checkOut={new Date(checkOut as string)}
 									/>
 								);
