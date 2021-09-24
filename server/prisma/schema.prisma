@@ -82,6 +82,7 @@ model Listing {
   datesUnavailable    String[]
   reviews             Review[]
   reservations        Reservation[]
+  tags                String[]
 }
 
 model Review {

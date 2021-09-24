@@ -1,5 +1,5 @@
 Arguments: 
-  /Users/dukenguyen/.nvm/versions/node/v15.9.0/bin/node /Users/dukenguyen/.nvm/versions/node/v15.9.0/bin/yarn prisma db seed --preview-feature
+  /Users/dukenguyen/.nvm/versions/node/v15.9.0/bin/node /Users/dukenguyen/.nvm/versions/node/v15.9.0/bin/yarn prisma db seed
 
 PATH: 
   /Users/dukenguyen/.nvm/versions/node/v15.9.0/bin:/Users/dukenguyen/.rbenv/shims:/Users/dukenguyen/.rbenv/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/Postgres.app/Contents/Versions/latest/bin
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  SyntaxError: /Users/dukenguyen/Desktop/airbnb_clone/server/package.json: Unexpected token } in JSON at position 1919
+  SyntaxError: /Users/dukenguyen/Desktop/airbnb_clone/server/package.json: Unexpected token / in JSON at position 1921
       at JSON.parse (<anonymous>)
       at /Users/dukenguyen/.nvm/versions/node/v15.9.0/lib/node_modules/yarn/lib/cli.js:1625:59
       at Generator.next (<anonymous>)
@@ -85,6 +85,7 @@ npm manifest:
       "ts-node-dev": "1.1.8",
       "typescript": "4.3.5"
     },
+    // "type": "module"
   }
 
 yarn manifest: 

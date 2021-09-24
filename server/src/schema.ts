@@ -13,11 +13,12 @@ import {
   arg,
   asNexusMethod,
   list,
+  booleanArg,
 } from 'nexus';
 import { DateTimeResolver, JSONObjectResolver } from 'graphql-scalars';
 import objectHash from 'object-hash';
 import { Context } from './context';
-import { Listing } from '.prisma/client';
+import { Listing, Prisma } from '.prisma/client';
 import { addDays, format, differenceInDays } from 'date-fns';
 
 export const dateTimeScalar = asNexusMethod(DateTimeResolver, 'date');
@@ -182,17 +183,27 @@ const Query = objectType({
     t.field('basicSearch', {
       type: BasicSearchResults,
       args: {
-        region: nonNull(stringArg()),
+        region: stringArg(),
         guests: intArg(),
         checkIn: stringArg(),
         checkOut: stringArg(),
         offset: nonNull(intArg()),
+        tags: list(nonNull(stringArg())),
+        listingType: list(nonNull(stringArg())),
+        languages: list(nonNull(stringArg())),
+        pets: booleanArg(),
+        smoking: booleanArg(),
+        superhost: booleanArg(),
       },
       resolve: async (_parent, args, context: Context) => {
         const renderOptions = ({ isCount }: { isCount: boolean }) => {
-          let options: any;
+          let options: {
+            skip: number;
+            take: number;
+            where: Prisma.ListingWhereInput;
+          };
 
-          if (/anywhere/i.test(args.region)) {
+          if (/anywhere/i.test(args.region) || !args.region) {
             options = {
               skip: isCount ? 0 : args.offset,
               take: isCount ? 100 : 10,
@@ -204,6 +215,9 @@ const Query = objectType({
                   datesUnavailable: {
                     hasSome: args.checkIn ? daysRequested : [],
                   },
+                },
+                tags: {
+                  hasEvery: args.tags ? args.tags : [],
                 },
               },
             };
@@ -221,27 +235,41 @@ const Query = objectType({
                     hasSome: args.checkIn ? daysRequested : [],
                   },
                 },
+                tags: {
+                  hasEvery: args.tags ? args.tags : [],
+                },
               },
+            };
+          }
+
+          // Additional filters
+          // Check for superhost, listingType, pets, smoking presence, languages and append to options
+          if (args.superhost) {
+            options.where['superhost'] = true;
+          }
+
+          if (args.smoking) {
+            options.where['smokingRule'] = true;
+          }
+
+          if (args.pets) {
+            options.where['petsRule'] = true;
+          }
+
+          if (args.languages) {
+            options.where['languages'] = {
+              hasSome: args.languages,
+            };
+          }
+
+          if (args.listingType) {
+            options.where['listingType'] = {
+              in: args.listingType,
             };
           }
 
           return options;
         };
-
-        if (!args.guests && !args.checkIn && !args.checkOut) {
-          const regionListings = await context.prisma.listing.findMany(
-            renderOptions({ isCount: false }),
-          );
-          const regionCount = await context.prisma.listing.count(
-            renderOptions({ isCount: true }),
-          );
-
-          return {
-            count: regionCount,
-            listings: regionListings,
-            offset: args.offset,
-          };
-        }
 
         const daysRequested: string[] = [];
         const checkIn = new Date(args.checkIn as string);
@@ -253,10 +281,6 @@ const Query = objectType({
           daysRequested.push(format(addDays(checkIn, i), 'M/d/yyyy'));
         }
 
-        console.log('daysRequested: ', daysRequested);
-
-        const allListings = await context.prisma.listing.findMany();
-
         const listings = await context.prisma.listing.findMany(
           renderOptions({ isCount: false }),
         );
@@ -265,25 +289,30 @@ const Query = objectType({
           renderOptions({ isCount: true }),
         );
 
-        const filtered = allListings.filter((listing) => {
-          return listing.datesUnavailable.every((date) => {
-            return !daysRequested.includes(date);
-          });
-        });
+        // Debugging comments
+        // const allListings = await context.prisma.listing.findMany();
 
-        console.log(
-          'left: ',
-          filtered.map((x) => x.title),
-        );
+        // const filtered = allListings.filter((listing) => {
+        //   return listing.datesUnavailable.every((date) => {
+        //     return !daysRequested.includes(date);
+        //   });
+        // });
 
-        console.log(
-          'LISTINGS: ',
-          listings.map((x) =>
-            x.datesUnavailable.sort(
-              (a, b) => new Date(a).valueOf() - new Date(b).valueOf(),
-            ),
-          ),
-        );
+        // console.log('daysRequested: ', daysRequested);
+
+        // console.log(
+        //   'left: ',
+        //   filtered.map((x) => x.title),
+        // );
+
+        // console.log(
+        //   'LISTINGS: ',
+        //   listings.map((x) =>
+        //     x.datesUnavailable.sort(
+        //       (a, b) => new Date(a).valueOf() - new Date(b).valueOf(),
+        //     ),
+        //   ),
+        // );
 
         return { count, listings, offset: args.offset };
       },
