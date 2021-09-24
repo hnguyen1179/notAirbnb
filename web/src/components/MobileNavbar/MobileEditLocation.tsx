@@ -3,7 +3,7 @@ import LocationSearch from "../LocationSearch/LocationSearch";
 import { ReactComponent as BackSvg } from "../../assets/icons/back.svg";
 
 interface Props {
-	handleFormClose: () => void;
+	handleFormClose?: () => void;
 	location: string;
 	setLocation: (location: string) => void;
 	setStage?: (stage: string) => void;
@@ -19,7 +19,7 @@ const MobileEditLocation = ({
 		if (setStage) {
 			setStage("dates");
 		} else {
-			handleFormClose();
+			handleFormClose && handleFormClose();
 		}
   };
   

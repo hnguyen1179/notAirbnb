@@ -12,6 +12,9 @@ import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { RouteComponentProps, withRouter } from "react-router";
 import { History } from "history";
+import MobileEditLocation from "./MobileEditLocation";
+import MobileEditDates from "./MobileEditDates";
+import MobileEditGuests from "./MobileEditGuests";
 interface Props extends RouteComponentProps {
 	handleFormClose: (e: React.SyntheticEvent) => void;
 	history: History;
@@ -68,8 +71,8 @@ const MobileSearchForm = ({ handleFormClose, history }: Props) => {
 
 		document.body.style.overflow = "initial";
 		history.push({
-			pathname: '/search',
-			search: search.toString()
+			pathname: "/search",
+			search: search.toString(),
 		});
 	};
 
@@ -90,125 +93,32 @@ const MobileSearchForm = ({ handleFormClose, history }: Props) => {
 		switch (page) {
 			case "location":
 				return (
-					<div className="MobileSearchForm__form__stage MobileSearchForm__form__stage--location">
-						<button
-							className="MobileSearchForm__form__stage__back-button"
-							type="button"
-							onClick={handleFormClose}
-						>
-							<BackSvg />
-						</button>
-						<h2 className="MobileSearchForm__form__stage__title">
-							Location
-						</h2>
-						<div className="MobileSearchForm__form__stage__content">
-							<LocationSearch
-								location={location}
-								setLocation={setLocation}
-								next={() => setStage("dates")}
-							/>
-						</div>
-					</div>
+					<MobileEditLocation
+						location={location}
+						setLocation={setLocation}
+						setStage={setStage}
+					/>
 				);
 
 			case "dates":
 				return (
-					<div className="MobileSearchForm__form__stage MobileSearchForm__form__stage--dates">
-						<button
-							className="MobileSearchForm__form__stage__back-button"
-							type="button"
-							onClick={() => setStage("location")}
-						>
-							<BackSvg />
-						</button>
-						<h2 className="MobileSearchForm__form__stage__title">
-							Dates
-						</h2>
-						<div className="MobileSearchForm__form__stage__content">
-							<DateRange
-								className="date-range date-range--mobile-form"
-								months={1}
-								direction={"horizontal"}
-								showMonthAndYearPickers={true}
-								editableDateInputs={true}
-								ranges={[dates]}
-								rangeColors={["#00a6de"]}
-								onChange={handleDateChange}
-								disabledDay={disableDay}
-							/>
-						</div>
-						<div className="MobileSearchForm__form__stage__footer">
-							<button
-								className="MobileSearchForm__form__stage__footer__next-button"
-								type="button"
-								disabled={(() => {
-									const today =
-										new Date().toLocaleDateString();
-									const start =
-										dates.startDate.toLocaleDateString();
-									const end =
-										dates.endDate.toLocaleDateString();
-
-									return today === start && today === end;
-								})()}
-								onClick={(e) => {
-									e.preventDefault();
-									setStage("guests");
-								}}
-							>
-								<span>Next</span>
-							</button>
-						</div>
-					</div>
+					<MobileEditDates
+						dates={dates}
+						handleDateChange={handleDateChange}
+						setStage={setStage}
+					/>
 				);
 
 			case "guests":
 				return (
-					<div className="MobileSearchForm__form__stage MobileSearchForm__form__stage--guests">
-						<button
-							className="MobileSearchForm__form__stage__back-button"
-							type="button"
-							onClick={(e) => {
-								e.preventDefault();
-								setStage("dates");
-							}}
-						>
-							<BackSvg />
-						</button>
-						<h2 className="MobileSearchForm__form__stage__title">
-							Guests
-						</h2>
-						<div className="MobileSearchForm__form__stage__content">
-							<div className="MobileSearchForm__form__stage__content__location">
-								{location}
-							</div>
-							<div className="MobileSearchForm__form__stage__content__dates">
-								{dates.startDate.toLocaleDateString()}
-								<span className="spacer">-</span>
-								{dates.endDate.toLocaleDateString()}
-							</div>
-							<div className="MobileSearchForm__form__stage__content__guests">
-								<span>{renderNumGuests()}</span>
-							</div>
-							<NumberGuests
-								guests={guests}
-								setGuests={setGuests}
-							/>
-						</div>
-						<div className="MobileSearchForm__form__stage__footer">
-							<button
-								className="MobileSearchForm__form__stage__footer__next-button MobileSearchForm__form__stage__footer__next-button--submit"
-								type="submit"
-								onClick={handleSubmit}
-								disabled={guests < 1 ? true : false}
-							>
-								<div>
-									<SearchSvg />
-									<span>Search</span>
-								</div>
-							</button>
-						</div>
-					</div>
+					<MobileEditGuests
+						handleSubmit={handleSubmit}
+						location={location}
+						dates={dates}
+						guests={guests}
+						setGuests={setGuests}
+						setStage={setStage}
+					/>
 				);
 
 			default:
