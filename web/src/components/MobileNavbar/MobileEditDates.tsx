@@ -1,12 +1,50 @@
-import React from "react";
+import { FormEvent } from "react";
+import { DateRange, OnDateRangeChangeProps } from "react-date-range";
+import { ReactComponent as BackSvg } from "../../assets/icons/back.svg";
+import { disableDay } from "../../utils/disableDays";
+import { IDate } from "./MobileSearchForm";
 
-const MobileEditDates = () => {
+interface Props {
+	handleCloseForm?: () => void;
+	setStage?: (stage: string) => void;
+	dates: IDate;
+	handleDateChange: (ranges: OnDateRangeChangeProps) => void;
+	edit?: boolean;
+}
+
+const MobileEditDates = ({
+	handleCloseForm,
+	setStage,
+	dates,
+	handleDateChange,
+	edit,
+}: Props) => {
+	const handleBack = (e: FormEvent) => {
+		e.preventDefault();
+
+		if (setStage) {
+			setStage("location");
+		} else {
+			handleCloseForm && handleCloseForm();
+		}
+	};
+
+	const handleNext = (e: FormEvent) => {
+		e.preventDefault();
+
+		if (setStage) {
+			setStage("guests");
+		} else {
+			handleCloseForm && handleCloseForm();
+		}
+	};
+
 	return (
 		<div className="MobileSearchForm__form__stage MobileSearchForm__form__stage--dates">
 			<button
 				className="MobileSearchForm__form__stage__back-button"
 				type="button"
-				onClick={() => setStage("location")}
+				onClick={handleBack}
 			>
 				<BackSvg />
 			</button>
@@ -35,12 +73,9 @@ const MobileEditDates = () => {
 
 						return today === start && today === end;
 					})()}
-					onClick={(e) => {
-						e.preventDefault();
-						setStage("guests");
-					}}
+					onClick={handleNext}
 				>
-					<span>Next</span>
+					<span>{edit ? "Search" : "Next"}</span>
 				</button>
 			</div>
 		</div>

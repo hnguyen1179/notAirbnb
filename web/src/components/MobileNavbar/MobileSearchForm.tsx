@@ -17,7 +17,7 @@ interface Props extends RouteComponentProps {
 	history: History;
 }
 
-interface IDate {
+export interface IDate {
 	startDate: Date;
 	endDate: Date;
 	key: string;

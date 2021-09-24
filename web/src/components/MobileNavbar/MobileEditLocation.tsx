@@ -1,6 +1,28 @@
 import React from "react";
+import LocationSearch from "../LocationSearch/LocationSearch";
+import { ReactComponent as BackSvg } from "../../assets/icons/back.svg";
 
-const MobileEditLocation = () => {
+interface Props {
+	handleFormClose: () => void;
+	location: string;
+	setLocation: (location: string) => void;
+	setStage?: (stage: string) => void;
+}
+
+const MobileEditLocation = ({
+	handleFormClose,
+	location,
+	setLocation,
+	setStage,
+}: Props) => {
+	const handleNext = () => {
+		if (setStage) {
+			setStage("dates");
+		} else {
+			handleFormClose();
+		}
+  };
+  
 	return (
 		<div className="MobileSearchForm__form__stage MobileSearchForm__form__stage--location">
 			<button
@@ -15,7 +37,7 @@ const MobileEditLocation = () => {
 				<LocationSearch
 					location={location}
 					setLocation={setLocation}
-					next={() => setStage("dates")}
+					next={() => handleNext()}
 				/>
 			</div>
 		</div>

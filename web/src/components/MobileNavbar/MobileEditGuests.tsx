@@ -1,16 +1,66 @@
-import React from "react";
+import { FormEvent } from "react";
 import NumberGuests from "./NumberGuests";
+import { ReactComponent as BackSvg } from "../../assets/icons/back.svg";
+import { ReactComponent as SearchSvg } from "../../assets/icons/search.svg";
+import { IDate } from "./MobileSearchForm";
 
-const MobileEditGuests = () => {
+interface Props {
+	handleCloseForm?: () => void;
+	setStage?: (stage: string) => void;
+	handleSubmit?: (e: any) => void;
+	location: string;
+	dates: IDate;
+	guests: number;
+	setGuests: (guests: number) => void;
+}
+
+const MobileEditGuests = ({
+	handleCloseForm,
+	setStage,
+	handleSubmit,
+	location,
+	dates,
+	guests,
+	setGuests,
+}: Props) => {
+	const handleBack = (e: FormEvent) => {
+		e.preventDefault();
+
+		if (setStage) {
+			setStage("dates");
+		} else {
+			handleCloseForm && handleCloseForm();
+		}
+	};
+
+	const handleNext = (e: FormEvent) => {
+		e.preventDefault();
+		if (handleSubmit) {
+			handleSubmit(e);
+		} else {
+			handleCloseForm && handleCloseForm();
+		}
+	};
+
+	const renderNumGuests = () => {
+		let string = " ";
+		if (guests > 0) {
+			string = guests.toString();
+			if (guests > 1) {
+				string += " guests";
+			} else {
+				string += " guest";
+			}
+		}
+		return string;
+	};
+
 	return (
 		<div className="MobileSearchForm__form__stage MobileSearchForm__form__stage--guests">
 			<button
 				className="MobileSearchForm__form__stage__back-button"
 				type="button"
-				onClick={(e) => {
-					e.preventDefault();
-					setStage("dates");
-				}}
+				onClick={handleBack}
 			>
 				<BackSvg />
 			</button>
@@ -33,7 +83,7 @@ const MobileEditGuests = () => {
 				<button
 					className="MobileSearchForm__form__stage__footer__next-button MobileSearchForm__form__stage__footer__next-button--submit"
 					type="submit"
-					onClick={handleSubmit}
+					onClick={handleNext}
 					disabled={guests < 1 ? true : false}
 				>
 					<div>
