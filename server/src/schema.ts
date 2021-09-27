@@ -317,10 +317,10 @@ const Query = objectType({
         //     ),
         //   ),
         // );
-        console.log('REGION: ', args.region);
-        console.log('COUNT: ', count);
-        console.log('LISTINGS LENGTH', listings.length);
-        console.log(listings.map((l) => l.title));
+        // console.log('REGION: ', args.region);
+        // console.log('COUNT: ', count);
+        // console.log('LISTINGS LENGTH', listings.length);
+        // console.log(listings.map((l) => l.title));
         return { count, listings, offset: args.offset };
       },
     });

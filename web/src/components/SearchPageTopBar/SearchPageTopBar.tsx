@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { History } from "history";
 
 import { ReactComponent as BackSvg } from "../../assets/icons/back.svg";
@@ -14,17 +14,20 @@ import { CSSTransition } from "react-transition-group";
 import SearchPageTopBarDropdown from "./SearchPageTopBarDropdown";
 import EditMenuPortal from "./EditMenuPortal";
 
-interface Props {
-	mobile: boolean;
+interface URLParams {
 	region: string;
 	guests: number;
 	checkIn: string;
 	checkOut: string;
+}
+
+interface Props {
+	mobile: boolean;
+	URLParams: URLParams;
 	searchDetails: string;
 	history: History;
 	openFilter: boolean;
 	setOpenFilter: (state: boolean) => void;
-	// openFilter: any;
 }
 
 const editMenuDefault = {
@@ -36,33 +39,29 @@ const editMenuDefault = {
 
 const SearchPageTopBar = ({
 	mobile,
-	region,
-	guests: guestsProp,
-	checkIn,
-	checkOut,
+	URLParams,
 	searchDetails,
 	history,
 	openFilter,
 	setOpenFilter,
-}:
-Props) => {
+}: Props) => {
 	const initialRender = useRef(true);
 	const nextDates = useRef({
-		checkIn: new Date(checkIn),
-		checkOut: new Date(checkOut),
+		checkIn: new Date(URLParams.checkIn),
+		checkOut: new Date(URLParams.checkOut),
 	});
-	const nextGuests = useRef(guestsProp);
+	const nextGuests = useRef(URLParams.guests);
 	const menuRef = useRef<HTMLDivElement>(null);
 
 	const [edit, setEdit] = useState(false);
 	const [editMenu, setEditMenu] = useState(editMenuDefault);
-	const [location, setLocation] = useState(region);
+	const [location, setLocation] = useState(URLParams.region);
 	const [dates, setDates] = useState<IDate>({
-		startDate: new Date(checkIn),
-		endDate: new Date(checkOut),
+		startDate: new Date(URLParams.checkIn),
+		endDate: new Date(URLParams.checkOut),
 		key: "selection",
 	});
-	const [guests, setGuests] = useState(guestsProp);
+	const [guests, setGuests] = useState(URLParams.guests);
 
 	// Close top bar on scroll
 	useEffect(() => {
@@ -185,7 +184,7 @@ Props) => {
 							onClick={handleOpenEdit}
 						>
 							<div className="region">
-								{region ? region : "Nearby"}
+								{URLParams.region ? URLParams.region : "Nearby"}
 							</div>
 							<div className="date">{searchDetails}</div>
 						</button>
@@ -198,7 +197,7 @@ Props) => {
 
 						<SearchPageTopBarDropdown
 							handleOpenEditMenu={handleOpenEditMenu}
-							region={region}
+							region={URLParams.region}
 							searchDates={searchDates}
 							searchGuests={searchGuests}
 							edit={edit}

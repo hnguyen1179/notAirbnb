@@ -60,9 +60,8 @@ const SearchPage = ({ history }: Props) => {
 	});
 
 	useEffect(() => {
-		// Skip any unnecessary renders/data fetches
+		// Skip any unnecessary data fetches
 		if (searchParams.toString() === previousURL.current) return;
-
 		previousURL.current = searchParams.toString();
 
 		// Any time the url params changes, it'll fetch a new dataset
@@ -83,7 +82,20 @@ const SearchPage = ({ history }: Props) => {
 					superhost,
 				},
 			}))();
-	}, [searchParams]);
+	}, [
+		checkIn,
+		checkOut,
+		fetchMore,
+		guests,
+		languages,
+		listingType,
+		pets,
+		region,
+		searchParams,
+		smoking,
+		superhost,
+		tags,
+	]);
 
 	const renderListings = useMemo(() => {
 		return data?.basicSearch?.listings.map((listing) => {
@@ -98,12 +110,7 @@ const SearchPage = ({ history }: Props) => {
 				/>
 			);
 		});
-	}, [
-		checkIn,
-		checkOut,
-		cloudinary,
-		data?.basicSearch?.listings,
-	]);
+	}, [checkIn, checkOut, cloudinary, data?.basicSearch?.listings]);
 
 	if (error) {
 		console.log(JSON.stringify(error, null, 2));
@@ -158,14 +165,18 @@ const SearchPage = ({ history }: Props) => {
 		}
 	};
 
+	const URLParams = {
+		region,
+		guests,
+		checkIn,
+		checkOut,
+	}
+
 	return (
 		<div className="SearchPage">
 			<SearchPageTopBar
 				mobile={mobile}
-				region={region}
-				guests={guests}
-				checkIn={checkIn}
-				checkOut={checkOut}
+				URLParams={URLParams}
 				searchDetails={searchDetails}
 				history={history}
 				openFilter={openFilter}
