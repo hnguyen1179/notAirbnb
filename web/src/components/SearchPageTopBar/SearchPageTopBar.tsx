@@ -187,7 +187,9 @@ const SearchPageTopBar = ({
 						</button>
 						<button
 							className="button button--edit-filter"
-							onClick={handleEditFilter}
+							onClick={() =>
+								setEditMenu({ ...editMenuDefault, tags: true })
+							}
 						>
 							<FilterSvg />
 						</button>

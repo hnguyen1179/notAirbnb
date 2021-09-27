@@ -250,6 +250,12 @@ const Query = objectType({
             options.where['superhost'] = true;
           }
 
+          if (args.entire) {
+            options.where['listingType'] = {
+              startsWith: 'Entire',
+            };
+          }
+
           if (args.smoking) {
             options.where['smokingRule'] = true;
           }

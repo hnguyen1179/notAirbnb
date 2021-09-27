@@ -298,6 +298,7 @@ export type BasicSearchQueryVariables = Exact<{
   superhost?: Maybe<Scalars['Boolean']>;
   pets?: Maybe<Scalars['Boolean']>;
   smoking?: Maybe<Scalars['Boolean']>;
+  entire?: Maybe<Scalars['Boolean']>;
 }>;
 
 
@@ -435,7 +436,7 @@ export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
 export type SignupMutationResult = Apollo.MutationResult<SignupMutation>;
 export type SignupMutationOptions = Apollo.BaseMutationOptions<SignupMutation, SignupMutationVariables>;
 export const BasicSearchDocument = gql`
-    query basicSearch($region: String, $guests: Int, $checkIn: String, $checkOut: String, $offset: Int!, $tags: [String!], $languages: [String!], $listingType: [String!], $superhost: Boolean, $pets: Boolean, $smoking: Boolean) {
+    query basicSearch($region: String, $guests: Int, $checkIn: String, $checkOut: String, $offset: Int!, $tags: [String!], $languages: [String!], $listingType: [String!], $superhost: Boolean, $pets: Boolean, $smoking: Boolean, $entire: Boolean) {
   basicSearch(
     region: $region
     guests: $guests
@@ -448,6 +449,7 @@ export const BasicSearchDocument = gql`
     superhost: $superhost
     pets: $pets
     smoking: $smoking
+    entire: $entire
   ) {
     count
     listings {
@@ -490,6 +492,7 @@ export const BasicSearchDocument = gql`
  *      superhost: // value for 'superhost'
  *      pets: // value for 'pets'
  *      smoking: // value for 'smoking'
+ *      entire: // value for 'entire'
  *   },
  * });
  */

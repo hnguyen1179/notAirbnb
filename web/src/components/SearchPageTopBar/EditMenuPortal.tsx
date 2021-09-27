@@ -6,6 +6,7 @@ import { IDate } from "../MobileNavbar/MobileSearchForm";
 import MobileEditDates from "../MobileNavbar/MobileEditDates";
 import MobileEditGuests from "../MobileNavbar/MobileEditGuests";
 import MobileEditLocation from "../MobileNavbar/MobileEditLocation";
+import TagsEditMenu from "./TagsEditMenu";
 
 interface Props {
 	editMenu: { [key: string]: boolean };
@@ -71,6 +72,9 @@ const EditMenuPortal = ({
 							setGuests={setGuests}
 							submitEdit={handleSubmitGuestsEdit}
 						/>
+					)}
+					{editMenu.tags && (
+						<TagsEditMenu handleCloseForm={handleCloseEditMenu} />
 					)}
 				</div>,
 				document?.querySelector("#root") as Element

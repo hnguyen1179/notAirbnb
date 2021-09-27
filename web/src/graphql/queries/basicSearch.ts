@@ -13,6 +13,7 @@ const BASIC_SEARCH = gql`
 		$superhost: Boolean
 		$pets: Boolean
 		$smoking: Boolean
+		$entire: Boolean
 	) {
 		basicSearch(
 			region: $region
@@ -26,6 +27,7 @@ const BASIC_SEARCH = gql`
 			superhost: $superhost
 			pets: $pets
 			smoking: $smoking
+			entire: $entire
 		) {
 			count
 			listings {
