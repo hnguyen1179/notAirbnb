@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { History } from "history";
 
 import { ReactComponent as BackSvg } from "../../assets/icons/back.svg";
@@ -6,13 +6,9 @@ import { ReactComponent as FilterSvg } from "../../assets/icons/filter.svg";
 import { ReactComponent as NegativeSvg } from "../../assets/icons/negative.svg";
 
 import Navbar from "../Navbar/Navbar";
-import MobileEditLocation from "../MobileNavbar/MobileEditLocation";
-import MobileEditDates from "../MobileNavbar/MobileEditDates";
-import MobileEditGuests from "../MobileNavbar/MobileEditGuests";
 
 import { IDate } from "../../components/MobileNavbar/MobileSearchForm";
 import { OnDateRangeChangeProps } from "react-date-range";
-import { createPortal } from "react-dom";
 import { addDays, format } from "date-fns";
 import { CSSTransition } from "react-transition-group";
 import SearchPageTopBarDropdown from "./SearchPageTopBarDropdown";
@@ -26,6 +22,9 @@ interface Props {
 	checkOut: string;
 	searchDetails: string;
 	history: History;
+	openFilter: boolean;
+	setOpenFilter: (state: boolean) => void;
+	// openFilter: any;
 }
 
 const editMenuDefault = {
@@ -43,8 +42,10 @@ const SearchPageTopBar = ({
 	checkOut,
 	searchDetails,
 	history,
-}: Props) => {
-	console.log("SEARCH PAGE TO PBAR ERENDERD ");
+	openFilter,
+	setOpenFilter,
+}:
+Props) => {
 	const initialRender = useRef(true);
 	const nextDates = useRef({
 		checkIn: new Date(checkIn),
@@ -62,9 +63,8 @@ const SearchPageTopBar = ({
 		key: "selection",
 	});
 	const [guests, setGuests] = useState(guestsProp);
-	const [filters, setFilters] = useState({});
 
-	// Close top bar on scorll
+	// Close top bar on scroll
 	useEffect(() => {
 		window.addEventListener("scroll", handleCloseEdit);
 		return () => {
@@ -72,14 +72,12 @@ const SearchPageTopBar = ({
 		};
 	}, []);
 
-	// Opening edit menu makes pageunscrollable
 	useEffect(() => {
-		if (Object.values(editMenu).some((menu) => !!menu)) {
-			document.body.style.overflow = "hidden";
-		} else {
-			document.body.style.overflow = "unset";
+		if (openFilter) {
+			window.addEventListener("scroll", handleCloseEdit);
+			setEditMenu({ ...editMenuDefault, tags: true });
 		}
-	}, [editMenu, setEditMenu]);
+	}, [openFilter]);
 
 	useEffect(() => {
 		if (initialRender.current) {
@@ -112,17 +110,18 @@ const SearchPageTopBar = ({
 		history.goBack();
 	};
 
-	const handleOpenEditMenu = (field: "location" | "dates" | "guests") => {
+	const handleOpenEditMenu = (
+		field: "location" | "dates" | "guests" | "tags"
+	) => {
 		const newEditMenuState = {
 			...editMenuDefault,
 		};
+		window.addEventListener("scroll", handleCloseEdit);
 
 		newEditMenuState[field] = true;
 
 		setEditMenu(newEditMenuState);
 	};
-
-	const handleEditFilter = () => {};
 
 	const handleSubmitGuestsEdit = () => {
 		nextGuests.current = guests;
@@ -159,6 +158,9 @@ const SearchPageTopBar = ({
 	};
 
 	const handleCloseEditMenu = () => {
+		document.body.style.overflow = "unset";
+		setOpenFilter(false);
+		// openFilter.current = false;
 		setEditMenu(editMenuDefault);
 	};
 
@@ -189,9 +191,7 @@ const SearchPageTopBar = ({
 						</button>
 						<button
 							className="button button--edit-filter"
-							onClick={() =>
-								setEditMenu({ ...editMenuDefault, tags: true })
-							}
+							onClick={() => handleOpenEditMenu("tags")}
 						>
 							<FilterSvg />
 						</button>

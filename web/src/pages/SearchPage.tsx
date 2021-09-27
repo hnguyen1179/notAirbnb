@@ -1,4 +1,11 @@
-import { useContext, useState, useEffect, MouseEvent, useRef } from "react";
+import {
+	useContext,
+	useState,
+	useEffect,
+	MouseEvent,
+	useRef,
+	useMemo,
+} from "react";
 import { History } from "history";
 import { useBasicSearchQuery } from "../generated/graphql";
 import { AppContext } from "../context/AppContext";
@@ -16,11 +23,12 @@ interface Props {
 
 const SearchPage = ({ history }: Props) => {
 	const searchParams = new URLSearchParams(history.location.search);
+	const [openFilter, setOpenFilter] = useState(false);
 
 	const previousURL = useRef(searchParams.toString());
+	// Searches done via landing "region" icons
 	const isRegionSearch = !history.location.search.includes("guests");
 	const { cloudinary, mobile } = useContext(AppContext);
-	const [isLoading, setIsLoading] = useState(false);
 
 	const region = searchParams.get("region") as string;
 	const guests = parseInt(searchParams.get("guests") as string);
@@ -59,31 +67,50 @@ const SearchPage = ({ history }: Props) => {
 
 		// Any time the url params changes, it'll fetch a new dataset
 		const currentPage = parseInt(searchParams.get("page") as string);
-		setIsLoading(true);
-		fetchMore({
-			variables: {
-				region,
-				guests,
-				checkIn,
-				checkOut,
-				offset: (currentPage - 1) * 10,
-				tags,
-				listingType,
-				languages,
-				smoking,
-				pets,
-				superhost,
-			},
-		});
-		setIsLoading(false);
+		(async () =>
+			fetchMore({
+				variables: {
+					region,
+					guests,
+					checkIn,
+					checkOut,
+					offset: (currentPage - 1) * 10,
+					tags,
+					listingType,
+					languages,
+					smoking,
+					pets,
+					superhost,
+				},
+			}))();
 	}, [searchParams]);
+
+	const renderListings = useMemo(() => {
+		return data?.basicSearch?.listings.map((listing) => {
+			if (!listing) return "";
+			return (
+				<SearchResultsItem
+					key={listing.id}
+					cloudinary={cloudinary}
+					listing={listing}
+					checkIn={new Date(checkIn)}
+					checkOut={new Date(checkOut as string)}
+				/>
+			);
+		});
+	}, [
+		checkIn,
+		checkOut,
+		cloudinary,
+		data?.basicSearch?.listings,
+	]);
 
 	if (error) {
 		console.log(JSON.stringify(error, null, 2));
 		return <>uh oh</>;
 	}
 
-	if (loading || isLoading)
+	if (loading)
 		return (
 			<div className="page-loading">
 				<Loading />
@@ -141,6 +168,8 @@ const SearchPage = ({ history }: Props) => {
 				checkOut={checkOut}
 				searchDetails={searchDetails}
 				history={history}
+				openFilter={openFilter}
+				setOpenFilter={setOpenFilter}
 			/>
 
 			<div className="SearchPage-container">
@@ -152,13 +181,16 @@ const SearchPage = ({ history }: Props) => {
 					<h1>{renderRegion()}</h1>
 				</div>
 
-				<button className="SearchPage__button-filter">
+				<button
+					className="SearchPage__button-filter"
+					onClick={() => setOpenFilter(true)}
+				>
 					<div>Filters</div>
 				</button>
 
 				<div className="SearchPage__results">
 					<ul className="SearchPage__results__list">
-						{data?.basicSearch?.count === 0 ? (
+						{data?.basicSearch?.count === 0 && (
 							<div className="no-results">
 								<div>No results</div>
 								<span>
@@ -168,20 +200,8 @@ const SearchPage = ({ history }: Props) => {
 
 								<div className="divider" />
 							</div>
-						) : (
-							data?.basicSearch?.listings.map((listing) => {
-								if (!listing) return "";
-								return (
-									<SearchResultsItem
-										key={listing.id}
-										cloudinary={cloudinary}
-										listing={listing}
-										checkIn={new Date(checkIn)}
-										checkOut={new Date(checkOut as string)}
-									/>
-								);
-							})
 						)}
+						{renderListings}
 					</ul>
 
 					{(data?.basicSearch?.count || 0) > 10 && (
