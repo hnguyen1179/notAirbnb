@@ -181,7 +181,6 @@ const SearchPage = ({ history }: Props) => {
 									/>
 								);
 							})
-							// This slice essentially acts as your 'read' within typePolicies
 						)}
 					</ul>
 

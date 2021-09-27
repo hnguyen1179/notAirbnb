@@ -44,6 +44,7 @@ const SearchPageTopBar = ({
 	searchDetails,
 	history,
 }: Props) => {
+	console.log("SEARCH PAGE TO PBAR ERENDERD ");
 	const initialRender = useRef(true);
 	const nextDates = useRef({
 		checkIn: new Date(checkIn),
@@ -99,6 +100,7 @@ const SearchPageTopBar = ({
 			format(nextDates.current.checkOut, "M-d-yyy")
 		);
 		nextSearch.set("guests", guests.toString());
+		nextSearch.set("page", "1");
 
 		history.push({
 			pathname: history.location.pathname,
