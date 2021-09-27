@@ -154,6 +154,7 @@ export type Query = {
 export type QueryBasicSearchArgs = {
   checkIn?: Maybe<Scalars['String']>;
   checkOut?: Maybe<Scalars['String']>;
+  entire?: Maybe<Scalars['Boolean']>;
   guests?: Maybe<Scalars['Int']>;
   languages?: Maybe<Array<Scalars['String']>>;
   listingType?: Maybe<Array<Scalars['String']>>;

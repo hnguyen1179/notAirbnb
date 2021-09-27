@@ -12,6 +12,7 @@ interface Props {
 	dates: IDate;
 	guests: number;
 	setGuests: (guests: number) => void;
+	submitEdit?: () => void;
 }
 
 const MobileEditGuests = ({
@@ -21,7 +22,8 @@ const MobileEditGuests = ({
 	location,
 	dates,
 	guests,
-	setGuests,
+  setGuests,
+  submitEdit
 }: Props) => {
 	const handleBack = (e: FormEvent) => {
 		e.preventDefault();
@@ -37,9 +39,9 @@ const MobileEditGuests = ({
 		e.preventDefault();
 		if (handleSubmit) {
 			handleSubmit(e);
-		} else {
-			handleCloseForm && handleCloseForm();
-		}
+    } else {
+      submitEdit && submitEdit();
+    }
 	};
 
 	const renderNumGuests = () => {

@@ -1,12 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { History } from "history";
 
 import { ReactComponent as BackSvg } from "../../assets/icons/back.svg";
 import { ReactComponent as FilterSvg } from "../../assets/icons/filter.svg";
 import { ReactComponent as NegativeSvg } from "../../assets/icons/negative.svg";
-import { ReactComponent as SearchSvg } from "../../assets/icons/small-search.svg";
-import { ReactComponent as CalendarSvg } from "../../assets/icons/calendar.svg";
-import { ReactComponent as GuestsSvg } from "../../assets/icons/guests.svg";
 
 import Navbar from "../Navbar/Navbar";
 import MobileEditLocation from "../MobileNavbar/MobileEditLocation";
@@ -16,6 +13,10 @@ import MobileEditGuests from "../MobileNavbar/MobileEditGuests";
 import { IDate } from "../../components/MobileNavbar/MobileSearchForm";
 import { OnDateRangeChangeProps } from "react-date-range";
 import { createPortal } from "react-dom";
+import { addDays, format } from "date-fns";
+import { CSSTransition } from "react-transition-group";
+import SearchPageTopBarDropdown from "./SearchPageTopBarDropdown";
+import EditMenuPortal from "./EditMenuPortal";
 
 interface Props {
 	mobile: boolean;
@@ -31,6 +32,7 @@ const editMenuDefault = {
 	location: false,
 	dates: false,
 	guests: false,
+	tags: false,
 };
 
 const SearchPageTopBar = ({
@@ -42,6 +44,14 @@ const SearchPageTopBar = ({
 	searchDetails,
 	history,
 }: Props) => {
+	const initialRender = useRef(true);
+	const nextDates = useRef({
+		checkIn: new Date(checkIn),
+		checkOut: new Date(checkOut),
+	});
+	const nextGuests = useRef(guestsProp);
+	const menuRef = useRef<HTMLDivElement>(null);
+
 	const [edit, setEdit] = useState(false);
 	const [editMenu, setEditMenu] = useState(editMenuDefault);
 	const [location, setLocation] = useState(region);
@@ -61,6 +71,7 @@ const SearchPageTopBar = ({
 		};
 	}, []);
 
+	// Opening edit menu makes pageunscrollable
 	useEffect(() => {
 		if (Object.values(editMenu).some((menu) => !!menu)) {
 			document.body.style.overflow = "hidden";
@@ -70,29 +81,65 @@ const SearchPageTopBar = ({
 	}, [editMenu, setEditMenu]);
 
 	useEffect(() => {
+		if (initialRender.current) {
+			initialRender.current = false;
+			return;
+		}
+
 		setEdit(false);
-		
+
 		const nextSearch = new URLSearchParams(history.location.search);
 		nextSearch.set("region", location.split(", ")[0]);
+		nextSearch.set(
+			"check-in",
+			format(nextDates.current.checkIn, "M-d-yyy")
+		);
+		nextSearch.set(
+			"check-out",
+			format(nextDates.current.checkOut, "M-d-yyy")
+		);
+		nextSearch.set("guests", guests.toString());
 
 		history.push({
 			pathname: history.location.pathname,
 			search: nextSearch.toString(),
 		});
-	}, [location, dates, guests]);
+	}, [location, nextDates.current, nextGuests.current]);
 
 	const handleBack = () => {
 		history.goBack();
 	};
 
-	const handleOpenEditLocation = () => {
-		setEditMenu({
+	const handleOpenEditMenu = (field: "location" | "dates" | "guests") => {
+		const newEditMenuState = {
 			...editMenuDefault,
-			location: true,
-		});
+		};
+
+		newEditMenuState[field] = true;
+
+		setEditMenu(newEditMenuState);
 	};
 
 	const handleEditFilter = () => {};
+
+	const handleSubmitGuestsEdit = () => {
+		nextGuests.current = guests;
+
+		handleCloseEditMenu();
+	};
+
+	const handleSubmitDateEdit = () => {
+		let checkOut = dates.endDate;
+		if (dates.startDate.toString() === dates.endDate.toString()) {
+			checkOut = addDays(dates.endDate, 1);
+		}
+		nextDates.current = {
+			checkIn: dates.startDate,
+			checkOut,
+		};
+
+		handleCloseEditMenu();
+	};
 
 	const handleDateChange = (ranges: OnDateRangeChangeProps) => {
 		const start = ranges.selection.startDate as Date;
@@ -145,64 +192,39 @@ const SearchPageTopBar = ({
 							<FilterSvg />
 						</button>
 
-						<div
-							className="SearchPage__top-bar__edit-dropdown"
-							aria-hidden={!edit}
-						>
-							<div className="upper">
-								<h2>Edit your search</h2>
-							</div>
-							<div className="lower">
-								<div>
-									<button
-										className="lower__region"
-										onClick={handleOpenEditLocation}
-									>
-										<div className="item">
-											<SearchSvg />
-											<span>
-												{region ? region : "Nearby"}
-											</span>
-										</div>
-									</button>
-									<div className="lower__date-guests">
-										<button className="date">
-											<div className="item">
-												<CalendarSvg />
-												<span>{searchDates}</span>
-											</div>
-										</button>
-										<button className="guests">
-											<div className="item">
-												<GuestsSvg />
-												<span>{searchGuests}</span>
-											</div>
-										</button>
-									</div>
-								</div>
-							</div>
-						</div>
+						<SearchPageTopBarDropdown
+							handleOpenEditMenu={handleOpenEditMenu}
+							region={region}
+							searchDates={searchDates}
+							searchGuests={searchGuests}
+							edit={edit}
+						/>
 					</div>
 
-					{createPortal(
-						<div
-							className="edit-menu edit-menu--location"
-							aria-hidden={!editMenu.location}
-						>
-							<MobileEditLocation
-								handleFormClose={handleCloseEditMenu}
-								location={location}
-								setLocation={setLocation}
-							/>
-						</div>,
-						document?.querySelector("#root") as Element
-					)}
-					{/* <div>
-						<MobileEditDates />
-					</div>
-					<div>
-						<MobileEditGuests />
-					</div> */}
+					<CSSTransition
+						in={Object.values(editMenu).some(
+							(field) => field === true
+						)}
+						timeout={300}
+						unmountOnExit
+						classNames="edit-menu__menu"
+						nodeRef={menuRef}
+					>
+						<EditMenuPortal
+							editMenu={editMenu}
+							menuRef={menuRef}
+							handleCloseEditMenu={handleCloseEditMenu}
+							location={location}
+							setLocation={setLocation}
+							dates={dates}
+							handleDateChange={handleDateChange}
+							handleSubmitDateEdit={handleSubmitDateEdit}
+							guests={guests}
+							setGuests={setGuests}
+							handleSubmitGuestsEdit={handleSubmitGuestsEdit}
+							edit={edit}
+						/>
+					</CSSTransition>
 
 					<div className="SearchPage__top-bar--filler" />
 				</>

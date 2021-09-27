@@ -348,13 +348,24 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
-	border-top-left-radius: 32px;
-	border-top-right-radius: 32px;
-	padding: 3rem;
+	padding: 2rem;
 	overflow-y: auto;
 	display: none;
 
-	&--location[aria-hidden="false"] {
+	&[aria-hidden="false"] {
 		display: block;
+	}
+
+	&__menu {
+		&-enter {
+			transform: translateY(100%);
+			opacity: 10%;
+		}
+
+		&-enter-active {
+			transform: translateY(0);
+			opacity: 100%;
+			transition: 300ms ease-out;
+		}
 	}
 }

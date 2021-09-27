@@ -9,6 +9,7 @@ interface Props {
 	setStage?: (stage: string) => void;
 	dates: IDate;
 	handleDateChange: (ranges: OnDateRangeChangeProps) => void;
+	submitEdit?: () => void;
 	edit?: boolean;
 }
 
@@ -16,7 +17,8 @@ const MobileEditDates = ({
 	handleCloseForm,
 	setStage,
 	dates,
-	handleDateChange,
+  handleDateChange,
+  submitEdit,
 	edit,
 }: Props) => {
 	const handleBack = (e: FormEvent) => {
@@ -35,7 +37,7 @@ const MobileEditDates = ({
 		if (setStage) {
 			setStage("guests");
 		} else {
-			handleCloseForm && handleCloseForm();
+			submitEdit && submitEdit();
 		}
 	};
 

@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, MouseEvent } from "react";
+import { useContext, useState, useEffect, MouseEvent, useRef } from "react";
 import { History } from "history";
 import { useBasicSearchQuery } from "../generated/graphql";
 import { AppContext } from "../context/AppContext";
@@ -16,6 +16,8 @@ interface Props {
 
 const SearchPage = ({ history }: Props) => {
 	const searchParams = new URLSearchParams(history.location.search);
+
+	const previousURL = useRef(searchParams.toString());
 	const isRegionSearch = !history.location.search.includes("guests");
 	const { cloudinary, mobile } = useContext(AppContext);
 	const [isLoading, setIsLoading] = useState(false);
@@ -30,6 +32,7 @@ const SearchPage = ({ history }: Props) => {
 	const smoking = !!searchParams.get("smoking");
 	const pets = !!searchParams.get("pets");
 	const superhost = !!searchParams.get("superhost");
+	const entire = !!searchParams.get("entire");
 
 	const { loading, error, data, fetchMore } = useBasicSearchQuery({
 		variables: {
@@ -42,13 +45,19 @@ const SearchPage = ({ history }: Props) => {
 			listingType,
 			languages,
 			smoking,
+			entire,
 			pets,
 			superhost,
 		},
 	});
 
 	useEffect(() => {
-		// Any time the url params change, it'll fetch a new dataset
+		// Skip any unnecessary renders/data fetches
+		if (searchParams.toString() === previousURL.current) return;
+
+		previousURL.current = searchParams.toString();
+
+		// Any time the url params changes, it'll fetch a new dataset
 		const currentPage = parseInt(searchParams.get("page") as string);
 		setIsLoading(true);
 		fetchMore({
@@ -149,7 +158,7 @@ const SearchPage = ({ history }: Props) => {
 
 				<div className="SearchPage__results">
 					<ul className="SearchPage__results__list">
-						{data?.basicSearch?.listings.length === 0 ? (
+						{data?.basicSearch?.count === 0 ? (
 							<div className="no-results">
 								<div>No results</div>
 								<span>

@@ -191,6 +191,7 @@ const Query = objectType({
         tags: list(nonNull(stringArg())),
         listingType: list(nonNull(stringArg())),
         languages: list(nonNull(stringArg())),
+        entire: booleanArg(),
         pets: booleanArg(),
         smoking: booleanArg(),
         superhost: booleanArg(),
@@ -204,7 +205,7 @@ const Query = objectType({
             where: Prisma.ListingWhereInput;
           };
 
-          if (/anywhere/i.test(args.region) || !args.region) {
+          if (/anywhere/i.test(args.region as string) || !args.region) {
             options = {
               skip: isCount ? 0 : args.offset,
               take: isCount ? 100 : 10,
@@ -310,9 +311,10 @@ const Query = objectType({
         //     ),
         //   ),
         // );
-
-        console.log("Listings Length: ", listings.length);
-
+        console.log('REGION: ', args.region);
+        console.log('COUNT: ', count);
+        console.log('LISTINGS LENGTH', listings.length);
+        console.log(listings.map((l) => l.title));
         return { count, listings, offset: args.offset };
       },
     });

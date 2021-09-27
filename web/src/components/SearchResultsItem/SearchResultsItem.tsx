@@ -36,6 +36,16 @@ const SearchResultsItem = ({
 		listing.id
 	}/image-0`;
 
+	const renderReviewScore = () => {
+		if (!listing.reviewsCount) {
+			return "No reviews";
+		} else if (listing.reviewsCount && !listing.averageScore) {
+			return "No scores";
+		} else {
+			return listing.averageScore;
+		}
+	};
+
 	return (
 		<li className="SearchResultsItem">
 			<a href={`/listing/${listing.id}`}>
@@ -53,11 +63,7 @@ const SearchResultsItem = ({
 				<div className="SearchResultsItem__details">
 					<div className="score">
 						<StarSvg />
-						<span>
-							{listing.reviewsCount === 0
-								? "No reviews"
-								: listing.averageScore}
-						</span>
+						<span>{renderReviewScore()}</span>
 						<span>({listing.reviewsCount})</span>
 					</div>
 					<div className="type">

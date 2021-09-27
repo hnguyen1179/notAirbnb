@@ -58,7 +58,7 @@ function App() {
 			},
 		};
 	});
-	
+
 	const client = useMemo(() => {
 		return new ApolloClient({
 			link: authLink.concat(httpLink),
@@ -107,7 +107,18 @@ function App() {
 										offset: existing.offset,
 									};
 								},
-								keyArgs: false,
+								keyArgs: [
+									"region",
+									"checkIn",
+									"checkOut",
+									"guests",
+									"tags",
+									"listingType",
+									"languages",
+									"pets",
+									"smoking",
+									"superhost",
+								],
 								merge(
 									existing = { count: 0, listings: [] },
 									incoming,
