@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useReducer } from "react";
 import { History } from "history";
 
 import { ReactComponent as BackSvg } from "../../assets/icons/back.svg";
@@ -13,6 +13,7 @@ import { addDays, format } from "date-fns";
 import { CSSTransition } from "react-transition-group";
 import SearchPageTopBarDropdown from "./SearchPageTopBarDropdown";
 import EditMenuPortal from "./EditMenuPortal";
+import { editQueryReducer } from "../../reducers/editQueryReducer";
 
 interface URLParams {
 	region: string;
@@ -45,23 +46,25 @@ const SearchPageTopBar = ({
 	openFilter,
 	setOpenFilter,
 }: Props) => {
-	const initialRender = useRef(true);
-	const nextDates = useRef({
-		checkIn: new Date(URLParams.checkIn),
-		checkOut: new Date(URLParams.checkOut),
-	});
-	const nextGuests = useRef(URLParams.guests);
+	// For use with CSSTransition; ref based (React way)
 	const menuRef = useRef<HTMLDivElement>(null);
 
-	const [edit, setEdit] = useState(false);
-	const [editMenu, setEditMenu] = useState(editMenuDefault);
-	const [location, setLocation] = useState(URLParams.region);
-	const [dates, setDates] = useState<IDate>({
-		startDate: new Date(URLParams.checkIn),
-		endDate: new Date(URLParams.checkOut),
-		key: "selection",
-	});
-	const [guests, setGuests] = useState(URLParams.guests);
+	// This bundles the URLParams from SearchPage until one big state for
+	// TopBar to manage. When finalized; the their counterpart refs are updated
+	const [{ location, dates, guests, edit, editMenu }, dispatch] = useReducer(
+		editQueryReducer,
+		{
+			location: URLParams.region,
+			dates: {
+				startDate: new Date(URLParams.checkIn),
+				endDate: new Date(URLParams.checkOut),
+				key: "selection",
+			},
+			guests: URLParams.guests,
+			edit: false,
+			editMenu: editMenuDefault,
+		}
+	);
 
 	// Close top bar on scroll
 	useEffect(() => {
@@ -71,31 +74,26 @@ const SearchPageTopBar = ({
 		};
 	}, []);
 
+	// Listens for openFilter stage change from SearchPage to open filter from bar
 	useEffect(() => {
 		if (openFilter) {
-			window.addEventListener("scroll", handleCloseEdit);
-			setEditMenu({ ...editMenuDefault, tags: true });
+			dispatch({ type: "openEditMenu", value: "tags" });
 		}
 	}, [openFilter]);
 
-	useEffect(() => {
-		if (initialRender.current) {
-			initialRender.current = false;
-			return;
-		}
+	// Submits current state to -> new URLParams
+	const submitNewQuery = () => {
+		dispatch({ type: "closeEdit" });
 
-		setEdit(false);
+		let checkOut = dates.endDate;
+		if (dates.startDate.toString() === dates.endDate.toString()) {
+			checkOut = addDays(dates.endDate, 1);
+		}
 
 		const nextSearch = new URLSearchParams(history.location.search);
 		nextSearch.set("region", location.split(", ")[0]);
-		nextSearch.set(
-			"check-in",
-			format(nextDates.current.checkIn, "M-d-yyy")
-		);
-		nextSearch.set(
-			"check-out",
-			format(nextDates.current.checkOut, "M-d-yyy")
-		);
+		nextSearch.set("check-in", format(dates.startDate, "M-d-yyy"));
+		nextSearch.set("check-out", format(checkOut, "M-d-yyy"));
 		nextSearch.set("guests", guests.toString());
 		nextSearch.set("page", "1");
 
@@ -103,7 +101,7 @@ const SearchPageTopBar = ({
 			pathname: history.location.pathname,
 			search: nextSearch.toString(),
 		});
-	}, [location, nextDates.current, nextGuests.current]);
+	};
 
 	const handleBack = () => {
 		history.goBack();
@@ -112,55 +110,36 @@ const SearchPageTopBar = ({
 	const handleOpenEditMenu = (
 		field: "location" | "dates" | "guests" | "tags"
 	) => {
-		const newEditMenuState = {
-			...editMenuDefault,
-		};
-		window.addEventListener("scroll", handleCloseEdit);
-
-		newEditMenuState[field] = true;
-
-		setEditMenu(newEditMenuState);
-	};
-
-	const handleSubmitGuestsEdit = () => {
-		nextGuests.current = guests;
-
-		handleCloseEditMenu();
-	};
-
-	const handleSubmitDateEdit = () => {
-		let checkOut = dates.endDate;
-		if (dates.startDate.toString() === dates.endDate.toString()) {
-			checkOut = addDays(dates.endDate, 1);
-		}
-		nextDates.current = {
-			checkIn: dates.startDate,
-			checkOut,
-		};
-
-		handleCloseEditMenu();
+		dispatch({ type: "openEditMenu", value: field });
 	};
 
 	const handleDateChange = (ranges: OnDateRangeChangeProps) => {
 		const start = ranges.selection.startDate as Date;
 		const end = ranges.selection.endDate as Date;
 
-		setDates({ ...dates, startDate: start, endDate: end });
+		dispatch({
+			type: "field",
+			field: "dates",
+			value: {
+				startDate: start,
+				endDate: end,
+				key: "selection",
+			},
+		});
 	};
 
 	const handleOpenEdit = () => {
-		setEdit(true);
+		dispatch({ type: "openEdit" });
 	};
 
 	const handleCloseEdit = () => {
-		setEdit(false);
+		dispatch({ type: "closeEdit" });
 	};
 
 	const handleCloseEditMenu = () => {
 		document.body.style.overflow = "unset";
 		setOpenFilter(false);
-		// openFilter.current = false;
-		setEditMenu(editMenuDefault);
+		dispatch({ type: "closeEditMenu" });
 	};
 
 	const backButtonEvent = edit ? handleCloseEdit : handleBack;
@@ -218,14 +197,25 @@ const SearchPageTopBar = ({
 							menuRef={menuRef}
 							handleCloseEditMenu={handleCloseEditMenu}
 							location={location}
-							setLocation={setLocation}
+							setLocation={(value: string) =>
+								dispatch({
+									type: "field",
+									field: "location",
+									value,
+								})
+							}
 							dates={dates}
 							handleDateChange={handleDateChange}
-							handleSubmitDateEdit={handleSubmitDateEdit}
 							guests={guests}
-							setGuests={setGuests}
-							handleSubmitGuestsEdit={handleSubmitGuestsEdit}
+							setGuests={(value: number) =>
+								dispatch({
+									type: "field",
+									field: "guests",
+									value,
+								})
+							}
 							edit={edit}
+							submitNewQuery={submitNewQuery}
 						/>
 					</CSSTransition>
 

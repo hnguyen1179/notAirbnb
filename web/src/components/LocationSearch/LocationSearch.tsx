@@ -1,6 +1,7 @@
-import React, { useEffect, useState, useRef, FormEvent } from "react";
+import { useEffect, useRef } from "react";
 import RadioButton from "./RadioButton";
 import { UseFormReturn } from "react-hook-form";
+import { initialState } from "../../reducers/editQueryReducer";
 
 const LOCATIONS = [
 	"Anywhere",
@@ -15,7 +16,7 @@ const LOCATIONS = [
 ];
 
 interface Props {
-	next: (e: FormEvent) => void;
+	next: () => void;
 	form?: UseFormReturn;
 	location?: string;
 	setLocation?: (x: string) => void;
@@ -23,6 +24,16 @@ interface Props {
 
 const LocationSearch = ({ form, location, setLocation, next }: Props) => {
 	const focused = useRef(false);
+	const initialRender = useRef(true);
+
+	useEffect(() => {
+		if (initialRender.current) {
+			initialRender.current = false;
+			return;
+		}
+
+		next();
+	}, [location]);
 
 	const handleRadioSelect = (e: any) => {
 		// The reason why we use a 'useRef' instead of a 'useState'
@@ -36,7 +47,6 @@ const LocationSearch = ({ form, location, setLocation, next }: Props) => {
 
 		if (setLocation) setLocation(e.currentTarget.value);
 		if (form) form.setValue("location", e.currentTarget.value);
-		next(e);
 	};
 
 	const handleEnter = (e: React.KeyboardEvent) => {

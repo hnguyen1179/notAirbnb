@@ -5,12 +5,12 @@ import MobileSearchForm from "./MobileSearchForm";
 const MobileSearch = React.forwardRef<HTMLDivElement>((props, ref) => {
 	const [showForm, setShowForm] = useState(false);
 
-	const handleFormOpen = (e: React.SyntheticEvent) => {
+	const handleFormOpen = () => {
 		setShowForm(true);
 		document.body.style.overflow = "hidden";
 	};
 
-	const handleFormClose = (e: React.SyntheticEvent) => {
+	const handleFormClose = () => {
 		setShowForm(false);
 		document.body.style.overflow = "initial";
 	};

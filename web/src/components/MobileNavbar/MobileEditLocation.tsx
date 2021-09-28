@@ -1,12 +1,13 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useEffect } from "react";
 import LocationSearch from "../LocationSearch/LocationSearch";
 import { ReactComponent as BackSvg } from "../../assets/icons/back.svg";
 
 interface Props {
-	handleFormClose?: (e: FormEvent) => void;
+	handleFormClose?: () => void;
 	location: string;
 	setLocation: (location: string) => void;
 	setStage?: (stage: string) => void;
+	submitEdit?: () => void;
 }
 
 const MobileEditLocation = ({
@@ -14,12 +15,13 @@ const MobileEditLocation = ({
 	location,
 	setLocation,
 	setStage,
+	submitEdit,
 }: Props) => {
-	const handleNext = (e: FormEvent) => {
+	const handleNext = () => {
 		if (setStage) {
 			setStage("dates");
 		} else {
-			handleFormClose && handleFormClose(e);
+			submitEdit && submitEdit();
 		}
 	};
 
@@ -37,7 +39,7 @@ const MobileEditLocation = ({
 				<LocationSearch
 					location={location}
 					setLocation={setLocation}
-					next={(e: FormEvent) => handleNext(e)}
+					next={handleNext}
 				/>
 			</div>
 		</div>

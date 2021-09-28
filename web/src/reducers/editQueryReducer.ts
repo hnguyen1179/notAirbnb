@@ -33,7 +33,7 @@ export interface EditQueryState {
 interface Action {
 	type: string;
 	field?: string;
-	value?: string | number | Date;
+	value?: string | number | IDate;
 }
 
 export const editQueryReducer = (
@@ -54,8 +54,11 @@ export const editQueryReducer = (
 			};
 		}
 		case "closeEdit": {
+			document.body.style.overflow = "unset";
+
 			return {
 				...state,
+				editMenu: initialEditMenu,
 				edit: false,
 			};
 		}

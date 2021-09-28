@@ -1,22 +1,18 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
-import { DateRange, OnDateRangeChangeProps } from "react-date-range";
+import { OnDateRangeChangeProps } from "react-date-range";
 import { addDays, format } from "date-fns";
 
-import NumberGuests from "./NumberGuests";
-import LocationSearch from "../LocationSearch/LocationSearch";
-import { disableDay } from "../../utils/disableDays";
-import { ReactComponent as BackSvg } from "../../assets/icons/back.svg";
-import { ReactComponent as SearchSvg } from "../../assets/icons/search.svg";
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { RouteComponentProps, withRouter } from "react-router";
 import { History } from "history";
+
 import MobileEditLocation from "./MobileEditLocation";
 import MobileEditDates from "./MobileEditDates";
 import MobileEditGuests from "./MobileEditGuests";
 interface Props extends RouteComponentProps {
-	handleFormClose: (e: React.SyntheticEvent) => void;
+	handleFormClose: () => void;
 	history: History;
 }
 

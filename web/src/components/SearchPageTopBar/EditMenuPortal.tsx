@@ -16,11 +16,10 @@ interface Props {
 	setLocation: (location: string) => void;
 	dates: IDate;
 	handleDateChange: (dates: OnDateRangeChangeProps) => void;
-	handleSubmitDateEdit: () => void;
 	guests: number;
 	setGuests: (guests: number) => void;
-	handleSubmitGuestsEdit: () => void;
 	edit: boolean;
+	submitNewQuery: () => void;
 }
 
 const EditMenuPortal = ({
@@ -31,11 +30,10 @@ const EditMenuPortal = ({
 	setLocation,
 	dates,
 	handleDateChange,
-	handleSubmitDateEdit,
 	guests,
 	setGuests,
-	handleSubmitGuestsEdit,
 	edit,
+	submitNewQuery,
 }: Props) => {
 	return (
 		<>
@@ -52,6 +50,7 @@ const EditMenuPortal = ({
 							handleFormClose={handleCloseEditMenu}
 							location={location}
 							setLocation={setLocation}
+							submitEdit={submitNewQuery}
 						/>
 					)}
 					{editMenu.dates && (
@@ -59,7 +58,7 @@ const EditMenuPortal = ({
 							handleCloseForm={handleCloseEditMenu}
 							dates={dates}
 							handleDateChange={handleDateChange}
-							submitEdit={handleSubmitDateEdit}
+							submitEdit={submitNewQuery}
 							edit={edit}
 						/>
 					)}
@@ -70,7 +69,7 @@ const EditMenuPortal = ({
 							dates={dates}
 							guests={guests}
 							setGuests={setGuests}
-							submitEdit={handleSubmitGuestsEdit}
+							submitEdit={submitNewQuery}
 						/>
 					)}
 					{editMenu.tags && (
