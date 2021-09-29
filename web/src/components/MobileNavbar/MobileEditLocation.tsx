@@ -18,11 +18,7 @@ const MobileEditLocation = ({
 	submitEdit,
 }: Props) => {
 	const handleNext = () => {
-		if (setStage) {
-			setStage("dates");
-		} else {
-			submitEdit && submitEdit();
-		}
+		setStage && setStage("dates");
 	};
 
 	return (
@@ -40,6 +36,7 @@ const MobileEditLocation = ({
 					location={location}
 					setLocation={setLocation}
 					next={handleNext}
+					submitEdit={submitEdit}
 				/>
 			</div>
 		</div>

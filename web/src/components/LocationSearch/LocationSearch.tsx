@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import RadioButton from "./RadioButton";
 import { UseFormReturn } from "react-hook-form";
 
@@ -15,17 +15,19 @@ const LOCATIONS = [
 ];
 
 interface Props {
-	next: () => void;
+	next?: () => void;
 	form?: UseFormReturn;
 	location?: string;
 	setLocation?: (x: string) => void;
+	submitEdit?: () => void;
 }
 
-const LocationSearch = ({ form, location, setLocation, next }: Props) => {
+const LocationSearch = ({ form, location, setLocation, next, submitEdit }: Props) => {
+	const [radioSelected, setRadioSelected] = useState(false);
 	const focused = useRef(false);
 	const initialRender = useRef(true);
 
-	// Automatically runs next(), which relies on location's correct value,
+	// Automatically runs submitEdit(), which relies on location's correct value,
 	// which requires it to be ran after the fact that the handleRadioSelect fx
 	// runs finishes
 	useEffect(() => {
@@ -35,22 +37,19 @@ const LocationSearch = ({ form, location, setLocation, next }: Props) => {
 			return;
 		}
 
-		next();
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [location]);
+		submitEdit && submitEdit();
+	}, [radioSelected]);
 
 	const handleRadioSelect = (e: any) => {
-		// The reason why we use a 'useRef' instead of a 'useState'
-		// is that 'setFocused' causes a rerender within the 'removeFocus()'
-		// function, which will cause 'active' to be removed from 'searchResults'
-		// meaning pointer-events: none to be set, thereby preventing the
-		// handleRadioSelect onClick to be triggered
-
-		// changing 'focused' via useRef's current does not cause a rerender,
-		// and so active is still set on 'searchResults' where 'removeFocus()' is ran
-
+		// setLocation is for the mobile
 		if (setLocation) setLocation(e.currentTarget.value);
+
+		// form is for the desktop
 		if (form) form.setValue("location", e.currentTarget.value);
+
+		// will setStage("dates")
+		next && next();
+		setRadioSelected(true);
 	};
 
 	const handleEnter = (e: React.KeyboardEvent) => {

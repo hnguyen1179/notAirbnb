@@ -16,47 +16,64 @@ import Footer from "../components/Footer/Footer";
 import MobileNavbar from "../components/MobileNavbar/MobileNavbar";
 import SearchResultsItem from "../components/SearchResultsItem/SearchResultsItem";
 import SearchResultsPagination from "../components/SearchResultsPagination/SearchResultsPagination";
+import { URLParamsProvider } from "../context/URLParamsContext";
 
 interface Props {
 	history: History<any>;
 }
 
-const SearchPage = ({ history }: Props) => {
-	const searchParams = new URLSearchParams(history.location.search);
-	const [openFilter, setOpenFilter] = useState(false);
+export interface BasicSearchVariables {
+	region: string;
+	guests: number;
+	checkIn: string;
+	checkOut: string;
+	tags: string[] | undefined;
+	listingType: string[] | undefined;
+	languages: string[] | undefined;
+	smoking: boolean;
+	pets: boolean;
+	superhost: boolean;
+	entire: boolean;
+	offset: number;
+}
 
-	const previousURL = useRef(searchParams.toString());
-	// Searches done via landing "region" icons
-	const isRegionSearch = !history.location.search.includes("guests");
+const SearchPage = ({ history }: Props) => {
+	const searchParams = useMemo(
+		() => new URLSearchParams(history.location.search),
+		[history.location.search]
+	);
+
 	const { cloudinary, mobile } = useContext(AppContext);
 
-	const region = searchParams.get("region") as string;
-	const guests = parseInt(searchParams.get("guests") as string);
-	const checkIn = searchParams.get("check-in") as string;
-	const checkOut = searchParams.get("check-out") as string;
-	const tags = (searchParams.get("tags") as string)?.split(";");
-	const listingType = (searchParams.get("listingType") as string)?.split(";");
-	const languages = (searchParams.get("languages") as string)?.split(";");
-	const smoking = !!searchParams.get("smoking");
-	const pets = !!searchParams.get("pets");
-	const superhost = !!searchParams.get("superhost");
-	const entire = !!searchParams.get("entire");
+	const [openFilter, setOpenFilter] = useState(false);
+
+	// Searches done via landing "region" icons
+	const isRegionSearch = !history.location.search.includes("guests");
+	// Helps prevent unnecessary data fetches
+	const previousURL = useRef(searchParams.toString());
+
+	const variables: BasicSearchVariables = useMemo(
+		() => ({
+			region: searchParams.get("region") as string,
+			guests: parseInt(searchParams.get("guests") as string),
+			checkIn: searchParams.get("check-in") as string,
+			checkOut: searchParams.get("check-out") as string,
+			tags: (searchParams.get("tags") as string)?.split(";"),
+			listingType: (searchParams.get("listingType") as string)?.split(
+				";"
+			),
+			languages: (searchParams.get("languages") as string)?.split(";"),
+			smoking: !!searchParams.get("smoking"),
+			pets: !!searchParams.get("pets"),
+			superhost: !!searchParams.get("superhost"),
+			entire: !!searchParams.get("entire"),
+			offset: (parseInt(searchParams.get("page") as string) - 1) * 10,
+		}),
+		[searchParams]
+	);
 
 	const { loading, error, data, fetchMore } = useBasicSearchQuery({
-		variables: {
-			region,
-			guests,
-			checkIn,
-			checkOut,
-			offset: (parseInt(searchParams.get("page") as string) - 1) * 10,
-			tags, // array, semi-colon delimit
-			listingType, //array
-			languages, // array
-			smoking, // boolean
-			entire, // boolean
-			pets, // boolean
-			superhost, // boolean
-		},
+		variables,
 	});
 
 	useEffect(() => {
@@ -65,37 +82,12 @@ const SearchPage = ({ history }: Props) => {
 		previousURL.current = searchParams.toString();
 
 		// Any time the url params changes, it'll fetch a new dataset
-		const currentPage = parseInt(searchParams.get("page") as string);
+		// const currentPage = parseInt(searchParams.get("page") as string);
 		(async () =>
 			fetchMore({
-				variables: {
-					region,
-					guests,
-					checkIn,
-					checkOut,
-					offset: (currentPage - 1) * 10,
-					tags,
-					listingType,
-					languages,
-					smoking,
-					pets,
-					superhost,
-				},
+				variables,
 			}))();
-	}, [
-		checkIn,
-		checkOut,
-		fetchMore,
-		guests,
-		languages,
-		listingType,
-		pets,
-		region,
-		searchParams,
-		smoking,
-		superhost,
-		tags,
-	]);
+	}, [fetchMore, searchParams, variables]);
 
 	const renderListings = useMemo(() => {
 		return data?.basicSearch?.listings.map((listing) => {
@@ -105,12 +97,17 @@ const SearchPage = ({ history }: Props) => {
 					key={listing.id}
 					cloudinary={cloudinary}
 					listing={listing}
-					checkIn={new Date(checkIn)}
-					checkOut={new Date(checkOut as string)}
+					checkIn={new Date(variables.checkIn)}
+					checkOut={new Date(variables.checkOut)}
 				/>
 			);
 		});
-	}, [checkIn, checkOut, cloudinary, data?.basicSearch?.listings]);
+	}, [
+		variables.checkIn,
+		variables.checkOut,
+		cloudinary,
+		data?.basicSearch?.listings,
+	]);
 
 	if (error) {
 		console.log(JSON.stringify(error, null, 2));
@@ -138,102 +135,100 @@ const SearchPage = ({ history }: Props) => {
 
 	const searchDetails = isRegionSearch
 		? "Add dates"
-		: `${format(new Date(checkIn), "MMM d")} –
-								${format(new Date(checkOut), "MMM d")}${
-				format(new Date(checkOut), "yyyy") === "2022" ? ", 2022 " : " "
-		  }· ${guests} guest${guests === 1 ? "" : "s"}`;
+		: `${format(new Date(variables.checkIn), "MMM d")} –
+								${format(new Date(variables.checkOut), "MMM d")}${
+				format(new Date(variables.checkOut), "yyyy") === "2022"
+					? ", 2022 "
+					: " "
+		  }· ${variables.guests} guest${variables.guests === 1 ? "" : "s"}`;
 
 	const generateCategory = () => {
-		if (listingType?.includes("Entire residential home")) {
+		if (variables.listingType?.includes("Entire residential home")) {
 			return "Entire homes";
-		} else if (pets) {
+		} else if (variables.pets) {
 			return "Pets allowed";
-		} else if (tags?.includes("Summer")) {
+		} else if (variables.tags?.includes("Summer")) {
 			return "Summer stays";
-		} else if (tags?.includes("Nature")) {
+		} else if (variables.tags?.includes("Nature")) {
 			return "Nature getaways";
 		}
 	};
 
 	const renderRegion = () => {
-		if (!region) {
+		if (!variables.region) {
 			return generateCategory();
-		} else if (region === "Anywhere") {
+		} else if (variables.region === "Anywhere") {
 			return "Stays anywhere";
 		} else {
-			return `Stays in ${region}`;
+			return `Stays in ${variables.region}`;
 		}
 	};
 
-	const URLParams = {
-		region,
-		guests,
-		checkIn,
-		checkOut,
-	}
-
 	return (
-		<div className="SearchPage">
-			<SearchPageTopBar
-				mobile={mobile}
-				URLParams={URLParams}
-				searchDetails={searchDetails}
-				history={history}
-				openFilter={openFilter}
-				setOpenFilter={setOpenFilter}
-			/>
+		<URLParamsProvider history={history} variables={variables}>
+			<div className="SearchPage">
+				<SearchPageTopBar
+					mobile={mobile}
+					URLParams={variables} // Provided
+					searchDetails={searchDetails}
+					history={history} // Provided
+					openFilter={openFilter}
+					setOpenFilter={setOpenFilter}
+				/>
 
-			<div className="SearchPage-container">
-				<div className="SearchPage__results-details">
-					<span>
-						{data?.basicSearch?.count} stays{" "}
-						{isRegionSearch ? "" : `· ${searchDetails}`}
-					</span>
-					<h1>{renderRegion()}</h1>
-				</div>
+				<div className="SearchPage-container">
+					<div className="SearchPage__results-details">
+						<span>
+							{data?.basicSearch?.count} stays{" "}
+							{isRegionSearch ? "" : `· ${searchDetails}`}
+						</span>
+						<h1>{renderRegion()}</h1>
+					</div>
 
-				<button
-					className="SearchPage__button-filter"
-					onClick={() => setOpenFilter(true)}
-				>
-					<div>Filters</div>
-				</button>
+					<button
+						className="SearchPage__button-filter"
+						onClick={() => setOpenFilter(true)}
+					>
+						<div>Filters</div>
+					</button>
 
-				<div className="SearchPage__results">
-					<ul className="SearchPage__results__list">
-						{data?.basicSearch?.count === 0 && (
-							<div className="no-results">
-								<div>No results</div>
-								<span>
-									To get more results, try adjusting your
-									search by changing your dates
-								</span>
+					<div className="SearchPage__results">
+						<ul className="SearchPage__results__list">
+							{data?.basicSearch?.count === 0 && (
+								<div className="no-results">
+									<div>No results</div>
+									<span>
+										To get more results, try adjusting your
+										search by changing your dates
+									</span>
 
-								<div className="divider" />
-							</div>
+									<div className="divider" />
+								</div>
+							)}
+							{renderListings}
+						</ul>
+
+						{(data?.basicSearch?.count || 0) > 10 && (
+							<SearchResultsPagination
+								count={data?.basicSearch?.count || 0}
+								currentPage={
+									parseInt(
+										searchParams.get("page") as string
+									) || 1
+								}
+								handlePageClick={handlePageClick}
+							/>
 						)}
-						{renderListings}
-					</ul>
+					</div>
+				</div>
 
-					{(data?.basicSearch?.count || 0) > 10 && (
-						<SearchResultsPagination
-							count={data?.basicSearch?.count || 0}
-							currentPage={
-								parseInt(searchParams.get("page") as string) ||
-								1
-							}
-							handlePageClick={handlePageClick}
-						/>
-					)}
+				{mobile && <MobileNavbar />}
+
+				<div className="Footer-container">
+					<Footer />
 				</div>
 			</div>
-
-			{mobile && <MobileNavbar />}
-
-			<div className="Footer-container">
-				<Footer />
-			</div>
-		</div>
+		</URLParamsProvider>
 	);
 };
 

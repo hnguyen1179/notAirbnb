@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useReducer } from "react";
+import { useEffect, useRef, useReducer } from "react";
 import { History } from "history";
 
 import { ReactComponent as BackSvg } from "../../assets/icons/back.svg";
@@ -7,7 +7,6 @@ import { ReactComponent as NegativeSvg } from "../../assets/icons/negative.svg";
 
 import Navbar from "../Navbar/Navbar";
 
-import { IDate } from "../../components/MobileNavbar/MobileSearchForm";
 import { OnDateRangeChangeProps } from "react-date-range";
 import { addDays, format } from "date-fns";
 import { CSSTransition } from "react-transition-group";
@@ -23,6 +22,13 @@ interface URLParams {
 	guests: number;
 	checkIn: string;
 	checkOut: string;
+	tags: string[];
+	listingType: string[];
+	languages: string[];
+	smoking: boolean;
+	pets: boolean;
+	superhost: boolean;
+	entire: boolean;
 }
 
 interface Props {
@@ -54,20 +60,24 @@ const SearchPageTopBar = ({
 
 	// This bundles the URLParams from SearchPage until one big state for
 	// TopBar to manage. When finalized; the their counterpart refs are updated
-	const [{ location, dates, guests, edit, editMenu }, dispatch] = useReducer(
-		editQueryReducer,
-		{
-			location: URLParams.region,
-			dates: {
-				startDate: new Date(URLParams.checkIn),
-				endDate: new Date(URLParams.checkOut),
-				key: "selection",
-			},
-			guests: URLParams.guests,
-			edit: false,
-			editMenu: editMenuDefault,
-		}
-	);
+	const [state, dispatch] = useReducer(editQueryReducer, {
+		location: URLParams.region,
+		dates: {
+			startDate: new Date(URLParams.checkIn),
+			endDate: new Date(URLParams.checkOut),
+			key: "selection",
+		},
+		guests: URLParams.guests,
+		tags: URLParams.tags || [],
+		listingType: URLParams.listingType || [],
+		languages: URLParams.languages || [],
+		smoking: URLParams.smoking,
+		pets: URLParams.pets,
+		superhost: URLParams.superhost,
+		entire: URLParams.entire,
+		edit: false,
+		editMenu: editMenuDefault,
+	});
 
 	// Close top bar on scroll
 	useEffect(() => {
@@ -86,8 +96,36 @@ const SearchPageTopBar = ({
 
 	// Submits current state to -> new URLParams
 	const submitNewQuery = () => {
+		// const editFilters = (filters) => {
+		// dispatch("editFilters", filters)
+
+		// Todo:... Create a wrapper function that takes in an object of filters
+		// and sets the new state of the reducer to the filters. This wrapper function
+		// will be given to FiltersEditMenu page, which will be ran after anything
+		// is added onto the the current state
+
+		// Maybe not run this wrapper function on every change...
+		// run this function to create the new reducer state when you click on
+		// "Show Results", and then run the submitNewQuery
+
+		// This might run you into the problem of submiting a new query on the old state
+		// since dispatch(...) is asynchronous
+
+		// and then onClick on the
+		// "Show Results" button on the filters page, run the submitNewQuery function
+		// which pulls the state out of the reducer and sets it onto a new
+		// URL Param, and goes to that URL, therefore creating a new search,
+		// and updating the incoming props on TopBar to reflect the new URL Params
+
+		// Maybe create a context? Prevent prop dropping the URL Params
+		// and perhaps some methods all the way down?
+		// useContext and useReducer ??
+		// }
+
+		const { dates, location, guests } = state;
 		document.body.style.overflow = "unset";
 		dispatch({ type: "closeEdit" });
+		dispatch({ type: "closeEditMenu" });
 
 		let checkOut = dates.endDate;
 		if (dates.startDate.toString() === dates.endDate.toString()) {
@@ -144,11 +182,11 @@ const SearchPageTopBar = ({
 		dispatch({ type: "closeEditMenu" });
 	};
 
-	const backButtonEvent = edit ? handleCloseEdit : handleBack;
-	const backButtonSvg = edit ? <NegativeSvg id="close" /> : <BackSvg />;
+	const backButtonEvent = state.edit ? handleCloseEdit : handleBack;
+	const backButtonSvg = state.edit ? <NegativeSvg id="close" /> : <BackSvg />;
 	const [searchDates, searchGuests = "Add guests"] =
 		searchDetails.split(" · ");
-
+	console.log("STATE: ", state);
 	return (
 		<>
 			{mobile ? (
@@ -181,12 +219,12 @@ const SearchPageTopBar = ({
 							region={URLParams.region}
 							searchDates={searchDates}
 							searchGuests={searchGuests}
-							edit={edit}
+							edit={state.edit}
 						/>
 					</div>
 
 					<CSSTransition
-						in={Object.values(editMenu).some(
+						in={Object.values(state.editMenu).some(
 							(field) => field === true
 						)}
 						timeout={300}
@@ -195,10 +233,12 @@ const SearchPageTopBar = ({
 						nodeRef={menuRef}
 					>
 						<EditMenuPortal
-							editMenu={editMenu}
-							menuRef={menuRef}
+							edit={state.edit}
+							editMenu={state.editMenu}
 							handleCloseEditMenu={handleCloseEditMenu}
-							location={location}
+							submitNewQuery={submitNewQuery}
+							menuRef={menuRef}
+							location={state.location}
 							setLocation={(value: string) =>
 								dispatch({
 									type: "field",
@@ -206,9 +246,9 @@ const SearchPageTopBar = ({
 									value,
 								})
 							}
-							dates={dates}
+							dates={state.dates}
 							handleDateChange={handleDateChange}
-							guests={guests}
+							guests={state.guests}
 							setGuests={(value: number) =>
 								dispatch({
 									type: "field",
@@ -216,8 +256,6 @@ const SearchPageTopBar = ({
 									value,
 								})
 							}
-							edit={edit}
-							submitNewQuery={submitNewQuery}
 						/>
 					</CSSTransition>
 

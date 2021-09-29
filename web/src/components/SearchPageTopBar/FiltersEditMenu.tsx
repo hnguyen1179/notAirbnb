@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { ReactComponent as BackSvg } from "../../assets/icons/back.svg";
-import SectionAmenities from "./SectionTags";
 import SectionEntire from "./SectionEntire";
 import SectionSuperhost from "./SectionSuperhost";
 import SectionTags from "./SectionTags";
