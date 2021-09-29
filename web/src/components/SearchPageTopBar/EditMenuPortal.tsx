@@ -6,10 +6,11 @@ import { IDate } from "../MobileNavbar/MobileSearchForm";
 import MobileEditDates from "../MobileNavbar/MobileEditDates";
 import MobileEditGuests from "../MobileNavbar/MobileEditGuests";
 import MobileEditLocation from "../MobileNavbar/MobileEditLocation";
-import TagsEditMenu from "./TagsEditMenu";
+import FiltersEditMenu from "./FiltersEditMenu";
+import { EditMenuEnum } from "../../reducers/editQueryReducer";
 
 interface Props {
-	editMenu: { [key: string]: boolean };
+	editMenu: { [key in EditMenuEnum]: boolean };
 	menuRef: Ref<HTMLDivElement>;
 	handleCloseEditMenu: () => void;
 	location: string;
@@ -72,8 +73,10 @@ const EditMenuPortal = ({
 							submitEdit={submitNewQuery}
 						/>
 					)}
-					{editMenu.tags && (
-						<TagsEditMenu handleCloseForm={handleCloseEditMenu} />
+					{editMenu.filters && (
+						<FiltersEditMenu
+							handleCloseForm={handleCloseEditMenu}
+						/>
 					)}
 				</div>,
 				document?.querySelector("#root") as Element

@@ -13,7 +13,10 @@ import { addDays, format } from "date-fns";
 import { CSSTransition } from "react-transition-group";
 import SearchPageTopBarDropdown from "./SearchPageTopBarDropdown";
 import EditMenuPortal from "./EditMenuPortal";
-import { editQueryReducer } from "../../reducers/editQueryReducer";
+import {
+	EditMenuEnum,
+	editQueryReducer,
+} from "../../reducers/editQueryReducer";
 
 interface URLParams {
 	region: string;
@@ -35,7 +38,7 @@ const editMenuDefault = {
 	location: false,
 	dates: false,
 	guests: false,
-	tags: false,
+	filters: false,
 };
 
 const SearchPageTopBar = ({
@@ -77,12 +80,13 @@ const SearchPageTopBar = ({
 	// Listens for openFilter stage change from SearchPage to open filter from bar
 	useEffect(() => {
 		if (openFilter) {
-			dispatch({ type: "openEditMenu", value: "tags" });
+			dispatch({ type: "openEditMenu", value: "filters" });
 		}
 	}, [openFilter]);
 
 	// Submits current state to -> new URLParams
 	const submitNewQuery = () => {
+		document.body.style.overflow = "unset";
 		dispatch({ type: "closeEdit" });
 
 		let checkOut = dates.endDate;
@@ -107,9 +111,7 @@ const SearchPageTopBar = ({
 		history.goBack();
 	};
 
-	const handleOpenEditMenu = (
-		field: "location" | "dates" | "guests" | "tags"
-	) => {
+	const handleOpenEditMenu = (field: EditMenuEnum) => {
 		dispatch({ type: "openEditMenu", value: field });
 	};
 
@@ -169,7 +171,7 @@ const SearchPageTopBar = ({
 						</button>
 						<button
 							className="button button--edit-filter"
-							onClick={() => handleOpenEditMenu("tags")}
+							onClick={() => handleOpenEditMenu("filters")}
 						>
 							<FilterSvg />
 						</button>

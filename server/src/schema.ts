@@ -436,7 +436,6 @@ const Mutation = objectType({
           if (!user) throw new Error(`No user found for email: ${email}`);
 
           const passwordValid = await compare(password, user.password);
-
           if (!passwordValid) throw new Error('Invalid password');
 
           return {

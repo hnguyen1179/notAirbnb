@@ -4,23 +4,10 @@ const initialEditMenu = {
 	location: false,
 	dates: false,
 	guests: false,
-	tags: false,
+	filters: false,
 };
 
-export const initialState = {
-	location: "", // field
-	dates: {
-		// field
-		startDate: new Date(),
-		endDate: new Date(),
-		key: "selection",
-	},
-	guests: 0, // field
-	edit: false,
-	editMenu: initialEditMenu,
-};
-
-type EditMenuEnum = "location" | "dates" | "guests" | "tags";
+export type EditMenuEnum = "location" | "dates" | "guests" | "filters";
 
 export interface EditQueryState {
 	location: string;
@@ -54,11 +41,8 @@ export const editQueryReducer = (
 			};
 		}
 		case "closeEdit": {
-			document.body.style.overflow = "unset";
-
 			return {
 				...state,
-				editMenu: initialEditMenu,
 				edit: false,
 			};
 		}
@@ -77,8 +61,6 @@ export const editQueryReducer = (
 			};
 		}
 		case "closeEditMenu": {
-			document.body.style.overflow = "unset";
-
 			return {
 				...state,
 				editMenu: initialEditMenu,

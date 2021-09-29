@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import RadioButton from "./RadioButton";
 import { UseFormReturn } from "react-hook-form";
-import { initialState } from "../../reducers/editQueryReducer";
 
 const LOCATIONS = [
 	"Anywhere",
@@ -26,13 +25,18 @@ const LocationSearch = ({ form, location, setLocation, next }: Props) => {
 	const focused = useRef(false);
 	const initialRender = useRef(true);
 
+	// Automatically runs next(), which relies on location's correct value,
+	// which requires it to be ran after the fact that the handleRadioSelect fx
+	// runs finishes
 	useEffect(() => {
+		// Prevent the initial time this runs
 		if (initialRender.current) {
 			initialRender.current = false;
 			return;
 		}
 
 		next();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [location]);
 
 	const handleRadioSelect = (e: any) => {

@@ -348,18 +348,22 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
-	padding: 2rem;
-	overflow-y: auto;
+	// overflow-y: auto;
+	// overflow-x: hidden;
 	display: none;
 
 	&[aria-hidden="false"] {
 		display: block;
 	}
 
+	.MobileSearchForm__form__stage {
+		padding: 2.1rem 2rem;
+	}
+
 	&__menu {
 		&-enter {
 			transform: translateY(100%);
-			opacity: 10%;
+			opacity: 0%;
 		}
 
 		&-enter-active {

@@ -49,13 +49,13 @@ const SearchPage = ({ history }: Props) => {
 			checkIn,
 			checkOut,
 			offset: (parseInt(searchParams.get("page") as string) - 1) * 10,
-			tags,
-			listingType,
-			languages,
-			smoking,
-			entire,
-			pets,
-			superhost,
+			tags, // array, semi-colon delimit
+			listingType, //array
+			languages, // array
+			smoking, // boolean
+			entire, // boolean
+			pets, // boolean
+			superhost, // boolean
 		},
 	});
 

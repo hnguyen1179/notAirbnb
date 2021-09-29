@@ -2,21 +2,26 @@ import users from './user_and_reviews_reservations.json';
 import hosts from './host_and_listings_final_final.json';
 // import proper_dates_unavailable from './proper_dates_unavailable.json';
 import { PrismaClient, Prisma } from '@prisma/client';
+import { hash } from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
-const userData = users.map((user) => {
-  const userObj: Prisma.UserCreateInput = {
-    id: user.id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    password: user.password,
-    dateJoined: user.dateJoined,
-  };
+const userData = Promise.all(
+  users.map(async (user) => {
+    const hashedPassword = await hash(user.password, 10);
 
-  return userObj;
-});
+    const userObj: Prisma.UserCreateInput = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      password: hashedPassword,
+      dateJoined: user.dateJoined,
+    };
+
+    return userObj;
+  }),
+);
 
 const hostData = hosts.map((host) => {
   const hostObj: Prisma.HostCreateInput = {
@@ -33,7 +38,7 @@ const hostData = hosts.map((host) => {
 
 async function main() {
   console.log(`Start seeding ...`);
-  for (const u of userData) {
+  for (const u of await userData) {
     const user = await prisma.user.create({
       data: u,
     });
