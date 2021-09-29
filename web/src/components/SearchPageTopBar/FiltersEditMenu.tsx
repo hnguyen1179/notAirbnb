@@ -6,6 +6,7 @@ import SectionTags from "./SectionTags";
 import SectionListingTypes from "./SectionListingTypes";
 import SectionLanguages from "./SectionLanguages";
 import SectionRules from "./SectionRules";
+import { useURLParams } from "../../context/URLParamsContext";
 
 interface Props {
 	handleCloseForm: () => void;
@@ -37,6 +38,7 @@ export type ArrayField = "tags" | "listingTypes" | "languages";
 export type BooleanField = "superhost" | "pets" | "smoking";
 
 const FiltersEditMenu = ({ handleCloseForm }: Props) => {
+	const { state } = useURLParams();
 	const [filters, setFilters] = useState<IFilter>(initialFilters);
 
 	// for SectionEntire; toggles between both checkbox states

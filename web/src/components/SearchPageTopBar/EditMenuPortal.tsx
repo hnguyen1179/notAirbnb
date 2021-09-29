@@ -1,41 +1,27 @@
 import { Ref } from "react";
-import { OnDateRangeChangeProps } from "react-date-range";
 import { createPortal } from "react-dom";
-import { IDate } from "../MobileNavbar/MobileSearchForm";
 
 import MobileEditDates from "../MobileNavbar/MobileEditDates";
 import MobileEditGuests from "../MobileNavbar/MobileEditGuests";
 import MobileEditLocation from "../MobileNavbar/MobileEditLocation";
 import FiltersEditMenu from "./FiltersEditMenu";
-import { EditMenuEnum } from "../../reducers/editQueryReducer";
+import { useURLParams } from "../../context/URLParamsContext";
 
 interface Props {
-	editMenu: { [key in EditMenuEnum]: boolean };
 	menuRef: Ref<HTMLDivElement>;
-	handleCloseEditMenu: () => void;
-	location: string;
-	setLocation: (location: string) => void;
-	dates: IDate;
-	handleDateChange: (dates: OnDateRangeChangeProps) => void;
-	guests: number;
-	setGuests: (guests: number) => void;
-	edit: boolean;
-	submitNewQuery: () => void;
 }
 
-const EditMenuPortal = ({
-	editMenu,
-	menuRef,
-	handleCloseEditMenu,
-	location,
-	setLocation,
-	dates,
-	handleDateChange,
-	guests,
-	setGuests,
-	edit,
-	submitNewQuery,
-}: Props) => {
+const EditMenuPortal = ({ menuRef }: Props) => {
+	const {
+		state: { edit, editMenu, location, dates, guests },
+		handleCloseEditMenu,
+		searchHandlers: {
+			handleLocationChange,
+			handleDateChange,
+			handleGuestChange,
+		},
+		submitNewQuery,
+	} = useURLParams();
 	return (
 		<>
 			{createPortal(
@@ -50,7 +36,7 @@ const EditMenuPortal = ({
 						<MobileEditLocation
 							handleFormClose={handleCloseEditMenu}
 							location={location}
-							setLocation={setLocation}
+							setLocation={handleLocationChange}
 							submitEdit={submitNewQuery}
 						/>
 					)}
@@ -69,7 +55,7 @@ const EditMenuPortal = ({
 							location={location}
 							dates={dates}
 							guests={guests}
-							setGuests={setGuests}
+							setGuests={handleGuestChange}
 							submitEdit={submitNewQuery}
 						/>
 					)}

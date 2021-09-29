@@ -20,6 +20,7 @@ export interface EditQueryState {
 	pets: boolean;
 	superhost: boolean;
 	entire: boolean;
+	private: boolean;
 	edit: boolean;
 	editMenu: { [key in EditMenuEnum]: boolean };
 }

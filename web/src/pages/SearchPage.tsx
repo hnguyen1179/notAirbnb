@@ -121,6 +121,10 @@ const SearchPage = ({ history }: Props) => {
 			</div>
 		);
 
+	const handleBack = () => {
+		history.goBack();
+	};
+
 	const handlePageClick = async (e: MouseEvent<HTMLLIElement>) => {
 		const nextPage = parseInt(e?.currentTarget?.innerText);
 		const nextSearch = new URLSearchParams(history.location.search);
@@ -165,15 +169,17 @@ const SearchPage = ({ history }: Props) => {
 	};
 
 	return (
-		<URLParamsProvider history={history} variables={variables}>
+		<URLParamsProvider
+			history={history}
+			variables={variables}
+			openFilter={openFilter}
+			setOpenFilter={setOpenFilter}
+		>
 			<div className="SearchPage">
 				<SearchPageTopBar
 					mobile={mobile}
-					URLParams={variables} // Provided
 					searchDetails={searchDetails}
-					history={history} // Provided
-					openFilter={openFilter}
-					setOpenFilter={setOpenFilter}
+					handleBack={handleBack}
 				/>
 
 				<div className="SearchPage-container">

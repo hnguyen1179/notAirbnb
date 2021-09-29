@@ -1,4 +1,3 @@
-import React, { FormEvent, useEffect } from "react";
 import LocationSearch from "../LocationSearch/LocationSearch";
 import { ReactComponent as BackSvg } from "../../assets/icons/back.svg";
 
