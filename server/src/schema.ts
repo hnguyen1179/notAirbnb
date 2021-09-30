@@ -192,6 +192,7 @@ const Query = objectType({
         listingType: list(nonNull(stringArg())),
         languages: list(nonNull(stringArg())),
         entire: booleanArg(),
+        privateListing: booleanArg(),
         pets: booleanArg(),
         smoking: booleanArg(),
         superhost: booleanArg(),
@@ -218,9 +219,6 @@ const Query = objectType({
                     hasSome: args.checkIn ? daysRequested : [],
                   },
                 },
-                tags: {
-                  hasEvery: args.tags ? args.tags : [],
-                },
               },
             };
           } else {
@@ -237,22 +235,25 @@ const Query = objectType({
                     hasSome: args.checkIn ? daysRequested : [],
                   },
                 },
-                tags: {
-                  hasEvery: args.tags ? args.tags : [],
-                },
               },
             };
           }
 
           // Additional filters
-          // Check for superhost, listingType, pets, smoking presence, languages and append to options
+          // Check for superhost, listingType, pets, smoking, entire/private, languages and append to options
           if (args.superhost) {
             options.where['superhost'] = true;
           }
 
-          if (args.entire) {
+          if (args.entire && args.privateListing) {
+            // do nothing
+          } else if (args.entire) {
             options.where['listingType'] = {
               startsWith: 'Entire',
+            };
+          } else if (args.privateListing) {
+            options.where['listingType'] = {
+              startsWith: 'Private',
             };
           }
 
@@ -262,6 +263,12 @@ const Query = objectType({
 
           if (args.pets) {
             options.where['petsRule'] = true;
+          }
+
+          if (args.tags) {
+            options.where['tags'] = {
+              hasEvery: args.tags,
+            };
           }
 
           if (args.languages) {

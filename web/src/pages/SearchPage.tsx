@@ -27,13 +27,14 @@ export interface BasicSearchVariables {
 	guests: number;
 	checkIn: string;
 	checkOut: string;
-	tags: string[] | undefined;
-	listingType: string[] | undefined;
-	languages: string[] | undefined;
+	tags: string[];
+	listingType: string[];
+	languages: string[];
 	smoking: boolean;
 	pets: boolean;
 	superhost: boolean;
 	entire: boolean;
+	privateListing: boolean;
 	offset: number;
 }
 
@@ -63,10 +64,11 @@ const SearchPage = ({ history }: Props) => {
 				";"
 			),
 			languages: (searchParams.get("languages") as string)?.split(";"),
-			smoking: !!searchParams.get("smoking"),
-			pets: !!searchParams.get("pets"),
-			superhost: !!searchParams.get("superhost"),
-			entire: !!searchParams.get("entire"),
+			smoking: searchParams.get("smoking") === "true",
+			pets: searchParams.get("pets") === "true",
+			superhost: searchParams.get("superhost") === "true",
+			entire: searchParams.get("entire") === "true",
+			privateListing: searchParams.get("privateListing") === "true",
 			offset: (parseInt(searchParams.get("page") as string) - 1) * 10,
 		}),
 		[searchParams]

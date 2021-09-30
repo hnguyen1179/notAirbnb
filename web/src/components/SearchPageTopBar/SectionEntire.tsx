@@ -4,13 +4,13 @@ import { ReactComponent as CheckmarkSvg } from "../../assets/icons/checkmark.svg
 interface Props {
 	entireChecked: boolean;
 	privateChecked: boolean;
-	handleToggleEntire: React.ChangeEventHandler<HTMLInputElement>;
+	handleToggleBooleanField: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 const SectionEntire = ({
 	entireChecked,
 	privateChecked,
-	handleToggleEntire,
+	handleToggleBooleanField,
 }: Props) => {
 	return (
 		<>
@@ -29,7 +29,7 @@ const SectionEntire = ({
 							type="checkbox"
 							value="entire"
 							checked={entireChecked}
-							onChange={handleToggleEntire}
+							onChange={handleToggleBooleanField}
 						/>
 						<span className="checkbox">
 							<CheckmarkSvg />
@@ -48,9 +48,9 @@ const SectionEntire = ({
 							id="private-place"
 							name="entire"
 							type="checkbox"
-							value="private"
+							value="privateListing"
 							checked={privateChecked}
-							onChange={handleToggleEntire}
+							onChange={handleToggleBooleanField}
 						/>
 						<span className="checkbox">
 							<CheckmarkSvg />

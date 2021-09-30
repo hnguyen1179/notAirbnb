@@ -49,7 +49,10 @@ const languagesEnum = [
 	"Ukrainian",
 ];
 
-const SectionLanguages = ({ languages, handleToggleArrayField }: Props) => {
+const SectionLanguages = ({
+	languages = [],
+	handleToggleArrayField,
+}: Props) => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const handleToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,28 +74,17 @@ const SectionLanguages = ({ languages, handleToggleArrayField }: Props) => {
 			<SectionContent isOpen={isOpen}>
 				<div className="FiltersEditMenu__section__content">
 					{languagesEnum.map((language, idx) => {
+						const id = `language-${language.replaceAll(" ", "-")}`;
 						return (
-							<div
-								key={`language-${language.replaceAll(
-									" ",
-									"-"
-								)}`}
-								className="type"
-							>
+							<div key={id} className="type">
 								<label
-									htmlFor={`language-${language.replaceAll(
-										" ",
-										"-"
-									)}`}
+									htmlFor={id}
 								>
 									<div>{language}</div>
 								</label>
 								<div className="checkbox-container">
 									<input
-										id={`language-${language.replaceAll(
-											" ",
-											"-"
-										)}`}
+										id={id}
 										type="checkbox"
 										checked={languages.includes(
 											languagesValues[idx]

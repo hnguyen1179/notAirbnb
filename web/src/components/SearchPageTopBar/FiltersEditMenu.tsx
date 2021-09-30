@@ -17,69 +17,32 @@ interface IFilter {
 	private: boolean;
 	superhost: boolean;
 	tags: string[];
-	listingTypes: string[];
+	listingType: string[];
 	pets: boolean;
 	smoking: boolean;
 	languages: string[];
 }
 
-const initialFilters = {
-	entire: false,
-	private: false,
-	superhost: false,
-	tags: [],
-	listingTypes: [],
-	pets: false,
-	smoking: false,
-	languages: [],
-};
-
-export type ArrayField = "tags" | "listingTypes" | "languages";
-export type BooleanField = "superhost" | "pets" | "smoking";
+export type ArrayField = "tags" | "listingType" | "languages";
+export type BooleanField =
+	| "superhost"
+	| "pets"
+	| "smoking"
+	| "privateListing"
+	| "entire";
 
 const FiltersEditMenu = ({ handleCloseForm }: Props) => {
-	const { state } = useURLParams();
-	const [filters, setFilters] = useState<IFilter>(initialFilters);
+	const {
+		state,
+		submitNewQuery,
+		resetFilters,
+		filterHandlers: { handleToggleBooleanField, handleToggleArrayField },
+	} = useURLParams();
 
-	// for SectionEntire; toggles between both checkbox states
-	const handleToggleEntire = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const field = e.currentTarget.value as "entire" | "private";
-		const newFilters = {
-			...filters,
-		};
-		newFilters[field] = !filters[field];
-		setFilters(newFilters);
-	};
-
-	// for SectionSuperhost; toggles between superhost checkbox states
-	const handleToggleBooleanField = (
-		e: React.ChangeEvent<HTMLInputElement>,
-		field: BooleanField
-	) => {
-		setFilters({ ...filters, [field]: !filters[field] });
-	};
-
-	// for SectionTags, SectionListingTypes, SectionLanguages; toggles the item in and out of the array
-	const handleToggleArrayField = (
-		e: React.ChangeEvent<HTMLInputElement>,
-		field: ArrayField
-	) => {
-		const tag = e.currentTarget.value;
-		const index = filters[field].indexOf(tag);
-		const nextField = filters[field].slice();
-
-		if (index > -1) {
-			nextField.splice(index, 1);
-		} else {
-			nextField.push(tag);
-		}
-
-		return setFilters({ ...filters, [field]: nextField });
-	};
-
-	const resetFilters = () => {
-		setFilters(initialFilters)
-	}
+	console.log("INSIDE FILTERS EDIT MENU")
+	console.log("TAGS: ", state.tags);
+	console.log("LISTINGTYPE: ", state.listingType);
+	console.log("LANGUAGES: ", state.languages);
 
 	return (
 		<div className="FiltersEditMenu">
@@ -97,45 +60,45 @@ const FiltersEditMenu = ({ handleCloseForm }: Props) => {
 			<div className="FiltersEditMenu__sections">
 				<div className="FiltersEditMenu__section FiltersEditMenu__section--entire">
 					<SectionEntire
-						entireChecked={filters.entire}
-						privateChecked={filters.private}
-						handleToggleEntire={handleToggleEntire}
+						entireChecked={state.entire}
+						privateChecked={state.privateListing}
+						handleToggleBooleanField={handleToggleBooleanField}
 					/>
 				</div>
 				<div className="FiltersEditMenu__section FiltersEditMenu__section--superhost">
 					<SectionSuperhost
-						superhostChecked={filters.superhost}
+						superhostChecked={state.superhost}
 						handleToggleBooleanField={handleToggleBooleanField}
 					/>
 				</div>
 				<div className="FiltersEditMenu__section FiltersEditMenu__section--tags">
 					<SectionTags
-						tags={filters.tags}
+						tags={state.tags}
 						handleToggleArrayField={handleToggleArrayField}
 					/>
 				</div>
 				<div className="FiltersEditMenu__section FiltersEditMenu__section--listing-types">
 					<SectionListingTypes
-						listingTypes={filters.listingTypes}
+						listingTypes={state.listingType}
 						handleToggleArrayField={handleToggleArrayField}
 					/>
 				</div>
 				<div className="FiltersEditMenu__section FiltersEditMenu__section--rules">
 					<SectionRules
-						pets={filters.pets}
-						smoking={filters.smoking}
+						pets={state.pets}
+						smoking={state.smoking}
 						handleToggleBooleanField={handleToggleBooleanField}
 					/>
 				</div>
 				<div className="FiltersEditMenu__section FiltersEditMenu__section--languages">
 					<SectionLanguages
-						languages={filters.languages}
+						languages={state.languages}
 						handleToggleArrayField={handleToggleArrayField}
 					/>
 				</div>
 			</div>
 			<footer className="FiltersEditMenu__submit">
-				<button>
+				<button onClick={submitNewQuery}>
 					<span>Show results</span>
 				</button>
 			</footer>

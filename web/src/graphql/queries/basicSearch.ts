@@ -14,6 +14,7 @@ const BASIC_SEARCH = gql`
 		$pets: Boolean
 		$smoking: Boolean
 		$entire: Boolean
+		$privateListing: Boolean
 	) {
 		basicSearch(
 			region: $region
@@ -28,6 +29,7 @@ const BASIC_SEARCH = gql`
 			pets: $pets
 			smoking: $smoking
 			entire: $entire
+			privateListing: $privateListing
 		) {
 			count
 			listings {

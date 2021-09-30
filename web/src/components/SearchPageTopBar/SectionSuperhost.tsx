@@ -1,12 +1,8 @@
 import React from "react";
-import { BooleanField } from "./FiltersEditMenu";
 
 interface Props {
 	superhostChecked: boolean;
-	handleToggleBooleanField: (
-		e: React.ChangeEvent<HTMLInputElement>,
-		field: BooleanField
-	) => void;
+	handleToggleBooleanField: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 const SectionSuperhost = ({
@@ -24,10 +20,9 @@ const SectionSuperhost = ({
 						<input
 							id="superhost"
 							type="checkbox"
+							value="superhost"
 							checked={superhostChecked}
-							onChange={(e) =>
-								handleToggleBooleanField(e, "superhost")
-							}
+							onChange={handleToggleBooleanField}
 						/>
 						<div className="slider">
 							<div className="slider-ball"> </div>

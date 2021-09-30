@@ -160,6 +160,7 @@ export type QueryBasicSearchArgs = {
   listingType?: Maybe<Array<Scalars['String']>>;
   offset: Scalars['Int'];
   pets?: Maybe<Scalars['Boolean']>;
+  privateListing?: Maybe<Scalars['Boolean']>;
   region?: Maybe<Scalars['String']>;
   smoking?: Maybe<Scalars['Boolean']>;
   superhost?: Maybe<Scalars['Boolean']>;
@@ -299,6 +300,7 @@ export type BasicSearchQueryVariables = Exact<{
   pets?: Maybe<Scalars['Boolean']>;
   smoking?: Maybe<Scalars['Boolean']>;
   entire?: Maybe<Scalars['Boolean']>;
+  privateListing?: Maybe<Scalars['Boolean']>;
 }>;
 
 
@@ -436,7 +438,7 @@ export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
 export type SignupMutationResult = Apollo.MutationResult<SignupMutation>;
 export type SignupMutationOptions = Apollo.BaseMutationOptions<SignupMutation, SignupMutationVariables>;
 export const BasicSearchDocument = gql`
-    query basicSearch($region: String, $guests: Int, $checkIn: String, $checkOut: String, $offset: Int!, $tags: [String!], $languages: [String!], $listingType: [String!], $superhost: Boolean, $pets: Boolean, $smoking: Boolean, $entire: Boolean) {
+    query basicSearch($region: String, $guests: Int, $checkIn: String, $checkOut: String, $offset: Int!, $tags: [String!], $languages: [String!], $listingType: [String!], $superhost: Boolean, $pets: Boolean, $smoking: Boolean, $entire: Boolean, $privateListing: Boolean) {
   basicSearch(
     region: $region
     guests: $guests
@@ -450,6 +452,7 @@ export const BasicSearchDocument = gql`
     pets: $pets
     smoking: $smoking
     entire: $entire
+    privateListing: $privateListing
   ) {
     count
     listings {
@@ -493,6 +496,7 @@ export const BasicSearchDocument = gql`
  *      pets: // value for 'pets'
  *      smoking: // value for 'smoking'
  *      entire: // value for 'entire'
+ *      privateListing: // value for 'privateListing'
  *   },
  * });
  */

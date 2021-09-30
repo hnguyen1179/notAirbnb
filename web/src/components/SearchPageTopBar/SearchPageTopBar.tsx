@@ -37,7 +37,7 @@ const SearchPageTopBar = ({ mobile, searchDetails, handleBack }: Props) => {
 	const backButtonSvg = state.edit ? <NegativeSvg id="close" /> : <BackSvg />;
 	const [searchDates, searchGuests = "Add guests"] =
 		searchDetails.split(" · ");
-	console.log("STATE: ", state);
+	
 	return (
 		<>
 			{mobile ? (

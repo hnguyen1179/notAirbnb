@@ -87,7 +87,7 @@ type Mutation {
 
 type Query {
   allListings: [Listing!]!
-  basicSearch(checkIn: String, checkOut: String, entire: Boolean, guests: Int, languages: [String!], listingType: [String!], offset: Int!, pets: Boolean, region: String, smoking: Boolean, superhost: Boolean, tags: [String!]): BasicSearchResults
+  basicSearch(checkIn: String, checkOut: String, entire: Boolean, guests: Int, languages: [String!], listingType: [String!], offset: Int!, pets: Boolean, privateListing: Boolean, region: String, smoking: Boolean, superhost: Boolean, tags: [String!]): BasicSearchResults
   hostById(id: String!): Host
   listingById(id: String!): Listing
   listingsByRegion(region: String!): [Listing!]!

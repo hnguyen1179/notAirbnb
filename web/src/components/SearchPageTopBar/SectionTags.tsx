@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { ReactComponent as CheckmarkSvg } from "../../assets/icons/checkmark.svg";
-import FiltersEditMenu, { ArrayField } from "./FiltersEditMenu";
+import { ArrayField } from "./FiltersEditMenu";
 import SectionHeaderDropdown from "./SectionHeaderDropdown";
 import SectionContent from "./SectionContent";
 // These are the values;
@@ -47,18 +47,18 @@ const facilities = ["Free parking", "Hot tub", "Pool", "EV Charger"];
 interface Props {
 	tags: string[];
 	handleToggleArrayField: (
-		e: React.ChangeEvent<HTMLInputElement>,
+		e: ChangeEvent<HTMLInputElement>,
 		field: ArrayField
 	) => void;
 }
 
-const SectionTags = ({ tags, handleToggleArrayField }: Props) => {
+const SectionTags = ({ tags = [], handleToggleArrayField }: Props) => {
 	const [isOpen, setIsOpen] = useState({
 		amenities: false,
 		facilities: false,
 	});
 
-	const handleToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleToggle = (e: ChangeEvent<HTMLInputElement>) => {
 		handleToggleArrayField(e, "tags");
 	};
 
@@ -89,25 +89,16 @@ const SectionTags = ({ tags, handleToggleArrayField }: Props) => {
 				<SectionContent isOpen={isOpen.amenities}>
 					<div className="FiltersEditMenu__section__content">
 						{amenitiesEnum.map((value, idx) => {
+							const id = `tag-${value.replaceAll(" ", "-")}`;
+
 							return (
-								<div
-									key={`tag-${value.replaceAll(" ", "-")}`}
-									className="type"
-								>
-									<label
-										htmlFor={`tag-${value.replaceAll(
-											" ",
-											"-"
-										)}`}
-									>
+								<div key={id} className="type">
+									<label htmlFor={id}>
 										<div>{value}</div>
 									</label>
 									<div className="checkbox-container">
 										<input
-											id={`tag-${value.replaceAll(
-												" ",
-												"-"
-											)}`}
+											id={id}
 											type="checkbox"
 											checked={tags.includes(
 												amenitiesValues[idx]
@@ -137,25 +128,16 @@ const SectionTags = ({ tags, handleToggleArrayField }: Props) => {
 				<SectionContent isOpen={isOpen.facilities}>
 					<div className="FiltersEditMenu__section__content">
 						{facilities.map((value) => {
+							const id = `tag-${value.replaceAll(" ", "-")}`;
+
 							return (
-								<div
-									key={`tag-${value.replaceAll(" ", "-")}`}
-									className="type"
-								>
-									<label
-										htmlFor={`tag-${value.replaceAll(
-											" ",
-											"-"
-										)}`}
-									>
+								<div key={id} className="type">
+									<label htmlFor={id}>
 										<div>{value}</div>
 									</label>
 									<div className="checkbox-container">
 										<input
-											id={`tag-${value.replaceAll(
-												" ",
-												"-"
-											)}`}
+											id={id}
 											type="checkbox"
 											checked={tags.includes(value)}
 											value={value}

@@ -1,4 +1,3 @@
-import { ChangeEvent } from "react";
 import { ReactComponent as CheckmarkSvg } from "../../assets/icons/checkmark.svg";
 
 const houseRulesEnum = ["Pets allowed", "Smoking allowed"];
@@ -6,10 +5,7 @@ const houseRulesEnum = ["Pets allowed", "Smoking allowed"];
 interface Props {
 	pets: boolean;
 	smoking: boolean;
-	handleToggleBooleanField: (
-		e: ChangeEvent<HTMLInputElement>,
-		field: RulesField
-	) => void;
+	handleToggleBooleanField: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 type RulesField = "pets" | "smoking";
@@ -19,7 +15,7 @@ const SectionRules = (props: Props) => {
 	return (
 		<>
 			<h2>House rules</h2>
-			{houseRulesEnum.map((rule, idx) => {
+			{houseRulesEnum.map((rule) => {
 				const field = rule.split(" ")[0].toLowerCase() as RulesField;
 
 				return (
@@ -36,9 +32,7 @@ const SectionRules = (props: Props) => {
 								type="checkbox"
 								checked={!!props[field]}
 								value={field}
-								onChange={(e) =>
-									handleToggleBooleanField(e, field)
-								}
+								onChange={handleToggleBooleanField}
 							/>
 							<span className="checkbox">
 								<CheckmarkSvg />

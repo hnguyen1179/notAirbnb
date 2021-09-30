@@ -42,13 +42,13 @@ interface Props {
 }
 
 const SectionListingTypes = ({
-	listingTypes,
+	listingTypes = [],
 	handleToggleArrayField,
 }: Props) => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const handleToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
-		handleToggleArrayField(e, "listingTypes");
+		handleToggleArrayField(e, "listingType");
 	};
 
 	const handleClickDropdown = () => {
@@ -66,22 +66,20 @@ const SectionListingTypes = ({
 			<SectionContent isOpen={isOpen}>
 				<div className="FiltersEditMenu__section__content">
 					{listingTypesEnums.map((type, idx) => {
+						const id = `type-${type.replaceAll(" ", "-")}`; 
 						return (
 							<div
-								key={`type-${type.replaceAll(" ", "-")}`}
+								key={id}
 								className="type"
 							>
 								<label
-									htmlFor={`type-${type.replaceAll(
-										" ",
-										"-"
-									)}`}
+									htmlFor={id}
 								>
 									<div>{type}</div>
 								</label>
 								<div className="checkbox-container">
 									<input
-										id={`type-${type.replaceAll(" ", "-")}`}
+										id={id}
 										type="checkbox"
 										checked={listingTypes.includes(
 											listingTypesValues[idx]
