@@ -17,6 +17,7 @@ import MobileNavbar from "../components/MobileNavbar/MobileNavbar";
 import SearchResultsItem from "../components/SearchResultsItem/SearchResultsItem";
 import SearchResultsPagination from "../components/SearchResultsPagination/SearchResultsPagination";
 import { URLParamsProvider } from "../context/URLParamsContext";
+import Navbar from "../components/Navbar/Navbar";
 
 interface Props {
 	history: History<any>;
@@ -111,6 +112,7 @@ const SearchPage = ({ history }: Props) => {
 	const renderListings = useMemo(() => {
 		return data?.basicSearch?.listings.map((listing) => {
 			if (!listing) return "";
+
 			return (
 				<SearchResultsItem
 					key={listing.id}
@@ -197,61 +199,74 @@ const SearchPage = ({ history }: Props) => {
 			activeNumFilters={activeNumFilters}
 		>
 			<div className="SearchPage">
-				<SearchPageTopBar
-					mobile={mobile}
-					searchDetails={searchDetails}
-					handleBack={handleBack}
-				/>
+				{mobile ? (
+					<SearchPageTopBar
+						searchDetails={searchDetails}
+						handleBack={handleBack}
+					/>
+				) : (
+					<>
+						<Navbar notLanding={true} searchPage={true} />
+						<div className="Navbar-filler" />
+					</>
+				)}
 
-				<div className="SearchPage-container">
-					<div className="SearchPage__results-details">
-						<span>
-							{data?.basicSearch?.count} stays{" "}
-							{isRegionSearch ? "" : `· ${searchDetails}`}
-						</span>
-						<h1>{renderRegion()}</h1>
-					</div>
+				<div className="SearchPage-outer">
+					<div className="SearchPage-container">
+						<div className="SearchPage__results-details">
+							<span>
+								{data?.basicSearch?.count} stays{" "}
+								{isRegionSearch ? "" : `· ${searchDetails}`}
+							</span>
+							<h1>{renderRegion()}</h1>
+						</div>
 
-					<button
-						className={`SearchPage__button-filter ${
-							activeNumFilters > 0 ? "filtered" : ""
-						}`}
-						onClick={() => setOpenFilter(true)}
-					>
-						{activeNumFilters > 0 ? (
-							<div>Filters · {activeNumFilters}</div>
-						) : (
-							<div>Filters</div>
-						)}
-					</button>
-
-					<div className="SearchPage__results">
-						<ul className="SearchPage__results__list">
-							{data?.basicSearch?.count === 0 && (
-								<div className="no-results">
-									<div>No results</div>
-									<span>
-										To get more results, try adjusting your
-										search by changing your dates
-									</span>
-
-									<div className="divider" />
-								</div>
+						<button
+							className={`SearchPage__button-filter ${
+								activeNumFilters > 0 ? "filtered" : ""
+							}`}
+							onClick={() => setOpenFilter(true)}
+						>
+							{activeNumFilters > 0 ? (
+								<div>Filters · {activeNumFilters}</div>
+							) : (
+								<div>Filters</div>
 							)}
-							{renderListings}
-						</ul>
+						</button>
 
-						{(data?.basicSearch?.count || 0) > 10 && (
-							<SearchResultsPagination
-								count={data?.basicSearch?.count || 0}
-								currentPage={
-									parseInt(
-										searchParams.get("page") as string
-									) || 1
-								}
-								handlePageClick={handlePageClick}
-							/>
-						)}
+						<div className="SearchPage__results">
+							<ul className="SearchPage__results__list">
+								{data?.basicSearch?.count === 0 && (
+									<div className="no-results">
+										<div>No results</div>
+										<span>
+											To get more results, try adjusting
+											your search by changing your dates
+										</span>
+
+										<div className="divider" />
+									</div>
+								)}
+								{renderListings}
+							</ul>
+
+							{(data?.basicSearch?.count || 0) > 10 && (
+								<SearchResultsPagination
+									count={data?.basicSearch?.count || 0}
+									currentPage={
+										parseInt(
+											searchParams.get("page") as string
+										) || 1
+									}
+									handlePageClick={handlePageClick}
+								/>
+							)}
+						</div>
+					</div>
+					<div className="google-maps-container">
+						<aside className="map">
+							im sticky
+						</aside>
 					</div>
 				</div>
 

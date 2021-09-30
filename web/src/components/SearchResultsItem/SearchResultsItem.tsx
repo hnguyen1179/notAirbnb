@@ -1,11 +1,10 @@
 import { Cloudinary } from "@cloudinary/base";
 import { AdvancedImage, placeholder, lazyload } from "@cloudinary/react";
-import { ReactComponent as StarSvg } from "../../assets/icons/filled-star.svg";
-import React from "react";
-import { calculateTotalArgs } from "../../utils/priceBreakdown";
-import { numberWithCommas } from "../../utils/numberWithCommas";
+import ItemDetailsMobile from "./ItemDetailsMobile";
+import ItemDetailsDesktop from "./ItemDetailsDesktop";
+import { Maybe } from "../../generated/graphql";
 
-interface PartialListing {
+export interface PartialListing {
 	__typename?: "Listing" | undefined;
 	id: string;
 	title: string;
@@ -17,6 +16,12 @@ interface PartialListing {
 	averageScore: number;
 	reviewsCount: number;
 	cleaningFee: number;
+	basicAmenities: Maybe<string>[];
+	numGuests: number;
+	numBedrooms: number;
+	numBeds: number;
+	numBaths: number;
+	imageComments: Maybe<string>[];
 }
 
 interface Props {
@@ -34,40 +39,26 @@ const SearchResultsItem = ({
 	checkIn,
 	checkOut,
 }: Props) => {
-	const {
-		region,
-		reviewsCount,
-		averageScore,
-		id,
-		superhost,
-		listingType,
-		city,
-		title,
-		price,
-		cleaningFee,
-		
-	} = listing;
-
-	const url = `images/${region
-		.replaceAll(" ", "_")
-		.toLowerCase()}/${id}/image-0`;
+	const url = `images/${listing.region.replaceAll(" ", "_").toLowerCase()}/${
+		listing.id
+	}/image-0`;
 
 	const renderReviewScore = () => {
-		if (!reviewsCount) {
+		if (!listing.reviewsCount) {
 			return "No reviews";
-		} else if (reviewsCount && !averageScore) {
+		} else if (listing.reviewsCount && !listing.averageScore) {
 			return "No scores";
 		} else {
-			return averageScore;
+			return listing.averageScore;
 		}
 	};
 
 	return (
 		<li className="SearchResultsItem">
-			<a href={`/listing/${id}`}>
+			<a href={`/listing/${listing.id}`}>
 				<div className="SearchResultsItem-container">
 					<div className="SearchResultsItem__image">
-						{superhost && (
+						{listing.superhost && (
 							<div className="superhost">
 								<span>superhost</span>
 							</div>
@@ -80,38 +71,21 @@ const SearchResultsItem = ({
 							]}
 						/>
 					</div>
-					<div className="SearchResultsItem__details">
-						{mobile ? "" : ""}
-						<div className="score">
-							<StarSvg />
-							<span>{renderReviewScore()}</span>
-							<span>({reviewsCount})</span>
-						</div>
-						<div className="type">
-							<span>{listingType}</span>
-							<span> · </span>
-							<span>{city}</span>
-						</div>
-						<div className="title">
-							<span>{title}</span>
-						</div>
-						<div className="price">
-							<span>${numberWithCommas(price)}</span>
-							<span> / </span>
-							<span>night</span>
-							<div className="total-price">
-								{checkIn < new Date()
-									? ""
-									: calculateTotalArgs({
-											checkIn,
-											checkOut,
-											pricePerNight: price,
-											cleaningFee: cleaningFee,
-											region: region,
-									  }).totalPrice + " total"}
-							</div>
-						</div>
-					</div>
+						{mobile ? (
+							<ItemDetailsMobile
+								listing={listing}
+								checkIn={checkIn}
+								checkOut={checkOut}
+								renderReviewScore={renderReviewScore}
+							/>
+						) : (
+							<ItemDetailsDesktop
+								listing={listing}
+								checkIn={checkIn}
+								checkOut={checkOut}
+								renderReviewScore={renderReviewScore}
+							/>
+						)}
 				</div>
 			</a>
 		</li>
