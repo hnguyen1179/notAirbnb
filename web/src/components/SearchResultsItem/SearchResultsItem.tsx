@@ -22,6 +22,7 @@ interface PartialListing {
 interface Props {
 	listing: PartialListing;
 	cloudinary: Cloudinary;
+	mobile: boolean;
 	checkIn: Date;
 	checkOut: Date;
 }
@@ -29,65 +30,86 @@ interface Props {
 const SearchResultsItem = ({
 	listing,
 	cloudinary,
+	mobile,
 	checkIn,
 	checkOut,
 }: Props) => {
-	const url = `images/${listing.region.replaceAll(" ", "_").toLowerCase()}/${
-		listing.id
-	}/image-0`;
+	const {
+		region,
+		reviewsCount,
+		averageScore,
+		id,
+		superhost,
+		listingType,
+		city,
+		title,
+		price,
+		cleaningFee,
+		
+	} = listing;
+
+	const url = `images/${region
+		.replaceAll(" ", "_")
+		.toLowerCase()}/${id}/image-0`;
 
 	const renderReviewScore = () => {
-		if (!listing.reviewsCount) {
+		if (!reviewsCount) {
 			return "No reviews";
-		} else if (listing.reviewsCount && !listing.averageScore) {
+		} else if (reviewsCount && !averageScore) {
 			return "No scores";
 		} else {
-			return listing.averageScore;
+			return averageScore;
 		}
 	};
 
 	return (
 		<li className="SearchResultsItem">
-			<a href={`/listing/${listing.id}`}>
-				<div className="SearchResultsItem__image">
-					{listing.superhost && (
-						<div className="superhost">
-							<span>superhost</span>
+			<a href={`/listing/${id}`}>
+				<div className="SearchResultsItem-container">
+					<div className="SearchResultsItem__image">
+						{superhost && (
+							<div className="superhost">
+								<span>superhost</span>
+							</div>
+						)}
+						<AdvancedImage
+							cldImg={cloudinary.image(url)}
+							plugins={[
+								placeholder("predominant-color"),
+								lazyload(),
+							]}
+						/>
+					</div>
+					<div className="SearchResultsItem__details">
+						{mobile ? "" : ""}
+						<div className="score">
+							<StarSvg />
+							<span>{renderReviewScore()}</span>
+							<span>({reviewsCount})</span>
 						</div>
-					)}
-					<AdvancedImage
-						cldImg={cloudinary.image(url)}
-						plugins={[placeholder("predominant-color"), lazyload()]}
-					/>
-				</div>
-				<div className="SearchResultsItem__details">
-					<div className="score">
-						<StarSvg />
-						<span>{renderReviewScore()}</span>
-						<span>({listing.reviewsCount})</span>
-					</div>
-					<div className="type">
-						<span>{listing.listingType}</span>
-						<span> · </span>
-						<span>{listing.city}</span>
-					</div>
-					<div className="title">
-						<span>{listing.title}</span>
-					</div>
-					<div className="price">
-						<span>${numberWithCommas(listing.price)}</span>
-						<span> / </span>
-						<span>night</span>
-						<div className="total-price">
-							{checkIn < new Date()
-								? ""
-								: calculateTotalArgs({
-										checkIn,
-										checkOut,
-										pricePerNight: listing.price,
-										cleaningFee: listing.cleaningFee,
-										region: listing.region,
-								  }).totalPrice + " total"}
+						<div className="type">
+							<span>{listingType}</span>
+							<span> · </span>
+							<span>{city}</span>
+						</div>
+						<div className="title">
+							<span>{title}</span>
+						</div>
+						<div className="price">
+							<span>${numberWithCommas(price)}</span>
+							<span> / </span>
+							<span>night</span>
+							<div className="total-price">
+								{checkIn < new Date()
+									? ""
+									: calculateTotalArgs({
+											checkIn,
+											checkOut,
+											pricePerNight: price,
+											cleaningFee: cleaningFee,
+											region: region,
+									  }).totalPrice + " total"}
+							</div>
 						</div>
 					</div>
 				</div>

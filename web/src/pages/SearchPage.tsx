@@ -45,11 +45,28 @@ const SearchPage = ({ history }: Props) => {
 	);
 
 	const { cloudinary, mobile } = useContext(AppContext);
-
 	const [openFilter, setOpenFilter] = useState(false);
 
 	// Searches done via landing "region" icons
 	const isRegionSearch = !history.location.search.includes("guests");
+
+	// Checks to see if any filters are set
+	const activeNumFilters = Array.from(
+		searchParams.entries(),
+		([key, value]) => key
+	).filter((key) => {
+		return [
+			"tags",
+			"listingType",
+			"languages",
+			"smoking",
+			"pets",
+			"superhost",
+			"entire",
+			"privateListing",
+		].includes(key);
+	}).length;
+
 	// Helps prevent unnecessary data fetches
 	const previousURL = useRef(searchParams.toString());
 
@@ -98,6 +115,7 @@ const SearchPage = ({ history }: Props) => {
 				<SearchResultsItem
 					key={listing.id}
 					cloudinary={cloudinary}
+					mobile={mobile}
 					listing={listing}
 					checkIn={new Date(variables.checkIn)}
 					checkOut={new Date(variables.checkOut)}
@@ -176,6 +194,7 @@ const SearchPage = ({ history }: Props) => {
 			variables={variables}
 			openFilter={openFilter}
 			setOpenFilter={setOpenFilter}
+			activeNumFilters={activeNumFilters}
 		>
 			<div className="SearchPage">
 				<SearchPageTopBar
@@ -194,10 +213,16 @@ const SearchPage = ({ history }: Props) => {
 					</div>
 
 					<button
-						className="SearchPage__button-filter"
+						className={`SearchPage__button-filter ${
+							activeNumFilters > 0 ? "filtered" : ""
+						}`}
 						onClick={() => setOpenFilter(true)}
 					>
-						<div>Filters</div>
+						{activeNumFilters > 0 ? (
+							<div>Filters · {activeNumFilters}</div>
+						) : (
+							<div>Filters</div>
+						)}
 					</button>
 
 					<div className="SearchPage__results">

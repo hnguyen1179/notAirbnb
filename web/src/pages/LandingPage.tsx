@@ -31,17 +31,12 @@ const LandingPage = () => {
 		}
 	};
 
-	const handleScroll = () => {
-		// Should only run this on mobile
-		handleMobileSearchBar();
-	};
-
 	// Fires for mobile, smaller screens
 	useEffect(() => {
-		document.addEventListener("scroll", handleScroll);
+		document.addEventListener("scroll", handleMobileSearchBar);
 
 		return () => {
-			document.removeEventListener("scroll", handleScroll);
+			document.removeEventListener("scroll", handleMobileSearchBar);
 		};
 	}, []);
 

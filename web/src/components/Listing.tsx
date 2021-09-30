@@ -17,6 +17,7 @@ const LISTING = gql`
 			state
 			imageComments
 			amenities
+			languages
 			host {
 				id
 				firstName
@@ -133,6 +134,7 @@ function Listing({ id }: Props) {
 			);
 		});
 	}
+	console.log(data);
 
 	return (
 		<div>
@@ -155,6 +157,15 @@ function Listing({ id }: Props) {
 				/>
 			</h2>
 			<h2>Reviews: </h2>
+			<div>
+				<h1>languages</h1>
+				<ul>
+					{data.listingById.languages &&
+						data.listingById.languages.map((language: string) => {
+							return <li>{language}</li>;
+						})}
+				</ul>
+			</div>
 			<ul>
 				{reviews.map((review: ReviewType) => {
 					const author = review.author;

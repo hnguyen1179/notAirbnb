@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { ReactComponent as BackSvg } from "../../assets/icons/back.svg";
 import SectionEntire from "./SectionEntire";
 import SectionSuperhost from "./SectionSuperhost";
@@ -10,17 +9,6 @@ import { useURLParams } from "../../context/URLParamsContext";
 
 interface Props {
 	handleCloseForm: () => void;
-}
-
-interface IFilter {
-	entire: boolean;
-	private: boolean;
-	superhost: boolean;
-	tags: string[];
-	listingType: string[];
-	pets: boolean;
-	smoking: boolean;
-	languages: string[];
 }
 
 export type ArrayField = "tags" | "listingType" | "languages";
@@ -38,11 +26,6 @@ const FiltersEditMenu = ({ handleCloseForm }: Props) => {
 		resetFilters,
 		filterHandlers: { handleToggleBooleanField, handleToggleArrayField },
 	} = useURLParams();
-
-	console.log("INSIDE FILTERS EDIT MENU")
-	console.log("TAGS: ", state.tags);
-	console.log("LISTINGTYPE: ", state.listingType);
-	console.log("LANGUAGES: ", state.languages);
 
 	return (
 		<div className="FiltersEditMenu">

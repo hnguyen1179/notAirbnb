@@ -17,13 +17,13 @@ const SearchResultsPagination = ({
 	});
 
 	return (
-		<div className="SRP">
-			<ol className="SRP__list">
+		<div className="SearchResultsPagination">
+			<ol className="SearchResultsPagination__list">
 				{pages.map((i) => {
 					return (
 						<li
 							key={i}
-							className="SRP__list__item"
+							className="SearchResultsPagination__list__item"
 							aria-current={i === currentPage}
 							onClick={handlePageClick}
 						>
@@ -32,6 +32,9 @@ const SearchResultsPagination = ({
 					);
 				})}
 			</ol>
+			<div className="SearchResultsPagination__disclaimer">
+				<span>Additional fees apply. Taxes may be added.</span>
+			</div>
 		</div>
 	);
 };

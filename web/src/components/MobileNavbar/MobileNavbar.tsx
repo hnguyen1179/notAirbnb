@@ -28,7 +28,6 @@ const MobileNavbar = React.forwardRef<HTMLElement>((props, ref) => {
 
 	useEffect(() => {
 		window.addEventListener("scroll", handleMobileNav);
-
 		return () => {
 			window.removeEventListener("scroll", handleMobileNav);
 		};

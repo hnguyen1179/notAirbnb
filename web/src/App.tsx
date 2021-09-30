@@ -118,6 +118,8 @@ function App() {
 									"pets",
 									"smoking",
 									"superhost",
+									"entire",
+									"privateListing",
 								],
 								merge(
 									existing = { count: 0, listings: [] },

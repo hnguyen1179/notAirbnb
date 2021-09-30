@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 
 import { ReactComponent as BackSvg } from "../../assets/icons/back.svg";
 import { ReactComponent as FilterSvg } from "../../assets/icons/filter.svg";
@@ -19,8 +19,13 @@ interface Props {
 }
 
 const SearchPageTopBar = ({ mobile, searchDetails, handleBack }: Props) => {
-	const { state, handleCloseEdit, handleOpenEdit, handleOpenEditMenu } =
-		useURLParams();
+	const {
+		state,
+		handleCloseEdit,
+		handleOpenEdit,
+		handleOpenEditMenu,
+		activeNumFilters,
+	} = useURLParams();
 	// For use with CSSTransition; ref based (React way)
 	const menuRef = useRef<HTMLDivElement>(null);
 
@@ -31,13 +36,12 @@ const SearchPageTopBar = ({ mobile, searchDetails, handleBack }: Props) => {
 			window.removeEventListener("scroll", handleCloseEdit);
 		};
 	}, [handleCloseEdit]);
-	// Remove handleCloseEdit if bugging?
 
 	const backButtonEvent = state.edit ? handleCloseEdit : handleBack;
 	const backButtonSvg = state.edit ? <NegativeSvg id="close" /> : <BackSvg />;
 	const [searchDates, searchGuests = "Add guests"] =
 		searchDetails.split(" · ");
-	
+
 	return (
 		<>
 			{mobile ? (
@@ -59,7 +63,9 @@ const SearchPageTopBar = ({ mobile, searchDetails, handleBack }: Props) => {
 							<div className="date">{searchDetails}</div>
 						</button>
 						<button
-							className="button button--edit-filter"
+							className={`button button--edit-filter ${
+								activeNumFilters > 0 ? "filtered" : ""
+							}`}
 							onClick={() => handleOpenEditMenu("filters")}
 						>
 							<FilterSvg />
@@ -90,7 +96,7 @@ const SearchPageTopBar = ({ mobile, searchDetails, handleBack }: Props) => {
 				</>
 			) : (
 				<>
-					<Navbar notLanding={true} />
+					<Navbar notLanding={true} searchPage={true} />
 					<div className="Navbar-filler" />
 				</>
 			)}

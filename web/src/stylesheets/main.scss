@@ -13,14 +13,15 @@
 @import "layout/Footer";
 
 // 5. Components
-@import "components/EntryForm/", "components/LoadingButton",
-	"components/EntryForm/", "components/PasswordHints.scss",
-	"components/Modal.scss", "components/Navbar.scss",
-	"components/MobileSearch.scss", "components/Destinations.scss",
-	"components/ListingTypes.scss", "components/Inspirations.scss",
-	"components/MobileNavbar.scss", "components/FormSearch.scss",
-	"components/FormSearchMobile.scss", "components/ReviewItem.scss",
-	"components/HouseMarker.scss", "components/FiltersEditMenu.scss";
+@import "components/EntryForm/", "components/SearchResultsPage/",
+	"components/LoadingButton", "components/EntryForm/",
+	"components/PasswordHints.scss", "components/Modal.scss",
+	"components/Navbar.scss", "components/MobileSearch.scss",
+	"components/Destinations.scss", "components/ListingTypes.scss",
+	"components/Inspirations.scss", "components/MobileNavbar.scss",
+	"components/FormSearch.scss", "components/FormSearchMobile.scss",
+	"components/ReviewItem.scss", "components/HouseMarker.scss",
+	"components/FiltersEditMenu.scss";
 
 // 6. Page-specific styles
 @import "pages/Listing", "pages/Landing", "pages/EntryPage", "pages/UserPage",

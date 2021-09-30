@@ -43,6 +43,12 @@ const BASIC_SEARCH = gql`
 				superhost
 				averageScore
 				reviewsCount
+				basicAmenities
+				numGuests
+				numBedrooms
+				numBeds
+				numBaths
+				imageComments
 			}
 			offset
 		}

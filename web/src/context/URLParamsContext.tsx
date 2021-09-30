@@ -1,4 +1,11 @@
-import { createContext, useContext, useReducer, useEffect } from "react";
+import {
+	createContext,
+	useContext,
+	useReducer,
+	useEffect,
+	useState,
+	useRef,
+} from "react";
 import { History } from "history";
 import {
 	EditMenuEnum,
@@ -36,6 +43,7 @@ interface IURLParamsProviderProps {
 			field: ArrayField
 		) => void;
 	};
+	activeNumFilters: number;
 }
 
 export const URLParamsContext = createContext<
@@ -66,6 +74,7 @@ interface Props {
 	variables: BasicSearchVariables;
 	openFilter: boolean;
 	setOpenFilter: (state: boolean) => void;
+	activeNumFilters: number;
 }
 
 const URLParamsProvider: React.FC<Props> = ({
@@ -74,12 +83,13 @@ const URLParamsProvider: React.FC<Props> = ({
 	variables,
 	openFilter,
 	setOpenFilter,
+	activeNumFilters,
 }) => {
 	const initialReducerState = {
 		...variables,
 		tags: variables.tags || [],
-		listingType: variables.tags || [],
-		languages: variables.tags || [],
+		listingType: variables.listingType || [],
+		languages: variables.languages || [],
 		smoking: variables.smoking,
 		pets: variables.pets,
 		superhost: variables.superhost,
@@ -96,10 +106,12 @@ const URLParamsProvider: React.FC<Props> = ({
 	};
 
 	const [state, dispatch] = useReducer(editQueryReducer, initialReducerState);
+	const [clear, setClear] = useState(false);
+	const tempState = useRef<EditQueryState | null>(null);
 
 	useEffect(() => {
 		if (openFilter) {
-			dispatch({ type: "openEditMenu", value: "filters" });
+			handleOpenEditMenu("filters");
 		}
 	}, [openFilter]);
 
@@ -122,6 +134,9 @@ const URLParamsProvider: React.FC<Props> = ({
 		} = state;
 
 		document.body.style.overflow = "unset";
+
+		setClear(false);
+		setOpenFilter(false);
 		dispatch({ type: "closeEdit" });
 		dispatch({ type: "closeEditMenu" });
 
@@ -161,7 +176,6 @@ const URLParamsProvider: React.FC<Props> = ({
 
 		Object.keys(arrayFields).forEach((key) => {
 			const array = arrayFields[key];
-			console.log(key, " : ", array);
 
 			if (array.length > 0) {
 				nextSearch.set(key, array.join(";"));
@@ -183,7 +197,9 @@ const URLParamsProvider: React.FC<Props> = ({
 
 	// Closes the edit dropdown
 	const handleCloseEdit = () => {
-		dispatch({ type: "closeEdit" });
+		if (state.edit) {
+			dispatch({ type: "closeEdit" });
+		}
 	};
 
 	// Opens the edit menu; location, dates, guests, filters
@@ -195,6 +211,16 @@ const URLParamsProvider: React.FC<Props> = ({
 	const handleCloseEditMenu = () => {
 		document.body.style.overflow = "unset";
 		setOpenFilter(false);
+
+		if (clear) {
+			dispatch({
+				type: "editFilters",
+				object: tempState.current as unknown as {
+					[key: string]: boolean | string[];
+				},
+			});
+		}
+
 		dispatch({ type: "closeEditMenu" });
 	};
 
@@ -269,6 +295,8 @@ const URLParamsProvider: React.FC<Props> = ({
 	};
 
 	const resetFilters = () => {
+		setClear(true);
+		tempState.current = state;
 		dispatch({ type: "editFilters", object: filtersDefault });
 	};
 
@@ -295,6 +323,7 @@ const URLParamsProvider: React.FC<Props> = ({
 		resetFilters,
 		searchHandlers,
 		filterHandlers,
+		activeNumFilters,
 	};
 
 	return (

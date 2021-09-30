@@ -31,6 +31,15 @@
 			border-color: black;
 		}
 
+		&.filtered {
+			border-width: 0.2rem;
+			background-color: rgb(245, 245, 245);
+			border-color: black;
+			> div {
+				color: black;
+			}
+		}
+
 		> div {
 			padding: 0.9rem 1.5rem;
 			font-weight: 400;
@@ -56,7 +65,7 @@
 			}
 		}
 
-		.SRP {
+		.SearchResultsPagination {
 			&__list {
 				display: flex;
 				width: 100%;
@@ -80,6 +89,10 @@
 						background-color: inherit;
 					}
 				}
+			}
+
+			&__disclaimer {
+				display: none;
 			}
 		}
 	}
@@ -124,14 +137,14 @@
 
 		.item {
 			display: flex;
+			align-items: center;
+
 			> span {
 				font-size: 1.4rem;
 				color: $muted-text-color;
 			}
 
 			> svg {
-				position: relative;
-				top: -0.2rem;
 				height: 2rem !important;
 				width: 2rem !important;
 				margin: 0 1rem;
@@ -230,113 +243,27 @@
 		}
 
 		&--edit-filter {
+			position: relative;
 			z-index: 6;
+
+			&.filtered {
+				&::after {
+					position: absolute;
+					content: "";
+					height: 0.5rem;
+					width: 0.5rem;
+					border-radius: 50%;
+					top: -0.5rem;
+					right: -0.5rem;
+					background-color: black;
+				}
+			}
 			@include buttonSvgOutline;
 		}
 	}
 
 	&--filler {
 		height: 6.4rem;
-	}
-}
-
-.SearchResultsItem {
-	font-weight: 400;
-	margin: 4rem 0;
-
-	&:first-child {
-		margin-top: 0;
-	}
-
-	&__image {
-		position: relative;
-		inset: 0px;
-		padding-top: 60%;
-		border-radius: 1.2rem;
-		overflow: hidden;
-
-		> .superhost {
-			position: absolute;
-			left: 0;
-			top: 0;
-			z-index: 1;
-			margin: 1rem;
-
-			> span {
-				background-color: white;
-				border-radius: 0.4rem;
-				padding: 0.5rem;
-				text-transform: uppercase;
-				font-size: 1.2rem;
-				letter-spacing: 0.05rem;
-				font-weight: 500;
-			}
-		}
-
-		> img {
-			position: absolute;
-			object-fit: cover;
-			object-position: 50% 50%;
-			inset: 0px;
-			width: 100%;
-			height: 100%;
-		}
-	}
-
-	&__details {
-		margin-top: 1rem;
-		font-size: 1.6rem;
-
-		> .score {
-			display: flex;
-			align-items: center;
-
-			> svg {
-				position: relative;
-				top: -0.1rem;
-				color: $main-color;
-				height: 1.4rem !important;
-				width: 1.4rem !important;
-			}
-			> span {
-				font-size: 1.4rem;
-
-				&:first-of-type {
-					margin-left: 0.5rem;
-					margin-right: 0.25rem;
-				}
-
-				&:last-of-type {
-					color: $muted-text-color;
-				}
-			}
-		}
-
-		> .title {
-			width: 99%;
-			overflow: hidden;
-
-			> span {
-				white-space: nowrap;
-				text-overflow: ellipsis;
-				width: 100%;
-				display: block;
-				overflow: hidden;
-			}
-		}
-
-		> .price {
-			> .total-price {
-				font-size: 1.4rem;
-				text-decoration: underline;
-				color: $muted-text-color;
-			}
-			span {
-				&:first-of-type {
-					font-weight: 500;
-				}
-			}
-		}
 	}
 }
 
@@ -370,6 +297,41 @@
 			transform: translateY(0);
 			opacity: 100%;
 			transition: 300ms ease-out;
+		}
+	}
+}
+
+@media (min-width: 744px) {
+	.Navbar {
+		&__container {
+			padding: 0 2.4rem;
+		}
+	}
+
+	.SearchPage-container {
+		padding: 0 2.4rem;
+		margin-top: 5rem;
+	}
+
+	.SearchPage {
+		&__results {
+			.SearchResultsPagination {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				margin: 4rem;
+
+				&__disclaimer {
+					margin-top: 2rem;
+					text-align: center;
+					display: block;
+
+					> span {
+						font-weight: 400;
+						color: $muted-text-color;
+					}
+				}
+			}
 		}
 	}
 }

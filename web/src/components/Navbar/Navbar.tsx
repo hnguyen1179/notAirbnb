@@ -18,10 +18,11 @@ interface Props {
 	isTop?: boolean; // Denotes whether or not Navbar is at the top of page or not; used in Landing
 	notLanding?: boolean; // Denotes whether or not Navbar is used on LandingPage or not
 	disableEntry?: boolean; // Prevent login and signup modal from appearing
+	searchPage?: boolean;
 }
 
 // This Navbar is for desktop view; contains a search
-function Navbar({ isTop, notLanding = false, disableEntry = false }: Props) {
+function Navbar({ isTop, notLanding = false, disableEntry = false, searchPage = false }: Props) {
 	const componentRef = useRef<HTMLDivElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const modalRef = useRef<HTMLDivElement>(null);
