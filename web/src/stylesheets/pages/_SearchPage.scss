@@ -4,6 +4,8 @@
 	}
 
 	.google-maps-container {
+		display: none;
+
 		> .map {
 			position: sticky;
 			top: 8rem;
@@ -334,6 +336,7 @@
 					display: block;
 
 					> span {
+						font-size: 1.4rem;
 						font-weight: 400;
 						color: $muted-text-color;
 					}
@@ -353,8 +356,15 @@
 		}
 
 		.google-maps-container {
+			display: block;
 			width: 100%;
 			background-color: grey;
+		}
+	}
+
+	.SearchPage__results__list {
+		&.underline {
+			border-bottom: 1px solid $muted-line-color;
 		}
 	}
 }
@@ -375,6 +385,10 @@
 				margin: 0;
 				padding: 0 2.4rem;
 			}
+		}
+
+		.Footer {
+			max-width: unset;
 		}
 	}
 }

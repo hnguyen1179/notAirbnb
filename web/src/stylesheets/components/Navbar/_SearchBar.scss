@@ -1,0 +1,45 @@
+.SearchBar {
+  display: flex;
+  align-items: center;
+	margin-left: 3rem;
+	border-radius: 4rem;
+	overflow: hidden;
+	@include hover-lite;
+
+	> .divider {
+    display: inline-block;
+		background-color: rgb(221, 221, 221);
+		flex: 0 0 1px;
+		height: 24px;
+		width: 1px;
+	}
+
+	&__edit-button {
+		padding: 1.4rem;
+    font-size: 1.4rem;
+    color: $muted-text-color;
+
+    &:hover {
+      color: black;
+    }
+
+		&--location {
+			margin-left: 1rem;
+		}
+	}
+
+	&__submit {
+		border-radius: 50%;
+		padding: 1rem;
+		color: white;
+		background-color: $main-color;
+		margin-right: 0.5rem;
+		margin-left: 1rem;
+	}
+}
+
+@media (min-width: 950px) {
+	.SearchBar {
+		margin: 0;
+	}
+}

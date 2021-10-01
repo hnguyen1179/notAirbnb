@@ -38,10 +38,22 @@
 	box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px !important;
 	transition: box-shadow 0.2s cubic-bezier(0.35, 0, 0.65, 1) 0s !important;
 
-	&:hover,
-	&:focus-within {
+	&:hover {
 		box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px !important;
 		transition: box-shadow 0.2s cubic-bezier(0.35, 0, 0.65, 1) 0s !important;
+	}
+}
+
+@mixin hover-lite {
+	cursor: pointer;
+	border: 1px solid #dddddd !important;
+	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.08),
+		0px 4px 12px rgba(0, 0, 0, 0.05) !important;
+	transition: box-shadow 0.2s ease !important;
+
+	&:hover {
+		transition: box-shadow 0.2s ease !important;
+		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.18) !important;
 	}
 }
 

@@ -125,10 +125,11 @@ const SearchPage = ({ history }: Props) => {
 			);
 		});
 	}, [
+		data?.basicSearch?.listings,
+		cloudinary,
+		mobile,
 		variables.checkIn,
 		variables.checkOut,
-		cloudinary,
-		data?.basicSearch?.listings,
 	]);
 
 	if (error) {
@@ -206,7 +207,12 @@ const SearchPage = ({ history }: Props) => {
 					/>
 				) : (
 					<>
-						<Navbar notLanding={true} searchPage={true} />
+						<Navbar
+							notLanding={true}
+							searchPage={true}
+							searchDetails={searchDetails}
+							location={variables.region}
+						/>
 						<div className="Navbar-filler" />
 					</>
 				)}
@@ -235,7 +241,13 @@ const SearchPage = ({ history }: Props) => {
 						</button>
 
 						<div className="SearchPage__results">
-							<ul className="SearchPage__results__list">
+							<ul
+								className={`SearchPage__results__list ${
+									(data?.basicSearch?.count || 0) < 10
+										? "underline"
+										: ""
+								}`}
+							>
 								{data?.basicSearch?.count === 0 && (
 									<div className="no-results">
 										<div>No results</div>
@@ -264,9 +276,7 @@ const SearchPage = ({ history }: Props) => {
 						</div>
 					</div>
 					<div className="google-maps-container">
-						<aside className="map">
-							im sticky
-						</aside>
+						<aside className="map">im sticky</aside>
 					</div>
 				</div>
 

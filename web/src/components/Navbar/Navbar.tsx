@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { SyntheticEvent, RefObject, useEffect, useState, useRef } from "react";
 import Modal from "@material-ui/core/Modal";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
@@ -13,16 +13,27 @@ import { ReactComponent as GlobeSvg } from "../../assets/icons/globe.svg";
 import { ReactComponent as SearchSvg } from "../../assets/icons/thick-search.svg";
 import Dropdown from "./Dropdown";
 import SearchForm from "./SearchForm";
+import SearchBar from "./SearchBar";
+import SearchFormDataProvider from "./SearchFormDataProvider";
 
 interface Props {
 	isTop?: boolean; // Denotes whether or not Navbar is at the top of page or not; used in Landing
 	notLanding?: boolean; // Denotes whether or not Navbar is used on LandingPage or not
 	disableEntry?: boolean; // Prevent login and signup modal from appearing
 	searchPage?: boolean;
+	searchDetails?: string;
+	location?: string;
 }
 
 // This Navbar is for desktop view; contains a search
-function Navbar({ isTop, notLanding = false, disableEntry = false, searchPage = false }: Props) {
+function Navbar({
+	isTop,
+	notLanding = false,
+	disableEntry = false,
+	searchPage = false,
+	searchDetails,
+	location,
+}: Props) {
 	const componentRef = useRef<HTMLDivElement>(null);
 	const buttonRef = useRef<HTMLButtonElement>(null);
 	const modalRef = useRef<HTMLDivElement>(null);
@@ -33,7 +44,7 @@ function Navbar({ isTop, notLanding = false, disableEntry = false, searchPage = 
 	const { open, setOpen, setEntry } = useModal();
 
 	// Opens modal; closes profile and search components
-	const handleOpen = (e: React.SyntheticEvent<EventTarget>) => {
+	const handleOpen = (e: SyntheticEvent<EventTarget>) => {
 		e.stopPropagation();
 		if (disableEntry) {
 			setDropdown(false);
@@ -72,11 +83,9 @@ function Navbar({ isTop, notLanding = false, disableEntry = false, searchPage = 
 		setDropdown(false);
 	};
 
-	// Activates the Search component if at the very t op of screen
+	// Activates the Search component if at the very top of screen only on landing
 	useEffect(() => {
-		if (notLanding) {
-			return;
-		}
+		if (notLanding) return;
 
 		if (isTop) {
 			setSearch(true);
@@ -89,6 +98,7 @@ function Navbar({ isTop, notLanding = false, disableEntry = false, searchPage = 
 	useEffect(() => {
 		window.addEventListener("closeNavigation", handleCloseNavigation);
 		document.body.addEventListener("click", handleBodyClick);
+		window.addEventListener("scroll", handleCloseNavigation);
 
 		return () => {
 			window.removeEventListener(
@@ -96,6 +106,7 @@ function Navbar({ isTop, notLanding = false, disableEntry = false, searchPage = 
 				handleCloseNavigation
 			);
 			document.body.removeEventListener("click", handleBodyClick);
+			window.removeEventListener("scroll", handleCloseNavigation);
 			handleClose();
 		};
 	}, []);
@@ -123,6 +134,8 @@ function Navbar({ isTop, notLanding = false, disableEntry = false, searchPage = 
 						</a>
 					</div>
 				</div>
+
+				{/* Render this only on the landing page */}
 				{!notLanding && (
 					<div className="Navbar__search">
 						<CSSTransition
@@ -158,6 +171,48 @@ function Navbar({ isTop, notLanding = false, disableEntry = false, searchPage = 
 							>
 								<div>Start your search</div>
 								<SearchSvg />
+							</button>
+						</CSSTransition>
+					</div>
+				)}
+
+				{searchPage && (
+					<div className="Navbar__search--search-page">
+						<CSSTransition
+							in={search}
+							timeout={150}
+							unmountOnExit
+							classNames="component"
+							nodeRef={componentRef}
+						>
+							<div
+								className="Navbar__search__component Navbar__search__component--search-page"
+								ref={componentRef}
+							>
+								<div className="Navbar__search__component__categories">
+									<span>Places to stay</span>
+									<span>Experiences</span>
+									<span>Online Experiences</span>
+								</div>
+								<SearchFormDataProvider />
+							</div>
+						</CSSTransition>
+						<CSSTransition
+							in={!search}
+							timeout={150}
+							unmountOnExit
+							classNames="button"
+							nodeRef={buttonRef}
+						>
+							<button
+								className="Navbar__search__button--search-page"
+								ref={buttonRef}
+								onClick={handleClickSearch}
+							>
+								<SearchBar
+									location={location}
+									searchDetails={searchDetails as string}
+								/>
 							</button>
 						</CSSTransition>
 					</div>
