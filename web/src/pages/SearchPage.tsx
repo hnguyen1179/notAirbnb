@@ -18,6 +18,8 @@ import SearchResultsItem from "../components/SearchResultsItem/SearchResultsItem
 import SearchResultsPagination from "../components/SearchResultsPagination/SearchResultsPagination";
 import { URLParamsProvider } from "../context/URLParamsContext";
 import Navbar from "../components/Navbar/Navbar";
+import { CSSTransition } from "react-transition-group";
+import EditMenuPortal from "../components/SearchPageTopBar/EditMenuPortal";
 
 interface Props {
 	history: History<any>;
@@ -47,6 +49,7 @@ const SearchPage = ({ history }: Props) => {
 
 	const { cloudinary, mobile } = useContext(AppContext);
 	const [openFilter, setOpenFilter] = useState(false);
+	const filtersEditMenuRef = useRef<HTMLDivElement>(null);
 
 	// Searches done via landing "region" icons
 	const isRegionSearch = !history.location.search.includes("guests");
@@ -54,7 +57,7 @@ const SearchPage = ({ history }: Props) => {
 	// Checks to see if any filters are set
 	const activeNumFilters = Array.from(
 		searchParams.entries(),
-		([key, value]) => key
+		([key, _]) => key
 	).filter((key) => {
 		return [
 			"tags",
@@ -132,6 +135,7 @@ const SearchPage = ({ history }: Props) => {
 		variables.checkOut,
 	]);
 
+	// TODO: Maybe have a dedicated error page?
 	if (error) {
 		console.log(JSON.stringify(error, null, 2));
 		return <>uh oh</>;
@@ -214,6 +218,15 @@ const SearchPage = ({ history }: Props) => {
 							location={variables.region}
 						/>
 						<div className="Navbar-filler" />
+						<CSSTransition
+							in={openFilter}
+							timeout={150}
+							unmountOnExit
+							classNames="edit-menu-filter"
+							nodeRef={filtersEditMenuRef}
+						>
+							<EditMenuPortal menuRef={filtersEditMenuRef} />
+						</CSSTransition>
 					</>
 				)}
 

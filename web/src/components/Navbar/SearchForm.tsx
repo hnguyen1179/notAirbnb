@@ -9,6 +9,7 @@ import { disableDay } from "../../utils/disableDays";
 import LocationSearch from "../LocationSearch/LocationSearch";
 import { useHistory } from "react-router";
 import { addDays, format } from "date-fns";
+import { BasicSearchVariables } from "../../pages/SearchPage";
 
 interface IDate {
 	startDate: Date;
@@ -30,23 +31,25 @@ const LOCATIONS = [
 ];
 
 interface Props {
-	location?: string | undefined;
-	dates?: IDate;
-	guests?: number | undefined;
+	filters?: BasicSearchVariables;
+	handleLocationChange?: (location: string) => void;
+	handleDateChange?: (ranges: OnDateRangeChangeProps) => void;
+	handleGuestChange?: (value: number) => void;
 }
 
 const SearchForm = ({
-	location = "",
-	dates: prevDates,
-	guests = undefined,
+	filters,
+	handleLocationChange: setReducerLocation,
+	handleDateChange: setReducerDate,
+	handleGuestChange: setReducerGuest,
 }: Props) => {
 	const [focusedRange, setFocusedRange] = useState<[number, number]>([0, 0]);
 	const [focusInput, setFocusInput] = useState(-1);
 	const [error, setError] = useState(-1);
 	const [showRdr, setShowRdr] = useState(false);
 	const [dates, setDates] = useState<IDate>({
-		startDate: prevDates ? prevDates.startDate : new Date(),
-		endDate: prevDates ? prevDates.endDate : new Date(),
+		startDate: filters ? new Date(filters.checkIn) : new Date(),
+		endDate: filters ? new Date(filters.checkOut) : new Date(),
 		key: "selection",
 	});
 
@@ -69,9 +72,9 @@ const SearchForm = ({
 	const form = useForm();
 
 	useEffect(() => {
-		form.setValue("location", location);
-		form.setValue("guests", guests);
-	}, [form, location, guests]);
+		form.setValue("location", filters ? filters.region : "");
+		form.setValue("guests", filters ? filters.guests : 0);
+	}, [form, filters]);
 
 	const next = () => {
 		setFocusInput(1);
@@ -214,7 +217,6 @@ const SearchForm = ({
 					focusInput !== -1 ? "active" : ""
 				}`}
 			>
-
 				{/* Location Search */}
 				<div
 					className={displayClass(
@@ -226,7 +228,17 @@ const SearchForm = ({
 				>
 					<div className="SearchForm__container__input-container__input">
 						<label htmlFor="location">Location</label>
-						<LocationSearch form={form} next={next} />
+						{setReducerLocation ? (
+							// SearchPage
+							<LocationSearch
+								form={form}
+								setLocation={setReducerLocation}
+								next={next}
+							/>
+						) : (
+							// LandingPage
+							<LocationSearch form={form} next={next} />
+						)}
 					</div>
 				</div>
 
@@ -248,7 +260,7 @@ const SearchForm = ({
 							placeholder="Add dates"
 							id="startDate"
 							value={
-								prevDates
+								filters
 									? dates.startDate?.toLocaleDateString()
 									: selectedRef.current >= 2
 									? dates.startDate?.toLocaleDateString()
@@ -277,7 +289,7 @@ const SearchForm = ({
 							placeholder="Add dates"
 							id="endDate"
 							value={
-								prevDates
+								filters
 									? dates.endDate?.toLocaleDateString()
 									: selectedRef.current >= 2
 									? dates.endDate?.toLocaleDateString()
@@ -302,14 +314,28 @@ const SearchForm = ({
 				>
 					<div className="SearchForm__container__input-container__input">
 						<label htmlFor="guests">Guests</label>
-						<input
-							type="number"
-							min="1"
-							placeholder="Add guests"
-							id="guests"
-							autoComplete={"off"}
-							{...form.register("guests")}
-						/>
+						{setReducerGuest ? (
+							<input
+								type="number"
+								min="1"
+								placeholder="Add guests"
+								id="guests"
+								autoComplete={"off"}
+								{...form.register("guests")}
+								onChange={(e) =>
+									setReducerGuest(parseInt(e.target.value))
+								}
+							/>
+						) : (
+							<input
+								type="number"
+								min="1"
+								placeholder="Add guests"
+								id="guests"
+								autoComplete={"off"}
+								{...form.register("guests")}
+							/>
+						)}
 					</div>
 					<div className="button-placeholder"></div>
 				</div>
@@ -337,7 +363,9 @@ const SearchForm = ({
 						showDateDisplay={false}
 						ranges={[dates]}
 						rangeColors={["#00a6de"]}
-						onChange={handleDateChange}
+						onChange={
+							setReducerDate ? setReducerDate : handleDateChange
+						}
 						disabledDay={disableDay}
 					/>
 					<DateRange
@@ -351,7 +379,9 @@ const SearchForm = ({
 						showDateDisplay={false}
 						ranges={[dates]}
 						rangeColors={["#00a6de"]}
-						onChange={handleDateChange}
+						onChange={
+							setReducerDate ? setReducerDate : handleDateChange
+						}
 						disabledDay={disableDay}
 					/>
 				</div>

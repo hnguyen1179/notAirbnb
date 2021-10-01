@@ -42,10 +42,11 @@ const LocationSearch = ({ form, location, setLocation, next, submitEdit }: Props
 
 	const handleRadioSelect = (e: any) => {
 		// setLocation is for the mobile
-		if (setLocation) setLocation(e.currentTarget.value);
-
-		// form is for the desktop
-		if (form) form.setValue("location", e.currentTarget.value);
+		if (setLocation) {
+			setLocation(e.currentTarget.value);
+		} else if (form) {
+			form.setValue("location", e.currentTarget.value);
+		}
 
 		// will setStage("dates")
 		next && next();

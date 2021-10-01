@@ -1,4 +1,5 @@
 import { useURLParams } from "../../context/URLParamsContext";
+import { BasicSearchVariables } from "../../pages/SearchPage";
 import SearchForm from "./SearchForm";
 
 /**
@@ -10,14 +11,25 @@ import SearchForm from "./SearchForm";
  */
 const SearchFormDataProvider = () => {
 	const { state } = useURLParams();
+	const filters: BasicSearchVariables = {
+		region: state.location,
+		guests: state.guests,
+		checkIn: state.dates.startDate.toLocaleDateString(),
+		checkOut: state.dates.endDate.toLocaleDateString(),
+		tags: state.tags,
+		listingType: state.listingType,
+		languages: state.languages,
+		smoking: state.smoking,
+		pets: state.pets,
+		superhost: state.superhost,
+		entire: state.entire,
+		privateListing: state.privateListing,
+		offset: 0,
+	};
 
 	return (
 		<div style={{ height: "100%" }}>
-			<SearchForm
-				location={state.location}
-				dates={state.dates}
-				guests={state.guests}
-			/>
+			<SearchForm filters={filters} />
 		</div>
 	);
 };

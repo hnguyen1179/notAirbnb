@@ -7,10 +7,6 @@ import SectionLanguages from "./SectionLanguages";
 import SectionRules from "./SectionRules";
 import { useURLParams } from "../../context/URLParamsContext";
 
-interface Props {
-	handleCloseForm: () => void;
-}
-
 export type ArrayField = "tags" | "listingType" | "languages";
 export type BooleanField =
 	| "superhost"
@@ -19,18 +15,19 @@ export type BooleanField =
 	| "privateListing"
 	| "entire";
 
-const FiltersEditMenu = ({ handleCloseForm }: Props) => {
+const FiltersEditMenu = () => {
 	const {
 		state,
 		submitNewQuery,
 		resetFilters,
+		handleCloseEditMenu,
 		filterHandlers: { handleToggleBooleanField, handleToggleArrayField },
 	} = useURLParams();
 
 	return (
 		<div className="FiltersEditMenu">
 			<header className="FiltersEditMenu__header">
-				<button onClick={handleCloseForm}>
+				<button onClick={handleCloseEditMenu}>
 					<BackSvg />
 				</button>
 

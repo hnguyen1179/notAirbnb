@@ -342,3 +342,53 @@
 		}
 	}
 }
+
+.edit-menu {
+	position: fixed;
+	z-index: 100;
+	background-color: white;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: none;
+
+	&[aria-hidden="false"] {
+		display: block;
+	}
+
+	.MobileSearchForm__form__stage {
+		padding: 2.1rem 2rem;
+	}
+
+	&__menu {
+		&-enter {
+			transform: translateY(100%);
+			opacity: 0%;
+		}
+
+		&-enter-active {
+			transform: translateY(0);
+			opacity: 100%;
+			transition: 300ms ease-out;
+		}
+	}
+}
+
+@media screen and (min-width: 744px) {
+	.edit-menu {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		height: 74rem;
+		width: 68rem;
+		border-radius: 1.2rem;
+		overflow: hidden;
+		border: 1px solid black;
+
+		.FiltersEditMenu {
+			height: 100%;
+		}
+	}
+}

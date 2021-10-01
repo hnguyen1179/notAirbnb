@@ -1,4 +1,4 @@
-import { Ref } from "react";
+import { Ref, useEffect } from "react";
 import { createPortal } from "react-dom";
 
 import MobileEditDates from "../MobileNavbar/MobileEditDates";
@@ -22,6 +22,13 @@ const EditMenuPortal = ({ menuRef }: Props) => {
 		},
 		submitNewQuery,
 	} = useURLParams();
+
+	useEffect(() => {
+		return () => {
+			handleCloseEditMenu();
+		};
+	}, []);
+
 	return (
 		<>
 			{createPortal(
@@ -59,11 +66,7 @@ const EditMenuPortal = ({ menuRef }: Props) => {
 							submitEdit={submitNewQuery}
 						/>
 					)}
-					{editMenu.filters && (
-						<FiltersEditMenu
-							handleCloseForm={handleCloseEditMenu}
-						/>
-					)}
+					{editMenu.filters && <FiltersEditMenu />}
 				</div>,
 				document?.querySelector("#root") as Element
 			)}

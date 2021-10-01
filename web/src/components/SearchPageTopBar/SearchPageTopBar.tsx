@@ -31,6 +31,7 @@ const SearchPageTopBar = ({ searchDetails, handleBack }: Props) => {
 		window.addEventListener("scroll", handleCloseEdit);
 		return () => {
 			window.removeEventListener("scroll", handleCloseEdit);
+			handleCloseEdit();
 		};
 	}, [handleCloseEdit]);
 

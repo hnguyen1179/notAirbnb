@@ -278,38 +278,6 @@
 	}
 }
 
-.edit-menu {
-	position: fixed;
-	z-index: 100;
-	background-color: white;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	display: none;
-
-	&[aria-hidden="false"] {
-		display: block;
-	}
-
-	.MobileSearchForm__form__stage {
-		padding: 2.1rem 2rem;
-	}
-
-	&__menu {
-		&-enter {
-			transform: translateY(100%);
-			opacity: 0%;
-		}
-
-		&-enter-active {
-			transform: translateY(0);
-			opacity: 100%;
-			transition: 300ms ease-out;
-		}
-	}
-}
-
 @media (min-width: 744px) {
 	.SearchPage-container {
 		padding: 0 2.4rem;
@@ -320,6 +288,12 @@
 		.Navbar {
 			&__container {
 				padding: 0 2.4rem;
+			}
+		}
+
+		&__results-details {
+			> h1 {
+				font-size: 3.4rem;
 			}
 		}
 
@@ -351,13 +325,13 @@
 		display: flex;
 
 		.SearchPage-container {
-			width: calc(100% - 50rem);
+			width: calc(100% - 45rem);
 			max-width: 84rem;
 		}
 
 		.google-maps-container {
 			display: block;
-			width: 100%;
+			flex-grow: 1;
 			background-color: grey;
 		}
 	}
