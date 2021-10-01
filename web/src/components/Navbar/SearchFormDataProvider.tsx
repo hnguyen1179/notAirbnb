@@ -10,7 +10,7 @@ import SearchForm from "./SearchForm";
  * Avoids massive prop drilling
  */
 const SearchFormDataProvider = () => {
-	const { state } = useURLParams();
+	const { state, searchHandlers } = useURLParams();
 	const filters: BasicSearchVariables = {
 		region: state.location,
 		guests: state.guests,
@@ -27,9 +27,17 @@ const SearchFormDataProvider = () => {
 		offset: 0,
 	};
 
+	const { handleLocationChange, handleDateChange, handleGuestChange } =
+		searchHandlers;
+
 	return (
 		<div style={{ height: "100%" }}>
-			<SearchForm filters={filters} />
+			<SearchForm
+				filters={filters}
+				handleLocationChange={handleLocationChange}
+				handleDateChange={handleDateChange}
+				handleGuestChange={handleGuestChange}
+			/>
 		</div>
 	);
 };

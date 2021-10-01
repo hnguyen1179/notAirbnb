@@ -161,6 +161,8 @@ const SearchForm = ({
 			setDates({ ...dates, startDate: start, endDate: end });
 		}
 
+		setReducerDate && setReducerDate(ranges);
+
 		selectedRef.current += 1;
 	};
 
@@ -315,6 +317,7 @@ const SearchForm = ({
 					<div className="SearchForm__container__input-container__input">
 						<label htmlFor="guests">Guests</label>
 						{setReducerGuest ? (
+							// Search Page
 							<input
 								type="number"
 								min="1"
@@ -327,6 +330,7 @@ const SearchForm = ({
 								}
 							/>
 						) : (
+							// Landing Page
 							<input
 								type="number"
 								min="1"
@@ -363,9 +367,7 @@ const SearchForm = ({
 						showDateDisplay={false}
 						ranges={[dates]}
 						rangeColors={["#00a6de"]}
-						onChange={
-							setReducerDate ? setReducerDate : handleDateChange
-						}
+						onChange={handleDateChange}
 						disabledDay={disableDay}
 					/>
 					<DateRange
@@ -379,9 +381,7 @@ const SearchForm = ({
 						showDateDisplay={false}
 						ranges={[dates]}
 						rangeColors={["#00a6de"]}
-						onChange={
-							setReducerDate ? setReducerDate : handleDateChange
-						}
+						onChange={handleDateChange}
 						disabledDay={disableDay}
 					/>
 				</div>
