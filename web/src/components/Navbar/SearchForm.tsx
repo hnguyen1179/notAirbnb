@@ -169,6 +169,7 @@ const SearchForm = ({
 	};
 
 	const handleSubmit = (e: FormEvent) => {
+		console.log(" in handle submit");
 		e.preventDefault();
 
 		const location = form.getValues("location");
@@ -348,8 +349,11 @@ const SearchForm = ({
 
 				<button
 					className="SearchForm__container__input-container__button SearchForm__container__input-container__button--decoy"
-					type="submit"
-					onClick={submitNewQuery ? submitNewQuery : handleSubmit}
+					type="button"
+					onClick={(e) => {
+						e.preventDefault();
+						submitNewQuery ? submitNewQuery() : handleSubmit(e);
+					}}
 				>
 					<SearchSvg />
 				</button>

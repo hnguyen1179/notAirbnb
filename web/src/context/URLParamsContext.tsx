@@ -119,6 +119,7 @@ const URLParamsProvider: React.FC<Props> = ({
 
 	// Submits a new search request with new URL Params
 	const submitNewQuery = () => {
+		console.log('clicked dis')
 		const {
 			dates,
 			location,
@@ -146,6 +147,7 @@ const URLParamsProvider: React.FC<Props> = ({
 		}
 
 		const nextSearch = new URLSearchParams(history.location.search);
+		console.log(nextSearch.toString())
 		nextSearch.set("region", location.split(", ")[0]);
 		nextSearch.set("check-in", format(dates.startDate, "M-d-yyy"));
 		nextSearch.set("check-out", format(checkOut, "M-d-yyy"));

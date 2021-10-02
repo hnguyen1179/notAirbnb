@@ -72,6 +72,8 @@ const SearchResultsItem = ({
 								placeholder("predominant-color"),
 								lazyload(),
 							]}
+							alt={listing.imageComments[0]}
+							draggable={false}
 						/>
 					) : (
 						<PictureCarousel
