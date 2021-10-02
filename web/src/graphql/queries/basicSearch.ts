@@ -34,6 +34,7 @@ const BASIC_SEARCH = gql`
 			count
 			listings {
 				id
+				address
 				title
 				listingType
 				city

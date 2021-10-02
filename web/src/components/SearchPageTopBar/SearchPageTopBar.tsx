@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { MouseEventHandler, useEffect, useRef } from "react";
 
 import { ReactComponent as BackSvg } from "../../assets/icons/back.svg";
 import { ReactComponent as FilterSvg } from "../../assets/icons/filter.svg";
@@ -35,6 +35,11 @@ const SearchPageTopBar = ({ searchDetails, handleBack }: Props) => {
 		};
 	}, [handleCloseEdit]);
 
+	const handleOpenFilter: MouseEventHandler<HTMLButtonElement> = (event) => {
+		event.stopPropagation();
+		handleOpenEditMenu("filters");
+	};
+
 	const backButtonEvent = state.edit ? handleCloseEdit : handleBack;
 	const backButtonSvg = state.edit ? <NegativeSvg id="close" /> : <BackSvg />;
 	const [searchDates, searchGuests = "Add guests"] =
@@ -62,7 +67,7 @@ const SearchPageTopBar = ({ searchDetails, handleBack }: Props) => {
 					className={`button button--edit-filter ${
 						activeNumFilters > 0 ? "filtered" : ""
 					}`}
-					onClick={() => handleOpenEditMenu("filters")}
+					onClick={handleOpenFilter}
 				>
 					<FilterSvg />
 				</button>

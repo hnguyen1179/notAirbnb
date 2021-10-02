@@ -7,7 +7,7 @@ interface FadeProps {
 }
 
 const Fade = React.forwardRef<HTMLDivElement, FadeProps>((props, ref) => {
-	const { in: open, children, ...other } = props;
+	const { in: openFilter, children, ...other } = props;
 
 	const style = useSpring({
 		from: { opacity: 0, transform: "translateY(70vh)" },

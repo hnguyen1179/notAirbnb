@@ -304,7 +304,7 @@ export type BasicSearchQueryVariables = Exact<{
 }>;
 
 
-export type BasicSearchQuery = { __typename?: 'Query', basicSearch?: Maybe<{ __typename?: 'BasicSearchResults', count: number, offset: number, listings: Array<Maybe<{ __typename?: 'Listing', id: string, title: string, listingType: string, city: string, region: string, cleaningFee: number, price: number, superhost: boolean, averageScore: number, reviewsCount: number, basicAmenities: Array<Maybe<string>>, numGuests: number, numBedrooms: number, numBeds: number, numBaths: number, imageComments: Array<Maybe<string>> }>> }> };
+export type BasicSearchQuery = { __typename?: 'Query', basicSearch?: Maybe<{ __typename?: 'BasicSearchResults', count: number, offset: number, listings: Array<Maybe<{ __typename?: 'Listing', id: string, address: string, title: string, listingType: string, city: string, region: string, cleaningFee: number, price: number, superhost: boolean, averageScore: number, reviewsCount: number, basicAmenities: Array<Maybe<string>>, numGuests: number, numBedrooms: number, numBeds: number, numBaths: number, imageComments: Array<Maybe<string>> }>> }> };
 
 export type HostByIdQueryVariables = Exact<{
   id: Scalars['String'];
@@ -457,6 +457,7 @@ export const BasicSearchDocument = gql`
     count
     listings {
       id
+      address
       title
       listingType
       city

@@ -1,9 +1,21 @@
 .SearchResultsItem {
+	position: relative;
 	font-weight: 400;
 	margin: 4rem 0;
 
+	&:hover .PictureCarousel__button {
+		opacity: 1;
+		transition: 250ms ease-in-out;
+	}
+
 	&:first-child {
 		margin-top: 0;
+	}
+
+	a {
+		inset: 0px !important;
+		position: absolute !important;
+		border-radius: 12px !important;
 	}
 
 	&__image {

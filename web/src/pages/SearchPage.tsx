@@ -18,8 +18,10 @@ import SearchResultsItem from "../components/SearchResultsItem/SearchResultsItem
 import SearchResultsPagination from "../components/SearchResultsPagination/SearchResultsPagination";
 import { URLParamsProvider } from "../context/URLParamsContext";
 import Navbar from "../components/Navbar/Navbar";
-import { CSSTransition } from "react-transition-group";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import EditMenuPortal from "../components/SearchPageTopBar/EditMenuPortal";
+import SearchPageMap from "../components/SearchPageMap/SearchPageMap";
+import { trueColor } from "@cloudinary/base/qualifiers/colorSpace";
 
 interface Props {
 	history: History<any>;
@@ -135,6 +137,15 @@ const SearchPage = ({ history }: Props) => {
 		variables.checkOut,
 	]);
 
+	const renderMap = useMemo(() => {
+		return (
+			<SearchPageMap
+				listings={data?.basicSearch?.listings}
+				mobile={mobile}
+			/>
+		);
+	}, [data?.basicSearch?.listings, mobile])
+
 	// TODO: Maybe have a dedicated error page?
 	if (error) {
 		console.log(JSON.stringify(error, null, 2));
@@ -223,11 +234,15 @@ const SearchPage = ({ history }: Props) => {
 							location={variables.region}
 						/>
 						<div className="Navbar-filler" />
+						<div
+							className="edit-menu-portal-background"
+							aria-hidden={openFilter}
+						/>
 						<CSSTransition
 							in={openFilter}
-							timeout={150}
-							unmountOnExit
+							timeout={300}
 							classNames="edit-menu-filter"
+							unmountOnExit
 							nodeRef={filtersEditMenuRef}
 						>
 							<EditMenuPortal menuRef={filtersEditMenuRef} />
@@ -294,7 +309,10 @@ const SearchPage = ({ history }: Props) => {
 						</div>
 					</div>
 					<div className="google-maps-container">
-						<aside className="map">im sticky</aside>
+						<aside className="map">
+							{/* Memoize google maps; it's costly for these API calls each rerender! */}
+							{/* {renderMap} */}
+						</aside>
 					</div>
 				</div>
 

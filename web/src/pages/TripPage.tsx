@@ -21,8 +21,8 @@ import { calculateTotalRes } from "../utils/priceBreakdown";
 import { copyToClipboard } from "../utils/copyToClipboard";
 import { AppContext } from "../context/AppContext";
 import { coordinates } from "../constants/coordinates";
-import HouseMarkerBasic from "../components/HouseMarker/HouseMarkerBasic";
-import HouseMarker from "../components/HouseMarker/HouseMarker";
+import HouseMarkerBasic from "../components/MapMarkers/HouseMarkerBasic";
+import HouseMarker from "../components/MapMarkers/HouseMarker";
 import { style } from "../constants/simpleMapStyle";
 import Navbar from "../components/Navbar/Navbar";
 

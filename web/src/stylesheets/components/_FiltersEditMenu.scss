@@ -343,18 +343,47 @@
 	}
 }
 
-.edit-menu {
-	position: fixed;
-	z-index: 100;
-	background-color: rgba(0, 0, 0, 0.344);
+.edit-menu-filter {
+	&-enter {
+		opacity: 0;
+		opacity: 0;
+		transform: translateY(70%);
+	}
+
+	&-enter-active {
+		opacity: 1;
+		transform: translateY(0);
+		transition: 220ms ease-in-out;
+	}
+}
+
+.edit-menu-portal-background {
+	position: absolute;
 	top: 0;
 	left: 0;
 	right: 0;
 	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.248);
+	z-index: 15;
 	display: none;
 
-	&[aria-hidden="false"] {
+	&[aria-hidden="true"] {
 		display: block;
+	}
+}
+
+.edit-menu {
+	position: fixed;
+	z-index: 100;
+	// background-color: rgba(0, 0, 0, 0.344);
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: block;
+
+	&[aria-hidden="true"] {
+		display: none;
 	}
 
 	.MobileSearchForm__form__stage {

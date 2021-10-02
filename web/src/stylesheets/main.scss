@@ -15,10 +15,10 @@
 // 5. Components
 @import "components/EntryForm/", "components/SearchResultsList/",
 	"components/Navbar/", "components/LoadingButton", "components/EntryForm/",
-	"components/PasswordHints.scss", "components/Modal.scss",
-	"components/Destinations.scss", "components/ListingTypes.scss",
-	"components/Inspirations.scss", "components/ReviewItem.scss",
-	"components/HouseMarker.scss", "components/FiltersEditMenu.scss";
+	"components/MapMarkers/", "components/PasswordHints.scss",
+	"components/Modal.scss", "components/Destinations.scss",
+	"components/ListingTypes.scss", "components/Inspirations.scss",
+	"components/ReviewItem.scss", "components/FiltersEditMenu.scss";
 
 // 6. Page-specific styles
 @import "pages/Listing", "pages/Landing", "pages/EntryPage", "pages/UserPage",

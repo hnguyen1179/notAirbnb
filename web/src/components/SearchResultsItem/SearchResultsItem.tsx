@@ -1,12 +1,13 @@
 import { Cloudinary } from "@cloudinary/base";
-import { AdvancedImage, placeholder, lazyload } from "@cloudinary/react";
 import ItemDetailsMobile from "./ItemDetailsMobile";
 import ItemDetailsDesktop from "./ItemDetailsDesktop";
 import { Maybe } from "../../generated/graphql";
-
+import PictureCarousel from "./PictureCarousel";
+import { AdvancedImage, placeholder, lazyload } from "@cloudinary/react";
 export interface PartialListing {
 	__typename?: "Listing" | undefined;
 	id: string;
+	address: string;
 	title: string;
 	listingType: string;
 	city: string;
@@ -39,10 +40,6 @@ const SearchResultsItem = ({
 	checkIn,
 	checkOut,
 }: Props) => {
-	const url = `images/${listing.region.replaceAll(" ", "_").toLowerCase()}/${
-		listing.id
-	}/image-0`;
-
 	const renderReviewScore = () => {
 		if (!listing.reviewsCount) {
 			return "No reviews";
@@ -53,16 +50,22 @@ const SearchResultsItem = ({
 		}
 	};
 
+	const url = `images/${listing.region.replaceAll(" ", "_").toLowerCase()}/${
+		listing.id
+	}/image-0`;
+
 	return (
 		<li className="SearchResultsItem">
-			<a href={`/listing/${listing.id}`}>
-				<div className="SearchResultsItem-container">
-					<div className="SearchResultsItem__image">
-						{listing.superhost && (
-							<div className="superhost">
-								<span>superhost</span>
-							</div>
-						)}
+			<a href={`/listing/${listing.id}`}></a>
+
+			<div className="SearchResultsItem-container">
+				<div className="SearchResultsItem__image">
+					{listing.superhost && (
+						<div className="superhost">
+							<span>superhost</span>
+						</div>
+					)}
+					{mobile ? (
 						<AdvancedImage
 							cldImg={cloudinary.image(url)}
 							plugins={[
@@ -70,24 +73,31 @@ const SearchResultsItem = ({
 								lazyload(),
 							]}
 						/>
-					</div>
-						{mobile ? (
-							<ItemDetailsMobile
-								listing={listing}
-								checkIn={checkIn}
-								checkOut={checkOut}
-								renderReviewScore={renderReviewScore}
-							/>
-						) : (
-							<ItemDetailsDesktop
-								listing={listing}
-								checkIn={checkIn}
-								checkOut={checkOut}
-								renderReviewScore={renderReviewScore}
-							/>
-						)}
+					) : (
+						<PictureCarousel
+							cloudinary={cloudinary}
+							region={listing.region}
+							id={listing.id}
+							imageComments={listing.imageComments}
+						/>
+					)}
 				</div>
-			</a>
+				{mobile ? (
+					<ItemDetailsMobile
+						listing={listing}
+						checkIn={checkIn}
+						checkOut={checkOut}
+						renderReviewScore={renderReviewScore}
+					/>
+				) : (
+					<ItemDetailsDesktop
+						listing={listing}
+						checkIn={checkIn}
+						checkOut={checkOut}
+						renderReviewScore={renderReviewScore}
+					/>
+				)}
+			</div>
 		</li>
 	);
 };
