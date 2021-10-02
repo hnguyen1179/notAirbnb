@@ -57,10 +57,9 @@ const SearchForm = ({
 
 	useEffect(() => {
 		if (error === -1) return;
-
 		const timer = setTimeout(() => {
 			setError(-1);
-		}, 3000);
+		}, 1500);
 
 		return () => {
 			clearTimeout(timer);
@@ -68,9 +67,7 @@ const SearchForm = ({
 	}, [error]);
 
 	const history = useHistory();
-
 	const selectedRef = useRef(0);
-
 	const form = useForm();
 
 	useEffect(() => {
@@ -169,15 +166,34 @@ const SearchForm = ({
 	};
 
 	const handleSubmit = (e: FormEvent) => {
-		console.log(" in handle submit");
 		e.preventDefault();
 
 		const location = form.getValues("location");
 		const checkIn = dates.startDate;
 		const checkOut = dates.endDate;
 		const guests = form.getValues("guests");
-
 		const locationRegex = new RegExp(location, "i");
+
+		if (
+			location === "" ||
+			!LOCATIONS.some((loc) => locationRegex.test(loc))
+		) {
+			setError(0);
+			return;
+		} else if (
+			dates.startDate.toLocaleDateString() ===
+				new Date().toLocaleDateString() &&
+			dates.endDate.toLocaleDateString() ===
+				new Date().toLocaleDateString()
+		) {
+			setError(1);
+			return;
+			return;
+		} else if (!guests || guests < 1) {
+			setError(3);
+			return;
+		}
+
 		const sameDates = checkIn.toString() === checkOut.toString();
 		const search = new URLSearchParams({
 			region: location.split(", ")[0],
@@ -189,21 +205,10 @@ const SearchForm = ({
 			page: "1",
 		});
 
-		if (
-			location === "" ||
-			!LOCATIONS.some((loc) => locationRegex.test(loc))
-		) {
-			setFocusInput(0);
-			setError(0);
-		} else if (guests < 1) {
-			setFocusInput(3);
-			setError(3);
-		} else {
-			history.push({
-				pathname: "/search",
-				search: search.toString(),
-			});
-		}
+		history.push({
+			pathname: "/search",
+			search: search.toString(),
+		});
 	};
 
 	const displayClass = (base: string, idx: number) => {
@@ -280,10 +285,9 @@ const SearchForm = ({
 				<span className="divider" />
 
 				<div
-					className={displayClass(
-						"SearchForm__container__input-container",
-						2
-					)}
+					className={`SearchForm__container__input-container ${
+						focusInput === 2 ? "focused" : ""
+					} ${error === 1 ? "error" : ""}`}
 					id="endDate"
 					onClick={handleInputClick}
 				>
@@ -349,7 +353,7 @@ const SearchForm = ({
 
 				<button
 					className="SearchForm__container__input-container__button SearchForm__container__input-container__button--decoy"
-					type="button"
+					type="submit"
 					onClick={(e) => {
 						e.preventDefault();
 						submitNewQuery ? submitNewQuery() : handleSubmit(e);
