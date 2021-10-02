@@ -35,6 +35,7 @@ interface Props {
 	handleLocationChange?: (location: string) => void;
 	handleDateChange?: (ranges: OnDateRangeChangeProps) => void;
 	handleGuestChange?: (value: number) => void;
+	submitNewQuery?: () => void;
 }
 
 const SearchForm = ({
@@ -42,6 +43,7 @@ const SearchForm = ({
 	handleLocationChange: setReducerLocation,
 	handleDateChange: setReducerDate,
 	handleGuestChange: setReducerGuest,
+	submitNewQuery,
 }: Props) => {
 	const [focusedRange, setFocusedRange] = useState<[number, number]>([0, 0]);
 	const [focusInput, setFocusInput] = useState(-1);
@@ -73,7 +75,7 @@ const SearchForm = ({
 
 	useEffect(() => {
 		form.setValue("location", filters ? filters.region : "");
-		form.setValue("guests", filters ? filters.guests : 0);
+		form.setValue("guests", filters ? filters.guests : undefined);
 	}, [form, filters]);
 
 	const next = () => {
@@ -347,7 +349,7 @@ const SearchForm = ({
 				<button
 					className="SearchForm__container__input-container__button SearchForm__container__input-container__button--decoy"
 					type="submit"
-					onClick={handleSubmit}
+					onClick={submitNewQuery ? submitNewQuery : handleSubmit}
 				>
 					<SearchSvg />
 				</button>

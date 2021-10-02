@@ -1,4 +1,4 @@
-import {
+import React, {
 	useContext,
 	useState,
 	useEffect,
@@ -164,6 +164,11 @@ const SearchPage = ({ history }: Props) => {
 		});
 	};
 
+	const handleClickOpenFilter = (e: MouseEvent) => {
+		e.stopPropagation();
+		setOpenFilter(true);
+	};
+
 	const searchDetails = isRegionSearch
 		? "Add dates"
 		: `${format(new Date(variables.checkIn), "MMM d")} –
@@ -244,7 +249,7 @@ const SearchPage = ({ history }: Props) => {
 							className={`SearchPage__button-filter ${
 								activeNumFilters > 0 ? "filtered" : ""
 							}`}
-							onClick={() => setOpenFilter(true)}
+							onClick={handleClickOpenFilter}
 						>
 							{activeNumFilters > 0 ? (
 								<div>Filters · {activeNumFilters}</div>

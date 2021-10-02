@@ -10,7 +10,7 @@ import SearchForm from "./SearchForm";
  * Avoids massive prop drilling
  */
 const SearchFormDataProvider = () => {
-	const { state, searchHandlers } = useURLParams();
+	const { state, searchHandlers, submitNewQuery } = useURLParams();
 	const filters: BasicSearchVariables = {
 		region: state.location,
 		guests: state.guests,
@@ -37,6 +37,7 @@ const SearchFormDataProvider = () => {
 				handleLocationChange={handleLocationChange}
 				handleDateChange={handleDateChange}
 				handleGuestChange={handleGuestChange}
+				submitNewQuery={submitNewQuery}
 			/>
 		</div>
 	);

@@ -6,6 +6,7 @@ import SectionListingTypes from "./SectionListingTypes";
 import SectionLanguages from "./SectionLanguages";
 import SectionRules from "./SectionRules";
 import { useURLParams } from "../../context/URLParamsContext";
+import { useEffect } from "react";
 
 export type ArrayField = "tags" | "listingType" | "languages";
 export type BooleanField =
@@ -24,8 +25,22 @@ const FiltersEditMenu = () => {
 		filterHandlers: { handleToggleBooleanField, handleToggleArrayField },
 	} = useURLParams();
 
+	const handleBodyClick = () => {
+		const closeNavigation = new Event("closeNavigation");
+		window.dispatchEvent(closeNavigation);
+	};
+
+	useEffect(() => {
+		window.addEventListener("closeNavigation", handleCloseEditMenu);
+		document.body.addEventListener("click", handleBodyClick);
+
+		return () => {
+			document.body.removeEventListener("click", handleBodyClick);
+		};
+	}, []);
+
 	return (
-		<div className="FiltersEditMenu">
+		<div className="FiltersEditMenu" onClick={(e) => e.stopPropagation()}>
 			<header className="FiltersEditMenu__header">
 				<button onClick={handleCloseEditMenu}>
 					<BackSvg />
