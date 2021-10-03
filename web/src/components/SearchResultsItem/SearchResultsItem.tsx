@@ -4,7 +4,6 @@ import ItemDetailsDesktop from "./ItemDetailsDesktop";
 import { Maybe } from "../../generated/graphql";
 import PictureCarousel from "./PictureCarousel";
 import { AdvancedImage, placeholder, lazyload } from "@cloudinary/react";
-import React from "react";
 export interface PartialListing {
 	__typename?: "Listing" | undefined;
 	id: string;
@@ -41,15 +40,6 @@ const SearchResultsItem = ({
 	checkIn,
 	checkOut,
 }: Props) => {
-	const renderReviewScore = () => {
-		if (!listing.reviewsCount) {
-			return "No reviews";
-		} else if (listing.reviewsCount && !listing.averageScore) {
-			return "No scores";
-		} else {
-			return listing.averageScore;
-		}
-	};
 
 	const url = `images/${listing.region.replaceAll(" ", "_").toLowerCase()}/${
 		listing.id
@@ -90,14 +80,12 @@ const SearchResultsItem = ({
 						listing={listing}
 						checkIn={checkIn}
 						checkOut={checkOut}
-						renderReviewScore={renderReviewScore}
 					/>
 				) : (
 					<ItemDetailsDesktop
 						listing={listing}
 						checkIn={checkIn}
 						checkOut={checkOut}
-						renderReviewScore={renderReviewScore}
 					/>
 				)}
 			</div>

@@ -155,6 +155,7 @@ const SearchPage = ({ history }: Props) => {
 				currentListing={currentListing}
 				region={variables.region}
 				mapRef={mapRef}
+				cloudinary={cloudinary}
 			/>
 		);
 	}, [currentListing, data?.basicSearch?.listings, mobile, variables.region]);

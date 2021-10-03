@@ -1,13 +1,13 @@
 import { Loader } from "@googlemaps/js-api-loader";
+import { MouseEvent, RefObject, useEffect, useState } from "react";
 import GoogleMapReact from "google-map-react";
 import { Maybe } from "../../generated/graphql";
 import { PartialListing } from "../SearchResultsItem/SearchResultsItem";
-import HouseMarkerBasic from "../MapMarkers/HouseMarkerBasic";
 import { coordinates, regions } from "../../constants/coordinates";
-import { getAverageMapValues, getZoomLevel } from "../../utils/mapUtils";
+import { getZoomLevel } from "../../utils/mapUtils";
 import { style } from "../../constants/simpleMapStyle";
 import PriceMarker from "../MapMarkers/PriceMarker";
-import { MouseEvent, RefObject, useEffect, useState } from "react";
+import { Cloudinary } from "@cloudinary/base";
 
 interface Props {
 	listings: Maybe<PartialListing>[] | undefined;
@@ -15,9 +15,16 @@ interface Props {
 	currentListing: number;
 	region: string;
 	mapRef: RefObject<HTMLDivElement>;
+	cloudinary: Cloudinary;
 }
 
-const SearchPageMap = ({ listings, mobile, currentListing, mapRef }: Props) => {
+const SearchPageMap = ({
+	listings,
+	mobile,
+	currentListing,
+	mapRef,
+	cloudinary,
+}: Props) => {
 	const [clickIdx, setClickIdx] = useState(-1);
 	const [mapState, setMapState] = useState({
 		center: regions["Anywhere"],
@@ -74,6 +81,9 @@ const SearchPageMap = ({ listings, mobile, currentListing, mapRef }: Props) => {
 				options={createMapOptions}
 				onClick={resetClickIdx}
 				onZoomAnimationStart={resetClickIdx}
+				draggable={false}
+				// TODO Make this draggable conditional based on whether or not you're
+				// hovering over a marker!! mouseEnter: true: mouseOut: false
 			>
 				{listings?.map((listing, idx) => {
 					if (!listing) return "";
@@ -82,7 +92,9 @@ const SearchPageMap = ({ listings, mobile, currentListing, mapRef }: Props) => {
 					const isClicked = idx === clickIdx;
 					const { lat, lng } = coordinates[listing?.address];
 
-					const handleClickMarker = (e: MouseEvent<HTMLDivElement>) => {
+					const handleClickMarker = (
+						e: MouseEvent<HTMLDivElement>
+					) => {
 						e.stopPropagation();
 						setClickIdx(idx);
 					};
@@ -96,6 +108,8 @@ const SearchPageMap = ({ listings, mobile, currentListing, mapRef }: Props) => {
 							isCurrent={isCurrent}
 							isClicked={isClicked}
 							handleClickMarker={handleClickMarker}
+							mapRef={mapRef}
+							cloudinary={cloudinary}
 						/>
 					);
 				})}

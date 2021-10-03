@@ -7,18 +7,22 @@ interface Props {
 	listing: PartialListing;
 	checkIn: Date;
 	checkOut: Date;
-	renderReviewScore: () => string | number;
 }
 
-const ItemDetailsDesktop = ({
-	listing,
-	checkIn,
-	checkOut,
-	renderReviewScore,
-}: Props) => {
+const ItemDetailsDesktop = ({ listing, checkIn, checkOut }: Props) => {
 	const renderPlural = (num: number) => {
 		if (num > 1) {
 			return "s";
+		}
+	};
+
+	const renderReviewScore = () => {
+		if (!listing.reviewsCount) {
+			return "No reviews";
+		} else if (listing.reviewsCount && !listing.averageScore) {
+			return "No scores";
+		} else {
+			return listing.averageScore;
 		}
 	};
 
@@ -43,7 +47,9 @@ const ItemDetailsDesktop = ({
 					<span> · </span>
 					<span>
 						{numBedrooms > 0
-							? `${numBedrooms} bedroom${renderPlural(numBedrooms)}`
+							? `${numBedrooms} bedroom${renderPlural(
+									numBedrooms
+							  )}`
 							: "studio"}
 					</span>
 					<span> · </span>

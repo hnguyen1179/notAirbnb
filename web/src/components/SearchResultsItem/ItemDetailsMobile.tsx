@@ -5,17 +5,37 @@ import { PartialListing } from "./SearchResultsItem";
 
 interface Props {
 	listing: PartialListing;
-	checkIn: Date;
-	checkOut: Date;
-	renderReviewScore: () => string | number;
+	checkIn?: Date;
+	checkOut?: Date;
 }
 
-const ItemDetailsMobile = ({
-	listing,
-	checkIn,
-	checkOut,
-	renderReviewScore,
-}: Props) => {
+const ItemDetailsMobile = ({ listing, checkIn, checkOut }: Props) => {
+	const renderReviewScore = () => {
+		if (!listing.reviewsCount) {
+			return "No reviews";
+		} else if (listing.reviewsCount && !listing.averageScore) {
+			return "No scores";
+		} else {
+			return listing.averageScore;
+		}
+	};
+
+	const renderTotalPrice = () => {
+		if (checkIn && checkOut) {
+			return checkIn < new Date()
+				? " "
+				: calculateTotalArgs({
+						checkIn,
+						checkOut,
+						pricePerNight: listing.price,
+						cleaningFee: listing.cleaningFee,
+						region: listing.region,
+				  }).totalPrice + " total";
+		} else {
+			return "";
+		}
+	};
+
 	return (
 		<div className="SearchResultsItem__details">
 			<div className="score">
@@ -35,17 +55,7 @@ const ItemDetailsMobile = ({
 				<span>${numberWithCommas(listing.price)}</span>
 				<span> / </span>
 				<span>night</span>
-				<div className="total-price">
-					{checkIn < new Date()
-						? ""
-						: calculateTotalArgs({
-								checkIn,
-								checkOut,
-								pricePerNight: listing.price,
-								cleaningFee: listing.cleaningFee,
-								region: listing.region,
-						  }).totalPrice + " total"}
-				</div>
+				<div className="total-price">{renderTotalPrice()}</div>
 			</div>
 		</div>
 	);
