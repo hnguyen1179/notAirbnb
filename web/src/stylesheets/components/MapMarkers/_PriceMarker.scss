@@ -16,9 +16,34 @@
 		@include hover-lite;
 	}
 
+	&[aria-selected="true"],
 	&:hover {
 		transform: translate(-50%, -100%) scale(1.1);
 		transition: transform 200ms;
     z-index: 1;
+	}
+
+	&[aria-selected="true"] {
+		z-index: 1;
+
+		> span {
+			background-color: black;
+			color: white;
+		}
+	}
+
+	&__details {
+		position: absolute;
+		top: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		height: 300px;
+		width: 100px;
+		background-color: white;
+		display: block;
+
+		&[aria-hidden="true"] {
+			display: none;
+		}
 	}
 }

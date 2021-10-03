@@ -42,15 +42,17 @@ const ItemDetailsDesktop = ({
 					</span>
 					<span> · </span>
 					<span>
-						{numBedrooms} bedroom{renderPlural(numGuests)}
+						{numBedrooms > 0
+							? `${numBedrooms} bedroom${renderPlural(numBedrooms)}`
+							: "studio"}
 					</span>
 					<span> · </span>
 					<span>
-						{numBeds} bed{renderPlural(numGuests)}
+						{numBeds} bed{renderPlural(numBeds)}
 					</span>
 					<span> · </span>
 					<span>
-						{numBaths} bath{renderPlural(numGuests)}
+						{numBaths} bath{renderPlural(numBaths)}
 					</span>
 				</div>
 			</div>

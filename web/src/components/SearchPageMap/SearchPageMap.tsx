@@ -1,28 +1,52 @@
-import React from "react";
+import { Loader } from "@googlemaps/js-api-loader";
 import GoogleMapReact from "google-map-react";
 import { Maybe } from "../../generated/graphql";
 import { PartialListing } from "../SearchResultsItem/SearchResultsItem";
 import HouseMarkerBasic from "../MapMarkers/HouseMarkerBasic";
 import { coordinates, regions } from "../../constants/coordinates";
-import { getAverageMapValues } from "../../utils/getAverageMapValues";
+import { getAverageMapValues, getZoomLevel } from "../../utils/mapUtils";
 import { style } from "../../constants/simpleMapStyle";
 import PriceMarker from "../MapMarkers/PriceMarker";
+import { MouseEvent, RefObject, useEffect, useState } from "react";
 
 interface Props {
 	listings: Maybe<PartialListing>[] | undefined;
 	mobile: boolean;
+	currentListing: number;
+	region: string;
+	mapRef: RefObject<HTMLDivElement>;
 }
 
-const SearchPageMap = ({ listings, mobile }: Props) => {
-	console.log("rerender map");
-	// Function to determine average Lat Long of all listings given
-	const initialMapValues = {
-		zoom: 10,
-		center: {
-			lat: 0,
-			lng: 0,
-		},
-	};
+const SearchPageMap = ({ listings, mobile, currentListing, mapRef }: Props) => {
+	const [clickIdx, setClickIdx] = useState(-1);
+	const [mapState, setMapState] = useState({
+		center: regions["Anywhere"],
+		zoom: 5,
+	});
+
+	useEffect(() => {
+		if (!listings?.length) return;
+
+		(async () => {
+			const loader = new Loader({
+				apiKey: process.env.REACT_APP_GOOGLE_API_KEY as string,
+				version: "weekly",
+			});
+
+			loader.load().then(async (google) => {
+				const { zoom, center } = await getZoomLevel(
+					google,
+					listings,
+					mapRef
+				);
+
+				setMapState({
+					zoom: zoom > 11 ? 11 : zoom,
+					center,
+				});
+			});
+		})();
+	}, [listings, mapRef]);
 
 	const createMapOptions = (maps: any) => ({
 		gestureHandling: mobile ? "none" : "auto",
@@ -35,9 +59,9 @@ const SearchPageMap = ({ listings, mobile }: Props) => {
 		styles: style,
 	});
 
-	if (listings) {
-		initialMapValues.center = getAverageMapValues(listings);
-	}
+	const resetClickIdx = () => {
+		setClickIdx(-1);
+	};
 
 	return (
 		<>
@@ -45,21 +69,33 @@ const SearchPageMap = ({ listings, mobile }: Props) => {
 				bootstrapURLKeys={{
 					key: process.env.REACT_APP_GOOGLE_API_KEY as string,
 				}}
-				defaultCenter={initialMapValues.center}
-				defaultZoom={initialMapValues.zoom}
+				defaultCenter={mapState.center}
+				defaultZoom={mapState.zoom}
 				options={createMapOptions}
+				onClick={resetClickIdx}
+				onZoomAnimationStart={resetClickIdx}
 			>
-				{listings?.map((listing) => {
+				{listings?.map((listing, idx) => {
 					if (!listing) return "";
 
+					const isCurrent = idx === currentListing;
+					const isClicked = idx === clickIdx;
 					const { lat, lng } = coordinates[listing?.address];
+
+					const handleClickMarker = (e: MouseEvent<HTMLDivElement>) => {
+						e.stopPropagation();
+						setClickIdx(idx);
+					};
 
 					return (
 						<PriceMarker
 							key={lat.toString() + lng.toString()}
 							lat={lat}
 							lng={lng}
-							price={listing.price}
+							listing={listing}
+							isCurrent={isCurrent}
+							isClicked={isClicked}
+							handleClickMarker={handleClickMarker}
 						/>
 					);
 				})}

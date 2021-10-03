@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Cloudinary } from "@cloudinary/base";
 import { AppContext } from "./AppContext";
 import { useMeQuery } from "../generated/graphql";
+import { Loader } from "@googlemaps/js-api-loader";
+
 interface Props {
 	children: React.ReactNode;
 }
@@ -29,6 +31,14 @@ function AppState(props: Props) {
 	};
 
 	useEffect(() => {
+		(async() => {
+			const loader = new Loader({
+				apiKey: process.env.REACT_APP_GOOGLE_API_KEY as string,
+				version: "weekly",
+			});
+
+			await loader.load();
+		})();
 		mql.addEventListener("change", handleMobileChange);
 
 		return () => {

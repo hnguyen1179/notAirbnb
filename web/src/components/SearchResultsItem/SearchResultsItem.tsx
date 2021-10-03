@@ -4,6 +4,7 @@ import ItemDetailsDesktop from "./ItemDetailsDesktop";
 import { Maybe } from "../../generated/graphql";
 import PictureCarousel from "./PictureCarousel";
 import { AdvancedImage, placeholder, lazyload } from "@cloudinary/react";
+import React from "react";
 export interface PartialListing {
 	__typename?: "Listing" | undefined;
 	id: string;

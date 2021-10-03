@@ -21,7 +21,6 @@ import Navbar from "../components/Navbar/Navbar";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import EditMenuPortal from "../components/SearchPageTopBar/EditMenuPortal";
 import SearchPageMap from "../components/SearchPageMap/SearchPageMap";
-import { trueColor } from "@cloudinary/base/qualifiers/colorSpace";
 
 interface Props {
 	history: History<any>;
@@ -51,7 +50,9 @@ const SearchPage = ({ history }: Props) => {
 
 	const { cloudinary, mobile } = useContext(AppContext);
 	const [openFilter, setOpenFilter] = useState(false);
+	const [currentListing, setCurrentListing] = useState(-1);
 	const filtersEditMenuRef = useRef<HTMLDivElement>(null);
+	const mapRef = useRef<HTMLDivElement>(null);
 
 	// Searches done via landing "region" icons
 	const isRegionSearch = !history.location.search.includes("guests");
@@ -115,18 +116,27 @@ const SearchPage = ({ history }: Props) => {
 	}, [fetchMore, searchParams, variables]);
 
 	const renderListings = useMemo(() => {
-		return data?.basicSearch?.listings.map((listing) => {
+		return data?.basicSearch?.listings.map((listing, idx) => {
 			if (!listing) return "";
 
 			return (
-				<SearchResultsItem
-					key={listing.id}
-					cloudinary={cloudinary}
-					mobile={mobile}
-					listing={listing}
-					checkIn={new Date(variables.checkIn)}
-					checkOut={new Date(variables.checkOut)}
-				/>
+				<div
+					onMouseEnter={(e) => {
+						setCurrentListing(idx);
+					}}
+					onMouseLeave={(e) => {
+						setCurrentListing(-1);
+					}}
+				>
+					<SearchResultsItem
+						key={listing.id}
+						cloudinary={cloudinary}
+						mobile={mobile}
+						listing={listing}
+						checkIn={new Date(variables.checkIn)}
+						checkOut={new Date(variables.checkOut)}
+					/>
+				</div>
 			);
 		});
 	}, [
@@ -142,9 +152,12 @@ const SearchPage = ({ history }: Props) => {
 			<SearchPageMap
 				listings={data?.basicSearch?.listings}
 				mobile={mobile}
+				currentListing={currentListing}
+				region={variables.region}
+				mapRef={mapRef}
 			/>
 		);
-	}, [data?.basicSearch?.listings, mobile])
+	}, [currentListing, data?.basicSearch?.listings, mobile, variables.region]);
 
 	// TODO: Maybe have a dedicated error page?
 	if (error) {
@@ -287,6 +300,7 @@ const SearchPage = ({ history }: Props) => {
 										<span>
 											To get more results, try adjusting
 											your search by changing your dates
+											or removing filters
 										</span>
 
 										<div className="divider" />
@@ -309,9 +323,9 @@ const SearchPage = ({ history }: Props) => {
 						</div>
 					</div>
 					<div className="google-maps-container">
-						<aside className="map">
+						<aside className="map" ref={mapRef}>
 							{/* Memoize google maps; it's costly for these API calls each rerender! */}
-							{/* {renderMap} */}
+							{renderMap}
 						</aside>
 					</div>
 				</div>

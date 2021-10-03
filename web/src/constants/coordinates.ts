@@ -5,8 +5,8 @@ interface ILatLong {
 
 const regions: { [region: string]: ILatLong } = {
 	Anywhere: {
-		lat: 34.647144,
-		lng: -116.738924,
+		lat: 38.845748,
+		lng: -119.839884,
 	},
 	"Big Bear, CA": {
 		lat: 34.2439,
