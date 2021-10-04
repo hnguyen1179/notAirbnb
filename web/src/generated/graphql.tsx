@@ -325,7 +325,7 @@ export type ListingByIdQueryVariables = Exact<{
 }>;
 
 
-export type ListingByIdQuery = { __typename?: 'Query', listingById?: Maybe<{ __typename?: 'Listing', id: string, address: string, city: string, state: string, title: string, listingType: string, region: string, cleaningFee: number, price: number, superhost: boolean, averageScore: number, reviewsCount: number, imageComments: Array<Maybe<string>>, amenities: Array<Maybe<string>>, languages: Array<Maybe<string>>, numGuests: number, numBedrooms: number, numBeds: number, numBaths: number, highlights: Array<Maybe<string>>, host?: Maybe<{ __typename?: 'Host', id: string, firstName: string }> }> };
+export type ListingByIdQuery = { __typename?: 'Query', listingById?: Maybe<{ __typename?: 'Listing', id: string, address: string, city: string, state: string, title: string, listingType: string, region: string, cleaningFee: number, price: number, superhost: boolean, averageScore: number, reviewsCount: number, imageComments: Array<Maybe<string>>, amenities: Array<Maybe<string>>, languages: Array<Maybe<string>>, numGuests: number, numBedrooms: number, numBeds: number, numBaths: number, highlights: Array<Maybe<string>>, listingDescription?: Maybe<string>, locationDescription?: Maybe<string>, stayDescription?: Maybe<string>, host?: Maybe<{ __typename?: 'Host', id: string, firstName: string }> }> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -610,6 +610,9 @@ export const ListingByIdDocument = gql`
     numBeds
     numBaths
     highlights
+    listingDescription
+    locationDescription
+    stayDescription
     host {
       id
       firstName

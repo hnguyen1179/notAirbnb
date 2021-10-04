@@ -23,6 +23,9 @@ const LISTING_BY_ID = gql`
 			numBeds
 			numBaths
 			highlights
+			listingDescription
+			locationDescription
+			stayDescription
 			host {
 				id
 				firstName

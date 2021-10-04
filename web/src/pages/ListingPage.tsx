@@ -3,7 +3,6 @@ import { Redirect, RouteComponentProps, RouteProps } from "react-router";
 import { AdvancedImage, placeholder } from "@cloudinary/react";
 
 import {
-	ReviewsByListingIdQuery,
 	useListingByIdQuery,
 	useReviewsByListingIdQuery,
 } from "../generated/graphql";
@@ -15,6 +14,7 @@ import PictureCarousel from "../components/SearchResultsItem/PictureCarousel";
 import ListingCarousel from "../components/ListingCarousel/ListingCarousel";
 import ListingTitle from "../components/ListingBasics/ListingTitle";
 import ListingDetails from "../components/ListingBasics/ListingDetails";
+import ListingHighlights from "../components/ListingHighlights/ListingHighlights";
 
 interface Props extends RouteComponentProps {
 	id: string;
@@ -86,6 +86,7 @@ const ListingPage: FC<Props> = (props) => {
 		numBedrooms,
 		numBeds,
 		numBaths,
+		highlights,
 	} = listingData.listingById;
 
 	return (
@@ -120,19 +121,40 @@ const ListingPage: FC<Props> = (props) => {
 						state={state}
 					/>
 				</div>
-				<div className="ListingPage__basics__details">
-					<ListingDetails
-						cloudinary={cloudinary}
-						listingType={listingType}
-						hostName={host?.firstName || ""}
-						hostId={host?.id || ""}
-						numGuests={numGuests}
-						numBedrooms={numBedrooms}
-						numBeds={numBeds}
-						numBaths={numBaths}
-					/>
-				</div>
 			</div>
+
+			<main className="ListingPage__content">
+				<div>
+					<section className="ListingPage__content__details">
+						<ListingDetails
+							cloudinary={cloudinary}
+							listingType={listingType}
+							hostName={host?.firstName || ""}
+							hostId={host?.id || ""}
+							numGuests={numGuests}
+							numBedrooms={numBedrooms}
+							numBeds={numBeds}
+							numBaths={numBaths}
+						/>
+					</section>
+
+					<section className="ListingPage__content__highlights">
+						<ListingHighlights
+							highlights={highlights}
+						/>
+					</section>
+
+					<section className="ListingPage__content__listing-description">
+						<ListingListingDescription
+							
+						/>
+					</section>
+				</div>
+
+				<div>
+					<div className="ListingPage__content__reservation-box" aria-hidden={mobile}></div>
+				</div>
+			</main>
 		</div>
 	);
 };
