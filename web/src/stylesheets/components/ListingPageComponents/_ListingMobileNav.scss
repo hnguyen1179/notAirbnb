@@ -1,0 +1,17 @@
+.ListingMobileNav {
+  height: 6.4rem; 
+  background-color: white;
+  display: flex;
+  align-items: center;
+
+	> button {
+		display: flex;
+    
+    >svg {
+      margin-right: 1rem;
+    }
+    >span {
+      font-size: 1.4rem;
+    }
+	}
+}

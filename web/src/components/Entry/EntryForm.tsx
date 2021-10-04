@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useModal } from "../../context/ModalContext";
 
@@ -53,6 +53,10 @@ function EntryForm({ initialEntry, isModal = true }: Props) {
 		if (demoClicked) {
 			document.body.style.overflow = "hidden";
 		}
+
+		return () => {
+			document.body.style.overflow = "hidden";
+		};
 	}, [demoClicked]);
 
 	// Email validator stage

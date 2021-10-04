@@ -14,11 +14,10 @@ interface Props {
 
 const DestinationIcon = ({ location, img }: Props) => {
 	return (
-    <li className="DestinationIcon">
+		<li className="DestinationIcon">
 			<a
 				className="DestinationIcon__content"
-				href="
-      "
+				href={`/search?region=${location.name.replaceAll(" ", "+")}&page=1`}
 			>
 				<div className="DestinationIcon__content__image">
 					<AdvancedImage

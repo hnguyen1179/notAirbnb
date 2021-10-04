@@ -1,5 +1,6 @@
 import { formatDistance } from "date-fns";
 import { Reservation } from "../generated/graphql";
+import { numberWithCommas } from "./numberWithCommas";
 
 const occupancyTaxRate: { [region: string]: number } = {
 	"San Diego": 0.105,
@@ -8,7 +9,7 @@ const occupancyTaxRate: { [region: string]: number } = {
 	"Big Bear": 0.7,
 };
 
-const calculateTotal = (reservation: Reservation) => {
+const calculateTotalRes = (reservation: Reservation) => {
 	const listing = reservation.listing;
 	if (!listing) return {};
 
@@ -30,9 +31,11 @@ const calculateTotal = (reservation: Reservation) => {
 	const serviceFee = (price + cleaningFee + occupancyTax) * 0.12;
 
 	return {
-		totalPrice: +(price + cleaningFee + occupancyTax + serviceFee).toFixed(
-			2
-		),
+		totalPrice:
+			"$" +
+			numberWithCommas(
+				(price + cleaningFee + occupancyTax + serviceFee).toFixed(2)
+			),
 		totalNights: numNights,
 		price,
 		cleaningFee,
@@ -41,4 +44,44 @@ const calculateTotal = (reservation: Reservation) => {
 	};
 };
 
-export { calculateTotal };
+interface Arguments {
+	checkIn: Date;
+	checkOut: Date;
+	pricePerNight: number;
+	cleaningFee: number;
+	region: string;
+}
+
+const calculateTotalArgs = ({
+	checkIn,
+	checkOut,
+	pricePerNight,
+	cleaningFee,
+	region,
+}: Arguments) => {
+	const numNights = parseInt(formatDistance(checkIn, checkOut).split(" ")[0]);
+
+	const price = pricePerNight * numNights;
+	let occupancyTax = 0;
+
+	if (region in occupancyTaxRate) {
+		occupancyTax = occupancyTaxRate[region] * (price + cleaningFee);
+	}
+
+	const serviceFee = (price + cleaningFee + occupancyTax) * 0.12;
+
+	return {
+		totalPrice:
+			"$" +
+			numberWithCommas(
+				(price + cleaningFee + occupancyTax + serviceFee).toFixed(0)
+			),
+		totalNights: numNights,
+		price,
+		cleaningFee,
+		occupancyTax: +occupancyTax.toFixed(2),
+		serviceFee: +serviceFee.toFixed(2),
+	};
+};
+
+export { calculateTotalRes, calculateTotalArgs };

@@ -1,65 +1,160 @@
 const style = [
 	{
 		featureType: "administrative",
-		elementType: "geometry",
+		elementType: "all",
 		stylers: [
 			{
-				visibility: "off",
+				visibility: "on",
 			},
 		],
 	},
 	{
-		featureType: "administrative.land_parcel",
-		elementType: "labels",
+		featureType: "administrative",
+		elementType: "geometry.fill",
 		stylers: [
 			{
-				visibility: "off",
+				visibility: "on",
 			},
 		],
 	},
 	{
-		featureType: "poi",
+		featureType: "administrative",
+		elementType: "geometry.stroke",
 		stylers: [
 			{
-				visibility: "off",
+				visibility: "on",
 			},
 		],
 	},
 	{
-		featureType: "poi",
+		featureType: "administrative",
 		elementType: "labels.text",
 		stylers: [
 			{
-				visibility: "off",
+				visibility: "on",
+			},
+		],
+	},
+	{
+		featureType: "landscape",
+		elementType: "all",
+		stylers: [
+			{
+				visibility: "on",
+			},
+		],
+	},
+	{
+		featureType: "poi",
+		elementType: "all",
+		stylers: [
+			{
+				visibility: "on",
+			},
+		],
+	},
+	{
+		featureType: "poi",
+		elementType: "geometry",
+		stylers: [
+			{
+				lightness: "0",
+			},
+		],
+	},
+	{
+		featureType: "poi.medical",
+		elementType: "geometry.fill",
+		stylers: [
+			{
+				lightness: "-5",
+			},
+		],
+	},
+	{
+		featureType: "poi.park",
+		elementType: "geometry.fill",
+		stylers: [
+			{
+				visibility: "on",
+			},
+			{
+				color: "#a7ce95",
+			},
+			{
+				lightness: "45",
+			},
+		],
+	},
+	{
+		featureType: "poi.school",
+		elementType: "geometry",
+		stylers: [
+			{
+				color: "#be9b7b",
+			},
+			{
+				lightness: "70",
+			},
+		],
+	},
+	{
+		featureType: "poi.sports_complex",
+		elementType: "geometry",
+		stylers: [
+			{
+				color: "#5d4b46",
+			},
+			{
+				lightness: "60",
 			},
 		],
 	},
 	{
 		featureType: "road",
-		elementType: "labels.icon",
+		elementType: "all",
 		stylers: [
 			{
-				visibility: "off",
+				visibility: "on",
 			},
 		],
 	},
 	{
-		featureType: "road.local",
-		elementType: "labels",
+		featureType: "transit.station",
+		elementType: "geometry",
 		stylers: [
 			{
-				visibility: "off",
+				saturation: "23",
+			},
+			{
+				lightness: "10",
+			},
+			{
+				gamma: "0.8",
+			},
+			{
+				hue: "#b000ff",
 			},
 		],
 	},
 	{
-		featureType: "transit",
+		featureType: "water",
+		elementType: "all",
 		stylers: [
 			{
-				visibility: "off",
+				visibility: "on",
+			},
+		],
+	},
+	{
+		featureType: "water",
+		elementType: "geometry.fill",
+		stylers: [
+			{
+				color: "#a2daf2",
 			},
 		],
 	},
 ];
 
-export { style };
+export { style }

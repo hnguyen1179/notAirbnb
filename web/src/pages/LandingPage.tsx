@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 
 import { AppContext } from "../context/AppContext";
 import Destinations from "../components/Destinations/Destinations";
@@ -31,17 +31,12 @@ const LandingPage = () => {
 		}
 	};
 
-	const handleScroll = () => {
-		// Should only run this on mobile
-		handleMobileSearchBar();
-	};
-
 	// Fires for mobile, smaller screens
 	useEffect(() => {
-		document.addEventListener("scroll", handleScroll);
+		document.addEventListener("scroll", handleMobileSearchBar);
 
 		return () => {
-			document.removeEventListener("scroll", handleScroll);
+			document.removeEventListener("scroll", handleMobileSearchBar);
 		};
 	}, []);
 

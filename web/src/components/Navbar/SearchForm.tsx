@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { FormEvent, useEffect, useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { ReactComponent as SearchSvg } from "../../assets/icons/thick-search.svg";
 import { DateRange, OnDateRangeChangeProps } from "react-date-range";
@@ -7,12 +7,9 @@ import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { disableDay } from "../../utils/disableDays";
 import LocationSearch from "../LocationSearch/LocationSearch";
-interface FormValues {
-	location: string;
-	startDate: Date;
-	endDate: Date;
-	guests: number;
-}
+import { useHistory } from "react-router";
+import { addDays, format } from "date-fns";
+import { BasicSearchVariables } from "../../pages/SearchPage";
 
 interface IDate {
 	startDate: Date;
@@ -22,6 +19,7 @@ interface IDate {
 
 const ID_ARRAY = ["location", "startDate", "endDate", "guests"];
 const LOCATIONS = [
+	"Anywhere",
 	"Big Bear, CA",
 	"Henderson, NV",
 	"Las Vegas, NV",
@@ -32,19 +30,50 @@ const LOCATIONS = [
 	"Santa Barbara, CA",
 ];
 
-const SearchForm = () => {
+interface Props {
+	filters?: BasicSearchVariables;
+	handleLocationChange?: (location: string) => void;
+	handleDateChange?: (ranges: OnDateRangeChangeProps) => void;
+	handleGuestChange?: (value: number) => void;
+	submitNewQuery?: () => void;
+}
+
+const SearchForm = ({
+	filters,
+	handleLocationChange: setReducerLocation,
+	handleDateChange: setReducerDate,
+	handleGuestChange: setReducerGuest,
+	submitNewQuery,
+}: Props) => {
 	const [focusedRange, setFocusedRange] = useState<[number, number]>([0, 0]);
 	const [focusInput, setFocusInput] = useState(-1);
+	const [error, setError] = useState(-1);
 	const [showRdr, setShowRdr] = useState(false);
 	const [dates, setDates] = useState<IDate>({
-		startDate: new Date(),
-		endDate: new Date(),
+		startDate: filters ? new Date(filters.checkIn) : new Date(),
+		endDate: filters ? new Date(filters.checkOut) : new Date(),
 		key: "selection",
 	});
 
-	const selectedRef = useRef(0);
+	useEffect(() => {
+		if (error === -1) return;
+		const timer = setTimeout(() => {
+			setError(-1);
+		}, 1500);
 
+		return () => {
+			clearTimeout(timer);
+		};
+	}, [error]);
+
+	const history = useHistory();
+	const selectedRef = useRef(0);
 	const form = useForm();
+
+	useEffect(() => {
+		form.setValue("location", filters ? filters.region : "");
+		form.setValue("guests", filters ? filters.guests : undefined);
+	}, [form, filters]);
 
 	const next = () => {
 		setFocusInput(1);
@@ -131,34 +160,64 @@ const SearchForm = () => {
 			setDates({ ...dates, startDate: start, endDate: end });
 		}
 
+		setReducerDate && setReducerDate(ranges);
+
 		selectedRef.current += 1;
 	};
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = (e: FormEvent) => {
 		e.preventDefault();
 
 		const location = form.getValues("location");
 		const checkIn = dates.startDate;
 		const checkOut = dates.endDate;
 		const guests = form.getValues("guests");
-
 		const locationRegex = new RegExp(location, "i");
 
 		if (
 			location === "" ||
 			!LOCATIONS.some((loc) => locationRegex.test(loc))
 		) {
-			setFocusInput(0);
+			setError(0);
+			return;
 		} else if (
-			checkIn.toLocaleDateString() === new Date().toLocaleDateString() &&
-			checkOut.toLocaleDateString() === new Date().toLocaleDateString()
+			dates.startDate.toLocaleDateString() ===
+				new Date().toLocaleDateString() &&
+			dates.endDate.toLocaleDateString() ===
+				new Date().toLocaleDateString()
 		) {
-			setFocusInput(1);
-		} else if (guests < 1) {
-			setFocusInput(3);
-		} else {
-			// Submit this; it's successful
+			setError(1);
+			return;
+			return;
+		} else if (!guests || guests < 1) {
+			setError(3);
+			return;
 		}
+
+		const sameDates = checkIn.toString() === checkOut.toString();
+		const search = new URLSearchParams({
+			region: location.split(", ")[0],
+			"check-in": format(checkIn, "M-d-yyyy"),
+			"check-out": sameDates
+				? format(addDays(checkOut, 1), "M-d-yyyy")
+				: format(checkOut, "M-d-yyyy"),
+			guests: guests.toString(),
+			page: "1",
+		});
+
+		history.push({
+			pathname: "/search",
+			search: search.toString(),
+		});
+	};
+
+	const displayClass = (base: string, idx: number) => {
+		let output = base;
+
+		if (error === idx) output += " error";
+		if (focusInput === idx) output += " focused";
+
+		return output;
 	};
 
 	return (
@@ -168,26 +227,39 @@ const SearchForm = () => {
 					focusInput !== -1 ? "active" : ""
 				}`}
 			>
+				{/* Location Search */}
 				<div
-					className={`SearchForm__container__input-container ${
-						focusInput === 0 ? "focused" : ""
-					}`}
+					className={displayClass(
+						"SearchForm__container__input-container",
+						0
+					)}
 					id="location"
 					onClick={handleInputClick}
 				>
 					<div className="SearchForm__container__input-container__input">
 						<label htmlFor="location">Location</label>
-						<LocationSearch form={form} next={next} />
+						{setReducerLocation ? (
+							// SearchPage
+							<LocationSearch
+								form={form}
+								setLocation={setReducerLocation}
+								next={next}
+							/>
+						) : (
+							// LandingPage
+							<LocationSearch form={form} next={next} />
+						)}
 					</div>
 				</div>
 
 				<span className="divider" />
 
-				{/* Dates */}
+				{/* Dates Search */}
 				<div
-					className={`SearchForm__container__input-container ${
-						focusInput === 1 ? "focused" : ""
-					}`}
+					className={displayClass(
+						"SearchForm__container__input-container",
+						1
+					)}
 					id="startDate"
 					onClick={handleInputClick}
 				>
@@ -198,7 +270,9 @@ const SearchForm = () => {
 							placeholder="Add dates"
 							id="startDate"
 							value={
-								selectedRef.current >= 2
+								filters
+									? dates.startDate?.toLocaleDateString()
+									: selectedRef.current >= 2
 									? dates.startDate?.toLocaleDateString()
 									: ""
 							}
@@ -213,7 +287,7 @@ const SearchForm = () => {
 				<div
 					className={`SearchForm__container__input-container ${
 						focusInput === 2 ? "focused" : ""
-					}`}
+					} ${error === 1 ? "error" : ""}`}
 					id="endDate"
 					onClick={handleInputClick}
 				>
@@ -224,7 +298,9 @@ const SearchForm = () => {
 							placeholder="Add dates"
 							id="endDate"
 							value={
-								selectedRef.current >= 2
+								filters
+									? dates.endDate?.toLocaleDateString()
+									: selectedRef.current >= 2
 									? dates.endDate?.toLocaleDateString()
 									: ""
 							}
@@ -236,24 +312,41 @@ const SearchForm = () => {
 
 				<span className="divider" />
 
-				{/* Num Guests */}
+				{/* Num Guests Search */}
 				<div
-					className={`SearchForm__container__input-container ${
-						focusInput === 3 ? "focused" : ""
-					}`}
+					className={displayClass(
+						"SearchForm__container__input-container",
+						3
+					)}
 					id="guests"
 					onClick={handleInputClick}
 				>
 					<div className="SearchForm__container__input-container__input">
 						<label htmlFor="guests">Guests</label>
-						<input
-							type="number"
-							min="1"
-							placeholder="Add guests"
-							id="guests"
-							autoComplete={"off"}
-							{...form.register("guests")}
-						/>
+						{setReducerGuest ? (
+							// Search Page
+							<input
+								type="number"
+								min="1"
+								placeholder="Add guests"
+								id="guests"
+								autoComplete={"off"}
+								{...form.register("guests")}
+								onChange={(e) =>
+									setReducerGuest(parseInt(e.target.value))
+								}
+							/>
+						) : (
+							// Landing Page
+							<input
+								type="number"
+								min="1"
+								placeholder="Add guests"
+								id="guests"
+								autoComplete={"off"}
+								{...form.register("guests")}
+							/>
+						)}
 					</div>
 					<div className="button-placeholder"></div>
 				</div>
@@ -261,11 +354,16 @@ const SearchForm = () => {
 				<button
 					className="SearchForm__container__input-container__button SearchForm__container__input-container__button--decoy"
 					type="submit"
-					onClick={handleSubmit}
+					onClick={(e) => {
+						e.preventDefault();
+						submitNewQuery ? submitNewQuery() : handleSubmit(e);
+					}}
 				>
 					<SearchSvg />
 				</button>
 			</form>
+
+			{/* Dates Search Calendars */}
 			{showRdr && (
 				<div onClick={(e) => e.stopPropagation()}>
 					<DateRange

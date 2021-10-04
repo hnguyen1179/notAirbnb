@@ -1,0 +1,46 @@
+.ListingPage {
+	--padding: 2rem;
+
+	&__nav,
+	&__basics__title,
+	&__content__details,
+  &__content__highlights {
+		padding: 0 var(--padding);
+	}
+
+	&__basics {
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__content {
+		> div:first-child {
+			// width: 100%;
+			flex: 2 1 65rem;
+		}
+		> div:last-child {
+			margin-left: 8.33333% !important;
+			flex: 1 1 37rem;
+			max-width: 37rem;
+		}
+
+		&__reservation-box {
+			width: 100%;
+			height: 300px;
+			background-color: grey;
+			display: block;
+
+			&[aria-hidden="true"] {
+				display: none;
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 744px) {
+	.ListingPage {
+		&__content {
+			display: flex;
+		}
+	}
+}

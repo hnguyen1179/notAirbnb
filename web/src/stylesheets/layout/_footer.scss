@@ -88,8 +88,9 @@
 
 // Used for footer elements outside of the landing page
 .Footer-container {
-	padding-top: 3.2rem;
-	padding-bottom: 2.4rem;
+	margin-top: 2.4rem;
+	padding-top: 4.8rem;
+	padding-bottom: 4.8rem;
 	background-color: #f7f7f7;
 	border-top: 1px solid #dddddd;
 }
@@ -162,7 +163,7 @@
 
 @media (min-width: 1780px) {
 	.Footer {
-		max-width: 1760px !important;
+		max-width: 1760px;
 		margin-left: auto !important;
 		margin-right: auto !important;
 	}

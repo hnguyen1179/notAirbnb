@@ -41,6 +41,7 @@ import HostPage from "./pages/HostPage";
 import TripPage from "./pages/TripPage";
 import ErrorPage from "./pages/ErrorPage";
 import SearchPage from "./pages/SearchPage";
+import ListingPage from "./pages/ListingPage";
 
 const httpLink = createHttpLink({
 	uri: process.env.REACT_APP_SERVER_URL,
@@ -66,6 +67,21 @@ function App() {
 				typePolicies: {
 					Query: {
 						fields: {
+							// me: {
+							// 	keyArgs: false,
+							// 	merge(existing = {}, incoming) {
+							// 		console.log(
+							// 			"ME QUERY EXISTING: ",
+							// 			existing
+							// 		);
+							// 		console.log(
+							// 			"ME QUERY INCOMING: ",
+							// 			incoming
+							// 		);
+
+							// 		return incoming;
+							// 	},
+							// },
 							reviewsByUserId: {
 								keyArgs: false,
 								merge(existing = [], incoming) {
@@ -76,6 +92,59 @@ function App() {
 								keyArgs: false,
 								merge(existing = [], incoming) {
 									return [...existing, ...incoming];
+								},
+							},
+							basicSearch: {
+								read(existing) {
+									if (!existing) return undefined;
+									// {args} wasn't returning correct offset field, and so just
+									// returned the correct offset within query results
+									return {
+										count: existing.count,
+										listings: existing.listings.slice(
+											existing.offset,
+											existing.offset + 10
+										),
+										offset: existing.offset,
+									};
+								},
+								keyArgs: [
+									"region",
+									"checkIn",
+									"checkOut",
+									"guests",
+									"tags",
+									"listingType",
+									"languages",
+									"pets",
+									"smoking",
+									"superhost",
+									"entire",
+									"privateListing",
+								],
+								merge(
+									existing = { count: 0, listings: [] },
+									incoming,
+									{ args }
+								) {
+									const offset = args?.offset || 0;
+									const mergedListings = existing
+										? existing.listings.slice(0)
+										: [];
+
+									for (
+										let i = 0;
+										i < incoming.listings.length;
+										++i
+									) {
+										mergedListings[offset + i] =
+											incoming.listings[i];
+									}
+									return {
+										count: incoming.count,
+										listings: mergedListings,
+										offset: incoming.offset,
+									};
 								},
 							},
 						},
@@ -99,15 +168,18 @@ function App() {
 							/>
 
 							<Route path={SEARCH} component={SearchPage} />
-
 							<Route exact path={ERROR} component={ErrorPage} />
-
 							<Route path={LISTINGS} component={Listings} />
 
 							<Route
 								path={LISTING}
 								render={(routeProps) => (
-									<Listing id={routeProps.match.params.id} />
+									<ListingPage
+										id={routeProps.match.params.id}
+										history={routeProps.history}
+										location={routeProps.location}
+										match={routeProps.match}
+									/>
 								)}
 							/>
 
@@ -116,7 +188,6 @@ function App() {
 								render={(routeProps) => (
 									<TripsPage
 										id={routeProps.match.params.id}
-										routeProps={routeProps}
 									/>
 								)}
 							/>

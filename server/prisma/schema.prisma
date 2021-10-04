@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["filterJson", "orderByRelation"]
 }
 
 datasource db {
@@ -78,10 +79,10 @@ model Listing {
   highlights          String[]
   score               Float
   scores              String[]
-  datesUnavailable    Json
-  reviewsCount        Int           @default(0)
+  datesUnavailable    String[]
   reviews             Review[]
   reservations        Reservation[]
+  tags                String[]
 }
 
 model Review {

@@ -7,6 +7,12 @@ type AuthPayload {
   user: User
 }
 
+type BasicSearchResults {
+  count: Int!
+  listings: [Listing]!
+  offset: Int!
+}
+
 """
 A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
 """
@@ -35,7 +41,7 @@ type Listing {
   basicAmenities: [String]!
   city: String!
   cleaningFee: Int!
-  datesUnavailable: JSONObject!
+  datesUnavailable: [String]!
   healthAndSafety: [String]!
   highlights: [String]!
   host: Host
@@ -81,7 +87,7 @@ type Mutation {
 
 type Query {
   allListings: [Listing!]!
-  basicSearch(daysRequested: [String]!, numGuests: Int!, region: String!): [Listing]!
+  basicSearch(checkIn: String, checkOut: String, entire: Boolean, guests: Int, languages: [String!], listingType: [String!], offset: Int!, pets: Boolean, privateListing: Boolean, region: String, smoking: Boolean, superhost: Boolean, tags: [String!]): BasicSearchResults
   hostById(id: String!): Host
   listingById(id: String!): Listing
   listingsByRegion(region: String!): [Listing!]!
@@ -89,6 +95,7 @@ type Query {
   reservationById(id: String!): Reservation
   reservationsByUserId(id: String!): [[Reservation]!]!
   reviewsByHostId(id: String!, offset: Int): [Review!]!
+  reviewsByListingId(id: String!, offset: Int): [Review!]!
   reviewsByUserId(id: String!, offset: Int): [Review!]!
   userById(id: String!): User
 }

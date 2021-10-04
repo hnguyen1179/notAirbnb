@@ -13,11 +13,13 @@ import {
   arg,
   asNexusMethod,
   list,
+  booleanArg,
 } from 'nexus';
 import { DateTimeResolver, JSONObjectResolver } from 'graphql-scalars';
 import objectHash from 'object-hash';
 import { Context } from './context';
-import { Listing } from '.prisma/client';
+import { Listing, Prisma } from '.prisma/client';
+import { addDays, format, differenceInDays } from 'date-fns';
 
 export const dateTimeScalar = asNexusMethod(DateTimeResolver, 'date');
 export const jsonScalar = asNexusMethod(JSONObjectResolver, 'json');
@@ -150,6 +152,27 @@ const Query = objectType({
       },
     });
 
+    t.nonNull.list.nonNull.field('reviewsByListingId', {
+      type: 'Review',
+      args: {
+        id: nonNull(stringArg()),
+        offset: intArg(),
+      },
+      resolve: async (_parent, args, context: Context) => {
+        const data = await context.prisma.review.findMany({
+          skip: args.offset || 0,
+          take: 3,
+          where: {
+            listingId: args.id,
+          },
+        });
+
+        await sleep(Math.random() * 50 + 100);
+
+        return data;
+      },
+    });
+
     t.field('userById', {
       type: 'User',
       args: {
@@ -179,36 +202,154 @@ const Query = objectType({
     });
 
     t.field('basicSearch', {
-      type: nonNull(list('Listing')),
+      type: BasicSearchResults,
       args: {
-        region: nonNull(stringArg()),
-        numGuests: nonNull(intArg()),
-        daysRequested: nonNull(list(stringArg())),
+        region: stringArg(),
+        guests: intArg(),
+        checkIn: stringArg(),
+        checkOut: stringArg(),
+        offset: nonNull(intArg()),
+        tags: list(nonNull(stringArg())),
+        listingType: list(nonNull(stringArg())),
+        languages: list(nonNull(stringArg())),
+        entire: booleanArg(),
+        privateListing: booleanArg(),
+        pets: booleanArg(),
+        smoking: booleanArg(),
+        superhost: booleanArg(),
       },
       resolve: async (_parent, args, context: Context) => {
-        const listings = await context.prisma.listing.findMany({
-          where: {
-            region: args.region,
-            numGuests: {
-              gte: args.numGuests,
-            },
-          },
-        });
+        console.log('BASIC SEARCH');
+        const renderOptions = ({ isCount }: { isCount: boolean }) => {
+          let options: {
+            skip: number;
+            take: number;
+            where: Prisma.ListingWhereInput;
+          };
 
-        if (!listings || listings.length === 0) return [];
+          if (/anywhere/i.test(args.region as string) || !args.region) {
+            options = {
+              skip: isCount ? 0 : args.offset,
+              take: isCount ? 100 : 10,
+              where: {
+                numGuests: {
+                  gte: args.guests ? args.guests : 0,
+                },
+                NOT: {
+                  datesUnavailable: {
+                    hasSome: args.checkIn ? daysRequested : [],
+                  },
+                },
+              },
+            };
+          } else {
+            options = {
+              skip: isCount ? 0 : args.offset,
+              take: isCount ? 100 : 10,
+              where: {
+                region: args.region,
+                numGuests: {
+                  gte: args.guests ? args.guests : 0,
+                },
+                NOT: {
+                  datesUnavailable: {
+                    hasSome: args.checkIn ? daysRequested : [],
+                  },
+                },
+              },
+            };
+          }
 
-        if (args.daysRequested.length != 0) {
-          console.log(listings[0].datesUnavailable);
-          // listings = listings.filter((listing) => {
-          // if (!listing.datesUnavailable || !listing) return false;
+          // Additional filters
+          // Check for superhost, listingType, pets, smoking, entire/private, languages and append to options
+          if (args.superhost) {
+            options.where['superhost'] = true;
+          }
 
-          // return args.daysRequested.every((day) => {
-          //   return !listing?.datesUnavailable.hasOwnProperty(day as string);
-          // });
-          // });
+          if (args.entire && args.privateListing) {
+            // do nothing
+          } else if (args.entire) {
+            options.where['listingType'] = {
+              startsWith: 'Entire',
+            };
+          } else if (args.privateListing) {
+            options.where['listingType'] = {
+              startsWith: 'Private',
+            };
+          }
+
+          if (args.smoking) {
+            options.where['smokingRule'] = true;
+          }
+
+          if (args.pets) {
+            options.where['petsRule'] = true;
+          }
+
+          if (args.tags) {
+            options.where['tags'] = {
+              hasEvery: args.tags,
+            };
+          }
+
+          if (args.languages) {
+            options.where['languages'] = {
+              hasSome: args.languages,
+            };
+          }
+
+          if (args.listingType) {
+            options.where['listingType'] = {
+              in: args.listingType,
+            };
+          }
+
+          return options;
+        };
+
+        const daysRequested: string[] = [];
+        const checkIn = new Date(args.checkIn as string);
+        const checkOut = new Date(args.checkOut as string);
+
+        const distance = differenceInDays(checkIn, checkOut) * -1;
+
+        for (let i = 0; i < distance; i++) {
+          daysRequested.push(format(addDays(checkIn, i), 'M/d/yyyy'));
         }
 
-        return [];
+        const listings = await context.prisma.listing.findMany(
+          renderOptions({ isCount: false }),
+        );
+
+        const count = await context.prisma.listing.count(
+          renderOptions({ isCount: true }),
+        );
+
+        // Debugging comments
+        // const allListings = await context.prisma.listing.findMany();
+        // const filtered = allListings.filter((listing) => {
+        //   return listing.datesUnavailable.every((date) => {
+        //     return !daysRequested.includes(date);
+        //   });
+        // });
+        // console.log('daysRequested: ', daysRequested);
+        // console.log(
+        //   'left: ',
+        //   filtered.map((x) => x.title),
+        // );
+        // console.log(
+        //   'LISTINGS: ',
+        //   listings.map((x) =>
+        //     x.datesUnavailable.sort(
+        //       (a, b) => new Date(a).valueOf() - new Date(b).valueOf(),
+        //     ),
+        //   ),
+        // );
+        // console.log('REGION: ', args.region);
+        // console.log('COUNT: ', count);
+        // console.log('LISTINGS LENGTH', listings.length);
+        // console.log(listings.map((l) => l.title));
+        return { count, listings, offset: args.offset };
       },
     });
 
@@ -323,7 +464,6 @@ const Mutation = objectType({
           if (!user) throw new Error(`No user found for email: ${email}`);
 
           const passwordValid = await compare(password, user.password);
-
           if (!passwordValid) throw new Error('Invalid password');
 
           return {
@@ -665,7 +805,7 @@ const Listing = objectType({
       },
     });
     t.nonNull.field('scores', { type: list('String') });
-    t.nonNull.field('datesUnavailable', { type: 'JSONObject' });
+    t.nonNull.field('datesUnavailable', { type: list('String') });
     t.nonNull.field('reviewsCount', {
       type: 'Int',
       resolve: async (parent, _args, context: Context) => {
@@ -745,6 +885,17 @@ const ReviewScores = objectType({
   },
 });
 
+const BasicSearchResults = objectType({
+  name: 'BasicSearchResults',
+  definition(t) {
+    t.nonNull.int('count');
+    t.nonNull.field('listings', {
+      type: nonNull(list('Listing')),
+    });
+    t.nonNull.int('offset');
+  },
+});
+
 const ReservationCreateInput = inputObjectType({
   name: 'ReservationCreateInput',
   definition(t) {
@@ -790,6 +941,7 @@ const schemaWithoutPermissions = makeSchema({
     dateTimeScalar,
     jsonScalar,
     ReviewScores,
+    BasicSearchResults,
     ReservationCreateInput,
     ReviewCreateInput,
   ],

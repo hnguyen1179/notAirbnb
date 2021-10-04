@@ -17,12 +17,12 @@ import { ReactComponent as DoorSvg } from "../assets/icons/door.svg";
 import { ReactComponent as HospitalSvg } from "../assets/icons/hospital.svg";
 import { ReactComponent as QuestionSvg } from "../assets/icons/question.svg";
 import { ReactComponent as BoldNegativeSvg } from "../assets/icons/bold-negative.svg";
-import { calculateTotal } from "../utils/priceBreakdown";
+import { calculateTotalRes } from "../utils/priceBreakdown";
 import { copyToClipboard } from "../utils/copyToClipboard";
 import { AppContext } from "../context/AppContext";
 import { coordinates } from "../constants/coordinates";
-import HouseMarkerBasic from "../components/HouseMarker/HouseMarkerBasic";
-import HouseMarker from "../components/HouseMarker/HouseMarker";
+import HouseMarkerBasic from "../components/MapMarkers/HouseMarkerBasic";
+import HouseMarker from "../components/MapMarkers/HouseMarker";
 import { style } from "../constants/simpleMapStyle";
 import Navbar from "../components/Navbar/Navbar";
 
@@ -75,7 +75,7 @@ const TripPage = ({ id, routeProps }: Props) => {
 
 	const googleMapLink = googleAPI + addressModded;
 
-	const total = calculateTotal(data.reservationById as Reservation);
+	const total = calculateTotalRes(data.reservationById as Reservation);
 
 	const handleBackClick = () => {
 		routeProps.history.goBack();
@@ -239,7 +239,7 @@ const TripPage = ({ id, routeProps }: Props) => {
 								</div>
 								<div className="breakdown-line total">
 									<span>Total (USD)</span>
-									<span>${total.totalPrice?.toFixed(2)}</span>
+									<span>${total.totalPrice}</span>
 								</div>
 							</div>
 						</section>

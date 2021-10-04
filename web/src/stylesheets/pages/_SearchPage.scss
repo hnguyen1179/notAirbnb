@@ -1,0 +1,372 @@
+.SearchPage {
+	&-container {
+		padding: 3rem 2rem;
+	}
+
+	.google-maps-container {
+		display: none;
+
+		> .map {
+			position: sticky;
+			top: 8rem;
+			background-color: rgb(201, 201, 201);
+			height: calc(100vh - 8rem);
+		}
+	}
+
+	&__results-details {
+		> span {
+			font-weight: 400;
+			font-size: 1.4rem;
+			color: $muted-text-color;
+		}
+		> h1 {
+			font-weight: 500;
+			font-size: 2.8rem;
+		}
+	}
+
+	&__button-filter {
+		margin: 3rem 0;
+		border: 0.1rem solid $muted-text-color;
+		border-radius: 2rem;
+
+		&:hover {
+			border-color: black;
+		}
+
+		&.filtered {
+			border-width: 0.2rem;
+			background-color: rgb(245, 245, 245);
+			border-color: black;
+			> div {
+				color: black;
+			}
+		}
+
+		> div {
+			padding: 0.9rem 1.5rem;
+			font-weight: 400;
+			font-size: 1.4rem;
+			color: $muted-text-color;
+		}
+	}
+
+	&__results {
+		&__list {
+			> .divider {
+				height: 0.1rem;
+				width: 100%;
+				background-color: $muted-line-color;
+				margin: 3rem 0;
+			}
+
+			.no-results {
+				height: 80vh;
+
+				> div {
+					font-size: 2.2rem;
+					margin-bottom: 0.5rem;
+				}
+				> span {
+					color: $muted-text-color;
+					font-weight: 400;
+					font-size: 1.6rem;
+				}
+			}
+		}
+
+		.SearchResultsPagination {
+			&__list {
+				display: flex;
+				width: 100%;
+				justify-content: center;
+
+				&__item {
+					margin: 0 0.5rem;
+
+					&[aria-current="true"] {
+						background-color: rgb(0, 0, 0);
+						border-radius: 50%;
+						overflow: hidden;
+						color: white;
+						pointer-events: none;
+					}
+
+					> button {
+						height: 3.2rem;
+						width: 3.2rem;
+						color: inherit;
+						background-color: inherit;
+					}
+				}
+			}
+
+			&__disclaimer {
+				display: none;
+			}
+		}
+	}
+
+	#search-svg > svg > g {
+		color: $main-color !important;
+	}
+}
+
+.SearchPage__top-bar {
+	z-index: 10;
+	background-color: white;
+	position: fixed;
+	height: 6.4rem;
+	width: 100%;
+	border-bottom: 1px solid $muted-line-color;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0.5rem 2rem;
+
+	&__edit-dropdown {
+		display: none;
+		position: absolute;
+		height: 18rem;
+		background-color: white;
+		top: 0;
+		left: 0;
+		width: 100%;
+		border-bottom: 1px solid $outline-color;
+		z-index: 5;
+
+		&[aria-hidden="false"] {
+			display: block;
+		}
+
+		button:hover {
+			> div span {
+				color: black;
+			}
+		}
+
+		.item {
+			display: flex;
+			align-items: center;
+
+			> span {
+				font-size: 1.4rem;
+				color: $muted-text-color;
+			}
+
+			> svg {
+				height: 2rem !important;
+				width: 2rem !important;
+				margin: 0 1rem;
+			}
+		}
+
+		& > .upper {
+			height: 6.4rem;
+			display: grid;
+			place-items: center;
+
+			> h2 {
+				font-size: 1.6rem;
+				font-weight: 300;
+			}
+		}
+
+		& > .lower {
+			height: calc(100% - 6.4rem);
+			padding: 2.4rem;
+			padding-top: 0;
+
+			& > div {
+				overflow: hidden;
+				border-radius: 1.2rem;
+				height: 100%;
+
+				@include hover;
+			}
+			.lower__region {
+				width: 100%;
+				height: 50%;
+				border-bottom: 0.1rem solid $outline-color;
+				display: flex;
+				align-items: center;
+			}
+
+			.lower__date-guests {
+				display: flex;
+				height: 50%;
+
+				> button {
+					height: 100%;
+					width: 50%;
+					display: flex;
+					align-items: center;
+				}
+
+				> .date {
+					border-right: 0.1rem solid $outline-color;
+				}
+			}
+		}
+	}
+
+	& > .button {
+		&--back {
+			z-index: 6;
+
+			> #close {
+				height: 1.2rem !important;
+				width: 1.2rem !important;
+				margin: 0.2rem;
+				stroke: black !important;
+				stroke-width: 3 !important;
+			}
+
+			svg > g {
+				stroke: black !important;
+				stroke-width: 4 !important;
+			}
+
+			@include buttonSvgOutline;
+		}
+
+		&--edit-search {
+			display: flex;
+			width: 100%;
+			height: 100%;
+			justify-content: space-between;
+			align-items: center;
+
+			.region {
+				margin-left: 1.5rem;
+				font-size: 1.4rem;
+				text-decoration: underline;
+			}
+
+			.date {
+				padding-right: 1.5rem;
+				margin-right: 1.5rem;
+				font-size: 1.4rem;
+				color: $muted-text-color;
+				border-right: 1px solid $disabled-text-color;
+			}
+		}
+
+		&--edit-filter {
+			position: relative;
+			z-index: 6;
+
+			&.filtered {
+				&::after {
+					position: absolute;
+					content: "";
+					height: 0.5rem;
+					width: 0.5rem;
+					border-radius: 50%;
+					top: -0.5rem;
+					right: -0.5rem;
+					background-color: black;
+				}
+			}
+			@include buttonSvgOutline;
+		}
+	}
+
+	&--filler {
+		height: 6.4rem;
+	}
+}
+
+@media (min-width: 744px) {
+	.SearchPage-container {
+		padding: 0 2.4rem;
+		margin-top: 5rem;
+	}
+
+	.SearchPage {
+		.Navbar {
+			&__container {
+				padding: 0 2.4rem;
+			}
+		}
+
+		&__results-details {
+			> h1 {
+				font-size: 3.4rem;
+			}
+		}
+
+		&__results {
+			.SearchResultsPagination {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				margin: 4rem;
+
+				&__disclaimer {
+					margin-top: 2rem;
+					text-align: center;
+					display: block;
+
+					> span {
+						font-size: 1.4rem;
+						font-weight: 400;
+						color: $muted-text-color;
+					}
+				}
+			}
+		}
+
+		.Footer-container {
+			margin-top: 0;
+		}
+	}
+}
+
+@media (min-width: 1128px) {
+	.SearchPage-outer {
+		display: flex;
+
+		.SearchPage-container {
+			width: calc(100% - 45rem);
+			max-width: 84rem;
+		}
+
+		.google-maps-container {
+			display: block;
+			flex-grow: 1;
+			background-color: grey;
+		}
+	}
+
+	.SearchPage__results__list {
+		&.underline {
+			border-bottom: 1px solid $muted-line-color;
+		}
+	}
+}
+
+@media (min-width: 1440px) {
+	.SearchPage-outer {
+		.google-maps-container {
+			background-color: grey;
+		}
+	}
+}
+
+@media (min-width: 1780px) {
+	.SearchPage {
+		.Navbar {
+			&__container {
+				max-width: unset;
+				margin: 0;
+				padding: 0 2.4rem;
+			}
+		}
+
+		.Footer {
+			max-width: unset;
+		}
+	}
+}

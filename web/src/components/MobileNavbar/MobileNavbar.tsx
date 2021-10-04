@@ -28,7 +28,6 @@ const MobileNavbar = React.forwardRef<HTMLElement>((props, ref) => {
 
 	useEffect(() => {
 		window.addEventListener("scroll", handleMobileNav);
-
 		return () => {
 			window.removeEventListener("scroll", handleMobileNav);
 		};
@@ -43,7 +42,10 @@ const MobileNavbar = React.forwardRef<HTMLElement>((props, ref) => {
 					activeClassName="active"
 					exact
 				>
-					<div className="MobileNavbar__links__link__content">
+					<div
+						className="MobileNavbar__links__link__content"
+						id="search-svg"
+					>
 						<SearchSvg />
 						<span>Explore</span>
 					</div>

@@ -1,0 +1,151 @@
+.PriceMarker {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
+	transform: translate(-50%, -100%);
+	width: fit-content;
+	height: fit-content;
+
+	> span {
+		border-radius: 3.2rem;
+		padding: 0.5rem 1rem;
+		background-color: white;
+		border: 1px solid $outline-color;
+		font-size: 1.4rem;
+		font-weight: 500;
+		transition: transform 200ms;
+
+		@include hover-lite;
+	}
+
+	&[aria-selected="true"],
+	&:hover {
+		transform: translate(-50%, -100%) scale(1.1);
+		transition: transform 200ms;
+		z-index: 1;
+	}
+
+	&[aria-selected="true"] {
+		z-index: 1;
+
+		> span {
+			background-color: black;
+			color: white;
+		}
+	}
+}
+
+.PriceMarker__details {
+	border-radius: 1.2rem;
+	z-index: 3000;
+	overflow: hidden;
+	box-shadow: rgba(0, 0, 0, 0.28) 0px 8px 28px;
+	position: absolute;
+	// right: 6rem;
+	top: 3rem;
+	// left: -3rem;
+	// left: 50%;
+	// transform: translateX(50%);
+	height: 270px;
+	width: 240px;
+	background-color: white;
+	display: block;
+
+	a {
+		inset: 0px;
+		position: absolute;
+	}
+
+	span {
+		color: rgb(34, 34, 34) !important;
+	}
+
+	&[aria-hidden="true"] {
+		display: none;
+	}
+
+	&:hover .PictureCarousel__button {
+		opacity: 1;
+		transition: 250ms ease-in-out;
+	}
+
+	&__image {
+		height: 16rem;
+		position: relative;
+
+		> .superhost {
+			position: absolute;
+			left: 0;
+			top: 0;
+			z-index: 100;
+			margin: 1.25rem;
+
+			> span {
+				border: 1px solid $outline-color;
+				background-color: white;
+				border-radius: 0.4rem;
+				padding: 0.25rem 0.5rem;
+				text-transform: uppercase;
+				font-size: 1rem;
+				letter-spacing: 0.05rem;
+				font-weight: 500;
+			}
+		}
+
+		.PictureCarousel {
+			z-index: 5;
+			height: 100%;
+
+			&__button {
+				opacity: 1;
+			}
+		}
+	}
+
+	.SearchResultsItem__details {
+		padding: 1.5rem;
+
+		> .score {
+			margin-bottom: 1rem;
+
+			> svg {
+				height: 1.1rem;
+				width: 1.1rem;
+			}
+
+			> span {
+				font-size: 1.2rem;
+			}
+		}
+
+		> .type {
+			width: 99%;
+			overflow: hidden;
+			margin-bottom: 0.25rem;
+
+			> span {
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				font-size: 1.4rem;
+				width: 100%;
+				display: block;
+				overflow: hidden;
+			}
+		}
+
+		> .title {
+			margin-bottom: 0.5rem;
+
+			> span {
+				font-size: 1.4rem;
+			}
+		}
+
+		> .price {
+			span {
+				font-size: 1.4rem;
+			}
+		}
+	}
+}

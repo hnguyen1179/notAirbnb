@@ -3,6 +3,45 @@ interface ILatLong {
 	lng: number;
 }
 
+const regions: { [region: string]: ILatLong } = {
+	Anywhere: {
+		lat: 38.845748,
+		lng: -119.839884,
+	},
+	"Big Bear, CA": {
+		lat: 34.2439,
+		lng: -116.9114,
+	},
+	"Henderson, NV": {
+		lat: 36.0395,
+		lng: -114.9817,
+	},
+	"Las Vegas, NV": {
+		lat: 36.1699,
+		lng: -115.1398,
+	},
+	"Los Angeles, CA": {
+		lat: 34.0522,
+		lng: -118.2437,
+	},
+	"Palm Springs, CA": {
+		lat: 33.8303,
+		lng: -116.5453,
+	},
+	"Paradise, NV": {
+		lat: 39.7596,
+		lng: -121.6219,
+	},
+	"San Diego, CA": {
+		lat: 32.7157,
+		lng: -117.1611,
+	},
+	"Santa Barbara, CA": {
+		lat: 34.4208,
+		lng: -119.6982,
+	},
+};
+
 const coordinates: { [address: string]: ILatLong } = {
 	"2125 Westinghouse St, San Diego, CA 92111": {
 		lat: 32.782766,
@@ -289,4 +328,4 @@ const coordinates: { [address: string]: ILatLong } = {
 	},
 };
 
-export { coordinates };
+export { coordinates, regions };

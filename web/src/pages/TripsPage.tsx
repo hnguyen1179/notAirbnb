@@ -10,10 +10,9 @@ import Footer from "../components/Footer/Footer";
 
 interface Props {
 	id: string;
-	routeProps: any;
 }
 
-const TripsPage = ({ id, routeProps }: Props) => {
+const TripsPage = ({ id }: Props) => {
 	const [onUpcoming, setOnUpcoming] = useState(true);
 	const { mobile } = useContext(AppContext);
 
