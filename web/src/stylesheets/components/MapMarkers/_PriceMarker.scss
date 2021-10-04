@@ -1,4 +1,7 @@
 .PriceMarker {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	position: relative;
 	transform: translate(-50%, -100%);
 	width: fit-content;
@@ -31,30 +34,118 @@
 			color: white;
 		}
 	}
-
-	&__details {
-		pointer-events: auto;
-		cursor: pointer;
-		position: absolute;
-		top: 3rem;
-		left: 50%;
-		transform: translateX(-50%);
-		height: 250px;
-		width: 225px;
-		background-color: white;
-		display: block;
-
-		&[aria-hidden="true"] {
-			display: none;
-		}
-	}
 }
 
 .PriceMarker__details {
+	border-radius: 1.2rem;
+	z-index: 3000;
 	overflow: hidden;
+	box-shadow: rgba(0, 0, 0, 0.28) 0px 8px 28px;
+	position: absolute;
+	// right: 6rem;
+	top: 3rem;
+	// left: -3rem;
+	// left: 50%;
+	// transform: translateX(50%);
+	height: 270px;
+	width: 240px;
+	background-color: white;
+	display: block;
 
-	.PictureCarousel {
-		z-index: 5;
-		height: 50%;
+	a {
+		inset: 0px;
+		position: absolute;
+	}
+
+	span {
+		color: rgb(34, 34, 34) !important;
+	}
+
+	&[aria-hidden="true"] {
+		display: none;
+	}
+
+	&:hover .PictureCarousel__button {
+		opacity: 1;
+		transition: 250ms ease-in-out;
+	}
+
+	&__image {
+		height: 16rem;
+		position: relative;
+
+		> .superhost {
+			position: absolute;
+			left: 0;
+			top: 0;
+			z-index: 100;
+			margin: 1.25rem;
+
+			> span {
+				border: 1px solid $outline-color;
+				background-color: white;
+				border-radius: 0.4rem;
+				padding: 0.25rem 0.5rem;
+				text-transform: uppercase;
+				font-size: 1rem;
+				letter-spacing: 0.05rem;
+				font-weight: 500;
+			}
+		}
+
+		.PictureCarousel {
+			z-index: 5;
+			height: 100%;
+
+			&__button {
+				opacity: 1;
+			}
+		}
+	}
+
+	.SearchResultsItem__details {
+		padding: 1.5rem;
+
+		> .score {
+			margin-bottom: 1rem;
+
+			> svg {
+				height: 1.1rem;
+				width: 1.1rem;
+			}
+
+			> span {
+				font-size: 1.2rem;
+			}
+		}
+
+		> .type {
+			width: 99%;
+			overflow: hidden;
+			margin-bottom: 0.25rem;
+
+			> span {
+				white-space: nowrap;
+				text-overflow: ellipsis;
+				font-size: 1.4rem;
+				width: 100%;
+				display: block;
+				overflow: hidden;
+			}
+		}
+
+		> .title {
+			margin-bottom: 0.5rem;
+
+			> span {
+				font-size: 1.4rem;
+			}
+		}
+
+		> .price {
+			span {
+				font-size: 1.4rem;
+			}
+		}
 	}
 }

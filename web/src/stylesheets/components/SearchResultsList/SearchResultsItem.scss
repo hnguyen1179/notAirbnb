@@ -13,15 +13,13 @@
 	}
 
 	a {
-		inset: 0px !important;
-		position: absolute !important;
-		border-radius: 12px !important;
+		inset: 0px;
+		position: absolute;
 	}
 
 	&__image {
 		position: relative;
 		inset: 0px;
-		padding-top: 60%;
 		border-radius: 1.2rem;
 		overflow: hidden;
 
@@ -36,7 +34,7 @@
 				border: 1px solid $outline-color;
 				background-color: white;
 				border-radius: 0.4rem;
-				padding: 0.5rem;
+				padding: 0.25rem 0.5rem;
 				text-transform: uppercase;
 				font-size: 1.2rem;
 				letter-spacing: 0.05rem;
@@ -67,8 +65,8 @@
 				position: relative;
 				top: -0.1rem;
 				color: $main-color;
-				height: 1.4rem !important;
-				width: 1.4rem !important;
+				height: 1.4rem;
+				width: 1.4rem;
 			}
 			> span {
 				font-size: 1.4rem;

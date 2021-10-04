@@ -11,7 +11,6 @@ import { Cloudinary } from "@cloudinary/base";
 
 interface Props {
 	listings: Maybe<PartialListing>[] | undefined;
-	mobile: boolean;
 	currentListing: number;
 	region: string;
 	mapRef: RefObject<HTMLDivElement>;
@@ -20,12 +19,13 @@ interface Props {
 
 const SearchPageMap = ({
 	listings,
-	mobile,
 	currentListing,
 	mapRef,
 	cloudinary,
 }: Props) => {
+	console.log("rerendered");
 	const [clickIdx, setClickIdx] = useState(-1);
+	const [hover, setHover] = useState(false);
 	const [mapState, setMapState] = useState({
 		center: regions["Anywhere"],
 		zoom: 5,
@@ -33,6 +33,7 @@ const SearchPageMap = ({
 
 	useEffect(() => {
 		if (!listings?.length) return;
+		console.log(" in gooogle map !");
 
 		(async () => {
 			const loader = new Loader({
@@ -48,7 +49,7 @@ const SearchPageMap = ({
 				);
 
 				setMapState({
-					zoom: zoom > 11 ? 11 : zoom,
+					zoom,
 					center,
 				});
 			});
@@ -56,13 +57,13 @@ const SearchPageMap = ({
 	}, [listings, mapRef]);
 
 	const createMapOptions = (maps: any) => ({
-		gestureHandling: mobile ? "none" : "auto",
+		gestureHandling: "auto",
 		scrollwheel: true,
-		zoomControl: mobile ? false : true,
+		zoomControl: true,
 		zoomControlOptions: {
 			position: maps.ControlPosition.TOP_RIGHT,
 		},
-		fullscreenControl: false,
+		fullscreenControl: true,
 		styles: style,
 	});
 
@@ -81,7 +82,9 @@ const SearchPageMap = ({
 				options={createMapOptions}
 				onClick={resetClickIdx}
 				onZoomAnimationStart={resetClickIdx}
-				draggable={false}
+				onChildClick={(hoverKey) => console.log(hoverKey)}
+				margin={[100, 100, 100, 100]}
+				draggable={hover}
 				// TODO Make this draggable conditional based on whether or not you're
 				// hovering over a marker!! mouseEnter: true: mouseOut: false
 			>
@@ -110,6 +113,7 @@ const SearchPageMap = ({
 							handleClickMarker={handleClickMarker}
 							mapRef={mapRef}
 							cloudinary={cloudinary}
+							setHover={setHover}
 						/>
 					);
 				})}

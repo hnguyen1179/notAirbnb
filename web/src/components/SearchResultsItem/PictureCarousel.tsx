@@ -1,6 +1,13 @@
 import { Cloudinary } from "@cloudinary/base";
 import { AdvancedImage, placeholder, lazyload } from "@cloudinary/react";
-import { MouseEventHandler, useMemo, useState } from "react";
+import {
+	MouseEventHandler,
+	useEffect,
+	useLayoutEffect,
+	useMemo,
+	useRef,
+	useState,
+} from "react";
 import { Maybe } from "../../generated/graphql";
 import { ReactComponent as BackSvg } from "../../assets/icons/left-arrow.svg";
 import { ReactComponent as ForwardSvg } from "../../assets/icons/right-arrow.svg";
@@ -10,9 +17,16 @@ interface Props {
 	imageComments: Maybe<string>[];
 	region: string;
 	id: string;
+	width: number;
 }
 
-const PictureCarousel = ({ cloudinary, imageComments, region, id }: Props) => {
+const PictureCarousel = ({
+	cloudinary,
+	imageComments,
+	region,
+	id,
+	width,
+}: Props) => {
 	const [index, setIndex] = useState(0);
 	const [animationState, setAnimationState] = useState({
 		classNames: "",
@@ -37,7 +51,7 @@ const PictureCarousel = ({ cloudinary, imageComments, region, id }: Props) => {
 	const onAnimationEnd = () => {
 		setAnimationState({
 			classNames: "",
-			transform: index * -300,
+			transform: index * -1 * width,
 			finished: true,
 		});
 	};
@@ -62,17 +76,17 @@ const PictureCarousel = ({ cloudinary, imageComments, region, id }: Props) => {
 					.toLowerCase()}/${id}/image-${idx}`;
 
 				return (
-					<div className="PictureCarousel__slide__image-container">
+					<li key={idx} className="PictureCarousel__slide__image-container">
 						<AdvancedImage
 							cldImg={cloudinary.image(url)}
 							plugins={[
 								placeholder("predominant-color"),
 								lazyload(),
 							]}
-              alt={comment}
-              draggable={false}
+							alt={comment}
+							draggable={false}
 						/>
-					</div>
+					</li>
 				);
 			}),
 		[]
@@ -89,17 +103,17 @@ const PictureCarousel = ({ cloudinary, imageComments, region, id }: Props) => {
 				<BackSvg />
 			</button>
 
-			<div
+			<ul
 				className={`PictureCarousel__slide ${animationState.classNames}`}
 				style={{
-					width: imageComments.length * 300,
+					width: imageComments.length * width,
 					transform: `translateX(${animationState.transform}px)`,
 				}}
 				onAnimationStart={onAnimationStart}
 				onAnimationEnd={onAnimationEnd}
 			>
 				{renderImages}
-			</div>
+			</ul>
 
 			<button
 				className="PictureCarousel__button PictureCarousel__button--right"
@@ -115,6 +129,7 @@ const PictureCarousel = ({ cloudinary, imageComments, region, id }: Props) => {
 					const isActive = idx === index;
 					return (
 						<span
+							key={idx}
 							className="PictureCarousel__dots__dot"
 							aria-selected={isActive}
 						/>

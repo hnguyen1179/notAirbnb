@@ -13,6 +13,7 @@ export type GlobalState = {
 	cloudinary: Cloudinary;
 	user: UserPartial | null;
 	mobile: boolean;
+	map: boolean;
 };
 
 export const AppContext = React.createContext<GlobalState>(initialState);

@@ -152,6 +152,27 @@ const Query = objectType({
       },
     });
 
+    t.nonNull.list.nonNull.field('reviewsByListingId', {
+      type: 'Review',
+      args: {
+        id: nonNull(stringArg()),
+        offset: intArg(),
+      },
+      resolve: async (_parent, args, context: Context) => {
+        const data = await context.prisma.review.findMany({
+          skip: args.offset || 0,
+          take: 3,
+          where: {
+            listingId: args.id,
+          },
+        });
+
+        await sleep(Math.random() * 50 + 100);
+
+        return data;
+      },
+    });
+
     t.field('userById', {
       type: 'User',
       args: {

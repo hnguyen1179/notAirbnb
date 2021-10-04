@@ -35,7 +35,7 @@ function Login({
 
 			// If logging in via the /login page, redirect to landing
 			if (!isModal) {
-				history.push("/");
+				history.goBack();
 			}
 		} catch (e: any) {
 			setError(

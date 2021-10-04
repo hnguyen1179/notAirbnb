@@ -95,6 +95,7 @@ type Query {
   reservationById(id: String!): Reservation
   reservationsByUserId(id: String!): [[Reservation]!]!
   reviewsByHostId(id: String!, offset: Int): [Review!]!
+  reviewsByListingId(id: String!, offset: Int): [Review!]!
   reviewsByUserId(id: String!, offset: Int): [Review!]!
   userById(id: String!): User
 }

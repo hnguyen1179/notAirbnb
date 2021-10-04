@@ -18,7 +18,7 @@ import SearchResultsItem from "../components/SearchResultsItem/SearchResultsItem
 import SearchResultsPagination from "../components/SearchResultsPagination/SearchResultsPagination";
 import { URLParamsProvider } from "../context/URLParamsContext";
 import Navbar from "../components/Navbar/Navbar";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { CSSTransition } from "react-transition-group";
 import EditMenuPortal from "../components/SearchPageTopBar/EditMenuPortal";
 import SearchPageMap from "../components/SearchPageMap/SearchPageMap";
 
@@ -48,7 +48,7 @@ const SearchPage = ({ history }: Props) => {
 		[history.location.search]
 	);
 
-	const { cloudinary, mobile } = useContext(AppContext);
+	const { cloudinary, mobile, map } = useContext(AppContext);
 	const [openFilter, setOpenFilter] = useState(false);
 	const [currentListing, setCurrentListing] = useState(-1);
 	const filtersEditMenuRef = useRef<HTMLDivElement>(null);
@@ -121,6 +121,7 @@ const SearchPage = ({ history }: Props) => {
 
 			return (
 				<div
+					key={listing.id}
 					onMouseEnter={(e) => {
 						setCurrentListing(idx);
 					}}
@@ -129,7 +130,6 @@ const SearchPage = ({ history }: Props) => {
 					}}
 				>
 					<SearchResultsItem
-						key={listing.id}
 						cloudinary={cloudinary}
 						mobile={mobile}
 						listing={listing}
@@ -151,7 +151,6 @@ const SearchPage = ({ history }: Props) => {
 		return (
 			<SearchPageMap
 				listings={data?.basicSearch?.listings}
-				mobile={mobile}
 				currentListing={currentListing}
 				region={variables.region}
 				mapRef={mapRef}
@@ -325,8 +324,7 @@ const SearchPage = ({ history }: Props) => {
 					</div>
 					<div className="google-maps-container">
 						<aside className="map" ref={mapRef}>
-							{/* Memoize google maps; it's costly for these API calls each rerender! */}
-							{renderMap}
+							{map && renderMap}
 						</aside>
 					</div>
 				</div>

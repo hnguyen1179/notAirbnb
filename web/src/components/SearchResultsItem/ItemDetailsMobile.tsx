@@ -44,9 +44,11 @@ const ItemDetailsMobile = ({ listing, checkIn, checkOut }: Props) => {
 				<span>({listing.reviewsCount})</span>
 			</div>
 			<div className="type">
-				<span>{listing.listingType}</span>
-				<span> · </span>
-				<span>{listing.city}</span>
+				<span>
+					<span>{listing.listingType}</span>
+					<span> · </span>
+					<span>{listing.city}</span>
+				</span>
 			</div>
 			<div className="title">
 				<span>{listing.title}</span>

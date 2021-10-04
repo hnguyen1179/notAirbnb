@@ -134,7 +134,6 @@ function Listing({ id }: Props) {
 			);
 		});
 	}
-	console.log(data);
 
 	return (
 		<div>

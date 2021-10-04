@@ -1,0 +1,14 @@
+.ListingPage {
+  --padding: 2.0rem;
+
+  &__nav,
+  &__basics__title,
+  &__basics__details {
+    padding: 0 var(--padding)
+  }
+
+  &__basics {
+    display: flex;
+    flex-direction: column;
+  }
+}

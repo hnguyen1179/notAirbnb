@@ -1,34 +1,57 @@
 import { Cloudinary } from "@cloudinary/base";
-import { MouseEvent, RefObject, useRef } from "react";
+import {
+	MouseEvent,
+	MouseEventHandler,
+	RefObject,
+	useEffect,
+	useRef,
+} from "react";
 import { Maybe } from "../../generated/graphql";
 import ItemDetailsMobile from "../SearchResultsItem/ItemDetailsMobile";
 import PictureCarousel from "../SearchResultsItem/PictureCarousel";
 import { PartialListing } from "../SearchResultsItem/SearchResultsItem";
+import { ChildComponentProps } from "google-map-react";
 
-interface Props {
-	lat: number;
-	lng: number;
+interface Props extends ChildComponentProps {
+	$geoService?: any;
 	listing: Maybe<PartialListing>;
-	$hover?: boolean;
 	isCurrent: boolean;
 	isClicked: boolean;
 	handleClickMarker: (e: MouseEvent<HTMLDivElement>) => void;
 	mapRef: RefObject<HTMLDivElement>;
 	cloudinary: Cloudinary;
+	setHover: (state: boolean) => void;
 }
 
 const PriceMarker = ({
-	listing,
 	$hover,
+	$geoService,
+	listing,
 	isCurrent,
 	isClicked,
 	handleClickMarker,
 	mapRef,
 	cloudinary,
+	setHover,
 }: Props) => {
 	const markerRef = useRef<HTMLDivElement>(null);
+	const imageRef = useRef<HTMLDivElement>(null);
+
+	const handleMouseEnter: MouseEventHandler = (e) => {
+		e.stopPropagation();
+		setHover(false);
+	};
+
+	const handleMouseExit: MouseEventHandler = (e) => {
+		e.stopPropagation();
+		setHover(true);
+	};
 
 	if (!listing) return <></>;
+	// console.log($geoService.getWidth());
+	// console.log(listing.title)
+	// console.log("MAP: ", mapRef.current?.getBoundingClientRect().left)
+	// console.log("MARKER :", markerRef.current?.getBoundingClientRect().left)
 
 	return (
 		<div
@@ -39,13 +62,32 @@ const PriceMarker = ({
 		>
 			<span>${listing.price}</span>
 
-			<div className="PriceMarker__details" aria-hidden={!isClicked}>
-				<PictureCarousel
-					cloudinary={cloudinary}
-					id={listing.id}
-					region={listing.region}
-					imageComments={listing.imageComments}
-				/>
+			<div
+				className="PriceMarker__details"
+				aria-hidden={!isClicked}
+				onMouseEnter={handleMouseEnter}
+				onMouseOut={handleMouseExit}
+			>
+				<a
+					href={`/listing/${listing.id}`}
+					target="_blank"
+					rel="noreferrer"
+				></a>
+
+				<div className="PriceMarker__details__image" ref={imageRef}>
+					{listing.superhost && (
+						<div className="superhost">
+							<span>superhost</span>
+						</div>
+					)}
+					<PictureCarousel
+						cloudinary={cloudinary}
+						id={listing.id}
+						region={listing.region}
+						imageComments={listing.imageComments}
+						width={240}
+					/>
+				</div>
 				<ItemDetailsMobile listing={listing} />
 			</div>
 		</div>

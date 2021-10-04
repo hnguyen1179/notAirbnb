@@ -41,6 +41,7 @@ import HostPage from "./pages/HostPage";
 import TripPage from "./pages/TripPage";
 import ErrorPage from "./pages/ErrorPage";
 import SearchPage from "./pages/SearchPage";
+import ListingPage from "./pages/ListingPage";
 
 const httpLink = createHttpLink({
 	uri: process.env.REACT_APP_SERVER_URL,
@@ -167,15 +168,18 @@ function App() {
 							/>
 
 							<Route path={SEARCH} component={SearchPage} />
-
 							<Route exact path={ERROR} component={ErrorPage} />
-
 							<Route path={LISTINGS} component={Listings} />
 
 							<Route
 								path={LISTING}
 								render={(routeProps) => (
-									<Listing id={routeProps.match.params.id} />
+									<ListingPage
+										id={routeProps.match.params.id}
+										history={routeProps.history}
+										location={routeProps.location}
+										match={routeProps.match}
+									/>
 								)}
 							/>
 
@@ -184,7 +188,6 @@ function App() {
 								render={(routeProps) => (
 									<TripsPage
 										id={routeProps.match.params.id}
-										routeProps={routeProps}
 									/>
 								)}
 							/>

@@ -11,10 +11,13 @@ interface Props {
 const width = window.innerWidth;
 
 function AppState(props: Props) {
-	const mql = window.matchMedia("(min-width: 744px)");
+	const mqlMobile = window.matchMedia("(min-width: 744px)");
+	const mqlMap = window.matchMedia("(min-width: 1128px)");
+
 	const { data } = useMeQuery();
 	// LOGIN Bug, maybe look into how people store the current user object?
 	const [mobile, setMobile] = useState(width <= 744);
+	const [map, setMap] = useState(width >= 1128);
 
 	const cloudinary = new Cloudinary({
 		cloud: {
@@ -23,15 +26,23 @@ function AppState(props: Props) {
 	});
 
 	const handleMobileChange = () => {
-		if (mql.matches) {
+		if (mqlMobile.matches) {
 			setMobile(false);
 		} else {
 			setMobile(true);
 		}
 	};
 
+	const handleMapChange = () => {
+		if (mqlMap.matches) {
+			setMap(true);
+		} else {
+			setMap(false);
+		}
+	};
+
 	useEffect(() => {
-		(async() => {
+		(async () => {
 			const loader = new Loader({
 				apiKey: process.env.REACT_APP_GOOGLE_API_KEY as string,
 				version: "weekly",
@@ -39,10 +50,12 @@ function AppState(props: Props) {
 
 			await loader.load();
 		})();
-		mql.addEventListener("change", handleMobileChange);
+		mqlMobile.addEventListener("change", handleMobileChange);
+		mqlMap.addEventListener("change", handleMapChange);
 
 		return () => {
-			mql.removeEventListener("change", handleMobileChange);
+			mqlMobile.removeEventListener("change", handleMobileChange);
+			mqlMap.removeEventListener("change", handleMapChange);
 		};
 	}, []);
 
@@ -52,6 +65,7 @@ function AppState(props: Props) {
 				cloudinary,
 				user: data?.me ? data.me : null,
 				mobile,
+				map,
 			}}
 		>
 			{props.children}

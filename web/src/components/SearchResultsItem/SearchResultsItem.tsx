@@ -4,6 +4,9 @@ import ItemDetailsDesktop from "./ItemDetailsDesktop";
 import { Maybe } from "../../generated/graphql";
 import PictureCarousel from "./PictureCarousel";
 import { AdvancedImage, placeholder, lazyload } from "@cloudinary/react";
+import { useRef } from "react";
+import ListingCarousel from "../ListingCarousel/ListingCarousel";
+import { ImageSource } from "@cloudinary/base/qualifiers/source/sourceTypes/ImageSource";
 export interface PartialListing {
 	__typename?: "Listing" | undefined;
 	id: string;
@@ -40,6 +43,7 @@ const SearchResultsItem = ({
 	checkIn,
 	checkOut,
 }: Props) => {
+	const imageRef = useRef<HTMLDivElement>(null);
 
 	const url = `images/${listing.region.replaceAll(" ", "_").toLowerCase()}/${
 		listing.id
@@ -50,21 +54,18 @@ const SearchResultsItem = ({
 			<a href={`/listing/${listing.id}`}></a>
 
 			<div className="SearchResultsItem-container">
-				<div className="SearchResultsItem__image">
+				<div className="SearchResultsItem__image" ref={imageRef}>
 					{listing.superhost && (
 						<div className="superhost">
 							<span>superhost</span>
 						</div>
 					)}
 					{mobile ? (
-						<AdvancedImage
-							cldImg={cloudinary.image(url)}
-							plugins={[
-								placeholder("predominant-color"),
-								lazyload(),
-							]}
-							alt={listing.imageComments[0]}
-							draggable={false}
+						<ListingCarousel
+							cloudinary={cloudinary}
+							imageComments={listing.imageComments}
+							region={listing.region}
+							id={listing.id}
 						/>
 					) : (
 						<PictureCarousel
@@ -72,6 +73,7 @@ const SearchResultsItem = ({
 							region={listing.region}
 							id={listing.id}
 							imageComments={listing.imageComments}
+							width={300}
 						/>
 					)}
 				</div>
