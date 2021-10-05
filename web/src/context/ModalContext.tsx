@@ -15,6 +15,7 @@ export const ModalContext = createContext<IModalProviderProps | undefined>(
 );
 
 const ModalProvider: React.FC = ({ children }) => {
+	console.log("RERENDER MODAL")
 	const [demoClicked, setDemoClicked] = useState(false);
 	const [open, setOpen] = useState(false);
 	const [entry, setEntry] = useState("");

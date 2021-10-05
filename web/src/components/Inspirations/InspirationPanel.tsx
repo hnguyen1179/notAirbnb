@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 interface Props {
 	locations: string[][];
 	panel: number;
@@ -17,8 +18,8 @@ const InspirationPanel = ({ locations, panel }: Props) => {
 						key={idx}
 						className={`InspirationPanel__item ${defined}`}
 					>
-						<a
-							href={
+						<Link
+							to={
 								url
 									? `/search?region=${city.replaceAll(
 											" ",
@@ -31,7 +32,7 @@ const InspirationPanel = ({ locations, panel }: Props) => {
 								<span>{city}</span>
 								<span>{region}</span>
 							</div>
-						</a>
+						</Link>
 					</div>
 				);
 			})}

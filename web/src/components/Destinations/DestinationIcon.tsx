@@ -1,6 +1,7 @@
 import React from "react";
 import { AdvancedImage, placeholder } from "@cloudinary/react";
 import { CloudinaryImage } from "@cloudinary/base/assets/CloudinaryImage";
+import { Link } from "react-router-dom";
 
 interface ILocation {
 	name: string;
@@ -15,9 +16,12 @@ interface Props {
 const DestinationIcon = ({ location, img }: Props) => {
 	return (
 		<li className="DestinationIcon">
-			<a
+			<Link
 				className="DestinationIcon__content"
-				href={`/search?region=${location.name.replaceAll(" ", "+")}&page=1`}
+				to={`/search?region=${location.name.replaceAll(
+					" ",
+					"+"
+				)}&page=1`}
 			>
 				<div className="DestinationIcon__content__image">
 					<AdvancedImage
@@ -33,7 +37,7 @@ const DestinationIcon = ({ location, img }: Props) => {
 						{location.distance}
 					</span>
 				</div>
-			</a>
+			</Link>
 		</li>
 	);
 };

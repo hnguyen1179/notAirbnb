@@ -7,6 +7,7 @@ import { AdvancedImage, placeholder, lazyload } from "@cloudinary/react";
 import { useRef } from "react";
 import ListingCarousel from "../ListingCarousel/ListingCarousel";
 import { ImageSource } from "@cloudinary/base/qualifiers/source/sourceTypes/ImageSource";
+import { Link } from "react-router-dom";
 export interface PartialListing {
 	__typename?: "Listing" | undefined;
 	id: string;
@@ -51,7 +52,7 @@ const SearchResultsItem = ({
 
 	return (
 		<li className="SearchResultsItem">
-			<a href={`/listing/${listing.id}`}></a>
+			<Link to={`/listing/${listing.id}`} />
 
 			<div className="SearchResultsItem-container">
 				<div className="SearchResultsItem__image" ref={imageRef}>

@@ -272,7 +272,7 @@ const SearchForm = ({
 							value={
 								filters
 									? dates.startDate?.toLocaleDateString()
-									: selectedRef.current >= 2
+									: selectedRef.current >= 1
 									? dates.startDate?.toLocaleDateString()
 									: ""
 							}
@@ -300,7 +300,7 @@ const SearchForm = ({
 							value={
 								filters
 									? dates.endDate?.toLocaleDateString()
-									: selectedRef.current >= 2
+									: selectedRef.current >= 1
 									? dates.endDate?.toLocaleDateString()
 									: ""
 							}

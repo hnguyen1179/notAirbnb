@@ -7,6 +7,7 @@ import Loading from "../components/Loading";
 import ReservationItem from "../components/ReservationItem/ReservationItem";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
+import { Link } from "react-router-dom";
 
 interface Props {
 	id: string;
@@ -39,12 +40,7 @@ const TripsPage = ({ id }: Props) => {
 	const renderFuture = (
 		<ul className="TripsPage__content__list">
 			{future.map((reservation, idx) => {
-				return (
-					<ReservationItem
-						key={idx}
-						reservation={reservation}
-					/>
-				);
+				return <ReservationItem key={idx} reservation={reservation} />;
 			})}
 		</ul>
 	);
@@ -52,12 +48,7 @@ const TripsPage = ({ id }: Props) => {
 	const renderPast = (
 		<ul className="TripsPage__content__list">
 			{past.map((reservation, idx) => {
-				return (
-					<ReservationItem
-						key={idx}
-						reservation={reservation}
-					/>
-				);
+				return <ReservationItem key={idx} reservation={reservation} />;
 			})}
 		</ul>
 	);
@@ -108,9 +99,9 @@ const TripsPage = ({ id }: Props) => {
 							<TripsSvg />
 						</div>
 						<button>
-							<a href="/">
+							<Link to="/">
 								<div>Explore Airbnb</div>
-							</a>
+							</Link>
 						</button>
 						<div className="divider" />
 						<aside>

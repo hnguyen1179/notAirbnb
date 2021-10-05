@@ -15,6 +15,7 @@ import Dropdown from "./Dropdown";
 import SearchForm from "./SearchForm";
 import SearchBar from "./SearchBar";
 import SearchFormDataProvider from "./SearchFormDataProvider";
+import { Link } from "react-router-dom";
 
 interface Props {
 	isTop?: boolean; // Denotes whether or not Navbar is at the top of page or not; used in Landing
@@ -128,10 +129,10 @@ function Navbar({
 					}}
 				>
 					<div className="Navbar__left__logo">
-						<a href="/">
+						<Link to="/">
 							<LogoNameSvg className="logo-name" />
 							<LogoSvg className="logo" />
-						</a>
+						</Link>
 					</div>
 				</div>
 

@@ -11,6 +11,7 @@ import ItemDetailsMobile from "../SearchResultsItem/ItemDetailsMobile";
 import PictureCarousel from "../SearchResultsItem/PictureCarousel";
 import { PartialListing } from "../SearchResultsItem/SearchResultsItem";
 import { ChildComponentProps } from "google-map-react";
+import { Link } from "react-router-dom";
 
 interface Props extends ChildComponentProps {
 	$geoService?: any;
@@ -68,11 +69,11 @@ const PriceMarker = ({
 				onMouseEnter={handleMouseEnter}
 				onMouseOut={handleMouseExit}
 			>
-				<a
-					href={`/listing/${listing.id}`}
+				<Link
+					to={`/listing/${listing.id}`}
 					target="_blank"
 					rel="noreferrer"
-				></a>
+				></Link>
 
 				<div className="PriceMarker__details__image" ref={imageRef}>
 					{listing.superhost && (

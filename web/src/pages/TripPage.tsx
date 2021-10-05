@@ -25,6 +25,7 @@ import HouseMarkerBasic from "../components/MapMarkers/HouseMarkerBasic";
 import HouseMarker from "../components/MapMarkers/HouseMarker";
 import Navbar from "../components/Navbar/Navbar";
 import { createMapOptions } from "../utils/createMapOptions";
+import { Link } from "react-router-dom";
 
 interface Props {
 	id: string;
@@ -132,7 +133,7 @@ const TripPage = ({ id, routeProps }: Props) => {
 								<span className="image-count">
 									1/{imageComments.length}
 								</span>
-								<a href={`/listing/${listingId}`}>
+								<Link to={`/listing/${listingId}`}>
 									<AdvancedImage
 										cldImg={cloudinary.image(
 											`images/${region
@@ -143,12 +144,12 @@ const TripPage = ({ id, routeProps }: Props) => {
 												)}/${listingId}/image-0`
 										)}
 									/>
-								</a>
+								</Link>
 							</div>
 							<div>
-								<a href={`/listing/${listingId}`}>
+								<Link to={`/listing/${listingId}`}>
 									<h2>{title}</h2>
-								</a>
+								</Link>
 							</div>
 						</section>
 
@@ -291,11 +292,11 @@ const TripPage = ({ id, routeProps }: Props) => {
 									</a>
 								</button>
 								<button className="button active">
-									<a href={`/listing/${listingId}`}>
+									<Link to={`/listing/${listingId}`}>
 										<DoorSvg />
 										<span>Show listing</span>
 										<RightSvg />
-									</a>
+									</Link>
 								</button>
 							</div>
 						</section>
@@ -307,9 +308,9 @@ const TripPage = ({ id, routeProps }: Props) => {
 								<div className="host-details">
 									<h2>Your host, {host?.firstName}</h2>
 									<span>
-										<a href={`/host/${host?.id}`}>
+										<Link to={`/host/${host?.id}`}>
 											Show profile
-										</a>
+										</Link>
 									</span>
 								</div>
 								<div className="host-image">

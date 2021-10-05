@@ -1,7 +1,9 @@
-import React from "react";
 import { Redirect, Route } from "react-router";
+import useAuthToken from "../hooks/useAuthToken";
 
-const NoAuthRedirectRoute = ({ component: Component, token, ...rest }: any) => {
+const NoAuthRedirectRoute = ({ component: Component, ...rest }: any) => {
+	const [token] = useAuthToken();
+
 	return (
 		<Route
 			{...rest}

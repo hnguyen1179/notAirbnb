@@ -4,12 +4,10 @@ import { AppContext } from "./AppContext";
 import { useMeQuery } from "../generated/graphql";
 import { Loader } from "@googlemaps/js-api-loader";
 
-
-
 const width = window.innerWidth;
 
 const AppStateProvider: React.FC = ({ children }) => {
-	console.log('rerendered ... ')
+	console.log('RERENDER GLOBAL STATE')
 	const mqlMobile = window.matchMedia("(min-width: 744px)");
 	const mqlMap = window.matchMedia("(min-width: 1128px)");
 
@@ -45,14 +43,14 @@ const AppStateProvider: React.FC = ({ children }) => {
 	};
 
 	useEffect(() => {
-		// (async () => {
-		// 	const loader = new Loader({
-		// 		apiKey: process.env.REACT_APP_GOOGLE_API_KEY as string,
-		// 		version: "weekly",
-		// 	});
+		(async () => {
+			const loader = new Loader({
+				apiKey: process.env.REACT_APP_GOOGLE_API_KEY as string,
+				version: "weekly",
+			});
 
-		// 	await loader.load();
-		// })();
+			await loader.load();
+		})();
 		mqlMobile.addEventListener("change", handleMobileChange);
 		mqlMap.addEventListener("change", handleMapChange);
 

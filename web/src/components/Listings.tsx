@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import { gql, useQuery } from "@apollo/client";
+import { Link } from "react-router-dom";
 
 const LISTINGS_QUERY = gql`
 	query LISTINGS_QUERY {
@@ -29,7 +30,7 @@ function Listings() {
 			{data.allListings.map((listing: Listing) => {
 				return (
 					<div>
-						<a href={`listing/${listing.id}`}>{listing.title}</a>
+						<Link to={`listing/${listing.id}`}>{listing.title}</Link>
 					</div>
 				);
 			})}
