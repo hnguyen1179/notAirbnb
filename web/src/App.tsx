@@ -31,6 +31,7 @@ import TripPage from "./pages/TripPage";
 import ErrorPage from "./pages/ErrorPage";
 import SearchPage from "./pages/SearchPage";
 import ListingPage from "./pages/ListingPage";
+import { URLParamsProvider } from "./context/URLParamsContext";
 
 function App() {
 	console.log("RERENDER APP");
@@ -44,20 +45,6 @@ function App() {
 						<Route exact path={LANDING} component={LandingPage} />
 						<Route exact path={ERROR} component={ErrorPage} />
 						<Route path={LISTINGS} component={Listings} />
-
-						{/* URLParamsProvider */}
-						<Route path={SEARCH} component={SearchPage} />
-						<Route
-							path={LISTING}
-							render={(routeProps) => (
-								<ListingPage
-									id={routeProps.match.params.id}
-									history={routeProps.history}
-									location={routeProps.location}
-									match={routeProps.match}
-								/>
-							)}
-						/>
 
 						<Route
 							path={USER_TRIPS}
@@ -97,6 +84,27 @@ function App() {
 							path={ENTRY}
 							component={EntryPage}
 						/>
+
+						{/* URLParamsProvider */}
+						<URLParamsProvider>
+							<Route
+								path={SEARCH}
+								render={(routeProps) => (
+									<SearchPage history={routeProps.history} />
+								)}
+							/>
+							<Route
+								path={LISTING}
+								render={(routeProps) => (
+									<ListingPage
+										id={routeProps.match.params.id}
+										history={routeProps.history}
+										location={routeProps.location}
+										match={routeProps.match}
+									/>
+								)}
+							/>
+						</URLParamsProvider>
 					</Switch>
 				</Router>
 			</ModalProvider>

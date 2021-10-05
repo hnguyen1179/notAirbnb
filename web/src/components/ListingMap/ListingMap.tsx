@@ -4,6 +4,7 @@ import { Maybe } from "../../generated/graphql";
 import { createMapOptions } from "../../utils/createMapOptions";
 import HouseMarkerBasic from "../MapMarkers/HouseMarkerBasic";
 import { ReactComponent as RightSvg } from "../../assets/icons/right-arrow.svg";
+import { definitelyNotAirbnb } from "../../utils/definitelyNotAirbnb";
 
 interface Props {
 	city: string;
@@ -46,7 +47,7 @@ const ListingMap = (props: Props) => {
 			{props.locationDescription && (
 				<div className="ListingMap__description">
 					<div className="ListingMap__description__container">
-						<p>{props.locationDescription}</p>
+						<p>{definitelyNotAirbnb(props.locationDescription)}</p>
 					</div>
 
 					<button className="show-more-button">

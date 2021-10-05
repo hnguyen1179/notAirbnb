@@ -66,6 +66,9 @@ const MobileSearchForm = ({ handleFormClose, history }: Props) => {
 		});
 
 		document.body.style.overflow = "initial";
+
+		localStorage.setItem("params", search.toString());
+
 		history.push({
 			pathname: "/search",
 			search: search.toString(),

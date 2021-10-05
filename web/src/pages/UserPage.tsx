@@ -30,7 +30,7 @@ const RenderReviewItems = (props: { reviews: Review[], cloudinary: Cloudinary })
 	);
 };
 
-const UserPage = ({ id, routeProps }: Props) => {
+const UserPage = ({ id, routeProps }: Props) => {	
 	const {
 		error: reviewsError,
 		data: reviewsData,

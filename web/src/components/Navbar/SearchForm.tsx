@@ -188,7 +188,6 @@ const SearchForm = ({
 		) {
 			setError(1);
 			return;
-			return;
 		} else if (!guests || guests < 1) {
 			setError(3);
 			return;
@@ -204,6 +203,8 @@ const SearchForm = ({
 			guests: guests.toString(),
 			page: "1",
 		});
+
+		localStorage.setItem("params", search.toString());
 
 		history.push({
 			pathname: "/search",
@@ -271,9 +272,12 @@ const SearchForm = ({
 							id="startDate"
 							value={
 								filters
-									? dates.startDate?.toLocaleDateString()
+									? dates.endDate?.toLocaleDateString() ===
+									  new Date().toLocaleDateString()
+										? ""
+										: dates.endDate.toLocaleDateString()
 									: selectedRef.current >= 1
-									? dates.startDate?.toLocaleDateString()
+									? dates.endDate?.toLocaleDateString()
 									: ""
 							}
 							readOnly={true}
@@ -299,7 +303,10 @@ const SearchForm = ({
 							id="endDate"
 							value={
 								filters
-									? dates.endDate?.toLocaleDateString()
+									? dates.endDate?.toLocaleDateString() ===
+									  new Date().toLocaleDateString()
+										? ""
+										: dates.endDate.toLocaleDateString()
 									: selectedRef.current >= 1
 									? dates.endDate?.toLocaleDateString()
 									: ""

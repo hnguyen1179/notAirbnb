@@ -15,10 +15,6 @@ const AppStateProvider: React.FC = ({ children }) => {
 	// LOGIN Bug, maybe look into how people store the current user object?
 	const [mobile, setMobile] = useState(width <= 744);
 	const [map, setMap] = useState(width >= 1128);
-	const [dates, setDates] = useState({
-		checkIn: new Date(),
-		checkOut: new Date(),
-	})
 
 	const cloudinary = new Cloudinary({
 		cloud: {
@@ -60,7 +56,6 @@ const AppStateProvider: React.FC = ({ children }) => {
 		};
 	}, []);
 
-	console.log(dates);
 
 	return (
 		<AppContext.Provider
@@ -69,8 +64,6 @@ const AppStateProvider: React.FC = ({ children }) => {
 				user: data?.me ? data.me : null,
 				mobile,
 				map,
-				dates,
-				setDates
 			}}
 		>
 			{children}

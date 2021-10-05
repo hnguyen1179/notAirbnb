@@ -26,6 +26,7 @@ const LISTING_BY_ID = gql`
 			listingDescription
 			locationDescription
 			stayDescription
+			datesUnavailable
 			host {
 				id
 				firstName

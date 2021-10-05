@@ -64,6 +64,12 @@
 
 @media screen and (min-width: 744px) {
 	.ListingPage {
+		--padding: 4rem;
+		
+		&__nav {
+			padding: 0;
+		}
+
 		&__content {
 			display: flex;
 		}

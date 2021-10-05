@@ -19,8 +19,6 @@ export type GlobalState = {
 	user: UserPartial | null;
 	mobile: boolean;
 	map: boolean;
-	dates: IDates;
-	setDates: (dates: IDates) => void;
 };
 
 export const AppContext = React.createContext<GlobalState>(initialState);

@@ -20,6 +20,7 @@ import ListingListingDescription from "../components/ListingListingDescription/L
 import ListingAmenities from "../components/ListingAmenities/ListingAmenities";
 import ListingMap from "../components/ListingMap/ListingMap";
 import ListingReservation from "../components/ListingReservation/ListingReservation";
+import Footer from "../components/Footer/Footer";
 
 interface Props extends RouteComponentProps {
 	id: string;
@@ -27,7 +28,7 @@ interface Props extends RouteComponentProps {
 
 const ListingPage: FC<Props> = (props) => {
 	const { id, history } = props;
-	const { cloudinary, mobile, dates, setDates } = useContext(AppContext);
+	const { cloudinary, mobile } = useContext(AppContext);
 
 	const {
 		loading: listingLoading,
@@ -156,7 +157,10 @@ const ListingPage: FC<Props> = (props) => {
 					</section>
 
 					<section className="ListingPage__content__reservation">
-						<ListingReservation dates={dates} setDates={setDates} />
+						<ListingReservation
+							city={listingById.city}
+							datesUnavailable={listingById.datesUnavailable}
+						/>
 					</section>
 
 					<section style={{ margin: "100px" }}></section>
@@ -169,6 +173,12 @@ const ListingPage: FC<Props> = (props) => {
 					></div>
 				</div>
 			</main>
+
+			<div className="ListingPage__footer">
+				<div className="Footer-container">
+					<Footer />
+				</div>
+			</div>
 		</div>
 	);
 };

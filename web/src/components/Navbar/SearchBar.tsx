@@ -6,8 +6,7 @@ interface Props {
 }
 
 const SearchBar = ({ location, searchDetails }: Props) => {
-	const [searchDates, searchGuests = "Add guests"] =
-		searchDetails.split(" · ");
+	const [searchDates, searchGuests] = searchDetails.split(" · ");
 
 	return (
 		<div className="SearchBar">
@@ -20,7 +19,9 @@ const SearchBar = ({ location, searchDetails }: Props) => {
 			</div>
 			<span className="divider"></span>
 			<div className="SearchBar__edit-button SearchBar__edit-button--guests">
-				{searchGuests}
+				{!searchGuests || searchGuests === "NaN guests"
+					? "Add guests"
+					: searchGuests}
 			</div>
 			<div className="SearchBar__submit">
 				<SearchSvg />

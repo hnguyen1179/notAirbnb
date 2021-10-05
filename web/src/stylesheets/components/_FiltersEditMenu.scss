@@ -376,7 +376,6 @@
 	position: fixed;
 	z-index: 100;
 	// background-color: rgba(0, 0, 0, 0.344);
-	background-color: white;
 	top: 0;
 	left: 0;
 	right: 0;
@@ -388,7 +387,9 @@
 	}
 
 	.MobileSearchForm__form__stage {
+		background-color: white;
 		padding: 2.1rem 2rem;
+		height: 100%;
 	}
 
 	&__menu {
