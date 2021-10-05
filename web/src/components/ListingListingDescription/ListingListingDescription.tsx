@@ -15,7 +15,7 @@ const ListingListingDescription = (props: Props) => {
 				<p>{definitelyNotAirbnb(props.listingDescription)}</p>
 			</div>
 
-			<button>
+			<button className="show-more-button">
 				<span>Show more</span>
 				<RightSvg />
 			</button>

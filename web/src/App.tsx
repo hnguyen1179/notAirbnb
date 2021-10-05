@@ -7,7 +7,7 @@ import {
 	createHttpLink,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import AppState from "./context/AppState";
+import { AppStateProvider } from "./context/AppState";
 
 import useAuthToken from "./hooks/useAuthToken";
 
@@ -48,6 +48,7 @@ const httpLink = createHttpLink({
 });
 
 function App() {
+	console.log("RERENDERED")
 	const [token] = useAuthToken();
 
 	const authLink = setContext((_, { headers }) => {
@@ -156,8 +157,8 @@ function App() {
 
 	return (
 		<ApolloProvider client={client}>
-			<ModalProvider>
-				<AppState>
+			<AppStateProvider>
+				<ModalProvider>
 					<Router>
 						<ScrollToTop />
 						<Switch>
@@ -231,8 +232,8 @@ function App() {
 							/>
 						</Switch>
 					</Router>
-				</AppState>
-			</ModalProvider>
+				</ModalProvider>
+			</AppStateProvider>
 		</ApolloProvider>
 	);
 }

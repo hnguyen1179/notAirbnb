@@ -1,13 +1,6 @@
 import { Cloudinary } from "@cloudinary/base";
 import { AdvancedImage, placeholder, lazyload } from "@cloudinary/react";
-import React, {
-	MouseEventHandler,
-	useEffect,
-	useLayoutEffect,
-	useMemo,
-	useRef,
-	useState,
-} from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Maybe } from "../../generated/graphql";
 
 interface Props {

@@ -4,9 +4,33 @@
 	&__nav,
 	&__basics__title,
 	&__content__details,
-  &__content__highlights,
-  &__content__listing-description {
+	&__content__highlights,
+	&__content__listing-description,
+	&__content__amenities,
+	&__content__map,
+	&__content__reservation {
 		padding: 0 var(--padding);
+	}
+
+	section {
+		> *:first-child {
+			padding: 2rem 0;
+			border-bottom: 1px solid $muted-line-color;
+		}
+	}
+
+	h2 {
+		font-size: 2.2rem;
+		font-weight: 300;
+	}
+
+	.show-more-button {
+		margin: 1.5rem 0;
+		text-decoration: underline;
+
+		> svg {
+			margin-left: 0.5rem;
+		}
 	}
 
 	&__basics {

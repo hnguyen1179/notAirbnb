@@ -23,8 +23,8 @@ import { AppContext } from "../context/AppContext";
 import { coordinates } from "../constants/coordinates";
 import HouseMarkerBasic from "../components/MapMarkers/HouseMarkerBasic";
 import HouseMarker from "../components/MapMarkers/HouseMarker";
-import { style } from "../constants/simpleMapStyle";
 import Navbar from "../components/Navbar/Navbar";
+import { createMapOptions } from "../utils/createMapOptions";
 
 interface Props {
 	id: string;
@@ -89,16 +89,6 @@ const TripPage = ({ id, routeProps }: Props) => {
 			setCopied(false);
 		}, 500);
 	}, 200);
-
-	const createMapOptions = (maps: any) => ({
-		gestureHandling: mobile ? "none" : "auto",
-		zoomControl: mobile ? false : true,
-		zoomControlOptions: {
-			position: maps.ControlPosition.TOP_RIGHT,
-		},
-		fullscreenControl: false,
-		styles: style,
-	});
 
 	const mapValues = {
 		zoom: 16,

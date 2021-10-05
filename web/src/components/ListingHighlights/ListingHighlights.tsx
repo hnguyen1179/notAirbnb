@@ -10,7 +10,8 @@ const ListingHighlights = (props: Props) => {
 			{props.highlights.map((highlightStr, idx) => {
 				if (!highlightStr) return <></>;
 				const [highlight, description] = highlightStr.split("||");
-				const fileName = highlight.replaceAll(" ", "_").toLowerCase();
+				let fileName = highlight.replaceAll(" ", "_").toLowerCase();
+				if ((/superhost/).test(fileName)) fileName = 'superhost'
 
 				const editedDescription = description.replaceAll(
 					"Airbnb",

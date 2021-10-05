@@ -4,13 +4,12 @@ import { AppContext } from "./AppContext";
 import { useMeQuery } from "../generated/graphql";
 import { Loader } from "@googlemaps/js-api-loader";
 
-interface Props {
-	children: React.ReactNode;
-}
+
 
 const width = window.innerWidth;
 
-function AppState(props: Props) {
+const AppStateProvider: React.FC = ({ children }) => {
+	console.log('rerendered ... ')
 	const mqlMobile = window.matchMedia("(min-width: 744px)");
 	const mqlMap = window.matchMedia("(min-width: 1128px)");
 
@@ -18,6 +17,10 @@ function AppState(props: Props) {
 	// LOGIN Bug, maybe look into how people store the current user object?
 	const [mobile, setMobile] = useState(width <= 744);
 	const [map, setMap] = useState(width >= 1128);
+	const [dates, setDates] = useState({
+		checkIn: new Date(),
+		checkOut: new Date(),
+	})
 
 	const cloudinary = new Cloudinary({
 		cloud: {
@@ -42,14 +45,14 @@ function AppState(props: Props) {
 	};
 
 	useEffect(() => {
-		(async () => {
-			const loader = new Loader({
-				apiKey: process.env.REACT_APP_GOOGLE_API_KEY as string,
-				version: "weekly",
-			});
+		// (async () => {
+		// 	const loader = new Loader({
+		// 		apiKey: process.env.REACT_APP_GOOGLE_API_KEY as string,
+		// 		version: "weekly",
+		// 	});
 
-			await loader.load();
-		})();
+		// 	await loader.load();
+		// })();
 		mqlMobile.addEventListener("change", handleMobileChange);
 		mqlMap.addEventListener("change", handleMapChange);
 
@@ -59,6 +62,8 @@ function AppState(props: Props) {
 		};
 	}, []);
 
+	console.log(dates);
+
 	return (
 		<AppContext.Provider
 			value={{
@@ -66,11 +71,13 @@ function AppState(props: Props) {
 				user: data?.me ? data.me : null,
 				mobile,
 				map,
+				dates,
+				setDates
 			}}
 		>
-			{props.children}
+			{children}
 		</AppContext.Provider>
 	);
 }
 
-export default AppState;
+export { AppStateProvider };

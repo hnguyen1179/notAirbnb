@@ -5,9 +5,9 @@ import { Maybe } from "../../generated/graphql";
 import { PartialListing } from "../SearchResultsItem/SearchResultsItem";
 import { coordinates, regions } from "../../constants/coordinates";
 import { getZoomLevel } from "../../utils/mapUtils";
-import { style } from "../../constants/simpleMapStyle";
 import PriceMarker from "../MapMarkers/PriceMarker";
 import { Cloudinary } from "@cloudinary/base";
+import { createMapOptions } from "../../utils/createMapOptions";
 
 interface Props {
 	listings: Maybe<PartialListing>[] | undefined;
@@ -55,17 +55,6 @@ const SearchPageMap = ({
 			});
 		})();
 	}, [listings, mapRef]);
-
-	const createMapOptions = (maps: any) => ({
-		gestureHandling: "auto",
-		scrollwheel: true,
-		zoomControl: true,
-		zoomControlOptions: {
-			position: maps.ControlPosition.TOP_RIGHT,
-		},
-		fullscreenControl: true,
-		styles: style,
-	});
 
 	const resetClickIdx = () => {
 		setClickIdx(-1);

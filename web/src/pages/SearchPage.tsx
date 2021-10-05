@@ -48,9 +48,10 @@ const SearchPage = ({ history }: Props) => {
 		[history.location.search]
 	);
 
-	const { cloudinary, mobile, map } = useContext(AppContext);
+	const { cloudinary, mobile, map, setDates } = useContext(AppContext);
 	const [openFilter, setOpenFilter] = useState(false);
 	const [currentListing, setCurrentListing] = useState(-1);
+	const [isLoading, setIsLoading] = useState(false);
 	const filtersEditMenuRef = useRef<HTMLDivElement>(null);
 	const mapRef = useRef<HTMLDivElement>(null);
 
@@ -103,16 +104,27 @@ const SearchPage = ({ history }: Props) => {
 	});
 
 	useEffect(() => {
+		console.log(" in here ! ! ! ");
+		setDates({
+			checkIn: new Date(searchParams.get("check-in") as string),
+			checkOut: new Date(searchParams.get("check-out") as string),
+		});
+	}, [searchParams, setDates]);
+
+	useEffect(() => {
 		// Skip any unnecessary data fetches
 		if (searchParams.toString() === previousURL.current) return;
 		previousURL.current = searchParams.toString();
 
+		setIsLoading(true);
 		// Any time the url params changes, it'll fetch a new dataset
 		// const currentPage = parseInt(searchParams.get("page") as string);
 		(async () =>
 			fetchMore({
 				variables,
 			}))();
+
+		setIsLoading(false);
 	}, [fetchMore, searchParams, variables]);
 
 	const renderListings = useMemo(() => {
@@ -157,20 +169,12 @@ const SearchPage = ({ history }: Props) => {
 				cloudinary={cloudinary}
 			/>
 		);
-	}, [currentListing, data?.basicSearch?.listings, mobile, variables.region]);
-
-	// TODO: Maybe have a dedicated error page?
-	if (error) {
-		console.log(JSON.stringify(error, null, 2));
-		return <>uh oh</>;
-	}
-
-	if (loading)
-		return (
-			<div className="page-loading">
-				<Loading />
-			</div>
-		);
+	}, [
+		cloudinary,
+		currentListing,
+		data?.basicSearch?.listings,
+		variables.region,
+	]);
 
 	const handleBack = () => {
 		history.goBack();
@@ -179,13 +183,14 @@ const SearchPage = ({ history }: Props) => {
 	const handlePageClick = async (e: MouseEvent<HTMLLIElement>) => {
 		const nextPage = parseInt(e?.currentTarget?.innerText);
 		const nextSearch = new URLSearchParams(history.location.search);
-		window.scrollTo({ top: 0 });
 		nextSearch.set("page", nextPage.toString());
-
+		
 		history.push({
 			pathname: history.location.pathname,
 			search: nextSearch.toString(),
 		});
+		
+		window.scrollTo({ top: 0 });
 	};
 
 	const handleClickOpenFilter = (e: MouseEvent) => {
@@ -223,6 +228,19 @@ const SearchPage = ({ history }: Props) => {
 			return `Stays in ${variables.region}`;
 		}
 	};
+
+	// TODO: Maybe have a dedicated error page?
+	if (error) {
+		console.log(JSON.stringify(error, null, 2));
+		return <>uh oh</>;
+	}
+
+	if (loading || isLoading)
+		return (
+			<div className="page-loading">
+				<Loading />
+			</div>
+		);
 
 	return (
 		<URLParamsProvider
@@ -306,6 +324,7 @@ const SearchPage = ({ history }: Props) => {
 										<div className="divider" />
 									</div>
 								)}
+								{/* {isLoading ? "LOADING" : renderListings} */}
 								{renderListings}
 							</ul>
 

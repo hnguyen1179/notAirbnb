@@ -1,0 +1,38 @@
+.ListingMap {
+	&__title {
+	}
+
+	&__location {
+		margin-bottom: 1.5rem;
+		> span {
+			font-weight: 500;
+		}
+	}
+
+	&__map {
+		margin: 1.5rem 0;
+		width: 100%;
+		height: 22rem;
+		background-color: grey;
+		border-radius: 0.8rem;
+		overflow: hidden;
+	}
+
+	&__description {
+		&__container {
+			line-height: 2.4rem;
+			max-height: 14rem;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-line-clamp: 6;
+			-webkit-box-orient: vertical;
+
+			> p {
+				text-overflow: ellipsis;
+				font-weight: 400;
+				white-space: pre-wrap;
+			}
+		}
+	}
+}
