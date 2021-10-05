@@ -15,6 +15,7 @@ import ListingCarousel from "../components/ListingCarousel/ListingCarousel";
 import ListingTitle from "../components/ListingBasics/ListingTitle";
 import ListingDetails from "../components/ListingBasics/ListingDetails";
 import ListingHighlights from "../components/ListingHighlights/ListingHighlights";
+import ListingListingDescription from "../components/ListingListingDescription/ListingListingDescription";
 
 interface Props extends RouteComponentProps {
 	id: string;
@@ -72,22 +73,7 @@ const ListingPage: FC<Props> = (props) => {
 		history.goBack();
 	};
 
-	const {
-		region,
-		imageComments,
-		title,
-		averageScore,
-		reviewsCount,
-		city,
-		state,
-		listingType,
-		host,
-		numGuests,
-		numBedrooms,
-		numBeds,
-		numBaths,
-		highlights,
-	} = listingData.listingById;
+	const { listingById } = listingData;
 
 	return (
 		<div className="ListingPage">
@@ -105,8 +91,8 @@ const ListingPage: FC<Props> = (props) => {
 						<ListingCarousel
 							cloudinary={cloudinary}
 							id={id}
-							region={region}
-							imageComments={imageComments}
+							region={listingById.region}
+							imageComments={listingById.imageComments}
 						/>
 					) : (
 						<div> insert desktop version here </div>
@@ -114,11 +100,11 @@ const ListingPage: FC<Props> = (props) => {
 				</div>
 				<div className="ListingPage__basics__title">
 					<ListingTitle
-						title={title}
-						averageScore={averageScore}
-						reviewsCount={reviewsCount}
-						city={city}
-						state={state}
+						title={listingById.title}
+						averageScore={listingById.averageScore}
+						reviewsCount={listingById.reviewsCount}
+						city={listingById.city}
+						state={listingById.state}
 					/>
 				</div>
 			</div>
@@ -128,31 +114,42 @@ const ListingPage: FC<Props> = (props) => {
 					<section className="ListingPage__content__details">
 						<ListingDetails
 							cloudinary={cloudinary}
-							listingType={listingType}
-							hostName={host?.firstName || ""}
-							hostId={host?.id || ""}
-							numGuests={numGuests}
-							numBedrooms={numBedrooms}
-							numBeds={numBeds}
-							numBaths={numBaths}
+							listingType={listingById.listingType}
+							hostName={listingById.host?.firstName || ""}
+							hostId={listingById.host?.id || ""}
+							numGuests={listingById.numGuests}
+							numBedrooms={listingById.numBedrooms}
+							numBeds={listingById.numBeds}
+							numBaths={listingById.numBaths}
 						/>
 					</section>
 
 					<section className="ListingPage__content__highlights">
 						<ListingHighlights
-							highlights={highlights}
+							highlights={listingById.highlights}
 						/>
 					</section>
 
 					<section className="ListingPage__content__listing-description">
 						<ListingListingDescription
-							
+							listingDescription={listingById?.listingDescription}
 						/>
 					</section>
+
+					<section className="ListingPage__content__amenities">
+						<ListingAmenities
+							amenities={listingById.amenities}
+						/>
+					</section>
+
+					<section style={{ margin: "100px" }}></section>
 				</div>
 
 				<div>
-					<div className="ListingPage__content__reservation-box" aria-hidden={mobile}></div>
+					<div
+						className="ListingPage__content__reservation-box"
+						aria-hidden={mobile}
+					></div>
 				</div>
 			</main>
 		</div>

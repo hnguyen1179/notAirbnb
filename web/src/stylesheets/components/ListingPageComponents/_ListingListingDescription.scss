@@ -1,0 +1,29 @@
+.ListingListingDescription {
+	padding: 2rem 0;
+	border-bottom: 1px solid $muted-line-color;
+
+	&__container {
+		overflow: hidden;
+		line-height: 24px;
+		max-height: 144px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 6;
+		-webkit-box-orient: vertical;
+
+		> p {
+			text-overflow: ellipsis;
+			font-weight: 400;
+			white-space: pre-wrap;
+		}
+	}
+	> button {
+		margin: 1rem 0;
+		text-decoration: underline;
+    
+		> svg {
+			margin-left: 0.5rem;
+		}
+	}
+}
