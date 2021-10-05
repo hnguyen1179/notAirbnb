@@ -19,6 +19,7 @@ import {
 	ArrayField,
 	BooleanField,
 } from "../components/SearchPageTopBar/FiltersEditMenu";
+import { useHistory } from "react-router";
 
 interface IURLParamsProviderProps {
 	state: EditQueryState;
