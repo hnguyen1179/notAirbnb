@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import { AppContext } from "../../context/AppContext";
+import { useAppState } from "../../context/AppContext";
 import DestinationIcon from "./DestinationIcon";
 
 const LOCATIONS = [
@@ -14,7 +13,7 @@ const LOCATIONS = [
 ];
 
 const Destinations = () => {
-	const { cloudinary } = useContext(AppContext);
+	const { cloudinary } = useAppState();
 
 	return (
 		<div className="Destinations">
@@ -27,7 +26,13 @@ const Destinations = () => {
 						location.name.replace(" ", "-").toLowerCase() + "-logo";
 					const img = cloudinary.image(`assets/${filename}`);
 
-          return <DestinationIcon key={location.name} location={location} img={img} />;
+					return (
+						<DestinationIcon
+							key={location.name}
+							location={location}
+							img={img}
+						/>
+					);
 				})}
 			</ul>
 		</div>

@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { format, getDay } from "date-fns";
 import { Redirect } from "react-router";
 import { debounce } from "@material-ui/core";
@@ -19,7 +19,7 @@ import { ReactComponent as QuestionSvg } from "../assets/icons/question.svg";
 import { ReactComponent as BoldNegativeSvg } from "../assets/icons/bold-negative.svg";
 import { calculateTotalRes } from "../utils/priceBreakdown";
 import { copyToClipboard } from "../utils/copyToClipboard";
-import { AppContext } from "../context/AppContext";
+import { useAppState } from "../context/AppContext";
 import { coordinates } from "../constants/coordinates";
 import HouseMarkerBasic from "../components/MapMarkers/HouseMarkerBasic";
 import HouseMarker from "../components/MapMarkers/HouseMarker";
@@ -33,7 +33,7 @@ interface Props {
 }
 
 const TripPage = ({ id, routeProps }: Props) => {
-	const { cloudinary, mobile } = useContext(AppContext);
+	const { cloudinary, mobile } = useAppState();
 	const [copied, setCopied] = useState(false);
 
 	const { loading, error, data } = useReservationByIdQuery({

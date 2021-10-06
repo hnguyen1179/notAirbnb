@@ -1,7 +1,7 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { animated, useSpring } from "react-spring";
 
-import { AppContext } from "../../context/AppContext";
+import { useAppState } from "../../context/AppContext";
 import ListingTypeIcon from "./ListingTypeIcon";
 
 import { ReactComponent as LeftArrowSvg } from "../../assets/icons/left-arrow.svg";
@@ -16,7 +16,7 @@ const types = [
 
 const ListingTypes = () => {
 	const [right, setRight] = useState(false);
-	const { cloudinary, mobile } = useContext(AppContext);
+	const { cloudinary, mobile } = useAppState();
 
 	const handleArrowClick = () => {
 		setRight(!right);

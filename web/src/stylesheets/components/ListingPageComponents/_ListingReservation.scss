@@ -4,11 +4,10 @@
 		flex-direction: column;
 
 		&__rdr-calendar {
-			
 		}
 
 		&__clear-button {
-      align-self: start;
+			align-self: start;
 
 			> span {
 				text-decoration: underline;
@@ -17,51 +16,59 @@
 		}
 	}
 
-  .rdrCalendarWrapper {
-    max-width: 56rem;
-  }
-  .rdrMonth {
-    width: 100%;
-    // max-width: 56rem;
-  }
-  
-  .rdrDay {
-    height: 10vw;
-    max-height: 6rem;
-  }
-  
-  .rdrDayDisabled {
-    background-color: none !important;
-  
-    > span {
-      text-decoration: line-through !important;
-      text-decoration-color: #aeb9bf !important;
-    }
-  }
+	.rdrCalendarWrapper {
+		max-width: 56rem;
+	}
+	.rdrMonth {
+		width: 100%;
+		// max-width: 56rem;
+	}
+
+	.rdrDay {
+		height: 10vw;
+		max-height: 6rem;
+	}
+
+	.rdrDayDisabled {
+		background-color: none !important;
+
+		> span {
+			text-decoration: line-through !important;
+			text-decoration-color: #aeb9bf !important;
+
+			// &::after {
+			// 	position: absolute;
+			// 	content: "";
+			// 	top: 50%;
+			// 	transform: translateY(-50%);
+			// 	width: 30%;
+			// 	height: 1px;
+			// 	background-color: #aeb9bf;
+			// }
+		}
+	}
 }
 
-
-
 @media screen and (min-width: 600px) {
-  .ListingReservation__calendar {
-    .rdrCalendarWrapper {
-      width: 56rem;
-    }
-    
-    align-items: center;
-  }
+	.ListingReservation__calendar {
+		.rdrCalendarWrapper {
+			width: 56rem;
+		}
+
+		align-items: center;
+	}
 }
 
 @media screen and (min-width: 744px) {
-  .ListingReservation__calendar {
-    .rdrCalendarWrapper {
-      width: 100%;
+	.ListingReservation__calendar {
+		.rdrCalendarWrapper {
+			width: 100%;
 
-      .rdrDay {
-        height: 7vw;
-      }
-    }
+			.rdrDay {
+				height: 7vw;
+			}
+		}
 
-    align-items: center;
-  }
+		align-items: center;
+	}
 }

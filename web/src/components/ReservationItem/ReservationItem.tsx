@@ -1,5 +1,4 @@
-import { useContext } from "react";
-import { AppContext } from "../../context/AppContext";
+import { useAppState } from "../../context/AppContext";
 import { format } from "date-fns";
 import { AdvancedImage } from "@cloudinary/react";
 import { ReactComponent as RightSvg } from "../../assets/icons/right-arrow.svg";
@@ -24,7 +23,7 @@ interface Props {
 }
 
 const ReservationItem = ({ reservation }: Props) => {
-	const { cloudinary } = useContext(AppContext);
+	const { cloudinary } = useAppState();
 
 	if (!reservation || !reservation.listing) return <></>;
 

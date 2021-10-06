@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import { AppContext } from "../context/AppContext";
+import { useAppState } from "../context/AppContext";
 import { gql, useQuery } from "@apollo/client";
 import { Link } from "react-router-dom";
 
@@ -20,7 +19,7 @@ interface Listing {
 }
 
 function Listings() {
-	const { user } = useContext(AppContext);
+	const { user } = useAppState();
 	const { loading, error, data } = useQuery(LISTINGS_QUERY);
 	if (loading) return <p> loading ... </p>;
 	if (error) return <p> {error.message} </p>;

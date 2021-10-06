@@ -1,4 +1,4 @@
-import { FC, MouseEvent, useContext } from "react";
+import { FC, MouseEvent } from "react";
 import { Redirect, RouteComponentProps, RouteProps } from "react-router";
 import { AdvancedImage, placeholder } from "@cloudinary/react";
 
@@ -7,7 +7,7 @@ import {
 	useReviewsByListingIdQuery,
 } from "../generated/graphql";
 import Loading from "../components/Loading";
-import { AppContext } from "../context/AppContext";
+import { useAppState } from "../context/AppContext";
 import Navbar from "../components/Navbar/Navbar";
 
 import ListingMobileNav from "../components/ListingMobileNav/ListingMobileNav";
@@ -29,7 +29,7 @@ interface Props extends RouteComponentProps {
 
 const ListingPage: FC<Props> = (props) => {
 	const { id, history } = props;
-	const { cloudinary, mobile } = useContext(AppContext);
+	const { cloudinary, mobile } = useAppState();
 
 	const {
 		loading: listingLoading,
@@ -59,7 +59,7 @@ const ListingPage: FC<Props> = (props) => {
 			</div>
 		);
 
-	if (!listingData || !listingData.listingById) {
+	if (!listingData || !listingData.listingById || !reviewsData) {
 		return <Redirect to="/404" />;
 	}
 
@@ -165,7 +165,11 @@ const ListingPage: FC<Props> = (props) => {
 					</section>
 
 					<section className="ListingPage__content__reviews">
-						<ListingReviews />
+						<ListingReviews
+							averageScore={listingById.averageScore}
+							reviewsCount={listingById.reviewsCount}
+							reviews={reviewsData}
+						/>
 					</section>
 
 					<section style={{ margin: "100px" }}></section>

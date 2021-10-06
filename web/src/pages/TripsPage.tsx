@@ -1,5 +1,5 @@
-import { useContext, useState } from "react";
-import { AppContext } from "../context/AppContext";
+import { useState } from "react";
+import { useAppState } from "../context/AppContext";
 import MobileNavbar from "../components/MobileNavbar/MobileNavbar";
 import { ReactComponent as TripsSvg } from "../assets/icons/trips.svg";
 import { useReservationsByUserIdQuery } from "../generated/graphql";
@@ -15,7 +15,7 @@ interface Props {
 
 const TripsPage = ({ id }: Props) => {
 	const [onUpcoming, setOnUpcoming] = useState(true);
-	const { mobile } = useContext(AppContext);
+	const { mobile } = useAppState();
 
 	const { loading, error, data } = useReservationsByUserIdQuery({
 		variables: { id },

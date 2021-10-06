@@ -1,5 +1,4 @@
-import React, {
-	useContext,
+import {
 	useState,
 	useEffect,
 	MouseEvent,
@@ -8,7 +7,7 @@ import React, {
 } from "react";
 import { History } from "history";
 import { useBasicSearchQuery } from "../generated/graphql";
-import { AppContext } from "../context/AppContext";
+import { useAppState } from "../context/AppContext";
 import SearchPageTopBar from "../components/SearchPageTopBar/SearchPageTopBar";
 import Loading from "../components/Loading";
 import { format } from "date-fns";
@@ -43,7 +42,7 @@ export interface BasicSearchVariables {
 }
 
 const SearchPage = ({ history }: Props) => {
-	const { cloudinary, mobile, map } = useContext(AppContext);
+	const { cloudinary, mobile, map } = useAppState();
 	const {
 		state: { editMenu },
 		variables,

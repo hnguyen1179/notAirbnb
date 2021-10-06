@@ -1,9 +1,8 @@
-import { useContext } from "react";
 import { AdvancedImage } from "@cloudinary/react";
-import { AppContext } from "../context/AppContext";
+import { useAppState } from "../context/AppContext";
 
 const ErrorPage = () => {
-	const { cloudinary } = useContext(AppContext);
+	const { cloudinary } = useAppState();
 
 	return (
 		<div>

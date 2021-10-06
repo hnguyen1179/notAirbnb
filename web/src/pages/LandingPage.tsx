@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect, useContext } from "react";
+import { useState, useRef, useEffect } from "react";
 
-import { AppContext } from "../context/AppContext";
+import { useAppState } from "../context/AppContext";
 import Destinations from "../components/Destinations/Destinations";
 import ListingTypes from "../components/ListingTypes/ListingTypes";
 import Inspirations from "../components/Inspirations/Inspirations";
@@ -12,7 +12,7 @@ import TryHosting from "../components/TryHosting/TryHosting";
 import Navbar from "../components/Navbar/Navbar";
 
 const LandingPage = () => {
-	const { mobile } = useContext(AppContext);
+	const { mobile } = useAppState();
 	const [isTop, setIsTop] = useState(true);
 
 	const searchRef = useRef<HTMLDivElement>(null);
