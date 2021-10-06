@@ -37,6 +37,7 @@ const LandingPage = () => {
 
 		return () => {
 			document.removeEventListener("scroll", handleMobileSearchBar);
+			// localStorage.removeItem('params');
 		};
 	}, []);
 

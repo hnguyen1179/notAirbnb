@@ -313,7 +313,7 @@ const Query = objectType({
 
         const distance = differenceInDays(checkIn, checkOut) * -1;
 
-        for (let i = 0; i < distance; i++) {
+        for (let i = 0; i <= distance; i++) {
           daysRequested.push(format(addDays(checkIn, i), 'M/d/yyyy'));
         }
 

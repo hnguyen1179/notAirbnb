@@ -1,3 +1,25 @@
 .ListingReservation {
-  
+	&__calendar {
+		display: flex;
+		flex-direction: column;
+
+		&__rdr-calendar {
+			flex-grow: 0;
+		}
+
+		&__clear-button {
+			> span {
+				text-decoration: underline;
+				font-size: 1.4rem;
+			}
+		}
+	}
+}
+
+.rdrDayDisabled {
+	background-color: none !important;
+
+	> span {
+		text-decoration: line-through !important;
+	}
 }

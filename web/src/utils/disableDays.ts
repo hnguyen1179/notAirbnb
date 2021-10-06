@@ -11,4 +11,13 @@ const disableListingDay = (date: Date, datesUnavailable: Maybe<string>[]) => {
 	);
 };
 
-export { disableDay, disableListingDay };
+const disableListingCheckoutDays = (
+	date: Date,
+	checkInMin: Date,
+	checkOutMax: Date,
+) => {
+
+	return date <= checkInMin || date > checkOutMax;
+};
+
+export { disableDay, disableListingDay, disableListingCheckoutDays };
