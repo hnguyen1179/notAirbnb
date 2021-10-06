@@ -46,10 +46,11 @@
 		margin-right: auto;
 		overflow-x: hidden;
 
-		--scrollbar-width: 0px;
+		scrollbar-width: none;
 
-		&::-webkit-scrollbar {
-		}
+		// &::-webkit-scrollbar {
+    //   display: none;
+		// }
 	}
 
 	&__header {

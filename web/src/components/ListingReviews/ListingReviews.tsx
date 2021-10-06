@@ -1,7 +1,5 @@
 import { ReactComponent as StarSvg } from "../../assets/icons/filled-star.svg";
-import {
-	ReviewsByListingIdQuery,
-} from "../../generated/graphql";
+import { ReviewsByListingIdQuery } from "../../generated/graphql";
 import ListingReviewsItem from "./ListingReviewsItem";
 
 interface Props {
@@ -11,8 +9,8 @@ interface Props {
 }
 
 const ListingReviews = (props: Props) => {
-  if (!props.reviews.reviewsByListingId.length) return <></>;
-  
+	if (!props.reviews.reviewsByListingId.length) return <></>;
+	console.log(props.reviews.reviewsByListingId);
 	return (
 		<div className="ListingReviews">
 			<div className="ListingReviews__title">
@@ -25,16 +23,16 @@ const ListingReviews = (props: Props) => {
 			</div>
 
 			<ul className="ListingReviews__reviews-preview">
-				{props.reviews.reviewsByListingId
-					.slice(0, 3)
-					.map((review, idx) => {
-						return (
-							<li key={idx} className="ListingReviews__reviews-preview__review">
-                <ListingReviewsItem review={review} />
-							</li>
-						);
-					})}
+				{props.reviews.reviewsByListingId.map((review, idx) => {
+					return <ListingReviewsItem key={idx} review={review} />;
+				})}
 			</ul>
+
+			{props.reviewsCount > 4 && (
+				<button className="ListingReviews__show-all show-all-button">
+					<span>Show all {props.reviewsCount} reviews</span>
+				</button>
+			)}
 		</div>
 	);
 };

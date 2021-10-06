@@ -1,3 +1,4 @@
+import { AdvancedImage } from "@cloudinary/react";
 import { useAppState } from "../../context/AppContext";
 import { Maybe } from "../../generated/graphql";
 
@@ -25,12 +26,35 @@ interface Props {
 }
 
 const ListingReviewsItem = (props: Props) => {
-  const { cloudinary } = useAppState();
+	const { cloudinary } = useAppState();
 
-  return <div className="ListingReviewsItem">
-    {props.review.author?.firstName}
-
-  </div>;
+	return (
+		<li className="ListingReviewsItem">
+			<header className="ListingReviewsItem__header">
+				<div className="ListingReviewsItem__header__avatar">
+					<AdvancedImage
+						cldImg={cloudinary.image(
+							`user_avatars/${props.review.author?.id}`
+						)}
+					/>
+				</div>
+				<div className="ListingReviewsItem__header__author">
+					<div className="first-name">
+						{props.review.author?.firstName}
+					</div>
+					<div className="review-date">
+						{new Date(props.review.date).toLocaleDateString("en", {
+							month: "long",
+							year: "numeric",
+						})}
+					</div>
+				</div>
+			</header>
+			<div className="ListingReviewsItem__content">
+				<p>{props.review.content}</p>
+			</div>
+		</li>
+	);
 };
 
 export default ListingReviewsItem;

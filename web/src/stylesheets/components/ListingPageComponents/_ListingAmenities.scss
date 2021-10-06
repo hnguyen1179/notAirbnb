@@ -23,22 +23,7 @@
 		}
 	}
 
-	&__see-more {
+	&__show-all {
 		margin: 1rem 0;
-		width: 100%;
-		border: 1px solid black;
-		border-radius: 0.8rem;
-
-		&:hover {
-			background-color: #f7f7f7;
-			> span {
-				text-decoration: underline;
-			}
-		}
-
-		> span {
-			display: inline-block;
-			padding: 1.25rem 0;
-		}
 	}
 }

@@ -161,7 +161,7 @@ const Query = objectType({
       resolve: async (_parent, args, context: Context) => {
         const data = await context.prisma.review.findMany({
           skip: args.offset || 0,
-          take: 3,
+          take: 4,
           where: {
             listingId: args.id,
           },

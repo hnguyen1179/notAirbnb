@@ -30,9 +30,11 @@ const ListingAmenities = (props: Props) => {
 				})}
 			</ul>
 
-			<button className="ListingAmenities__see-more">
-				<span>Show all {props.amenities.length} amenities</span>
-			</button>
+			{props.amenities.length > 5 && (
+				<button className="ListingAmenities__show-all show-all-button">
+					<span>Show all {props.amenities.length} amenities</span>
+				</button>
+			)}
 		</div>
 	);
 };
