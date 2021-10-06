@@ -68,6 +68,12 @@ const SearchPage = ({ history }: Props) => {
 	});
 
 	useEffect(() => {
+		if (!searchParams.toString().includes("guests")) {
+			localStorage.removeItem("params");
+		}
+	}, [searchParams]);
+
+	useEffect(() => {
 		// Skip any unnecessary data fetches
 		if (searchParams.toString() === previousURL.current) return;
 		previousURL.current = searchParams.toString();

@@ -21,6 +21,7 @@ import ListingAmenities from "../components/ListingAmenities/ListingAmenities";
 import ListingMap from "../components/ListingMap/ListingMap";
 import ListingReservation from "../components/ListingReservation/ListingReservation";
 import Footer from "../components/Footer/Footer";
+import ListingReviews from "../components/ListingReviews/ListingReviews";
 
 interface Props extends RouteComponentProps {
 	id: string;
@@ -161,6 +162,10 @@ const ListingPage: FC<Props> = (props) => {
 							city={listingById.city}
 							datesUnavailable={listingById.datesUnavailable}
 						/>
+					</section>
+
+					<section className="ListingPage__content__reviews">
+						<ListingReviews />
 					</section>
 
 					<section style={{ margin: "100px" }}></section>

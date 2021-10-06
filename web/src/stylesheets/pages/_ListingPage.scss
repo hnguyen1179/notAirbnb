@@ -3,12 +3,7 @@
 
 	&__nav,
 	&__basics__title,
-	&__content__details,
-	&__content__highlights,
-	&__content__listing-description,
-	&__content__amenities,
-	&__content__map,
-	&__content__reservation {
+	&__content > div > section {
 		padding: 0 var(--padding);
 	}
 

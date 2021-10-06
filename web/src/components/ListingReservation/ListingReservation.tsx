@@ -1,11 +1,12 @@
 import { formatDistance } from "date-fns";
-import { DateRange, OnDateRangeChangeProps } from "react-date-range";
-import { IDates } from "../../context/AppContext";
+import { useEffect, useMemo, useState } from "react";
+import { DateRange } from "react-date-range";
 import { useURLParams } from "../../context/URLParamsContext";
 import { Maybe } from "../../generated/graphql";
 import {
 	disableListingCheckoutDays,
 	disableListingDay,
+	disableListingFutureDays,
 } from "../../utils/disableDays";
 
 interface Props {
@@ -21,6 +22,14 @@ const ListingReservation = (props: Props) => {
 		searchHandlers: { handleDateChange },
 	} = useURLParams();
 
+	useEffect(() => {
+		if (!localStorage.getItem('params')) {
+			handleResetDates();
+		}
+	}, [])
+
+	const [focusedRange, setFocusedRange] = useState<[number, number]>([0, 0]);
+
 	const defaultDate =
 		state.dates.startDate.toLocaleDateString() === DEFAULT_DATE &&
 		state.dates.endDate.toLocaleDateString() === DEFAULT_DATE;
@@ -32,29 +41,51 @@ const ListingReservation = (props: Props) => {
 	const checkIn = state.dates.startDate;
 	const checkOut = state.dates.endDate;
 
-	const datesBooked = (props.datesUnavailable as string[])
-		.map((date) => new Date(date))
-		.sort((a, b) => new Date(a).valueOf() - new Date(b).valueOf());
+	const datesBooked = useMemo(
+		() =>
+			(props.datesUnavailable as string[])
+				.map((date) => new Date(date))
+				.sort((a, b) => new Date(a).valueOf() - new Date(b).valueOf()),
+		[props.datesUnavailable]
+	);
 
-	const start = state.dates.startDate;
-	let checkOutMaxIdx: number = 1;
-	let checkOutMax: Date = new Date();
+	const [checkOutMaxIdx, setCheckOutMaxIdx] = useState(1);
+	const [checkOutMax, setCheckOutMax] = useState(new Date());
 
-	for (let i = 0; i < datesBooked.length; i++) {
-		const current = datesBooked[i];
-		if (current > start) {
-			checkOutMax = current;
-			checkOutMaxIdx = i;
-			break;
+	useEffect(() => {
+		for (let i = 0; i < datesBooked.length; i++) {
+			const current = datesBooked[i];
+			if (current > checkIn) {
+				setCheckOutMax(current)
+				setCheckOutMaxIdx(i);
+				break;
+			}
 		}
-	}
+	}, [checkIn, datesBooked]);
+
+	const future =
+		checkIn > new Date(checkOutMax) &&
+		checkIn.toLocaleDateString() === checkOut.toLocaleDateString();
+
+	const handleRangeFocusChange = (range: [x: number, y: number]) => {
+		if (range[1] === 1) {
+			setFocusedRange([0, 1]);
+		}
+
+		if (range[1] === 0) {
+			setFocusedRange([0, 0]);
+		}
+	};
 
 	const handleDisableDayLogic = (date: Date) => {
 		if (defaultDate) {
 			return disableListingDay(date, props.datesUnavailable);
+		} else if (future) {
+			return disableListingFutureDays(date, checkIn);
 		} else if (selectCheckout) {
 			return disableListingCheckoutDays(
 				date,
+				checkIn,
 				datesBooked[checkOutMaxIdx - 1],
 				checkOutMax
 			);
@@ -69,13 +100,13 @@ const ListingReservation = (props: Props) => {
 				endDate: new Date(),
 			},
 		});
+
+		setFocusedRange([0, 0]);
 	};
 
 	const renderDates = () => {
 		if (defaultDate) return <h2>Select dates for your trip</h2>;
 		if (selectCheckout) return <h2>Select the other date</h2>;
-
-		console.log(state.dates.endDate);
 
 		const nights = parseInt(
 			formatDistance(checkIn, checkOut).split(" ")[0]
@@ -94,6 +125,8 @@ const ListingReservation = (props: Props) => {
 			<div className="ListingReservation__calendar">
 				<DateRange
 					className="ListingReservation__calendar__rdr-calendar"
+					focusedRange={focusedRange}
+					onRangeFocusChange={handleRangeFocusChange}
 					months={1}
 					direction={"horizontal"}
 					showMonthAndYearPickers={true}

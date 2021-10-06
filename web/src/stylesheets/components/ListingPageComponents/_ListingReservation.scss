@@ -4,22 +4,64 @@
 		flex-direction: column;
 
 		&__rdr-calendar {
-			flex-grow: 0;
+			
 		}
 
 		&__clear-button {
+      align-self: start;
+
 			> span {
 				text-decoration: underline;
 				font-size: 1.4rem;
 			}
 		}
 	}
+
+  .rdrCalendarWrapper {
+    max-width: 56rem;
+  }
+  .rdrMonth {
+    width: 100%;
+    // max-width: 56rem;
+  }
+  
+  .rdrDay {
+    height: 10vw;
+    max-height: 6rem;
+  }
+  
+  .rdrDayDisabled {
+    background-color: none !important;
+  
+    > span {
+      text-decoration: line-through !important;
+      text-decoration-color: #aeb9bf !important;
+    }
+  }
 }
 
-.rdrDayDisabled {
-	background-color: none !important;
 
-	> span {
-		text-decoration: line-through !important;
-	}
+
+@media screen and (min-width: 600px) {
+  .ListingReservation__calendar {
+    .rdrCalendarWrapper {
+      width: 56rem;
+    }
+    
+    align-items: center;
+  }
+}
+
+@media screen and (min-width: 744px) {
+  .ListingReservation__calendar {
+    .rdrCalendarWrapper {
+      width: 100%;
+
+      .rdrDay {
+        height: 7vw;
+      }
+    }
+
+    align-items: center;
+  }
 }
