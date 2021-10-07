@@ -8,12 +8,12 @@ interface Props {
 	reviews: ReviewsByListingIdQuery;
 }
 
-const ListingReviews = (props: Props) => {
+const ListingReviewsMobile = (props: Props) => {
 	if (!props.reviews.reviewsByListingId.length) return <></>;
 	console.log(props.reviews.reviewsByListingId);
 	return (
-		<div className="ListingReviews">
-			<div className="ListingReviews__title">
+		<div className="ListingReviewsMobile">
+			<div className="ListingReviewsMobile__title">
 				<StarSvg />
 				<h2>
 					{props.averageScore}
@@ -22,14 +22,14 @@ const ListingReviews = (props: Props) => {
 				</h2>
 			</div>
 
-			<ul className="ListingReviews__reviews-preview">
+			<ul className="ListingReviewsMobile__reviews-preview">
 				{props.reviews.reviewsByListingId.map((review, idx) => {
 					return <ListingReviewsItem key={idx} review={review} />;
 				})}
 			</ul>
 
 			{props.reviewsCount > 4 && (
-				<button className="ListingReviews__show-all show-all-button">
+				<button className="ListingReviewsMobile__show-all show-all-button">
 					<span>Show all {props.reviewsCount} reviews</span>
 				</button>
 			)}
@@ -37,4 +37,4 @@ const ListingReviews = (props: Props) => {
 	);
 };
 
-export default ListingReviews;
+export default ListingReviewsMobile;

@@ -3,7 +3,8 @@
 
 	&__nav,
 	&__basics__title,
-	&__content > div > section {
+	&__content .content-top-left > section,
+	.content-bottom > section {
 		padding: 0 var(--padding);
 	}
 
@@ -52,12 +53,13 @@
 	}
 
 	&__content {
-		> div:first-child {
+		.content-top-left {
 			// width: 100%;
 			flex: 2 1 65rem;
 		}
-		> div:last-child {
-			margin-left: 8.33333% !important;
+		.content-top-right {
+			padding-right: 4rem;
+			margin-left: 8.33333%;
 			flex: 1 1 37rem;
 			max-width: 37rem;
 		}
@@ -67,6 +69,8 @@
 			height: 300px;
 			background-color: grey;
 			display: block;
+			position: sticky;
+			top: 15rem;
 
 			&[aria-hidden="true"] {
 				display: none;
@@ -83,7 +87,7 @@
 			padding: 0;
 		}
 
-		&__content {
+		&__content .content-top {
 			display: flex;
 		}
 	}

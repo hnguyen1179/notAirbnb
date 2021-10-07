@@ -21,7 +21,10 @@ import ListingAmenities from "../components/ListingAmenities/ListingAmenities";
 import ListingMap from "../components/ListingMap/ListingMap";
 import ListingReservation from "../components/ListingReservation/ListingReservation";
 import Footer from "../components/Footer/Footer";
-import ListingReviews from "../components/ListingReviews/ListingReviews";
+import ListingReviewsMobile from "../components/ListingReviews/ListingReviewsMobile";
+import ListingReviewsDesktop from "../components/ListingReviews/ListingReviewsDesktop";
+import ListingHost from "../components/ListingHost/ListingHost";
+import ListingRules from "../components/ListingRules.tsx/ListingRules";
 
 interface Props extends RouteComponentProps {
 	id: string;
@@ -116,70 +119,117 @@ const ListingPage: FC<Props> = (props) => {
 			</div>
 
 			<main className="ListingPage__content">
-				<div>
-					<section className="ListingPage__content__details">
-						<ListingDetails
-							cloudinary={cloudinary}
-							listingType={listingById.listingType}
-							hostName={listingById.host?.firstName || ""}
-							hostId={listingById.host?.id || ""}
-							numGuests={listingById.numGuests}
-							numBedrooms={listingById.numBedrooms}
-							numBeds={listingById.numBeds}
-							numBaths={listingById.numBaths}
-						/>
-					</section>
+				<div className="content-top">
+					<div className="content-top-left">
+						<section className="ListingPage__content__details">
+							<ListingDetails
+								cloudinary={cloudinary}
+								listingType={listingById.listingType}
+								hostName={listingById.host?.firstName || ""}
+								hostId={listingById.host?.id || ""}
+								numGuests={listingById.numGuests}
+								numBedrooms={listingById.numBedrooms}
+								numBeds={listingById.numBeds}
+								numBaths={listingById.numBaths}
+							/>
+						</section>
 
-					<section className="ListingPage__content__highlights">
-						<ListingHighlights
-							highlights={listingById.highlights}
-						/>
-					</section>
+						<section className="ListingPage__content__highlights">
+							<ListingHighlights
+								highlights={listingById.highlights}
+							/>
+						</section>
 
-					<section className="ListingPage__content__listing-description">
-						<ListingListingDescription
-							listingDescription={listingById?.listingDescription}
-						/>
-					</section>
+						<section className="ListingPage__content__listing-description">
+							<ListingListingDescription
+								listingDescription={
+									listingById?.listingDescription
+								}
+							/>
+						</section>
 
-					<section className="ListingPage__content__amenities">
-						<ListingAmenities amenities={listingById.amenities} />
-					</section>
+						<section className="ListingPage__content__amenities">
+							<ListingAmenities
+								amenities={listingById.amenities}
+							/>
+						</section>
 
-					<section className="ListingPage__content__map">
-						<ListingMap
-							city={listingById.city}
-							state={listingById.state}
-							address={listingById.address}
-							locationDescription={
-								listingById.locationDescription
-							}
-						/>
-					</section>
+						{/* Render this conditionally based on mobile */}
+						{mobile && (
+							<section className="ListingPage__content__map">
+								<ListingMap
+									city={listingById.city}
+									state={listingById.state}
+									address={listingById.address}
+									locationDescription={
+										listingById.locationDescription
+									}
+								/>
+							</section>
+						)}
 
-					<section className="ListingPage__content__reservation">
-						<ListingReservation
-							city={listingById.city}
-							datesUnavailable={listingById.datesUnavailable}
-						/>
-					</section>
+						<section className="ListingPage__content__reservation">
+							<ListingReservation
+								city={listingById.city}
+								datesUnavailable={listingById.datesUnavailable}
+							/>
+						</section>
 
-					<section className="ListingPage__content__reviews">
-						<ListingReviews
-							averageScore={listingById.averageScore}
-							reviewsCount={listingById.reviewsCount}
-							reviews={reviewsData}
-						/>
-					</section>
+						{/* Render this conditionally based on mobile */}
+						{mobile && (
+							<>
+								<section className="ListingPage__content__reviews">
+									<ListingReviewsMobile
+										averageScore={listingById.averageScore}
+										reviewsCount={listingById.reviewsCount}
+										reviews={reviewsData}
+									/>
+								</section>
 
-					<section style={{ margin: "100px" }}></section>
+								<section className="ListingPage__content__host">
+									<ListingHost host={listingById.host} />
+								</section>
+
+								<section className="ListingPage__content__rules">
+									<ListingRules
+										houseRules={}
+									/>
+								</section>
+							</>
+						)}
+					</div>
+
+					<div className="content-top-right">
+						<div
+							className="ListingPage__content__reservation-box"
+							aria-hidden={mobile}
+						></div>
+					</div>
 				</div>
 
-				<div>
-					<div
-						className="ListingPage__content__reservation-box"
-						aria-hidden={mobile}
-					></div>
+				<div className="content-bottom">
+					{!mobile && (
+						<section className="ListingPage__content__reviews">
+							<ListingReviewsDesktop
+							// averageScore={listingById.averageScore}
+							// reviewsCount={listingById.reviewsCount}
+							// reviews={reviewsData}
+							/>
+						</section>
+					)}
+
+					{!mobile && (
+						<section className="ListingPage__content__map">
+							<ListingMap
+								city={listingById.city}
+								state={listingById.state}
+								address={listingById.address}
+								locationDescription={
+									listingById.locationDescription
+								}
+							/>
+						</section>
+					)}
 				</div>
 			</main>
 

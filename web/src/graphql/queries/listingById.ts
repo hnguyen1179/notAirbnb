@@ -27,9 +27,16 @@ const LISTING_BY_ID = gql`
 			locationDescription
 			stayDescription
 			datesUnavailable
+			languages
+			houseRules
+			healthAndSafety
 			host {
 				id
 				firstName
+				medals
+				details
+				description
+				dateJoined
 			}
 		}
 	}
