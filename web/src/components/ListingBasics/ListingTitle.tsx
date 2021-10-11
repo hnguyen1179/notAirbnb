@@ -1,4 +1,6 @@
 import { ReactComponent as StarSvg } from "../../assets/icons/filled-star.svg";
+import { ReactComponent as SuperhostSvg } from "../../assets/icons/super.svg";
+import { nonBreakingSentence } from "../../utils/nonBreakingSentence";
 
 interface Props {
 	title: string;
@@ -6,13 +8,14 @@ interface Props {
 	reviewsCount: number;
 	city: string;
 	state: string;
+	superhost: boolean;
 }
 
 const ListingTitle = (props: Props) => {
 	return (
 		<div className="ListingTitle">
 			<div className="ListingTitle__title">
-				<h1>{props.title}</h1>
+				<h1>{nonBreakingSentence(props.title)}</h1>
 			</div>
 			<div className="ListingTitle__sub">
 				<span className="ListingTitle__sub__score">
@@ -23,6 +26,15 @@ const ListingTitle = (props: Props) => {
 					</button>
 				</span>
 				<span className="spacer">·</span>
+				{props.superhost && (
+					<>
+						<span className="ListingTitle__sub__superhost">
+							<SuperhostSvg />
+							<span>Superhost</span>
+						</span>
+						<span className="spacer">·</span>
+					</>
+				)}
 				<span className="ListingTitle__sub__location">
 					<span>
 						{props.city}, {props.state}, United States

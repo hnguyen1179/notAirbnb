@@ -25,6 +25,7 @@ import ListingReviewsMobile from "../components/ListingReviews/ListingReviewsMob
 import ListingReviewsDesktop from "../components/ListingReviews/ListingReviewsDesktop";
 import ListingHost from "../components/ListingHost/ListingHost";
 import ListingRules from "../components/ListingRules.tsx/ListingRules";
+import ListingImagesGrid from "../components/ListingImagesGrid/ListingImagesGrid";
 
 interface Props extends RouteComponentProps {
 	id: string;
@@ -90,7 +91,10 @@ const ListingPage: FC<Props> = (props) => {
 				{mobile ? (
 					<ListingMobileNav handleBack={handleBack} />
 				) : (
-					<Navbar notLanding />
+					<>
+						<Navbar notLanding />
+						<div className="Navbar-filler" />
+					</>
 				)}
 			</div>
 
@@ -104,7 +108,7 @@ const ListingPage: FC<Props> = (props) => {
 							imageComments={listingById.imageComments}
 						/>
 					) : (
-						<div> insert desktop version here </div>
+						<ListingImagesGrid />
 					)}
 				</div>
 				<section className="ListingPage__basics__title">
@@ -114,6 +118,7 @@ const ListingPage: FC<Props> = (props) => {
 						reviewsCount={listingById.reviewsCount}
 						city={listingById.city}
 						state={listingById.state}
+						superhost={listingById.superhost}
 					/>
 				</section>
 			</div>
@@ -192,7 +197,10 @@ const ListingPage: FC<Props> = (props) => {
 
 								<section className="ListingPage__content__rules">
 									<ListingRules
-										houseRules={}
+										houseRules={listingById.houseRules}
+										healthAndSafety={
+											listingById.healthAndSafety
+										}
 									/>
 								</section>
 							</>
@@ -207,13 +215,31 @@ const ListingPage: FC<Props> = (props) => {
 					</div>
 				</div>
 
+				{/**
+				 * TODO:
+				 *
+				 * 1. Make ListingPage desktop version responsive
+				 * 		- Create ListingReviewsDesktop
+				 * 		- Make rules, host, and map responsive
+				 *
+				 * 2. Finish functionality of ListingPage
+				 * 		- Reserve functionality
+				 * 		- Create Reviews functionality
+				 *
+				 * 3. Deploy and add to Resume!
+				 * 		- Fix major bugs; logging in bug. etc
+				 *
+				 *
+				 */}
+
 				<div className="content-bottom">
 					{!mobile && (
 						<section className="ListingPage__content__reviews">
 							<ListingReviewsDesktop
-							// averageScore={listingById.averageScore}
-							// reviewsCount={listingById.reviewsCount}
-							// reviews={reviewsData}
+								averageScore={listingById.averageScore}
+								averageScores={listingById.averageScores}
+								reviewsCount={listingById.reviewsCount}
+								reviews={reviewsData}
 							/>
 						</section>
 					)}

@@ -325,7 +325,7 @@ export type ListingByIdQueryVariables = Exact<{
 }>;
 
 
-export type ListingByIdQuery = { __typename?: 'Query', listingById?: Maybe<{ __typename?: 'Listing', id: string, address: string, city: string, state: string, title: string, listingType: string, region: string, cleaningFee: number, price: number, superhost: boolean, averageScore: number, reviewsCount: number, imageComments: Array<Maybe<string>>, amenities: Array<Maybe<string>>, languages: Array<Maybe<string>>, numGuests: number, numBedrooms: number, numBeds: number, numBaths: number, highlights: Array<Maybe<string>>, listingDescription?: Maybe<string>, locationDescription?: Maybe<string>, stayDescription?: Maybe<string>, datesUnavailable: Array<Maybe<string>>, host?: Maybe<{ __typename?: 'Host', id: string, firstName: string, medals: Array<Maybe<string>>, details: Array<Maybe<string>>, description?: Maybe<string>, dateJoined: string }> }> };
+export type ListingByIdQuery = { __typename?: 'Query', listingById?: Maybe<{ __typename?: 'Listing', id: string, address: string, city: string, state: string, title: string, listingType: string, region: string, cleaningFee: number, price: number, superhost: boolean, averageScore: number, reviewsCount: number, imageComments: Array<Maybe<string>>, amenities: Array<Maybe<string>>, languages: Array<Maybe<string>>, numGuests: number, numBedrooms: number, numBeds: number, numBaths: number, highlights: Array<Maybe<string>>, listingDescription?: Maybe<string>, locationDescription?: Maybe<string>, stayDescription?: Maybe<string>, datesUnavailable: Array<Maybe<string>>, houseRules: Array<Maybe<string>>, healthAndSafety: Array<Maybe<string>>, averageScores: { __typename?: 'ReviewScores', cleanliness: number, accuracy: number, communication: number, location: number, checkin: number, value: number }, host?: Maybe<{ __typename?: 'Host', id: string, firstName: string, medals: Array<Maybe<string>>, details: Array<Maybe<string>>, description?: Maybe<string>, dateJoined: string }> }> };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -601,6 +601,14 @@ export const ListingByIdDocument = gql`
     price
     superhost
     averageScore
+    averageScores {
+      cleanliness
+      accuracy
+      communication
+      location
+      checkin
+      value
+    }
     reviewsCount
     imageComments
     amenities
@@ -615,6 +623,8 @@ export const ListingByIdDocument = gql`
     stayDescription
     datesUnavailable
     languages
+    houseRules
+    healthAndSafety
     host {
       id
       firstName

@@ -15,6 +15,12 @@
 		}
 	}
 
+	section:last-child {
+		> *:first-child {
+			border-bottom: 0;
+		}
+	}
+
 	h2 {
 		font-size: 2.2rem;
 		font-weight: 300;
@@ -59,6 +65,7 @@
 		}
 		.content-top-right {
 			padding-right: 4rem;
+			padding-top: 2rem;
 			margin-left: 8.33333%;
 			flex: 1 1 37rem;
 			max-width: 37rem;
@@ -83,12 +90,60 @@
 	.ListingPage {
 		--padding: 4rem;
 
+		.content-top-left {
+			section {
+				padding-right: 0;
+			}
+		}
+
+		&__basics {
+			&__title {
+				order: 1;
+			}
+
+			&__pictures {
+				order: 2;
+				padding: 0 var(--padding);
+			}
+		}
+
 		&__nav {
 			padding: 0;
 		}
 
 		&__content .content-top {
 			display: flex;
+		}
+	}
+}
+
+@media screen and (min-width: 1128px) {
+	.ListingPage {
+		--padding: 8rem;
+
+		.content-top-right {
+			padding-right: var(--padding);
+		}
+	}
+}
+
+// This is the point where you make the max width of your items 1280px;
+@media screen and (min-width: 1280px) {
+	.ListingPage {
+		.Navbar__container,
+		.ListingPage__basics__pictures,
+		.ListingPage__basics__title,
+		.ListingPage__content,
+		.Footer {
+			width: 1280px;
+			margin-left: auto;
+			margin-right: auto;
+
+		}
+		.ListingImagesGrid {
+			padding: 0;
+			height: 56rem;
+			width: 112rem;
 		}
 	}
 }

@@ -45,7 +45,6 @@ interface Props {
 }
 
 const Profile = ({ typeProps, routeProps, hostProps }: Props) => {
-	console.log(" in profile ");
 	const { cloudinary, mobile, user: currentUser } = useAppState();
 	const logout = useLogout();
 

@@ -14,6 +14,14 @@ const LISTING_BY_ID = gql`
 			price
 			superhost
 			averageScore
+			averageScores {
+				cleanliness
+				accuracy
+				communication
+				location
+				checkin
+				value
+			}
 			reviewsCount
 			imageComments
 			amenities

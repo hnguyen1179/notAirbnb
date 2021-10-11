@@ -8,36 +8,46 @@
 	}
 
 	&__sub {
-    span {
-      font-size: 1.4rem;
-      color: $muted-text-color;
-      letter-spacing: 0.04rem;
-    }
+		span {
+			font-size: 1.4rem;
+			color: $muted-text-color;
+			letter-spacing: 0.04rem;
+		}
 
 		margin: 1rem 0;
 
-
 		&__score {
-      .score {
-        color: black;
-        margin-right: 0.5rem;
-      }
+			.score {
+				color: black;
+				margin-right: 0.5rem;
+			}
 			> svg {
 				display: inline-block !important;
 				height: 1.4rem;
 				color: $main-color;
 				margin-right: 0.5rem;
-        position: relative;
-        top: 0.2rem;
+				position: relative;
+				top: 0.2rem;
 			}
 		}
 
-    .spacer {
-      margin: 0 0.75rem;
-    }
+		.spacer {
+			margin: 0 0.75rem;
+		}
+
+		&__superhost {
+			svg {
+				fill: $main-color;
+				height: 1.2rem;
+				width: 1.2rem;
+				margin-right: 0.5rem;
+				position: relative;
+				top: 0.1rem;
+			}
+		}
 
 		&__location,
-    .reviews-count {
+		.reviews-count {
 			text-decoration: underline;
 		}
 	}

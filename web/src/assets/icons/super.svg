@@ -6,8 +6,8 @@
    width="80.974998"
    height="118.685"
    xmlns="http://www.w3.org/2000/svg"
-   xmlnsSvg="http://www.w3.org/2000/svg"
-   xmlnsBx="https://boxy-svg.com">
+   xmlnssvg="http://www.w3.org/2000/svg"
+   xmlnsbx="https://boxy-svg.com">
   <defs
      id="defs929" />
   <path
@@ -23,7 +23,7 @@
     <path
        d="m 237.657,-176.333 38.846,24.884 h -77.692 z"
        transform="scale(1,-1)"
-       bxShape="triangle 198.811 -176.333 77.692 24.884 0.5 0 1@1e9ae3e7"
+       bxshape="triangle 198.811 -176.333 77.692 24.884 0.5 0 1@1e9ae3e7"
        id="path917" />
   </g>
   <path

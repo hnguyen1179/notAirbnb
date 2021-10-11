@@ -3,6 +3,7 @@ import { Maybe } from "graphql/jsutils/Maybe";
 import { useAppState } from "../../context/AppContext";
 import { ReactComponent as ProtectSvg } from "../../assets/icons/protect.svg";
 import Medal from "./Medal";
+import { definitelyNotAirbnb } from "../../utils/definitelyNotAirbnb";
 
 interface HostPartial {
 	id: string;
@@ -45,7 +46,7 @@ const ListingHost = (props: Props) => {
 			</ul>
 
 			<div className="ListingHost__description">
-				<p>{props.host?.description}</p>
+				<p>{definitelyNotAirbnb(props.host?.description || "")}</p>
 			</div>
 
 			<ul className="ListingHost__details">
