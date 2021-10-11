@@ -7,11 +7,35 @@
 		}
 
 		&__clear-button {
+			margin-top: 1rem;
 			align-self: start;
 
 			> span {
+				display: block;
+				height: 2rem;
+				position: relative;
 				text-decoration: underline;
 				font-size: 1.4rem;
+				background-color: transparent;
+
+				&::after {
+					content: "";
+					background-color: inherit;
+					display: block;
+					box-sizing: content-box;
+					height: 100%;
+					width: 100%;
+					padding: 0.75rem;
+					position: absolute;
+					left: -0.75rem;
+					top: -0.75rem;
+					z-index: -1;
+					border-radius: 0.8rem;
+				}
+			}
+
+			&:hover span {
+				background-color: rgba(206, 206, 206, 0.283);
 			}
 		}
 	}
@@ -61,6 +85,8 @@
 
 @media screen and (min-width: 744px) {
 	.ListingReservation__calendar {
+		align-items: center;
+
 		.rdrCalendarWrapper {
 			width: 100%;
 
@@ -68,7 +94,5 @@
 				height: 7vw;
 			}
 		}
-
-		align-items: center;
 	}
 }

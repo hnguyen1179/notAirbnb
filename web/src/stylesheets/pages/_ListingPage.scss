@@ -90,11 +90,23 @@
 	.ListingPage {
 		--padding: 4rem;
 
-		.content-top-left {
-			section {
-				padding-right: 0;
+		&__content {
+
+			.content-top-left {
+				section {
+					padding-right: 0;
+				}
+			}
+
+			.content-bottom {
+				margin-top: 5rem;
+			}
+
+			.content-bottom > section:first-child > div {
+				border-top: 1px solid $muted-line-color;
 			}
 		}
+
 
 		&__basics {
 			&__title {
