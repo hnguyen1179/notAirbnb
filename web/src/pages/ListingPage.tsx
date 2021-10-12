@@ -232,8 +232,8 @@ const ListingPage: FC<Props> = (props) => {
 				 *
 				 */}
 
-				<div className="content-bottom">
-					{!mobile && (
+				{!mobile && (
+					<div className="content-bottom">
 						<section className="ListingPage__content__reviews">
 							<ListingReviewsDesktop
 								averageScore={listingById.averageScore}
@@ -242,9 +242,6 @@ const ListingPage: FC<Props> = (props) => {
 								reviews={reviewsData}
 							/>
 						</section>
-					)}
-
-					{!mobile && (
 						<section className="ListingPage__content__map">
 							<ListingMap
 								city={listingById.city}
@@ -255,8 +252,19 @@ const ListingPage: FC<Props> = (props) => {
 								}
 							/>
 						</section>
-					)}
-				</div>
+
+						<section className="ListingPage__content__host">
+							<ListingHost host={listingById.host} />
+						</section>
+
+						<section className="ListingPage__content__rules">
+							<ListingRules
+								houseRules={listingById.houseRules}
+								healthAndSafety={listingById.healthAndSafety}
+							/>
+						</section>
+					</div>
+				)}
 			</main>
 
 			<div className="ListingPage__footer">

@@ -1,6 +1,7 @@
 import { AdvancedImage } from "@cloudinary/react";
 import { useAppState } from "../../context/AppContext";
 import { Maybe } from "../../generated/graphql";
+import { definitelyNotAirbnb } from "../../utils/definitelyNotAirbnb";
 
 interface ReviewPartial {
 	__typename?: "Review";
@@ -51,8 +52,12 @@ const ListingReviewsItem = (props: Props) => {
 				</div>
 			</header>
 			<div className="ListingReviewsItem__content">
-				<p>{props.review.content}</p>
+				<p>{definitelyNotAirbnb(props.review.content)}</p>
 			</div>
+
+			<button className="ListingReviewsItem__show-more show-more-button">
+				Show more
+			</button>
 		</li>
 	);
 };

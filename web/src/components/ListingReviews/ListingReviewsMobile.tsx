@@ -10,7 +10,7 @@ interface Props {
 
 const ListingReviewsMobile = (props: Props) => {
 	if (!props.reviews.reviewsByListingId.length) return <></>;
-	console.log(props.reviews.reviewsByListingId);
+	
 	return (
 		<div className="ListingReviewsMobile">
 			<div className="ListingReviewsMobile__title">

@@ -1,4 +1,5 @@
-.ListingReviewsMobile {
+.ListingReviewsMobile,
+.ListingReviewsDesktop {
 	&__title {
 		display: flex;
 		align-items: center;
@@ -14,7 +15,9 @@
 			margin: 0 0.5rem;
 		}
 	}
+}
 
+.ListingReviewsMobile {
 	&__reviews-preview {
 		display: flex;
 		overflow: auto clip;
@@ -29,6 +32,64 @@
 
 	&__show-all {
 		margin-top: 2.5rem;
+	}
+}
+
+.ListingReviewsDesktop {
+	&__show-all {
+		margin-bottom: 2rem;
+	}
+
+	.AverageScores {
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+
+		&__column {
+			width: 50%;
+			margin-top: 2rem;
+
+			&__category {
+				margin: 1.5rem 0;
+			}
+		}
+		.Score {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			&__category {
+				width: 30%;
+				font-weight: 400;
+			}
+
+			&__info {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: 70%;
+
+				&__bar {
+					background-color: rgb(221, 221, 221);
+					width: 40%;
+					height: 0.4rem;
+					max-width: 12rem;
+					border-radius: 0.2rem;
+					overflow: hidden;
+
+					.fill {
+						border-radius: 0.2rem;
+						height: 100%;
+						background-color: rgb(34, 34, 34);
+					}
+				}
+
+				&__value {
+					font-size: 1.2rem;
+					margin-left: 1rem;
+				}
+			}
+		}
 	}
 }
 
@@ -77,13 +138,63 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		display: -webkit-box;
-		-webkit-line-clamp: 6;
+		-webkit-line-clamp: 5;
 		-webkit-box-orient: vertical;
 		> p {
 			text-overflow: ellipsis;
 
 			height: 95%;
 			font-weight: 400;
+		}
+	}
+}
+
+@media screen and (min-width: 744px) {
+	.ListingReviewsDesktop {
+		&__show-all {
+			width: 30rem !important;
+		}
+	}
+	.ListingReviewsItem {
+		margin: 4rem 0;
+		border: 0;
+		padding: 0;
+		height: unset;
+
+		&:first-child {
+			margin-top: 2rem;
+		}
+
+		&:last-child {
+			margin-bottom: 2rem;
+		}
+
+		&__content {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-line-clamp: 3;
+			-webkit-box-orient: vertical;
+			white-space: pre-wrap;
+
+			> p {
+				text-overflow: ellipsis;
+				height: 95%;
+				font-weight: 400;
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 1128px) {
+	.ListingReviewsDesktop {
+		&__reviews {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+
+			.ListingReviewsItem {
+				margin: 2rem 0;
+			}
 		}
 	}
 }
