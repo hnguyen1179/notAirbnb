@@ -1,17 +1,20 @@
 .ListingImagesGrid {
 	position: relative;
-	padding-top: 50%;
+	// padding-top: 50%;
 	background-color: white;
 	border-radius: 1.8rem;
-	max-height: 58rem;
+	min-height: 30rem;
+	height: 52vh;
+	max-height: 56rem;
 	overflow: hidden;
 
-	&__main-img {
-		position: absolute;
+	&__main-image-container {
 		top: 0;
 		left: 0;
 		height: 100%;
 		width: calc(50% - 0.8rem);
+
+		@include image-darken;
 
 		> img {
 			height: 100%;
@@ -20,16 +23,7 @@
 		}
 	}
 
-	// &__c1 {
-	//   position: absolute;
-	//   top: 0;
-	//   left: 50%;
-	//   width: calc(25% - 0.4rem);
-	//   height: 100%;
-	//   background-color: red;
-	// }
-
-	&__c1 {
+	&__grid {
 		position: absolute;
 		top: 0;
 		left: 50%;
@@ -38,18 +32,22 @@
 		background-color: white;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
+		grid-template-rows: calc(50% - 0.4rem) calc(50% - 0.4rem);
 		gap: 0.8rem;
 
 		&__image-container {
 			position: relative;
 			width: 100%;
 			height: 100%;
+
+			@include image-darken;
 		}
 
 		&__image {
 			height: 100%;
 			width: 100%;
 			object-fit: cover;
+
 		}
 	}
 
@@ -84,7 +82,7 @@
 @media screen and (min-width: 1280px) {
 	.ListingImagesGrid {
 		padding: 0;
-		height: 56rem;
+		// height: 56rem;
 		width: 112rem;
 	}
 }

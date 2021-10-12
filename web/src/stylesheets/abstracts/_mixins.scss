@@ -32,6 +32,25 @@
 	}
 }
 
+@mixin image-darken {
+	position: relative;
+
+	&::after {
+		content: "";
+		position: absolute;
+		inset: 0px;
+		background-color: black;
+		opacity: 0;
+		z-index: 2;
+		transition: opacity 200ms;
+	}
+
+	&:hover::after {
+		opacity: 0.3;
+		transition: opacity 200ms;
+	}
+}
+
 @mixin hover {
 	cursor: pointer;
 	border: 1px solid $outline-color;

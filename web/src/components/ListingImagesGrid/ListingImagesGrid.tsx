@@ -20,7 +20,7 @@ const ListingImagesGrid = (props: Props) => {
 	const renderAdvancedImage = (idx: number) => {
 		return (
 			<AdvancedImage
-				className={"ListingImagesGrid__c1__image"}
+				className={"ListingImagesGrid__grid__image"}
 				cldImg={cloudinary.image(urlBase + idx)}
 				plugins={[placeholder("predominant-color"), lazyload()]}
 				alt={imageComments[idx]}
@@ -31,17 +31,17 @@ const ListingImagesGrid = (props: Props) => {
 
 	return (
 		<div className="ListingImagesGrid">
-			<div className="ListingImagesGrid__main-img">
+			<button className="ListingImagesGrid__main-image-container">
 				{renderAdvancedImage(0)}
-			</div>
-			<div className="ListingImagesGrid__c1">
+			</button>
+			<div className="ListingImagesGrid__grid">
 				{imageComments.slice(1, 5).map((comment, idx) => {
 					const imageIdx = idx + 1;
 
 					return (
-						<div className="ListingImagesGrid__c1__image-container">
+						<button className="ListingImagesGrid__grid__image-container">
 							{renderAdvancedImage(imageIdx)}
-						</div>
+						</button>
 					);
 				})}
 			</div>
