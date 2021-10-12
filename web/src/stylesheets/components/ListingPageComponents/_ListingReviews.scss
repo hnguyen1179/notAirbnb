@@ -109,8 +109,11 @@
 	}
 
 	&__header {
-		display: flex;
-		align-items: center;
+		a {
+			display: flex;
+			align-items: center;
+			width: fit-content;
+		}
 
 		&__avatar {
 			height: 4rem;

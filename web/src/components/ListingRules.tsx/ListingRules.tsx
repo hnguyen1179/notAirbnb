@@ -26,42 +26,59 @@ const renderHealthImageLink = (rule: string) => {
 const ListingRules = (props: Props) => {
 	return (
 		<div className="ListingRules">
-			<div className="ListingRules__rules-column ListingRules__rules-column--house">
-				<h2>House Rules</h2>
-				<ul className="ListingRules__rules-column__rules">
-					{props.houseRules.map((rule, idx) => {
-						let link = rule?.replaceAll(" ", "_");
-						if (rule?.includes("Check")) {
-							link = "check-in_checkout";
-						}
+			<h2>Things to know</h2>
+			<div className="ListingRules-container">
+				<div className="ListingRules__rules-column ListingRules__rules-column--house">
+					<h3>House Rules</h3>
+					<ul className="ListingRules__rules-column__rules">
+						{props.houseRules.map((rule, idx) => {
+							let link = rule?.replaceAll(" ", "_");
+							if (rule?.includes("Check")) {
+								link = "check-in_checkout";
+							}
 
+							return (
+								<li
+									key={idx}
+									className="ListingRules__rules-column__rules__rule"
+								>
+									<img
+										src={`/assets/houserules/${link}.svg`}
+										alt={rule || ""}
+									/>
+									<span>{rule}</span>
+								</li>
+							);
+						})}
+					</ul>
+				</div>
+				<div className="ListingRules__rules-column ListingRules__rules-column--health">
+					<h3>Health & Safety</h3>
+					<ul className="ListingRules__rules-column__rules"></ul>
+					{props.healthAndSafety.map((rule, idx) => {
+						const link = renderHealthImageLink(rule as string);
 						return (
-							<li key={idx} className="ListingRules__rules-column__rules__rule">
+							<li
+								key={idx}
+								className="ListingRules__rules-column__rules__rule"
+							>
 								<img
-									src={`/assets/houserules/${link}.svg`}
+									src={`/assets/health/${link}.svg`}
 									alt={rule || ""}
 								/>
-								<span>{rule}</span>
+								<span>
+									{definitelyNotAirbnb(rule as string)}
+								</span>
 							</li>
 						);
 					})}
-				</ul>
-			</div>
-			<div className="ListingRules__rules-column ListingRules__rules-column--health">
-				<h2>Health & Safety</h2>
-				<ul className="ListingRules__rules-column__rules"></ul>
-				{props.healthAndSafety.map((rule, idx) => {
-					const link = renderHealthImageLink(rule as string);
-					return (
-						<li key={idx} className="ListingRules__rules-column__rules__rule">
-							<img
-								src={`/assets/health/${link}.svg`}
-								alt={rule || ""}
-							/>
-							<span>{definitelyNotAirbnb(rule as string)}</span>
-						</li>
-					);
-				})}
+				</div>
+				<div className="ListingRules__rules-column ListingRules__rules-column--health">
+					<h3>Cancellation Policy</h3>
+					<div className="ListingRules__rules-column__rules">
+						<p>None!</p>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

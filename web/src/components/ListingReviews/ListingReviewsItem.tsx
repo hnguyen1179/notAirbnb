@@ -1,4 +1,5 @@
 import { AdvancedImage } from "@cloudinary/react";
+import { Link } from "react-router-dom";
 import { useAppState } from "../../context/AppContext";
 import { Maybe } from "../../generated/graphql";
 import { definitelyNotAirbnb } from "../../utils/definitelyNotAirbnb";
@@ -32,24 +33,29 @@ const ListingReviewsItem = (props: Props) => {
 	return (
 		<li className="ListingReviewsItem">
 			<header className="ListingReviewsItem__header">
-				<div className="ListingReviewsItem__header__avatar">
-					<AdvancedImage
-						cldImg={cloudinary.image(
-							`user_avatars/${props.review.author?.id}`
-						)}
-					/>
-				</div>
-				<div className="ListingReviewsItem__header__author">
-					<div className="first-name">
-						{props.review.author?.firstName}
+				<Link to={`/user/${props.review.author?.id}`}>
+					<div className="ListingReviewsItem__header__avatar">
+						<AdvancedImage
+							cldImg={cloudinary.image(
+								`user_avatars/${props.review.author?.id}`
+							)}
+						/>
 					</div>
-					<div className="review-date">
-						{new Date(props.review.date).toLocaleDateString("en", {
-							month: "long",
-							year: "numeric",
-						})}
+					<div className="ListingReviewsItem__header__author">
+						<div className="first-name">
+							{props.review.author?.firstName}
+						</div>
+						<div className="review-date">
+							{new Date(props.review.date).toLocaleDateString(
+								"en",
+								{
+									month: "long",
+									year: "numeric",
+								}
+							)}
+						</div>
 					</div>
-				</div>
+				</Link>
 			</header>
 			<div className="ListingReviewsItem__content">
 				<p>{definitelyNotAirbnb(props.review.content)}</p>
