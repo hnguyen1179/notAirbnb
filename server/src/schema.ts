@@ -138,7 +138,7 @@ const Query = objectType({
         offset: intArg(),
       },
       resolve: async (_parent, args, context: Context) => {
-        console.log(' im in here ! ')
+        console.log(' im in here ! ');
         const data = await context.prisma.review.findMany({
           skip: args.offset || 0,
           take: 3,
@@ -791,7 +791,7 @@ const Listing = objectType({
 
         for (let i = 0; i < averagedReviews.length; i++) {
           averagedReviews[i] = +(averagedReviews[i] / reviews.length).toFixed(
-            2,
+            1,
           );
         }
 

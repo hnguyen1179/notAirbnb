@@ -108,7 +108,12 @@ const ListingPage: FC<Props> = (props) => {
 							imageComments={listingById.imageComments}
 						/>
 					) : (
-						<ListingImagesGrid />
+						<ListingImagesGrid
+							cloudinary={cloudinary}
+							id={id}
+							region={listingById.region}
+							imageComments={listingById.imageComments}
+						/>
 					)}
 				</div>
 				<section className="ListingPage__basics__title">
