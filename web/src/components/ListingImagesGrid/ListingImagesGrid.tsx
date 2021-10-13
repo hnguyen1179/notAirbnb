@@ -2,6 +2,7 @@ import { Cloudinary } from "@cloudinary/base";
 import { AdvancedImage, placeholder, lazyload } from "@cloudinary/react";
 import { Maybe } from "../../generated/graphql";
 import { ReactComponent as MoreSvg } from "../../assets/icons/more-photos.svg";
+import { useMemo } from "react";
 
 interface Props {
 	cloudinary: Cloudinary;
@@ -29,28 +30,34 @@ const ListingImagesGrid = (props: Props) => {
 		);
 	};
 
-	return (
-		<div className="ListingImagesGrid">
-			<button className="ListingImagesGrid__main-image-container">
-				{renderAdvancedImage(0)}
-			</button>
-			<div className="ListingImagesGrid__grid">
-				{imageComments.slice(1, 5).map((comment, idx) => {
-					const imageIdx = idx + 1;
+	return useMemo(
+		() => (
+			<div className="ListingImagesGrid">
+				<button className="ListingImagesGrid__main-image-container">
+					{renderAdvancedImage(0)}
+				</button>
+				<div className="ListingImagesGrid__grid">
+					{imageComments.slice(1, 5).map((_comment, idx) => {
+						const imageIdx = idx + 1;
 
-					return (
-						<button className="ListingImagesGrid__grid__image-container">
-							{renderAdvancedImage(imageIdx)}
-						</button>
-					);
-				})}
+						return (
+							<button
+								key={idx}
+								className="ListingImagesGrid__grid__image-container"
+							>
+								{renderAdvancedImage(imageIdx)}
+							</button>
+						);
+					})}
+				</div>
+				{/* <div className="ListingImagesGrid__c2"></div> */}
+				<button className="ListingImagesGrid__more-button">
+					<MoreSvg />
+					<span>Show all photos</span>
+				</button>
 			</div>
-			{/* <div className="ListingImagesGrid__c2"></div> */}
-			<button className="ListingImagesGrid__more-button">
-				<MoreSvg />
-				<span>Show all photos</span>
-			</button>
-		</div>
+		),
+		[imageComments]
 	);
 };
 

@@ -51,6 +51,15 @@ interface Arguments {
 	cleaningFee: number;
 	region: string;
 }
+export interface IPriceBreakdown {
+	totalPrice: string;
+	totalNights: number;
+	price: number;
+	cleaningFee: number;
+	occupancyTax: number;
+	serviceFee: number;
+	pricePerNight: number;
+}
 
 const calculateTotalArgs = ({
 	checkIn,
@@ -58,7 +67,7 @@ const calculateTotalArgs = ({
 	pricePerNight,
 	cleaningFee,
 	region,
-}: Arguments) => {
+}: Arguments): IPriceBreakdown => {
 	const numNights = parseInt(formatDistance(checkIn, checkOut).split(" ")[0]);
 
 	const price = pricePerNight * numNights;
@@ -81,6 +90,7 @@ const calculateTotalArgs = ({
 		cleaningFee,
 		occupancyTax: +occupancyTax.toFixed(2),
 		serviceFee: +serviceFee.toFixed(2),
+		pricePerNight,
 	};
 };
 

@@ -15,13 +15,13 @@ export const ModalContext = createContext<IModalProviderProps | undefined>(
 );
 
 const ModalProvider: React.FC = ({ children }) => {
-	console.log("RERENDER MODAL")
 	const [demoClicked, setDemoClicked] = useState(false);
 	const [open, setOpen] = useState(false);
 	const [entry, setEntry] = useState("");
 
 	useEffect(() => {
 		if (open === false) {
+			document.body.style.overflow = "unset";
 			setDemoClicked(false);
 		}
 	}, [open]);
@@ -40,12 +40,12 @@ const ModalProvider: React.FC = ({ children }) => {
 
 			element.style.setProperty(
 				"--mouse-x",
-				((widthDiff / width) * 75).toString()
+				((widthDiff / width) * 100).toString()
 			);
 
 			element.style.setProperty(
 				"--mouse-y",
-				((heightDiff / height) * 75).toString()
+				((heightDiff / height) * 100).toString()
 			);
 		}
 	};

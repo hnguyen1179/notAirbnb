@@ -20,43 +20,31 @@ interface Props {
 }
 
 const ListingReviewsDesktop = (props: Props) => {
-	const renderNoReviews = () => {
-		return <div>No Reviews</div>;
-	};
-
 	return (
 		<div className="ListingReviewsDesktop">
-			{!props.reviews.reviewsByListingId.length ? (
-				renderNoReviews()
-			) : (
-				<>
-					<div className="ListingReviewsDesktop__title">
-						<StarSvg />
-						<h2>
-							{props.averageScore}
-							<span className="spacer">·</span>
-							{props.reviewsCount} reviews
-						</h2>
-					</div>
+			<div className="ListingReviewsDesktop__title">
+				<StarSvg />
+				<h2>
+					{props.averageScore}
+					<span className="spacer">·</span>
+					{props.reviewsCount} reviews
+				</h2>
+			</div>
 
-					<div className="ListingReviewsDesktop__average-scores">
-						<AverageScores averageScores={props.averageScores} />
-					</div>
+			<div className="ListingReviewsDesktop__average-scores">
+				<AverageScores averageScores={props.averageScores} />
+			</div>
 
-					<div className="ListingReviewsDesktop__reviews">
-						{props.reviews.reviewsByListingId.map((review, idx) => {
-							return (
-								<ListingReviewsItem key={idx} review={review} />
-							);
-						})}
-					</div>
+			<div className="ListingReviewsDesktop__reviews">
+				{props.reviews.reviewsByListingId.map((review, idx) => {
+					return <ListingReviewsItem key={idx} review={review} />;
+				})}
+			</div>
 
-					{props.reviewsCount > 4 && (
-						<button className="ListingReviewsDesktop__show-all show-all-button">
-							<span>Show all {props.reviewsCount} reviews</span>
-						</button>
-					)}
-				</>
+			{props.reviewsCount > 4 && (
+				<button className="ListingReviewsDesktop__show-all show-all-button">
+					<span>Show all {props.reviewsCount} reviews</span>
+				</button>
 			)}
 		</div>
 	);

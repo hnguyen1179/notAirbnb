@@ -73,7 +73,7 @@ const ItemDetailsDesktop = ({ listing, checkIn, checkOut }: Props) => {
 				<div className="score">
 					<StarSvg />
 					<span>{renderReviewScore()}</span>
-					<span>({listing.reviewsCount})</span>
+					<span>{" "}({listing.reviewsCount})</span>
 				</div>
 				<div className="price">
 					<span>${numberWithCommas(listing.price)}</span>

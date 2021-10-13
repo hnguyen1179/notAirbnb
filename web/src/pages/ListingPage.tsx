@@ -1,5 +1,5 @@
 import { FC, MouseEvent } from "react";
-import { Redirect, RouteComponentProps, RouteProps } from "react-router";
+import { Redirect, RouteComponentProps } from "react-router";
 import { AdvancedImage, placeholder } from "@cloudinary/react";
 
 import {
@@ -26,6 +26,7 @@ import ListingReviewsDesktop from "../components/ListingReviews/ListingReviewsDe
 import ListingHost from "../components/ListingHost/ListingHost";
 import ListingRules from "../components/ListingRules.tsx/ListingRules";
 import ListingImagesGrid from "../components/ListingImagesGrid/ListingImagesGrid";
+import ListingReservationBox from "../components/ListingReservationBox/ListingReservationBox";
 
 interface Props extends RouteComponentProps {
 	id: string;
@@ -188,13 +189,20 @@ const ListingPage: FC<Props> = (props) => {
 						{/* Render this conditionally based on mobile */}
 						{mobile && (
 							<>
-								<section className="ListingPage__content__reviews">
-									<ListingReviewsMobile
-										averageScore={listingById.averageScore}
-										reviewsCount={listingById.reviewsCount}
-										reviews={reviewsData}
-									/>
-								</section>
+								{!reviewsData.reviewsByListingId
+									.length ? null : (
+									<section className="ListingPage__content__reviews">
+										<ListingReviewsMobile
+											averageScore={
+												listingById.averageScore
+											}
+											reviewsCount={
+												listingById.reviewsCount
+											}
+											reviews={reviewsData}
+										/>
+									</section>
+								)}
 
 								<section className="ListingPage__content__host">
 									<ListingHost host={listingById.host} />
@@ -216,7 +224,17 @@ const ListingPage: FC<Props> = (props) => {
 						<div
 							className="ListingPage__content__reservation-box"
 							aria-hidden={mobile}
-						></div>
+						>
+							<ListingReservationBox
+								price={listingById.price}
+								cleaningFee={listingById.cleaningFee}
+								region={listingById.region}
+								maxGuests={listingById.numGuests}
+								averageScore={listingById.averageScore}
+								reviewsCount={listingById.reviewsCount}
+								datesUnavailable={listingById.datesUnavailable}
+							/>
+						</div>
 					</div>
 				</div>
 
@@ -239,14 +257,16 @@ const ListingPage: FC<Props> = (props) => {
 
 				{!mobile && (
 					<div className="content-bottom">
-						<section className="ListingPage__content__reviews">
-							<ListingReviewsDesktop
-								averageScore={listingById.averageScore}
-								averageScores={listingById.averageScores}
-								reviewsCount={listingById.reviewsCount}
-								reviews={reviewsData}
-							/>
-						</section>
+						{!reviewsData.reviewsByListingId.length ? null : (
+							<section className="ListingPage__content__reviews">
+								<ListingReviewsDesktop
+									averageScore={listingById.averageScore}
+									averageScores={listingById.averageScores}
+									reviewsCount={listingById.reviewsCount}
+									reviews={reviewsData}
+								/>
+							</section>
+						)}
 						<section className="ListingPage__content__map">
 							<ListingMap
 								city={listingById.city}

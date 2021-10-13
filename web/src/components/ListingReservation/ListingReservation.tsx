@@ -23,13 +23,15 @@ const ListingReservation = (props: Props) => {
 	} = useURLParams();
 
 	useEffect(() => {
-		if (!localStorage.getItem('params')) {
+		if (!localStorage.getItem("params")) {
 			handleResetDates();
 		}
-	}, [])
+	}, []);
 
 	const [focusedRange, setFocusedRange] = useState<[number, number]>([0, 0]);
-
+	const [checkOutMaxIdx, setCheckOutMaxIdx] = useState(1);
+	const [checkOutMax, setCheckOutMax] = useState(new Date());
+	
 	const defaultDate =
 		state.dates.startDate.toLocaleDateString() === DEFAULT_DATE &&
 		state.dates.endDate.toLocaleDateString() === DEFAULT_DATE;
@@ -49,14 +51,11 @@ const ListingReservation = (props: Props) => {
 		[props.datesUnavailable]
 	);
 
-	const [checkOutMaxIdx, setCheckOutMaxIdx] = useState(1);
-	const [checkOutMax, setCheckOutMax] = useState(new Date());
-
 	useEffect(() => {
 		for (let i = 0; i < datesBooked.length; i++) {
 			const current = datesBooked[i];
 			if (current > checkIn) {
-				setCheckOutMax(current)
+				setCheckOutMax(current);
 				setCheckOutMaxIdx(i);
 				break;
 			}

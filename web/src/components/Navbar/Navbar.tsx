@@ -221,7 +221,13 @@ function Navbar({
 
 				<div className="Navbar__right">
 					<div className="Navbar__right__host">
-						<span>Become a host</span>
+						<a
+							href="https://dukenguyen.dev"
+							target="_blank"
+							rel="noreferrer"
+						>
+							<span>Hire me</span>
+						</a>
 					</div>
 					<div className="Navbar__right__globe">
 						<button>
