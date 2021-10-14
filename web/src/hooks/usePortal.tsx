@@ -64,10 +64,8 @@ const Portal: React.FC<PortalProps> = ({
 	const portalRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		console.log(' in here useeffectlayout')
 		if (portalRef.current) {
 			const fromTop = window.scrollY;
-			console.log("FROMTOP: ", fromTop);
 			portalRef.current.style.transform = `translateY(${fromTop}px)`;
 		}
 	}, [portal]);

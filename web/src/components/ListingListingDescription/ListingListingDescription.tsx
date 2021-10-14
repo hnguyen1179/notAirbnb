@@ -34,6 +34,7 @@ const ListingListingDescription = (props: Props) => {
 			<Portal {...portalProps} style={style} configType="stiff">
 				<ShowListingDescription
 					listingDescription={revisedDescription}
+					closePortal={closePortal}
 				/>
 			</Portal>
 		</div>
