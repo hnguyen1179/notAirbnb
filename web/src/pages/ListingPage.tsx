@@ -261,15 +261,13 @@ const ListingPage: FC<Props> = (props) => {
 					{/**
 					 * TODO:
 					 *
-					 * 1. Make ListingPage desktop version responsive
-					 * 		- Create ListingReviewsDesktop
-					 * 		- Make rules, host, and map responsive
-					 *
-					 * 2. Finish functionality of ListingPage
+					 * 1. Finish functionality of ListingPage
 					 * 		- Reserve functionality
 					 * 		- Create Reviews functionality
+					 * 		- Fix usePortal Portal
+					 * 				- Use Media Queries to make a mobile version; where it encompasses the entire screen 
 					 *
-					 * 3. Deploy and add to Resume!
+					 * 2. Deploy and add to Resume!
 					 * 		- Fix major bugs; logging in bug. etc
 					 *
 					 *

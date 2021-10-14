@@ -61,19 +61,10 @@ const Portal: React.FC<PortalProps> = ({
 	configType,
 	enableBackground = true,
 }) => {
-	const portalRef = useRef<HTMLDivElement>(null);
-
-	useEffect(() => {
-		if (portalRef.current) {
-			const fromTop = window.scrollY;
-			portalRef.current.style.transform = `translateY(${fromTop}px)`;
-		}
-	}, [portal]);
-
 	if (!portal) return null;
 
 	return createPortal(
-		<div className="Portal" ref={portalRef}>
+		<div className="Portal">
 			{enableBackground && (
 				<div className="Portal__background" onClick={closePortal} />
 			)}
