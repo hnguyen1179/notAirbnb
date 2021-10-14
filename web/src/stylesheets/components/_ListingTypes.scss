@@ -122,6 +122,7 @@
 				// I have no idea where 1.2rem is from
 				gap: 1.6rem; // Added 0.4rem to this
 				grid-auto-columns: calc(25% - 1.2rem);
+				transform: translateX(0%) !important;
 			}
 		}
 	}

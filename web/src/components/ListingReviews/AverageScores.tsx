@@ -6,6 +6,12 @@ interface Props {
 }
 
 const AverageScores = (props: Props) => {
+	const noScores = Object.values(props.averageScores)
+		.reduce((acc, cv) => acc + cv)
+		.includes("00000");
+
+	if (noScores) return null;
+
 	return (
 		<div className="AverageScores">
 			<ul className="AverageScores__column">

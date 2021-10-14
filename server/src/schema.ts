@@ -764,16 +764,16 @@ const Listing = objectType({
           })
           .reviews();
 
-        if (reviews.length === 0) {
-          return {
-            cleanliness: 0.0,
-            accuracy: 0.0,
-            communication: 0.0,
-            location: 0.0,
-            checkin: 0.0,
-            value: 0,
-          };
-        }
+        const noScores = {
+          cleanliness: 0.0,
+          accuracy: 0.0,
+          communication: 0.0,
+          location: 0.0,
+          checkin: 0.0,
+          value: 0,
+        };
+
+        if (!reviews.length) return noScores;
 
         const averagedReviews = reviews
           .map((review) => {
@@ -794,6 +794,8 @@ const Listing = objectType({
             1,
           );
         }
+
+        if (!averagedReviews.length) return noScores;
 
         return {
           cleanliness: averagedReviews[0],

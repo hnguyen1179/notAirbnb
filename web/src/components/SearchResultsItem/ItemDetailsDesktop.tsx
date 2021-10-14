@@ -11,9 +11,7 @@ interface Props {
 
 const ItemDetailsDesktop = ({ listing, checkIn, checkOut }: Props) => {
 	const renderPlural = (num: number) => {
-		if (num > 1) {
-			return "s";
-		}
+		return num > 1 ? "s" : "";
 	};
 
 	const renderReviewScore = () => {
@@ -73,7 +71,7 @@ const ItemDetailsDesktop = ({ listing, checkIn, checkOut }: Props) => {
 				<div className="score">
 					<StarSvg />
 					<span>{renderReviewScore()}</span>
-					<span>{" "}({listing.reviewsCount})</span>
+					<span> ({listing.reviewsCount})</span>
 				</div>
 				<div className="price">
 					<span>${numberWithCommas(listing.price)}</span>

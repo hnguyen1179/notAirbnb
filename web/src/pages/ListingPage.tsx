@@ -40,6 +40,8 @@ const ListingPage: FC<Props> = (props) => {
 		searchHandlers: { handleDateChange },
 	} = useURLParams();
 
+	console.log("Id IS... ", id)
+
 	const {
 		loading: listingLoading,
 		error: listingError,
@@ -68,9 +70,7 @@ const ListingPage: FC<Props> = (props) => {
 			</div>
 		);
 
-	if (!listingData || !listingData.listingById || !reviewsData) {
-		return <Redirect to="/404" />;
-	}
+	console.log("listing data: ", listingData);
 
 	if (listingError) console.log(JSON.stringify(listingError, null, 2));
 	if (reviewsError) console.log(JSON.stringify(reviewsError, null, 2));
@@ -82,6 +82,10 @@ const ListingPage: FC<Props> = (props) => {
 				{reviewsError?.message}
 			</p>
 		);
+
+	if (!listingData || !listingData.listingById || !reviewsData) {
+		return <Redirect to="/404" />;
+	}
 
 	const handleBack = (e: MouseEvent<HTMLButtonElement>) => {
 		e.stopPropagation();

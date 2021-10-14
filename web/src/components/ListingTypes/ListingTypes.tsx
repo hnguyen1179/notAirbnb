@@ -22,7 +22,7 @@ const ListingTypes = () => {
 		setRight(!right);
 	};
 
-	const props = useSpring({
+	const style = useSpring({
 		transform:
 			(mobile && right) || !right ? "translateX(0%)" : "translateX(-33%)",
 	});
@@ -46,7 +46,7 @@ const ListingTypes = () => {
 				<div style={{ overflow: "hidden" }}>
 					<animated.ul
 						className="ListingTypes__container__list"
-						style={props}
+						style={style}
 					>
 						{types.map((type) => {
 							const filename =

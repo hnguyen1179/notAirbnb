@@ -20,12 +20,22 @@ interface Props {
 }
 
 const ListingReviewsDesktop = (props: Props) => {
+	const renderReviewScore = () => {
+		if (!props.reviewsCount) {
+			return "No reviews";
+		} else if (props.reviewsCount && !props.averageScore) {
+			return "No scores";
+		} else {
+			return props.averageScore;
+		}
+	};
+
 	return (
 		<div className="ListingReviewsDesktop">
 			<div className="ListingReviewsDesktop__title">
 				<StarSvg />
 				<h2>
-					{props.averageScore}
+					{renderReviewScore()}
 					<span className="spacer">·</span>
 					{props.reviewsCount} reviews
 				</h2>
