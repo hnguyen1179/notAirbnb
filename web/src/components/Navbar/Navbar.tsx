@@ -1,6 +1,6 @@
-import { SyntheticEvent, RefObject, useEffect, useState, useRef } from "react";
+import { SyntheticEvent, useEffect, useState, useRef } from "react";
 import Modal from "@material-ui/core/Modal";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
+import { CSSTransition } from "react-transition-group";
 
 import { useModal } from "../../context/ModalContext";
 
@@ -243,13 +243,11 @@ function Navbar({
 
 				{/* Modal for the entry form */}
 				<Modal open={open} onClose={handleClose} disableScrollLock>
-					<TransitionGroup>
-						<Fade in={open} ref={modalRef}>
-							<div className="Modal-container">
-								<Entry />
-							</div>
-						</Fade>
-					</TransitionGroup>
+					<Fade ref={modalRef}>
+						<div className="Modal-container">
+							<Entry />
+						</div>
+					</Fade>
 				</Modal>
 			</div>
 			<div className="background"></div>

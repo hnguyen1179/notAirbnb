@@ -71,7 +71,8 @@
 			}
 
 			&__host a span {
-				font-weight: 400;
+				transition: 300ms;
+				color: white;
 			}
 		}
 	}
@@ -143,9 +144,9 @@
 				display: none;
 			}
 
-			.logo {
+			svg {
 				fill: $main-color;
-				transition: fill 300ms;
+				transition: fill 600ms;
 			}
 		}
 	}
@@ -161,7 +162,8 @@
 			display: grid;
 			place-items: center;
 
-			& > span {
+			& > a span {
+				transition: 300ms;
 				pointer-events: none;
 				font-weight: 400;
 				font-size: 1.4rem;
@@ -291,7 +293,6 @@
 	top: 14rem;
 
 	&--search-page {
-		
 	}
 
 	&__categories {

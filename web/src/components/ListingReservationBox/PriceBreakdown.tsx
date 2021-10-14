@@ -1,4 +1,5 @@
 import React from "react";
+import { numberWithCommas } from "../../utils/numberWithCommas";
 import { IPriceBreakdown } from "../../utils/priceBreakdown";
 
 interface Props {
@@ -7,22 +8,22 @@ interface Props {
 
 const PriceBreakdown = ({ priceBreakdown }: Props) => {
 	return (
-    <div className="PriceBreakdown">
-      <div className="PriceBreakdown__disclaimer">
-        <span>You won't be charged. Like, at all</span>
-      </div>
+		<div className="PriceBreakdown">
+			<div className="PriceBreakdown__disclaimer">
+				<span>You won't be charged. Like, at all</span>
+			</div>
 
 			<div className="PriceBreakdown__category PriceBreakdown__category--nights">
 				<div className="PriceBreakdown__category__title">
 					<span>
-						${priceBreakdown.pricePerNight} x{" "}
+						${numberWithCommas(priceBreakdown.pricePerNight)} x{" "}
 						{priceBreakdown.totalNights > 1
 							? priceBreakdown.totalNights + " nights"
 							: priceBreakdown.totalNights + " night"}
 					</span>
 				</div>
 				<div className="PriceBreakdown__category__cost">
-					<span>${priceBreakdown.price}</span>
+					<span>${numberWithCommas(priceBreakdown.price)}</span>
 				</div>
 			</div>
 			<div className="PriceBreakdown__category PriceBreakdown__category--service">
@@ -30,7 +31,10 @@ const PriceBreakdown = ({ priceBreakdown }: Props) => {
 					<span>Service fee</span>
 				</div>
 				<div className="PriceBreakdown__category__cost">
-					<span>${priceBreakdown.serviceFee.toFixed(0)}</span>
+					<span>
+						$
+						{numberWithCommas(priceBreakdown.serviceFee.toFixed(0))}
+					</span>
 				</div>
 			</div>
 
@@ -40,7 +44,12 @@ const PriceBreakdown = ({ priceBreakdown }: Props) => {
 						<span>Cleaning fee</span>
 					</div>
 					<div className="PriceBreakdown__category__cost">
-						<span>${priceBreakdown.cleaningFee.toFixed(0)}</span>
+						<span>
+							$
+							{numberWithCommas(
+								priceBreakdown.cleaningFee.toFixed(0)
+							)}
+						</span>
 					</div>
 				</div>
 			) : null}
@@ -51,7 +60,12 @@ const PriceBreakdown = ({ priceBreakdown }: Props) => {
 						<span>Occupancy Tax</span>
 					</div>
 					<div className="PriceBreakdown__category__cost">
-						<span>${priceBreakdown.occupancyTax.toFixed(0)}</span>
+						<span>
+							$
+							{numberWithCommas(
+								priceBreakdown.occupancyTax.toFixed(0)
+							)}
+						</span>
 					</div>
 				</div>
 			) : null}

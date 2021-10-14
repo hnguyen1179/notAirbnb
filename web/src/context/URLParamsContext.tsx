@@ -73,6 +73,7 @@ const editMenuDefault = {
 const URLParamsProvider: React.FC = ({ children }) => {
 	console.log("RENDERED PARAMS CONTEXT");
 	console.log("LS PARAMS: ", localStorage.getItem("params"));
+	
 	const history = useHistory();
 	const currentSearchString = localStorage.getItem("params");
 	const searchString = history.location.search

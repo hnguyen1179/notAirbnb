@@ -40,7 +40,7 @@ const ListingMap = (props: Props) => {
 
 			<div className="ListingMap__location">
 				<span>
-					{props.city}, {props.state}, United State
+					{props.city}, {props.state}, United States
 				</span>
 			</div>
 

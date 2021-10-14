@@ -23,7 +23,7 @@ const SearchPageMap = ({
 	mapRef,
 	cloudinary,
 }: Props) => {
-	console.log("rerendered");
+	console.log("SEARCH PAGE MAP RERENDERED");
 	const [clickIdx, setClickIdx] = useState(-1);
 	const [hover, setHover] = useState(false);
 	const [mapState, setMapState] = useState({
@@ -73,7 +73,6 @@ const SearchPageMap = ({
 				onZoomAnimationStart={resetClickIdx}
 				onChildClick={(hoverKey) => console.log(hoverKey)}
 				margin={[100, 100, 100, 100]}
-				draggable={hover}
 				// TODO Make this draggable conditional based on whether or not you're
 				// hovering over a marker!! mouseEnter: true: mouseOut: false
 			>

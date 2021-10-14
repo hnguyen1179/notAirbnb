@@ -36,6 +36,10 @@
 		}
 
 		&__docs {
+			> span {
+				font-weight: 400;
+			}
+			
 			.spacer {
 				display: inline-block;
 				text-align: center;

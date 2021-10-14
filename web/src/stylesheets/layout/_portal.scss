@@ -1,0 +1,20 @@
+.Portal {
+	display: grid;
+	place-items: center;
+	position: absolute;
+	inset: 0px;
+	z-index: 10;
+
+	&__background {
+		position: absolute;
+		inset: 0px;
+		background-color: rgba(0, 0, 0, 0.5);
+		z-index: 10;
+		height: 300vh;
+    transform: translateY(-50%);
+	}
+
+	&__children {
+		z-index: 11;
+	}
+}

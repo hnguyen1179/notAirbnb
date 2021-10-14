@@ -10,7 +10,7 @@
 @import "base/base", "base/fonts", "base/typography", "base/animations";
 
 // 4. Layout-related sections
-@import "layout/Footer";
+@import "layout/footer", "layout/portal";
 
 // 5. Components
 @import "components/EntryForm/", "components/SearchResultsList/",

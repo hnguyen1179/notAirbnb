@@ -13,6 +13,7 @@ interface Props {
 	cleaningFee: number;
 	region: string;
 	defaultDate: boolean;
+	handleOpenCalendar: () => void;
 }
 
 const BoxButtons = ({
@@ -23,10 +24,10 @@ const BoxButtons = ({
 	cleaningFee,
 	region,
 	defaultDate,
+	handleOpenCalendar,
 }: Props) => {
 	const gradientRef = useRef<HTMLElement>(null);
 	const { getCursorPos } = useModal();
-	const [focusedRange, setFocusedRange] = useState<[number, number]>([0, 0]);
 	const [guests, setGuests] = useState(numGuests ? numGuests : 1);
 
 	const sameDates =
@@ -41,20 +42,13 @@ const BoxButtons = ({
 		region,
 	});
 
-	const handleRangeFocusChange = (range: [x: number, y: number]) => {
-		if (range[1] === 1) {
-			setFocusedRange([0, 1]);
-		}
-
-		if (range[1] === 0) {
-			setFocusedRange([0, 0]);
-		}
-	};
-
 	return (
 		<div className="BoxButtons">
 			<div className="BoxButtons__top-container">
-				<button className="BoxButtons__dates">
+				<button
+					className="BoxButtons__dates"
+					onClick={handleOpenCalendar}
+				>
 					<div className="input-box input-box--dates">
 						<span>CHECK-IN</span>
 						<span>

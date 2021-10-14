@@ -1,4 +1,5 @@
 .ListingReservationBox {
+	position: static;
 	border: 1px solid $outline-color;
 	border-radius: 1.2rem;
 	box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px;
@@ -39,6 +40,46 @@
 				width: 1.2rem;
 			}
 		}
+	}
+
+	&__calendar-container {
+		display: flex;
+		flex-direction: column;
+		padding: 1.4rem;
+		position: absolute;
+		box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 20px;
+		border-radius: 1.6rem;
+		background-color: white;
+		top: 5rem;
+		right: -2rem;
+
+		&[aria-hidden="true"] {
+			display: none;
+		}
+		&__bottom {
+			display: flex;
+			justify-content: space-between;
+
+			&__dates {
+				margin: 0 1.4rem;
+			}
+
+
+			&__buttons {
+				button {
+					margin: 0 1.4rem;
+				}
+	
+				.close-button {
+					font-size: 1.4rem;
+					padding: 1rem;
+					background-color: black;
+					color: white;
+					border-radius: 0.8rem;;
+				}
+			}
+		}
+
 	}
 }
 
@@ -89,8 +130,10 @@
 				border-bottom-right-radius: 0.8rem;
 
 				> input {
+					font-size: 1.4rem;
 					border: none;
 					padding: 0.25rem;
+					width: 5rem;
 					color: $muted-text-color;
 				}
 			}
@@ -161,6 +204,7 @@
 
 		span {
 			font-weight: 400;
+			font-size: 1.4rem;
 		}
 
 		&__title {
@@ -171,6 +215,7 @@
 
 		&--total {
 			span {
+				font-size: 1.6rem;
 				font-weight: 300;
 				text-decoration: none;
 			}

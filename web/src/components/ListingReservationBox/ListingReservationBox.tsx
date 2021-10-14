@@ -1,79 +1,67 @@
-import { useState } from "react";
-import { useURLParams } from "../../context/URLParamsContext";
+import { useEffect, useState } from "react";
 import { numberWithCommas } from "../../utils/numberWithCommas";
 
 import { ReactComponent as StarSvg } from "../../assets/icons/filled-star.svg";
 import BoxButtons from "./BoxButtons";
 import { DateRange } from "react-date-range";
-import {
-	disableListingDay,
-	disableListingFutureDays,
-	disableListingCheckoutDays,
-} from "../../utils/disableDays";
 import { Maybe } from "../../generated/graphql";
+import { useCalendarLogic } from "../../context/CalendarLogicContext";
 
 interface Props {
+	city: string;
 	price: number;
 	cleaningFee: number;
 	region: string;
+	numGuests: number;
 	maxGuests: number;
 	averageScore: number;
 	reviewsCount: number;
 	datesUnavailable: Maybe<string>[];
 }
 
-const DEFAULT_DATE = new Date().toLocaleDateString();
-
 const ListingReservationBox = (props: Props) => {
 	const {
-		state,
-		searchHandlers: { handleDateChange },
-	} = useURLParams();
+		dates,
+		defaultDate,
+		focusedRange,
+		handleRangeFocusChange,
+		handleDateChange,
+		handleDisableDayLogic,
+		handleResetDates,
+		renderDates,
+	} = useCalendarLogic();
+	const [openCalendar, setOpenCalendar] = useState(false);
 
-	const [focusedRange, setFocusedRange] = useState<[number, number]>([0, 0]);
-
-	const defaultDate =
-		state.dates.startDate.toLocaleDateString() === DEFAULT_DATE &&
-		state.dates.endDate.toLocaleDateString() === DEFAULT_DATE;
-
-	const selectCheckout =
-		state.dates.startDate.toLocaleDateString() ===
-		state.dates.endDate.toLocaleDateString();
-
-	const future =
-		state.dates.startDate > new Date(checkOutMax) &&
-		state.dates.startDate.toLocaleDateString() === state.dates.endDate.toLocaleDateString();
-
-	const handleRangeFocusChange = (range: [x: number, y: number]) => {
-		if (range[1] === 1) {
-			setFocusedRange([0, 1]);
-		}
-
-		if (range[1] === 0) {
-			setFocusedRange([0, 0]);
-		}
+	const handleBodyClick = () => {
+		const closeNavigation = new Event("closeNavigation");
+		window.dispatchEvent(closeNavigation);
 	};
 
-	// useEffect(() => {
-	// 	if (!localStorage.getItem("params")) {
-	// 		handleResetDates();
-	// 	}
-	// }, []);
+	useEffect(() => {
+		window.addEventListener("closeNavigation", handleCloseCalendar);
+		document.body.addEventListener("click", handleBodyClick);
 
-	const handleDisableDayLogic = (date: Date) => {
-		if (defaultDate) {
-			return disableListingDay(date, props.datesUnavailable);
-		} else if (future) {
-			return disableListingFutureDays(date, checkIn);
-		} else if (selectCheckout) {
-			return disableListingCheckoutDays(
-				date,
-				checkIn,
-				datesBooked[checkOutMaxIdx - 1],
-				checkOutMax
-			);
-		}
-		return disableListingDay(date, props.datesUnavailable);
+		return () => {
+			window.removeEventListener("closeNavigation", handleCloseCalendar);
+			document.body.removeEventListener("click", handleBodyClick);
+			handleCloseCalendar();
+		};
+	}, []);
+
+	const sameDates =
+		dates.startDate.toLocaleDateString() ===
+		dates.endDate.toLocaleDateString();
+
+	useEffect(() => {
+		if (!sameDates) handleCloseCalendar();
+	}, [defaultDate, focusedRange, dates, sameDates]);
+
+	const handleOpenCalendar = () => {
+		setOpenCalendar(true);
+	};
+
+	const handleCloseCalendar = () => {
+		setOpenCalendar(false);
 	};
 
 	const renderReviewScore = () => {
@@ -87,7 +75,10 @@ const ListingReservationBox = (props: Props) => {
 	};
 
 	return (
-		<div className="ListingReservationBox">
+		<div
+			className="ListingReservationBox"
+			onClick={(e) => e.stopPropagation()}
+		>
 			<header className="ListingReservationBox__header">
 				<div className="ListingReservationBox__header__price">
 					<span>${numberWithCommas(props.price)}</span>{" "}
@@ -101,35 +92,55 @@ const ListingReservationBox = (props: Props) => {
 			</header>
 
 			<BoxButtons
-				dates={state.dates}
+				dates={dates}
 				maxGuests={props.maxGuests}
-				numGuests={state.guests}
+				numGuests={props.numGuests}
 				price={props.price}
 				cleaningFee={props.cleaningFee}
 				region={props.region}
 				defaultDate={defaultDate}
+				handleOpenCalendar={handleOpenCalendar}
 			/>
 
-			<DateRange
-				className="ListingReservation__calendar__rdr-calendar"
-				focusedRange={focusedRange}
-				onRangeFocusChange={handleRangeFocusChange}
-				months={1}
-				direction={"horizontal"}
-				showMonthAndYearPickers={true}
-				editableDateInputs={true}
-				showDateDisplay={false}
-				ranges={[state.dates]}
-				rangeColors={["#00a6de"]}
-				onChange={handleDateChange}
-				disabledDay={handleDisableDayLogic}
-			/>
-			<button
-				className="ListingReservation__calendar__clear-button"
-				onClick={handleResetDates}
+			<div
+				className="ListingReservationBox__calendar-container"
+				aria-hidden={!openCalendar}
 			>
-				<span>Clear dates</span>
-			</button>
+				<DateRange
+					focusedRange={focusedRange}
+					onRangeFocusChange={handleRangeFocusChange}
+					months={2}
+					direction={"horizontal"}
+					showMonthAndYearPickers={true}
+					editableDateInputs={true}
+					showDateDisplay={false}
+					ranges={[dates]}
+					rangeColors={["#00a6de"]}
+					onChange={handleDateChange}
+					disabledDay={handleDisableDayLogic}
+				/>
+
+				<div className="ListingReservationBox__calendar-container__bottom">
+					<div className="ListingReservationBox__calendar-container__bottom__dates">
+						{renderDates(props.city)}
+					</div>
+
+					<div className="ListingReservationBox__calendar-container__bottom__buttons">
+						<button
+							className="calendar-clear-button"
+							onClick={handleResetDates}
+						>
+							<span>Clear dates</span>
+						</button>
+						<button
+							className="close-button"
+							onClick={handleCloseCalendar}
+						>
+							<span>Close</span>
+						</button>
+					</div>
+				</div>
+			</div>
 		</div>
 	);
 };

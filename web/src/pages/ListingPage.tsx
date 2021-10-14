@@ -1,6 +1,5 @@
 import { FC, MouseEvent } from "react";
 import { Redirect, RouteComponentProps } from "react-router";
-import { AdvancedImage, placeholder } from "@cloudinary/react";
 
 import {
 	useListingByIdQuery,
@@ -11,7 +10,6 @@ import { useAppState } from "../context/AppContext";
 import Navbar from "../components/Navbar/Navbar";
 
 import ListingMobileNav from "../components/ListingMobileNav/ListingMobileNav";
-import PictureCarousel from "../components/SearchResultsItem/PictureCarousel";
 import ListingCarousel from "../components/ListingCarousel/ListingCarousel";
 import ListingTitle from "../components/ListingBasics/ListingTitle";
 import ListingDetails from "../components/ListingBasics/ListingDetails";
@@ -27,6 +25,8 @@ import ListingHost from "../components/ListingHost/ListingHost";
 import ListingRules from "../components/ListingRules.tsx/ListingRules";
 import ListingImagesGrid from "../components/ListingImagesGrid/ListingImagesGrid";
 import ListingReservationBox from "../components/ListingReservationBox/ListingReservationBox";
+import { CalendarLogicProvider } from "../context/CalendarLogicContext";
+import { useURLParams } from "../context/URLParamsContext";
 
 interface Props extends RouteComponentProps {
 	id: string;
@@ -35,6 +35,10 @@ interface Props extends RouteComponentProps {
 const ListingPage: FC<Props> = (props) => {
 	const { id, history } = props;
 	const { cloudinary, mobile } = useAppState();
+	const {
+		state: { dates, guests },
+		searchHandlers: { handleDateChange },
+	} = useURLParams();
 
 	const {
 		loading: listingLoading,
@@ -87,86 +91,201 @@ const ListingPage: FC<Props> = (props) => {
 	const { listingById } = listingData;
 
 	return (
-		<div className="ListingPage">
-			<div className="ListingPage__nav">
-				{mobile ? (
-					<ListingMobileNav handleBack={handleBack} />
-				) : (
-					<>
-						<Navbar notLanding />
-						<div className="Navbar-filler" />
-					</>
-				)}
-			</div>
-
-			<div className="ListingPage__basics">
-				<div className="ListingPage__basics__pictures">
+		<CalendarLogicProvider
+			dates={dates}
+			handleDateChange={handleDateChange}
+			datesUnavailable={listingById.datesUnavailable}
+		>
+			<div className="ListingPage">
+				<div className="ListingPage__nav">
 					{mobile ? (
-						<ListingCarousel
-							cloudinary={cloudinary}
-							id={id}
-							region={listingById.region}
-							imageComments={listingById.imageComments}
-						/>
+						<ListingMobileNav handleBack={handleBack} />
 					) : (
-						<ListingImagesGrid
-							cloudinary={cloudinary}
-							id={id}
-							region={listingById.region}
-							imageComments={listingById.imageComments}
-						/>
+						<>
+							<Navbar notLanding />
+							<div className="Navbar-filler" />
+						</>
 					)}
 				</div>
-				<section className="ListingPage__basics__title">
-					<ListingTitle
-						title={listingById.title}
-						averageScore={listingById.averageScore}
-						reviewsCount={listingById.reviewsCount}
-						city={listingById.city}
-						state={listingById.state}
-						superhost={listingById.superhost}
-					/>
-				</section>
-			</div>
 
-			<main className="ListingPage__content">
-				<div className="content-top">
-					<div className="content-top-left">
-						<section className="ListingPage__content__details">
-							<ListingDetails
+				<div className="ListingPage__basics">
+					<div className="ListingPage__basics__pictures">
+						{mobile ? (
+							<ListingCarousel
 								cloudinary={cloudinary}
-								listingType={listingById.listingType}
-								hostName={listingById.host?.firstName || ""}
-								hostId={listingById.host?.id || ""}
-								numGuests={listingById.numGuests}
-								numBedrooms={listingById.numBedrooms}
-								numBeds={listingById.numBeds}
-								numBaths={listingById.numBaths}
+								id={id}
+								region={listingById.region}
+								imageComments={listingById.imageComments}
 							/>
-						</section>
-
-						<section className="ListingPage__content__highlights">
-							<ListingHighlights
-								highlights={listingById.highlights}
+						) : (
+							<ListingImagesGrid
+								cloudinary={cloudinary}
+								id={id}
+								region={listingById.region}
+								imageComments={listingById.imageComments}
 							/>
-						</section>
+						)}
+					</div>
+					<section className="ListingPage__basics__title">
+						<ListingTitle
+							title={listingById.title}
+							averageScore={listingById.averageScore}
+							reviewsCount={listingById.reviewsCount}
+							city={listingById.city}
+							state={listingById.state}
+							superhost={listingById.superhost}
+						/>
+					</section>
+				</div>
 
-						<section className="ListingPage__content__listing-description">
-							<ListingListingDescription
-								listingDescription={
-									listingById?.listingDescription
-								}
-							/>
-						</section>
+				<main className="ListingPage__content">
+					<div className="content-top">
+						<div className="content-top-left">
+							<section className="ListingPage__content__details">
+								<ListingDetails
+									cloudinary={cloudinary}
+									listingType={listingById.listingType}
+									hostName={listingById.host?.firstName || ""}
+									hostId={listingById.host?.id || ""}
+									numGuests={listingById.numGuests}
+									numBedrooms={listingById.numBedrooms}
+									numBeds={listingById.numBeds}
+									numBaths={listingById.numBaths}
+								/>
+							</section>
 
-						<section className="ListingPage__content__amenities">
-							<ListingAmenities
-								amenities={listingById.amenities}
-							/>
-						</section>
+							<section className="ListingPage__content__highlights">
+								<ListingHighlights
+									highlights={listingById.highlights}
+								/>
+							</section>
 
-						{/* Render this conditionally based on mobile */}
-						{mobile && (
+							{listingById?.listingDescription ? (
+								<section className="ListingPage__content__listing-description">
+									<ListingListingDescription
+										listingDescription={
+											listingById.listingDescription
+										}
+									/>
+								</section>
+							) : null}
+
+							<section className="ListingPage__content__amenities">
+								<ListingAmenities
+									amenities={listingById.amenities}
+								/>
+							</section>
+
+							{/* Render this conditionally based on mobile */}
+							{mobile && (
+								<section className="ListingPage__content__map">
+									<ListingMap
+										city={listingById.city}
+										state={listingById.state}
+										address={listingById.address}
+										locationDescription={
+											listingById.locationDescription
+										}
+									/>
+								</section>
+							)}
+
+							<section className="ListingPage__content__reservation">
+								<ListingReservation
+									city={listingById.city}
+									datesUnavailable={
+										listingById.datesUnavailable
+									}
+								/>
+							</section>
+
+							{/* Render this conditionally based on mobile */}
+							{mobile && (
+								<>
+									{!reviewsData.reviewsByListingId
+										.length ? null : (
+										<section className="ListingPage__content__reviews">
+											<ListingReviewsMobile
+												averageScore={
+													listingById.averageScore
+												}
+												reviewsCount={
+													listingById.reviewsCount
+												}
+												reviews={reviewsData}
+											/>
+										</section>
+									)}
+
+									<section className="ListingPage__content__host">
+										<ListingHost host={listingById.host} />
+									</section>
+
+									<section className="ListingPage__content__rules">
+										<ListingRules
+											houseRules={listingById.houseRules}
+											healthAndSafety={
+												listingById.healthAndSafety
+											}
+										/>
+									</section>
+								</>
+							)}
+						</div>
+
+						<div className="content-top-right" aria-hidden={mobile}>
+							{!mobile && (
+								<div className="ListingPage__content__reservation-box">
+									<ListingReservationBox
+										city={listingById.city}
+										price={listingById.price}
+										cleaningFee={listingById.cleaningFee}
+										region={listingById.region}
+										numGuests={guests}
+										maxGuests={listingById.numGuests}
+										averageScore={listingById.averageScore}
+										reviewsCount={listingById.reviewsCount}
+										datesUnavailable={
+											listingById.datesUnavailable
+										}
+									/>
+								</div>
+							)}
+						</div>
+					</div>
+
+					{/**
+					 * TODO:
+					 *
+					 * 1. Make ListingPage desktop version responsive
+					 * 		- Create ListingReviewsDesktop
+					 * 		- Make rules, host, and map responsive
+					 *
+					 * 2. Finish functionality of ListingPage
+					 * 		- Reserve functionality
+					 * 		- Create Reviews functionality
+					 *
+					 * 3. Deploy and add to Resume!
+					 * 		- Fix major bugs; logging in bug. etc
+					 *
+					 *
+					 */}
+
+					{!mobile && (
+						<div className="content-bottom">
+							{reviewsData.reviewsByListingId.length ? (
+								<section className="ListingPage__content__reviews">
+									<ListingReviewsDesktop
+										averageScore={listingById.averageScore}
+										averageScores={
+											listingById.averageScores
+										}
+										reviewsCount={listingById.reviewsCount}
+										reviews={reviewsData}
+									/>
+								</section>
+							) : null}
+
 							<section className="ListingPage__content__map">
 								<ListingMap
 									city={listingById.city}
@@ -177,127 +296,30 @@ const ListingPage: FC<Props> = (props) => {
 									}
 								/>
 							</section>
-						)}
 
-						<section className="ListingPage__content__reservation">
-							<ListingReservation
-								city={listingById.city}
-								datesUnavailable={listingById.datesUnavailable}
-							/>
-						</section>
+							<section className="ListingPage__content__host">
+								<ListingHost host={listingById.host} />
+							</section>
 
-						{/* Render this conditionally based on mobile */}
-						{mobile && (
-							<>
-								{!reviewsData.reviewsByListingId
-									.length ? null : (
-									<section className="ListingPage__content__reviews">
-										<ListingReviewsMobile
-											averageScore={
-												listingById.averageScore
-											}
-											reviewsCount={
-												listingById.reviewsCount
-											}
-											reviews={reviewsData}
-										/>
-									</section>
-								)}
-
-								<section className="ListingPage__content__host">
-									<ListingHost host={listingById.host} />
-								</section>
-
-								<section className="ListingPage__content__rules">
-									<ListingRules
-										houseRules={listingById.houseRules}
-										healthAndSafety={
-											listingById.healthAndSafety
-										}
-									/>
-								</section>
-							</>
-						)}
-					</div>
-
-					<div className="content-top-right">
-						<div
-							className="ListingPage__content__reservation-box"
-							aria-hidden={mobile}
-						>
-							<ListingReservationBox
-								price={listingById.price}
-								cleaningFee={listingById.cleaningFee}
-								region={listingById.region}
-								maxGuests={listingById.numGuests}
-								averageScore={listingById.averageScore}
-								reviewsCount={listingById.reviewsCount}
-								datesUnavailable={listingById.datesUnavailable}
-							/>
-						</div>
-					</div>
-				</div>
-
-				{/**
-				 * TODO:
-				 *
-				 * 1. Make ListingPage desktop version responsive
-				 * 		- Create ListingReviewsDesktop
-				 * 		- Make rules, host, and map responsive
-				 *
-				 * 2. Finish functionality of ListingPage
-				 * 		- Reserve functionality
-				 * 		- Create Reviews functionality
-				 *
-				 * 3. Deploy and add to Resume!
-				 * 		- Fix major bugs; logging in bug. etc
-				 *
-				 *
-				 */}
-
-				{!mobile && (
-					<div className="content-bottom">
-						{!reviewsData.reviewsByListingId.length ? null : (
-							<section className="ListingPage__content__reviews">
-								<ListingReviewsDesktop
-									averageScore={listingById.averageScore}
-									averageScores={listingById.averageScores}
-									reviewsCount={listingById.reviewsCount}
-									reviews={reviewsData}
+							<section className="ListingPage__content__rules">
+								<ListingRules
+									houseRules={listingById.houseRules}
+									healthAndSafety={
+										listingById.healthAndSafety
+									}
 								/>
 							</section>
-						)}
-						<section className="ListingPage__content__map">
-							<ListingMap
-								city={listingById.city}
-								state={listingById.state}
-								address={listingById.address}
-								locationDescription={
-									listingById.locationDescription
-								}
-							/>
-						</section>
+						</div>
+					)}
+				</main>
 
-						<section className="ListingPage__content__host">
-							<ListingHost host={listingById.host} />
-						</section>
-
-						<section className="ListingPage__content__rules">
-							<ListingRules
-								houseRules={listingById.houseRules}
-								healthAndSafety={listingById.healthAndSafety}
-							/>
-						</section>
+				<div className="ListingPage__footer">
+					<div className="Footer-container">
+						<Footer />
 					</div>
-				)}
-			</main>
-
-			<div className="ListingPage__footer">
-				<div className="Footer-container">
-					<Footer />
 				</div>
 			</div>
-		</div>
+		</CalendarLogicProvider>
 	);
 };
 

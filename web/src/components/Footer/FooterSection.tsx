@@ -24,10 +24,13 @@ const FooterSection = ({ data }: Props) => {
 					// TODO: Update URL for resume with updated resume.
 					// Maybe just save the document within assets and host it
 					return (
-						<li key={idx} className={`FooterSection__list__item ${defined}`}>
-							<Link to={url || ""} target="_blank">
+						<li
+							key={idx}
+							className={`FooterSection__list__item ${defined}`}
+						>
+							<a href={url || ""} target="_blank">
 								{text}
-							</Link>
+							</a>
 						</li>
 					);
 				})}

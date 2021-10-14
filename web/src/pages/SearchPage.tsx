@@ -1,10 +1,4 @@
-import {
-	useState,
-	useEffect,
-	MouseEvent,
-	useRef,
-	useMemo,
-} from "react";
+import { useState, useEffect, MouseEvent, useRef, useMemo } from "react";
 import { History } from "history";
 import { useBasicSearchQuery } from "../generated/graphql";
 import { useAppState } from "../context/AppContext";
@@ -17,7 +11,7 @@ import SearchResultsItem from "../components/SearchResultsItem/SearchResultsItem
 import SearchResultsPagination from "../components/SearchResultsPagination/SearchResultsPagination";
 import { useURLParams } from "../context/URLParamsContext";
 import Navbar from "../components/Navbar/Navbar";
-import { CSSTransition } from "react-transition-group";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import EditMenuPortal from "../components/SearchPageTopBar/EditMenuPortal";
 import SearchPageMap from "../components/SearchPageMap/SearchPageMap";
 
@@ -223,15 +217,7 @@ const SearchPage = ({ history }: Props) => {
 						className="edit-menu-portal-background"
 						aria-hidden={editMenu.filters}
 					/>
-					<CSSTransition
-						in={editMenu.filters}
-						timeout={300}
-						classNames="edit-menu-filter"
-						unmountOnExit
-						nodeRef={filtersEditMenuRef}
-					>
-						<EditMenuPortal menuRef={filtersEditMenuRef} />
-					</CSSTransition>
+					{editMenu.filters && <EditMenuPortal onlyFilters={true} />}
 				</>
 			)}
 
