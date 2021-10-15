@@ -1,9 +1,6 @@
 import React, {
 	MouseEventHandler,
 	useCallback,
-	useEffect,
-	useLayoutEffect,
-	useRef,
 	useState,
 } from "react";
 import { createPortal } from "react-dom";

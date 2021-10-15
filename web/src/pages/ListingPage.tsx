@@ -1,4 +1,4 @@
-import { FC, MouseEvent } from "react";
+import { FC, MouseEvent, useEffect, useState } from "react";
 import { Redirect, RouteComponentProps } from "react-router";
 
 import {
@@ -27,20 +27,42 @@ import ListingImagesGrid from "../components/ListingImagesGrid/ListingImagesGrid
 import ListingReservationBox from "../components/ListingReservationBox/ListingReservationBox";
 import { CalendarLogicProvider } from "../context/CalendarLogicContext";
 import { useURLParams } from "../context/URLParamsContext";
+import { usePortal } from "../hooks/usePortal";
+import ListingShowMore from "../components/ListingShowMore/ListingShowMore";
+import ShowListingReviews from "../components/ListingReviews/ShowListingReviews";
 
 interface Props extends RouteComponentProps {
 	id: string;
 }
 
+export const showMoreStyle = {
+	from: { opacity: 0, transform: "translateY(50vh)" },
+	to: {
+		opacity: 1,
+		transform: "translateY(0vh)",
+	},
+};
+
 const ListingPage: FC<Props> = (props) => {
+	console.log("ListingPage rendered")
 	const { id, history } = props;
 	const { cloudinary, mobile } = useAppState();
 	const {
 		state: { dates, guests },
 		searchHandlers: { handleDateChange },
 	} = useURLParams();
+	const {
+		Portal: ReviewsPortal,
+		portalProps: reviewsPortalProps,
+		openPortal: openReviewsPortal,
+		closePortal: closeReviewsPortal,
+	} = usePortal();
 
-	console.log("Id IS... ", id)
+	useEffect(() => {
+		return () => {
+			document.body.style.overflow = "unset";
+		};
+	}, []);
 
 	const {
 		loading: listingLoading,
@@ -56,7 +78,7 @@ const ListingPage: FC<Props> = (props) => {
 		loading: reviewsLoading,
 		error: reviewsError,
 		data: reviewsData,
-		fetchMore,
+		fetchMore: fetchMoreReviews,
 	} = useReviewsByListingIdQuery({
 		variables: {
 			id,
@@ -69,8 +91,6 @@ const ListingPage: FC<Props> = (props) => {
 				<Loading />
 			</div>
 		);
-
-	console.log("listing data: ", listingData);
 
 	if (listingError) console.log(JSON.stringify(listingError, null, 2));
 	if (reviewsError) console.log(JSON.stringify(reviewsError, null, 2));
@@ -93,6 +113,34 @@ const ListingPage: FC<Props> = (props) => {
 	};
 
 	const { listingById } = listingData;
+
+	const configType = mobile ? "default" : "stiff";
+
+	const renderReviewsPortal = () => (
+		<ReviewsPortal
+			{...reviewsPortalProps}
+			style={showMoreStyle}
+			configType={configType}
+		>
+			<ListingShowMore
+				closePortal={closeReviewsPortal}
+				className="ShowListingReviews"
+			>
+				{(containerRef) => {
+					return (
+						<ShowListingReviews
+							reviews={reviewsData}
+							averageScore={listingById.averageScore}
+							reviewsCount={listingById.reviewsCount}
+							fetchMore={fetchMoreReviews}
+							containerRef={containerRef}
+							openPortal={openReviewsPortal}
+						/>
+					);
+				}}
+			</ListingShowMore>
+		</ReviewsPortal>
+	);
 
 	return (
 		<CalendarLogicProvider
@@ -170,6 +218,7 @@ const ListingPage: FC<Props> = (props) => {
 										listingDescription={
 											listingById.listingDescription
 										}
+										configType={configType}
 									/>
 								</section>
 							) : null}
@@ -177,6 +226,7 @@ const ListingPage: FC<Props> = (props) => {
 							<section className="ListingPage__content__amenities">
 								<ListingAmenities
 									amenities={listingById.amenities}
+									configType={configType}
 								/>
 							</section>
 
@@ -206,8 +256,7 @@ const ListingPage: FC<Props> = (props) => {
 							{/* Render this conditionally based on mobile */}
 							{mobile && (
 								<>
-									{!reviewsData.reviewsByListingId
-										.length ? null : (
+									{reviewsData.reviewsByListingId.length ? (
 										<section className="ListingPage__content__reviews">
 											<ListingReviewsMobile
 												averageScore={
@@ -217,9 +266,10 @@ const ListingPage: FC<Props> = (props) => {
 													listingById.reviewsCount
 												}
 												reviews={reviewsData}
+												openPortal={openReviewsPortal}
 											/>
 										</section>
-									)}
+									) : null}
 
 									<section className="ListingPage__content__host">
 										<ListingHost host={listingById.host} />
@@ -265,7 +315,7 @@ const ListingPage: FC<Props> = (props) => {
 					 * 		- Reserve functionality
 					 * 		- Create Reviews functionality
 					 * 		- Fix usePortal Portal
-					 * 				- Use Media Queries to make a mobile version; where it encompasses the entire screen 
+					 * 				- Use Media Queries to make a mobile version; where it encompasses the entire screen
 					 *
 					 * 2. Deploy and add to Resume!
 					 * 		- Fix major bugs; logging in bug. etc
@@ -284,6 +334,7 @@ const ListingPage: FC<Props> = (props) => {
 										}
 										reviewsCount={listingById.reviewsCount}
 										reviews={reviewsData}
+										openPortal={openReviewsPortal}
 									/>
 								</section>
 							) : null}
@@ -314,6 +365,8 @@ const ListingPage: FC<Props> = (props) => {
 						</div>
 					)}
 				</main>
+
+				{renderReviewsPortal()}
 
 				<div className="ListingPage__footer">
 					<div className="Footer-container">

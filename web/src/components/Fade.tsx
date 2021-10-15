@@ -17,11 +17,14 @@ const defaultStyle = {
 };
 
 const Fade = forwardRef<HTMLDivElement, FadeProps>((props, ref) => {
-	const { children, style = defaultStyle, configType = 'default', ...other } = props;
-	
-	if (style) {
-		if (configType) style.config = config[configType];
-	}
+	const {
+		children,
+		style = defaultStyle,
+		configType = "default",
+		...other
+	} = props;
+
+	if (configType) style.config = config[configType];
 
 	return (
 		<animated.div style={useSpring(style)} {...other} ref={ref}>

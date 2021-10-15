@@ -1,4 +1,6 @@
 .ListingTitle {
+	border-bottom: 1px solid $muted-line-color !important;
+	
 	&__title {
 		> h1 {
 			font-size: 2.8rem;
@@ -36,6 +38,11 @@
 		}
 
 		&__superhost {
+			white-space: nowrap;
+			span {
+				font-weight: 400;
+			}
+
 			svg {
 				fill: $main-color;
 				height: 1.2rem;

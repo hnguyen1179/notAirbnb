@@ -1,4 +1,5 @@
 import { AdvancedImage } from "@cloudinary/react";
+import { MouseEventHandler } from "react";
 import { Link } from "react-router-dom";
 import { useAppState } from "../../context/AppContext";
 import { Maybe } from "../../generated/graphql";
@@ -25,6 +26,7 @@ interface ReviewPartial {
 
 interface Props {
 	review: ReviewPartial;
+	openPortal: MouseEventHandler<HTMLButtonElement>;
 }
 
 const ListingReviewsItem = (props: Props) => {
@@ -61,7 +63,10 @@ const ListingReviewsItem = (props: Props) => {
 				<p>{definitelyNotAirbnb(props.review.content)}</p>
 			</div>
 
-			<button className="ListingReviewsItem__show-more show-more-button">
+			<button
+				className="ListingReviewsItem__show-more show-more-button"
+				onClick={props.openPortal}
+			>
 				Show more
 			</button>
 		</li>

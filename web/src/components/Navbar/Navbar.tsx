@@ -108,7 +108,7 @@ function Navbar({
 			);
 			document.body.removeEventListener("click", handleBodyClick);
 			window.removeEventListener("scroll", handleCloseNavigation);
-			handleClose();
+			if (open) handleClose();
 		};
 	}, []);
 

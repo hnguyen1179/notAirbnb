@@ -1,20 +1,13 @@
-import { Maybe } from "graphql/jsutils/Maybe";
 import { definitelyNotAirbnb } from "../../utils/definitelyNotAirbnb";
 import { ReactComponent as RightSvg } from "../../assets/icons/right-arrow.svg";
 import { usePortal } from "../../hooks/usePortal";
-import ShowListingDescription from "./ShowListingDescription";
+import ListingShowMore from "../ListingShowMore/ListingShowMore";
+import { showMoreStyle } from "../../pages/ListingPage";
 
 interface Props {
 	listingDescription: string;
+	configType: "stiff" | "default";
 }
-
-const style = {
-	from: { opacity: 0, transform: "translateY(50vh)" },
-	to: {
-		opacity: 1,
-		transform: "translateY(0vh)",
-	},
-};
 
 const ListingListingDescription = (props: Props) => {
 	const { Portal, portalProps, openPortal, closePortal } = usePortal();
@@ -31,11 +24,17 @@ const ListingListingDescription = (props: Props) => {
 				<RightSvg />
 			</button>
 
-			<Portal {...portalProps} style={style} configType="stiff">
-				<ShowListingDescription
-					listingDescription={revisedDescription}
+			<Portal
+				{...portalProps}
+				style={showMoreStyle}
+				configType={props.configType}
+			>
+				<ListingShowMore
 					closePortal={closePortal}
-				/>
+					className="ShowListingDescription"
+				>
+					{(_containerRef) => <p>{props.listingDescription}</p>}
+				</ListingShowMore>
 			</Portal>
 		</div>
 	);

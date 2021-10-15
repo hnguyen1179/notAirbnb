@@ -45,6 +45,12 @@ const ApolloProviderFC: React.FC = ({ children }) => {
 									return [...existing, ...incoming];
 								},
 							},
+							reviewsByListingId: {
+								keyArgs: ["id"],
+								merge(existing = [], incoming) {
+									return [...existing, ...incoming];
+								},
+							},
 							basicSearch: {
 								read(existing) {
 									if (!existing) return undefined;

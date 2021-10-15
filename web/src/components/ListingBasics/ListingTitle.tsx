@@ -22,6 +22,7 @@ const ListingTitle = (props: Props) => {
 		}
 	};
 
+	const locationString = `${props.city}, ${props.state}, United States`;
 	return (
 		<div className="ListingTitle">
 			<div className="ListingTitle__title">
@@ -36,20 +37,20 @@ const ListingTitle = (props: Props) => {
 					</button>
 				</span>
 				<span className="spacer">·</span>
+
+				<span className="ListingTitle__sub__location">
+					<span>{locationString}</span>
+				</span>
+
 				{props.superhost && (
 					<>
+						<span className="spacer">·</span>
 						<span className="ListingTitle__sub__superhost">
 							<SuperhostSvg />
 							<span>Superhost</span>
 						</span>
-						<span className="spacer">·</span>
 					</>
 				)}
-				<span className="ListingTitle__sub__location">
-					<span>
-						{props.city}, {props.state}, United States
-					</span>
-				</span>
 			</div>
 		</div>
 	);

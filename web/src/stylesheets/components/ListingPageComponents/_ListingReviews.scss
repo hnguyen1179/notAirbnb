@@ -94,6 +94,9 @@
 }
 
 .ListingReviewsItem {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
 	width: 85%;
 	flex-shrink: 0;
 	height: 23rem;
@@ -143,11 +146,74 @@
 		display: -webkit-box;
 		-webkit-line-clamp: 5;
 		-webkit-box-orient: vertical;
-		> p {
-			text-overflow: ellipsis;
 
+		> p {
+			white-space: pre-wrap;
+			text-overflow: ellipsis;
 			height: 95%;
 			font-weight: 400;
+		}
+	}
+
+	button.ListingReviewsItem__show-more {
+		margin: 0;
+		margin-top: auto;
+	}
+}
+
+.ShowMore--ShowListingReviews {
+	.ShowMore__container {
+		padding-top: 0;
+
+		> header {
+			position: absolute;
+			top: 1rem;
+			left: 50%;
+			transform: translateX(-50%);
+			background-color: white;
+
+			h2 {
+				display: flex;
+				align-items: center;
+				font-size: 2.8rem;
+				font-weight: 300;
+				padding-bottom: 0.5rem;
+
+				svg {
+					height: 2.4rem;
+					color: $main-color;
+					margin-right: 0.5rem;
+				}
+
+				.divider {
+					margin: 0 1rem;
+				}
+			}
+		}
+
+		.loading {
+			position: absolute;
+			left: 49%;
+			transform: translateX(-50%);
+			bottom: 2rem;
+			display: none; 
+
+			&.active {
+				display: block;
+			}
+		}
+
+		.ListingReviewsItem {
+			border: none;
+			height: unset;
+
+			&__content {
+				-webkit-line-clamp: unset;
+			}
+
+			&__show-more {
+				display: none;
+			}
 		}
 	}
 }
@@ -185,6 +251,10 @@
 				height: 95%;
 				font-weight: 400;
 			}
+		}
+
+		button.ListingReviewsItem__show-more {
+			margin-top: 1.4rem;
 		}
 	}
 }

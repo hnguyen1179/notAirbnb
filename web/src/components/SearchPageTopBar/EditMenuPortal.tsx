@@ -13,7 +13,7 @@ interface Props {
 	onlyFilters?: boolean;
 }
 
-const EditMenuPortal = ({ menuRef, onlyFilters }: Props) => {
+const EditMenuPortal = ({ menuRef, onlyFilters }: Props) => {	
 	const {
 		state: { edit, editMenu, location, dates, guests },
 		handleCloseEditMenu,

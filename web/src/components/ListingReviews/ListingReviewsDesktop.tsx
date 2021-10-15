@@ -1,3 +1,4 @@
+import { MouseEventHandler } from "react";
 import { ReactComponent as StarSvg } from "../../assets/icons/filled-star.svg";
 import { ReviewsByListingIdQuery } from "../../generated/graphql";
 import AverageScores from "./AverageScores";
@@ -17,6 +18,7 @@ interface Props {
 	averageScores: IAverageScores;
 	reviewsCount: number;
 	reviews: ReviewsByListingIdQuery;
+	openPortal: MouseEventHandler<HTMLButtonElement>;
 }
 
 const ListingReviewsDesktop = (props: Props) => {
@@ -46,13 +48,24 @@ const ListingReviewsDesktop = (props: Props) => {
 			</div>
 
 			<div className="ListingReviewsDesktop__reviews">
-				{props.reviews.reviewsByListingId.map((review, idx) => {
-					return <ListingReviewsItem key={idx} review={review} />;
-				})}
+				{props.reviews.reviewsByListingId
+					.slice(0, 4)
+					.map((review, idx) => {
+						return (
+							<ListingReviewsItem
+								key={idx}
+								review={review}
+								openPortal={props.openPortal}
+							/>
+						);
+					})}
 			</div>
 
 			{props.reviewsCount > 4 && (
-				<button className="ListingReviewsDesktop__show-all show-all-button">
+				<button
+					className="ListingReviewsDesktop__show-all show-all-button"
+					onClick={props.openPortal}
+				>
 					<span>Show all {props.reviewsCount} reviews</span>
 				</button>
 			)}
