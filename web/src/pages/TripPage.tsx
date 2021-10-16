@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { format, getDay } from "date-fns";
 import { Redirect } from "react-router";
 import { debounce } from "@material-ui/core";
@@ -17,6 +17,8 @@ import { ReactComponent as DoorSvg } from "../assets/icons/door.svg";
 import { ReactComponent as HospitalSvg } from "../assets/icons/hospital.svg";
 import { ReactComponent as QuestionSvg } from "../assets/icons/question.svg";
 import { ReactComponent as BoldNegativeSvg } from "../assets/icons/bold-negative.svg";
+import { ReactComponent as PositiveSvg } from "../assets/icons/positive.svg";
+import { ReactComponent as NegativeSvg } from "../assets/icons/negative.svg";
 import { calculateTotalRes } from "../utils/priceBreakdown";
 import { copyToClipboard } from "../utils/copyToClipboard";
 import { useAppState } from "../context/AppContext";
@@ -34,12 +36,25 @@ interface Props {
 }
 
 const TripPage = ({ id, routeProps }: Props) => {
-	const { cloudinary, mobile } = useAppState();
+	const containerRef = useRef<HTMLDivElement>(null);
+	const { user, cloudinary, mobile } = useAppState();
 	const [copied, setCopied] = useState(false);
+	const [cancel, setCancel] = useState(false);
 
 	const { loading, error, data } = useReservationByIdQuery({
 		variables: { id },
 	});
+
+	useEffect(() => {
+		if (!containerRef.current) return;
+
+		const element = containerRef.current;
+		element.addEventListener("scroll", handleCloseScroll);
+
+		return () => {
+			element.removeEventListener("scroll", handleCloseScroll);
+		};
+	}, [containerRef.current]);
 
 	if (error) {
 		return <Redirect to="/404" />;
@@ -79,8 +94,22 @@ const TripPage = ({ id, routeProps }: Props) => {
 
 	const total = calculateTotalRes(data.reservationById as Reservation);
 
+	const handleCancelReservation = () => {
+		if (user) {
+			routeProps.history.push(`/trips/${user.id}`);
+		}
+	};
+
+	const handleCloseScroll = () => {
+		setCancel(false);
+	};
+
 	const handleBackClick = () => {
 		routeProps.history.goBack();
+	};
+
+	const handleOpenCancel = () => {
+		setCancel(true);
 	};
 
 	const handleCopyAddress = debounce(() => {
@@ -118,7 +147,7 @@ const TripPage = ({ id, routeProps }: Props) => {
 			)}
 
 			<div className="TripPage-outer">
-				<div className="TripPage-container">
+				<div className="TripPage-container" ref={containerRef}>
 					<div className="TripPage-inner">
 						<header className="TripPage__header">
 							<span>
@@ -197,6 +226,35 @@ const TripPage = ({ id, routeProps }: Props) => {
 									<RightSvg />
 								</div>
 							</button>
+							<div className="cancel-button">
+								<button
+									className="button active"
+									onClick={handleOpenCancel}
+								>
+									<div>
+										<BoldNegativeSvg />
+										<span>Cancel reservation</span>
+										<RightSvg />
+									</div>
+								</button>
+								<div
+									className={`confirmation ${
+										cancel ? "show" : ""
+									}`}
+								>
+									<button
+										className="button active"
+										onClick={handleCancelReservation}
+									>
+										<div>
+											<BoldNegativeSvg />
+											<span>
+												Confirm your cancellation
+											</span>
+										</div>
+									</button>
+								</div>
+							</div>
 						</section>
 
 						<div className="big-divider" />

@@ -545,7 +545,47 @@ const Mutation = objectType({
       args: {
         id: nonNull(stringArg()),
       },
-      resolve: (_, args, context: Context) => {
+      resolve: async (_, args, context: Context) => {
+        const reservation = await context.prisma.reservation.findUnique({
+          where: { id: args.id },
+          select: {
+            dateStart: true,
+            dateEnd: true,
+            listingId: true,
+          },
+        });
+
+        if (!reservation) throw new Error('No such reservation');
+
+        const listing = await context.prisma.listing.findUnique({
+          where: { id: reservation?.listingId },
+          select: {
+            datesUnavailable: true,
+          },
+        });
+
+        if (!listing) throw new Error('No such listing');
+
+        const datesUnavailable = listing.datesUnavailable;
+
+        const distance =
+          differenceInDays(reservation.dateStart, reservation.dateEnd) * -1;
+
+        const idxStart = datesUnavailable.findIndex(
+          (date) => date === reservation.dateStart.toLocaleDateString(),
+        );
+
+        if (idxStart !== -1) {
+          
+        }
+
+        await context.prisma.listing.update({
+          where: { id: reservation.listingId },
+          data: {
+            datesUnavailable: datesUnavailable,
+          },
+        });
+
         return context.prisma.reservation.delete({
           where: { id: args.id },
         });
