@@ -40,10 +40,11 @@ const ListingHost = (props: Props) => {
 				</header>
 
 				<ul className="ListingHost__medals">
-					{props.host?.medals.length &&
-						props.host.medals.map((medal, idx) => (
-							<Medal key={idx} medal={medal as string} />
-						))}
+					{props.host?.medals.length
+						? props.host.medals.map((medal, idx) => (
+								<Medal key={idx} medal={medal as string} />
+						  ))
+						: null}
 				</ul>
 
 				<div className="ListingHost__description">

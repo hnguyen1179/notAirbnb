@@ -82,6 +82,10 @@
 			}
 		}
 	}
+
+	.Footer-container {
+		padding-bottom: 10rem;
+	}
 }
 
 @media screen and (min-width: 744px) {
@@ -106,7 +110,6 @@
 			}
 		}
 
-
 		&__basics {
 			&__title {
 				order: 1;
@@ -124,6 +127,10 @@
 
 		&__content .content-top {
 			display: flex;
+		}
+
+		.Footer-container {
+			padding-bottom: 4.8rem;
 		}
 	}
 }

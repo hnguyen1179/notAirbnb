@@ -1,3 +1,4 @@
+import { MouseEventHandler } from "react";
 import { ReactComponent as StarSvg } from "../../assets/icons/filled-star.svg";
 import { ReactComponent as SuperhostSvg } from "../../assets/icons/super.svg";
 import { nonBreakingSentence } from "../../utils/nonBreakingSentence";
@@ -9,6 +10,7 @@ interface Props {
 	city: string;
 	state: string;
 	superhost: boolean;
+	openPortal: MouseEventHandler<HTMLButtonElement>;
 }
 
 const ListingTitle = (props: Props) => {
@@ -32,7 +34,7 @@ const ListingTitle = (props: Props) => {
 				<span className="ListingTitle__sub__score">
 					<StarSvg />
 					<span className="score">{renderReviewScore()}</span>
-					<button>
+					<button onClick={props.openPortal}>
 						<span className="reviews-count">{`(${props.reviewsCount} reviews)`}</span>
 					</button>
 				</span>

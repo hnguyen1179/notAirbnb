@@ -64,22 +64,20 @@
 				margin: 0 1.4rem;
 			}
 
-
 			&__buttons {
 				button {
 					margin: 0 1.4rem;
 				}
-	
+
 				.close-button {
 					font-size: 1.4rem;
 					padding: 1rem;
 					background-color: black;
 					color: white;
-					border-radius: 0.8rem;;
+					border-radius: 0.8rem;
 				}
 			}
 		}
-
 	}
 }
 
@@ -227,5 +225,34 @@
 		height: 0.1rem;
 		background-color: $muted-line-color;
 		margin: 1.4rem 0;
+	}
+}
+
+@media screen and (max-width: 744px) {
+	.BoxButtons {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+
+		.PriceBreakdown {
+			border-top: 1px solid #ebebeb;
+			padding-top: 1rem;
+
+			span {
+				font-size: 1.6rem;
+			}
+
+			.divider {
+				margin-top: 3rem;
+			}
+		}
+
+		.submit-button-container {
+			position: fixed;
+			bottom: 0;
+			width: calc(100% - 6rem);
+			padding: 2rem 0;
+			background-color: white;
+		}
 	}
 }

@@ -8,6 +8,7 @@ import { Maybe } from "../../generated/graphql";
 import { useCalendarLogic } from "../../context/CalendarLogicContext";
 
 interface Props {
+	id: string;
 	city: string;
 	price: number;
 	cleaningFee: number;
@@ -92,6 +93,7 @@ const ListingReservationBox = (props: Props) => {
 			</header>
 
 			<BoxButtons
+				id={props.id}
 				dates={dates}
 				maxGuests={props.maxGuests}
 				numGuests={props.numGuests}

@@ -266,6 +266,13 @@ export type User = {
   reviewsCount: Scalars['Int'];
 };
 
+export type CreateReservationMutationVariables = Exact<{
+  data: ReservationCreateInput;
+}>;
+
+
+export type CreateReservationMutation = { createReservation?: Maybe<{ id: string, userId: string, listingId: string, dateStart: any, dateEnd: any, totalPrice: number }> };
+
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -368,6 +375,44 @@ export type UserByIdQueryVariables = Exact<{
 export type UserByIdQuery = { userById?: Maybe<{ id: string, firstName: string, lastName: string, email: string, dateJoined: string, reviewsCount: number }> };
 
 
+export const CreateReservationDocument = gql`
+    mutation createReservation($data: ReservationCreateInput!) {
+  createReservation(data: $data) {
+    id
+    userId
+    listingId
+    dateStart
+    dateEnd
+    totalPrice
+  }
+}
+    `;
+export type CreateReservationMutationFn = Apollo.MutationFunction<CreateReservationMutation, CreateReservationMutationVariables>;
+
+/**
+ * __useCreateReservationMutation__
+ *
+ * To run a mutation, you first call `useCreateReservationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateReservationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createReservationMutation, { data, loading, error }] = useCreateReservationMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateReservationMutation(baseOptions?: Apollo.MutationHookOptions<CreateReservationMutation, CreateReservationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateReservationMutation, CreateReservationMutationVariables>(CreateReservationDocument, options);
+      }
+export type CreateReservationMutationHookResult = ReturnType<typeof useCreateReservationMutation>;
+export type CreateReservationMutationResult = Apollo.MutationResult<CreateReservationMutation>;
+export type CreateReservationMutationOptions = Apollo.BaseMutationOptions<CreateReservationMutation, CreateReservationMutationVariables>;
 export const LoginDocument = gql`
     mutation login($email: String!, $password: String!) {
   login(email: $email, password: $password) {

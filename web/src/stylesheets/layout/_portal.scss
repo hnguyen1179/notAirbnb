@@ -44,6 +44,11 @@
 		height: calc(98% - 6.2rem);
 		overflow-y: auto;
 		padding: 3rem;
+
+		h2 {
+			font-weight: 500;
+			font-size: 2.8rem;
+		}
 	}
 }
 

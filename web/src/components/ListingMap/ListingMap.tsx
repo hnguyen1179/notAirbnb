@@ -5,12 +5,14 @@ import { createMapOptions } from "../../utils/createMapOptions";
 import HouseMarkerBasic from "../MapMarkers/HouseMarkerBasic";
 import { ReactComponent as RightSvg } from "../../assets/icons/right-arrow.svg";
 import { definitelyNotAirbnb } from "../../utils/definitelyNotAirbnb";
+import { MouseEventHandler } from "react";
 
 interface Props {
 	city: string;
 	state: string;
 	address: string;
 	locationDescription: Maybe<string> | undefined;
+	openPortal: MouseEventHandler<HTMLButtonElement>;
 }
 
 const ListingMap = (props: Props) => {
@@ -50,7 +52,7 @@ const ListingMap = (props: Props) => {
 						<p>{definitelyNotAirbnb(props.locationDescription)}</p>
 					</div>
 
-					<button className="show-more-button">
+					<button className="show-more-button" onClick={props.openPortal}>
 						<span>Show more</span>
 						<RightSvg />
 					</button>

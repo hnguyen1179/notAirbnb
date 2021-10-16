@@ -490,35 +490,38 @@ const Mutation = objectType({
       resolve: async (_, args, context: Context) => {
         const userId = getUserId(context);
 
-        if (userId === undefined) throw new Error('User undefined');
+        if (!userId) throw new Error('No such userId');
 
-        const data = await context.prisma.listing.findUnique({
+        const listing = await context.prisma.listing.findUnique({
           where: { id: args.data.listingId },
           select: {
             datesUnavailable: true,
           },
         });
 
-        if (!data?.datesUnavailable) throw new Error('Dates Undefined');
+        if (!listing) throw new Error('No such listing');
 
-        const datesUnavailable: any = data?.datesUnavailable;
+        const datesUnavailable = listing.datesUnavailable as string[];
         const start = new Date(args.data.dateStart);
 
         while (
           start.toLocaleDateString() !== args.data.dateEnd.toLocaleDateString()
         ) {
-          datesUnavailable[start.toLocaleDateString()] = true;
+          datesUnavailable.push(start.toLocaleDateString());
           start.setDate(start.getDate() + 1);
         }
 
-        context.prisma.listing.update({
+        // Push in the the ending date too;
+        datesUnavailable.push(start.toLocaleDateString());
+
+        await context.prisma.listing.update({
           where: { id: args.data.listingId },
           data: {
             datesUnavailable: datesUnavailable,
           },
         });
 
-        return context.prisma.reservation.create({
+        const reservation = await context.prisma.reservation.create({
           data: {
             userId: userId,
             listingId: args.data.listingId,
@@ -527,6 +530,8 @@ const Mutation = objectType({
             totalPrice: args.data.totalPrice,
           },
         });
+
+        return reservation;
       },
     });
 

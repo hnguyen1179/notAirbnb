@@ -26,6 +26,7 @@ import HouseMarker from "../components/MapMarkers/HouseMarker";
 import Navbar from "../components/Navbar/Navbar";
 import { createMapOptions } from "../utils/createMapOptions";
 import { Link } from "react-router-dom";
+import { numberWithCommas } from "../utils/numberWithCommas";
 
 interface Props {
 	id: string;
@@ -207,10 +208,18 @@ const TripPage = ({ id, routeProps }: Props) => {
 							<div className="TripPage__receipt__breakdown">
 								<div className="breakdown-line">
 									<span>
-										${listing.price?.toFixed(2)} x{" "}
-										{total.totalNights} nights
+										$
+										{numberWithCommas(
+											listing.price.toFixed(2)
+										)}{" "}
+										x {total.totalNights} nights
 									</span>
-									<span>${total.price?.toFixed(2)}</span>
+									<span>
+										$
+										{numberWithCommas(
+											total.price?.toFixed(2) || 0
+										)}
+									</span>
 								</div>
 								<div className="breakdown-line">
 									<span>Cleaning fee</span>
@@ -230,7 +239,7 @@ const TripPage = ({ id, routeProps }: Props) => {
 								</div>
 								<div className="breakdown-line total">
 									<span>Total (USD)</span>
-									<span>${total.totalPrice}</span>
+									<span>{total.totalPrice}</span>
 								</div>
 							</div>
 						</section>

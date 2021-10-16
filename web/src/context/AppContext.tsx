@@ -71,7 +71,7 @@ const AppStateProvider: React.FC = ({ children }) => {
 
 const initialState: any = {};
 
-interface UserPartial {
+export interface UserPartial {
 	id: string;
 	firstName: string;
 	lastName: string;

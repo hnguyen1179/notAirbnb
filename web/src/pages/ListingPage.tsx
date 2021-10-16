@@ -1,4 +1,4 @@
-import { FC, MouseEvent, useEffect, useState } from "react";
+import { FC, MouseEvent, useEffect, useRef, useState } from "react";
 import { Redirect, RouteComponentProps } from "react-router";
 
 import {
@@ -30,6 +30,8 @@ import { useURLParams } from "../context/URLParamsContext";
 import { usePortal } from "../hooks/usePortal";
 import ListingShowMore from "../components/ListingShowMore/ListingShowMore";
 import ShowListingReviews from "../components/ListingReviews/ShowListingReviews";
+import ShowListingMap from "../components/ListingMap/ShowListingMap";
+import ListingReservationMobile from "../components/ListingReservation/ListingReservationMobile";
 
 interface Props extends RouteComponentProps {
 	id: string;
@@ -44,18 +46,27 @@ export const showMoreStyle = {
 };
 
 const ListingPage: FC<Props> = (props) => {
-	console.log("ListingPage rendered")
+	console.log("ListingPage rendered");
+	const calendarRef = useRef<HTMLElement>(null);
 	const { id, history } = props;
 	const { cloudinary, mobile } = useAppState();
 	const {
 		state: { dates, guests },
 		searchHandlers: { handleDateChange },
 	} = useURLParams();
+
 	const {
 		Portal: ReviewsPortal,
 		portalProps: reviewsPortalProps,
 		openPortal: openReviewsPortal,
 		closePortal: closeReviewsPortal,
+	} = usePortal();
+
+	const {
+		Portal: MapPortal,
+		portalProps: mapPortalProps,
+		openPortal: openMapPortal,
+		closePortal: closeMapPortal,
 	} = usePortal();
 
 	useEffect(() => {
@@ -142,6 +153,32 @@ const ListingPage: FC<Props> = (props) => {
 		</ReviewsPortal>
 	);
 
+	const renderMapPortal = () => (
+		<MapPortal
+			{...mapPortalProps}
+			style={showMoreStyle}
+			configType={"default"}
+		>
+			<ListingShowMore
+				closePortal={closeMapPortal}
+				className="ShowListingMap"
+			>
+				{(_containerRef) => {
+					return (
+						<ShowListingMap
+							city={listingById.city}
+							state={listingById.state}
+							address={listingById.address}
+							locationDescription={
+								listingById.locationDescription
+							}
+						/>
+					);
+				}}
+			</ListingShowMore>
+		</MapPortal>
+	);
+
 	return (
 		<CalendarLogicProvider
 			dates={dates}
@@ -186,6 +223,7 @@ const ListingPage: FC<Props> = (props) => {
 							city={listingById.city}
 							state={listingById.state}
 							superhost={listingById.superhost}
+							openPortal={openReviewsPortal}
 						/>
 					</section>
 				</div>
@@ -193,6 +231,7 @@ const ListingPage: FC<Props> = (props) => {
 				<main className="ListingPage__content">
 					<div className="content-top">
 						<div className="content-top-left">
+							{/* BASIC DETAILS */}
 							<section className="ListingPage__content__details">
 								<ListingDetails
 									cloudinary={cloudinary}
@@ -206,12 +245,14 @@ const ListingPage: FC<Props> = (props) => {
 								/>
 							</section>
 
+							{/* HIGHLIGHTS */}
 							<section className="ListingPage__content__highlights">
 								<ListingHighlights
 									highlights={listingById.highlights}
 								/>
 							</section>
 
+							{/* LISTING DESCRIPTION */}
 							{listingById?.listingDescription ? (
 								<section className="ListingPage__content__listing-description">
 									<ListingListingDescription
@@ -223,6 +264,7 @@ const ListingPage: FC<Props> = (props) => {
 								</section>
 							) : null}
 
+							{/* AMENITIES */}
 							<section className="ListingPage__content__amenities">
 								<ListingAmenities
 									amenities={listingById.amenities}
@@ -230,6 +272,7 @@ const ListingPage: FC<Props> = (props) => {
 								/>
 							</section>
 
+							{/* MAP */}
 							{/* Render this conditionally based on mobile */}
 							{mobile && (
 								<section className="ListingPage__content__map">
@@ -240,11 +283,16 @@ const ListingPage: FC<Props> = (props) => {
 										locationDescription={
 											listingById.locationDescription
 										}
+										openPortal={openMapPortal}
 									/>
 								</section>
 							)}
 
-							<section className="ListingPage__content__reservation">
+							{/* CALENDAR */}
+							<section
+								className="ListingPage__content__reservation"
+								ref={calendarRef}
+							>
 								<ListingReservation
 									city={listingById.city}
 									datesUnavailable={
@@ -291,6 +339,7 @@ const ListingPage: FC<Props> = (props) => {
 							{!mobile && (
 								<div className="ListingPage__content__reservation-box">
 									<ListingReservationBox
+										id={listingById.id}
 										city={listingById.city}
 										price={listingById.price}
 										cleaningFee={listingById.cleaningFee}
@@ -308,21 +357,7 @@ const ListingPage: FC<Props> = (props) => {
 						</div>
 					</div>
 
-					{/**
-					 * TODO:
-					 *
-					 * 1. Finish functionality of ListingPage
-					 * 		- Reserve functionality
-					 * 		- Create Reviews functionality
-					 * 		- Fix usePortal Portal
-					 * 				- Use Media Queries to make a mobile version; where it encompasses the entire screen
-					 *
-					 * 2. Deploy and add to Resume!
-					 * 		- Fix major bugs; logging in bug. etc
-					 *
-					 *
-					 */}
-
+					{/* Bottom Content -- contains: Reviews, Map, Host, Rules */}
 					{!mobile && (
 						<div className="content-bottom">
 							{reviewsData.reviewsByListingId.length ? (
@@ -347,6 +382,7 @@ const ListingPage: FC<Props> = (props) => {
 									locationDescription={
 										listingById.locationDescription
 									}
+									openPortal={openMapPortal}
 								/>
 							</section>
 
@@ -367,6 +403,21 @@ const ListingPage: FC<Props> = (props) => {
 				</main>
 
 				{renderReviewsPortal()}
+				{renderMapPortal()}
+
+				{mobile && (
+					<ListingReservationMobile
+						id={listingById.id}
+						price={listingById.price}
+						cleaningFee={listingById.cleaningFee}
+						averageScore={listingById.averageScore}
+						reviewsCount={listingById.reviewsCount}
+						region={listingById.region}
+						numGuests={guests}
+						maxGuests={listingById.numGuests}
+						calendarRef={calendarRef}
+					/>
+				)}
 
 				<div className="ListingPage__footer">
 					<div className="Footer-container">

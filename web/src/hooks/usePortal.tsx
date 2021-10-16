@@ -1,8 +1,4 @@
-import React, {
-	MouseEventHandler,
-	useCallback,
-	useState,
-} from "react";
+import React, { MouseEventHandler, useCallback, useState } from "react";
 import { createPortal } from "react-dom";
 import Fade from "../components/Fade";
 
@@ -42,7 +38,7 @@ const usePortal = () => {
 	return { Portal, portalProps, openPortal, closePortal, togglePortal };
 };
 
-interface PortalProps {
+export interface PortalProps {
 	portal: boolean;
 	closePortal: () => void;
 	style?: any;
@@ -61,7 +57,7 @@ const Portal: React.FC<PortalProps> = ({
 	if (!portal) return null;
 
 	return createPortal(
-		<div className="Portal">
+		<div className="Portal" aria-hidden={!portal}>
 			{enableBackground && (
 				<div className="Portal__background" onClick={closePortal} />
 			)}

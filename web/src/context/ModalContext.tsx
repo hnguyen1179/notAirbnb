@@ -7,7 +7,8 @@ interface IModalProviderProps {
 	setEntry: (x: string) => void;
 	open: boolean;
 	setOpen: (x: boolean) => void;
-	getCursorPos: (a: any, el: HTMLElement | null) => void;
+	handleOpenEntry: () => void;
+ 	getCursorPos: (a: any, el: HTMLElement | null) => void;
 }
 
 export const ModalContext = createContext<IModalProviderProps | undefined>(
@@ -50,6 +51,11 @@ const ModalProvider: React.FC = ({ children }) => {
 		}
 	};
 
+	const handleOpenEntry = () => {
+		setEntry("unverified");
+		setOpen(true);
+	};
+
 	const providerProps: IModalProviderProps = {
 		demoClicked,
 		setDemoClicked,
@@ -57,6 +63,7 @@ const ModalProvider: React.FC = ({ children }) => {
 		setEntry,
 		open,
 		setOpen,
+		handleOpenEntry,
 		getCursorPos,
 	};
 
@@ -76,3 +83,4 @@ const useModal = () => {
 };
 
 export { ModalProvider, useModal };
+	

@@ -1,11 +1,16 @@
 import { useRef, useState } from "react";
-import { DateRange } from "react-date-range";
+import { useHistory } from "react-router";
+import { useAppState } from "../../context/AppContext";
 import { useModal } from "../../context/ModalContext";
+import { useURLParams } from "../../context/URLParamsContext";
+import { useCreateReservationMutation } from "../../generated/graphql";
 import { calculateTotalArgs } from "../../utils/priceBreakdown";
 import { IDate } from "../MobileNavbar/MobileSearchForm";
+import ListingReservationDesktopButton from "./ListingReservationDesktopButton";
 import PriceBreakdown from "./PriceBreakdown";
 
 interface Props {
+	id: string;
 	dates: IDate;
 	maxGuests: number;
 	numGuests: number;
@@ -13,10 +18,11 @@ interface Props {
 	cleaningFee: number;
 	region: string;
 	defaultDate: boolean;
-	handleOpenCalendar: () => void;
+	handleOpenCalendar?: () => void;
 }
 
 const BoxButtons = ({
+	id,
 	dates,
 	maxGuests,
 	numGuests,
@@ -27,8 +33,18 @@ const BoxButtons = ({
 	handleOpenCalendar,
 }: Props) => {
 	const gradientRef = useRef<HTMLElement>(null);
-	const { getCursorPos } = useModal();
+	const history = useHistory();
+	const { mobile, user } = useAppState();
+	const { getCursorPos, handleOpenEntry } = useModal();
 	const [guests, setGuests] = useState(numGuests ? numGuests : 1);
+
+	const [createReservation, createReservationResults] =
+		useCreateReservationMutation({
+			onCompleted: (data) => {
+				console.log(" im done with this shit ");
+				history.push(`/trip/${data.createReservation?.id}`);
+			},
+		});
 
 	const sameDates =
 		dates.startDate.toLocaleDateString() ===
@@ -41,6 +57,30 @@ const BoxButtons = ({
 		cleaningFee,
 		region,
 	});
+
+	const handleAddReservation = async () => {
+		const payload = {
+			listingId: id,
+			dateStart: dates.startDate,
+			dateEnd: dates.endDate,
+			totalPrice: +priceBreakdown.totalPrice.slice(1),
+		};
+
+		await createReservation({
+			variables: {
+				data: payload,
+			},
+		});
+	};
+
+	// t.nonNull.string("listingId");
+	// t.nonNull.field("dateStart", {
+	// 	type: "DateTime",
+	// });
+	// t.nonNull.field("dateEnd", {
+	// 	type: "DateTime",
+	// });
+	// t.nonNull.int("totalPrice");
 
 	return (
 		<div className="BoxButtons">
@@ -80,21 +120,36 @@ const BoxButtons = ({
 				</div>
 			</div>
 
-			<button
-				className="BoxButtons__submit-button"
-				onMouseMove={(e) => getCursorPos(e, gradientRef.current)}
-			>
-				<span className="gradient-container">
-					<span className="gradient" ref={gradientRef}></span>
-				</span>
-				<span className="text">Reserve</span>
-			</button>
+			<div className="submit-button-container">
+				{!mobile ? (
+					<ListingReservationDesktopButton
+						user={user}
+						gradientRef={gradientRef}
+						getCursorPos={getCursorPos}
+						handleOpenEntry={handleOpenEntry}
+						handleAddReservation={handleAddReservation}
+					/>
+				) : (
+					<button
+						className="BoxButtons__submit-button"
+						onMouseMove={(e) =>
+							getCursorPos(e, gradientRef.current)
+						}
+						onClick={handleAddReservation}
+					>
+						<span className="gradient-container">
+							<span className="gradient" ref={gradientRef}></span>
+						</span>
+						<span className="text">Reserve</span>
+					</button>
+				)}
+			</div>
 
-			{!defaultDate && !sameDates && (
+			{!defaultDate && !sameDates ? (
 				<div className="BoxButtons__price-breakdown">
 					<PriceBreakdown priceBreakdown={priceBreakdown} />
 				</div>
-			)}
+			) : null}
 		</div>
 	);
 };
