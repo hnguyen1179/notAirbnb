@@ -46,10 +46,11 @@
 		margin-right: auto;
 		overflow-x: hidden;
 
-		--scrollbar-width: 0px;
+		scrollbar-width: none;
 
-		&::-webkit-scrollbar {
-		}
+		// &::-webkit-scrollbar {
+    //   display: none;
+		// }
 	}
 
 	&__header {
@@ -230,6 +231,7 @@
 					font-weight: 300;
 					border-top: 1px solid $muted-line-color;
 					padding-top: 1rem;
+					font-size: 1.8rem;
 				}
 
 				margin: 1rem 0;

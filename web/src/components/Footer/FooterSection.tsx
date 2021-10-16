@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 interface FooterData {
 	title: string;
@@ -23,7 +24,10 @@ const FooterSection = ({ data }: Props) => {
 					// TODO: Update URL for resume with updated resume.
 					// Maybe just save the document within assets and host it
 					return (
-						<li key={idx} className={`FooterSection__list__item ${defined}`}>
+						<li
+							key={idx}
+							className={`FooterSection__list__item ${defined}`}
+						>
 							<a href={url || ""} target="_blank">
 								{text}
 							</a>

@@ -15,6 +15,7 @@
 	a {
 		inset: 0px;
 		position: absolute;
+		z-index: 5;
 	}
 
 	&__image {
@@ -73,7 +74,7 @@
 
 				&:first-of-type {
 					margin-left: 0.5rem;
-					margin-right: 0.25rem;
+					margin-right: 0.5rem;
 				}
 
 				&:last-of-type {

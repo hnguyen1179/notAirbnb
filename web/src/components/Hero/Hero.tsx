@@ -1,4 +1,4 @@
-import React from "react";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
 	return (
@@ -25,9 +25,9 @@ const Hero = () => {
 				<span>Not sure where to go?</span>
 				<span>Perfect.</span>
 				<button>
-					<a href="">
+					<Link to="">
 						<span>I'm flexible</span>
-					</a>
+					</Link>
 				</button>
 			</div>
 		</div>

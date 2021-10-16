@@ -26,7 +26,7 @@ const ListingDetails = (props: Props) => {
 	return (
 		<div className="ListingDetails">
 			<div className="ListingDetails__top">
-				<div>
+				<div className="ListingDetails__top__title">
 					<div>
 						{props.listingType}
 					</div>

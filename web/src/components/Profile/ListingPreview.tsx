@@ -3,6 +3,7 @@ import { Cloudinary } from "@cloudinary/base";
 import { ReactComponent as StarSvg } from "../../assets/icons/filled-star.svg";
 
 import { Listing } from "../../generated/graphql";
+import { Link } from "react-router-dom";
 
 interface Props {
 	url: string;
@@ -13,7 +14,7 @@ interface Props {
 const ListingPreview = ({ url, cloudinary, listing }: Props) => {
 	return (
 		<li className="ListingPreview">
-			<a href={`/listing/${listing.id}`}>
+			<Link to={`/listing/${listing.id}`}>
 				<div className="ListingPreview__image">
 					<AdvancedImage cldImg={cloudinary.image(url)} />
 				</div>
@@ -28,7 +29,7 @@ const ListingPreview = ({ url, cloudinary, listing }: Props) => {
 					<div>{listing.listingType}</div>
 					<div>{listing.title}</div>
 				</div>
-			</a>
+			</Link>
 		</li>
 	);
 };

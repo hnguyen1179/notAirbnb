@@ -2,9 +2,9 @@ import {
 	createContext,
 	useContext,
 	useReducer,
-	useEffect,
 	useState,
 	useRef,
+	useMemo,
 } from "react";
 import { History } from "history";
 import {
@@ -12,15 +12,16 @@ import {
 	editQueryReducer,
 	EditQueryState,
 } from "../reducers/editQueryReducer";
-import { BasicSearchVariables } from "../pages/SearchPage";
 import { addDays, format } from "date-fns";
-import { OnDateRangeChangeProps } from "react-date-range";
+import { useHistory } from "react-router";
 import {
 	ArrayField,
 	BooleanField,
 } from "../components/SearchPageTopBar/FiltersEditMenu";
+import { BasicSearchVariables } from "../pages/SearchPage";
 
 interface IURLParamsProviderProps {
+	variables: BasicSearchVariables;
 	state: EditQueryState;
 	history: History<any>;
 	submitNewQuery: () => void;
@@ -31,7 +32,7 @@ interface IURLParamsProviderProps {
 	resetFilters: () => void;
 	searchHandlers: {
 		handleLocationChange: (value: string) => void;
-		handleDateChange: (ranges: OnDateRangeChangeProps) => void;
+		handleDateChange: (ranges: any) => void;
 		handleGuestChange: (value: number) => void;
 	};
 	filterHandlers: {
@@ -69,22 +70,63 @@ const editMenuDefault = {
 	filters: false,
 };
 
-interface Props {
-	history: History<any>;
-	variables: BasicSearchVariables;
-	openFilter: boolean;
-	setOpenFilter: (state: boolean) => void;
-	activeNumFilters: number;
-}
+const URLParamsProvider: React.FC = ({ children }) => {
+	console.log("RENDERED PARAMS CONTEXT");
+	console.log("LS PARAMS: ", localStorage.getItem("params"));
+	
+	const history = useHistory();
+	const currentSearchString = localStorage.getItem("params");
+	const searchString = history.location.search
+		? history.location.search
+		: currentSearchString;
 
-const URLParamsProvider: React.FC<Props> = ({
-	children,
-	history,
-	variables,
-	openFilter,
-	setOpenFilter,
-	activeNumFilters,
-}) => {
+	const searchParams = useMemo(
+		() => new URLSearchParams(searchString || ""),
+		[searchString]
+	);
+
+	const variables: BasicSearchVariables = useMemo(
+		() => ({
+			region: searchParams.get("region") as string,
+			guests: parseInt(searchParams.get("guests") as string),
+			checkIn:
+				(searchParams.get("check-in") as string) ||
+				new Date().toString(),
+			checkOut:
+				(searchParams.get("check-out") as string) ||
+				new Date().toString(),
+			tags: (searchParams.get("tags") as string)?.split(";"),
+			listingType: (searchParams.get("listingType") as string)?.split(
+				";"
+			),
+			languages: (searchParams.get("languages") as string)?.split(";"),
+			smoking: searchParams.get("smoking") === "true",
+			pets: searchParams.get("pets") === "true",
+			superhost: searchParams.get("superhost") === "true",
+			entire: searchParams.get("entire") === "true",
+			privateListing: searchParams.get("privateListing") === "true",
+			offset: (parseInt(searchParams.get("page") as string) - 1) * 10,
+		}),
+		[searchParams]
+	);
+
+	// Checks to see if any filters are set
+	const activeNumFilters = Array.from(
+		searchParams.entries(),
+		([key, _]) => key
+	).filter((key) => {
+		return [
+			"tags",
+			"listingType",
+			"languages",
+			"smoking",
+			"pets",
+			"superhost",
+			"entire",
+			"privateListing",
+		].includes(key);
+	}).length;
+
 	const initialReducerState = {
 		...variables,
 		tags: variables.tags || [],
@@ -105,15 +147,15 @@ const URLParamsProvider: React.FC<Props> = ({
 		},
 	};
 
+	{
+		// PAGE REFRESH WILL WIPE OUT THE STATE OF REDUCER; and so you must
+		// store the last value within the localStorage and then if it exists;
+		// you must write it as initial state;
+	}
+
 	const [state, dispatch] = useReducer(editQueryReducer, initialReducerState);
 	const [clear, setClear] = useState(false);
 	const tempState = useRef<EditQueryState | null>(null);
-
-	useEffect(() => {
-		if (openFilter) {
-			handleOpenEditMenu("filters");
-		}
-	}, [openFilter]);
 
 	// Functions involve dispatch/changing reducer state
 
@@ -136,7 +178,6 @@ const URLParamsProvider: React.FC<Props> = ({
 		document.body.style.overflow = "unset";
 
 		setClear(false);
-		setOpenFilter(false);
 		dispatch({ type: "closeEdit" });
 		dispatch({ type: "closeEditMenu" });
 
@@ -146,10 +187,10 @@ const URLParamsProvider: React.FC<Props> = ({
 		}
 
 		const nextSearch = new URLSearchParams(history.location.search);
-		nextSearch.set("region", location.split(", ")[0]);
+		nextSearch.set("region", location?.split(", ")[0] || "Anywhere");
 		nextSearch.set("check-in", format(dates.startDate, "M-d-yyy"));
 		nextSearch.set("check-out", format(checkOut, "M-d-yyy"));
-		nextSearch.set("guests", guests.toString());
+		nextSearch.set("guests", guests?.toString());
 		nextSearch.set("page", "1");
 
 		const arrayFields: { [key: string]: string[] } = {
@@ -184,6 +225,8 @@ const URLParamsProvider: React.FC<Props> = ({
 			}
 		});
 
+		localStorage.setItem("params", nextSearch.toString());
+
 		history.push({
 			pathname: history.location.pathname,
 			search: nextSearch.toString(),
@@ -210,7 +253,6 @@ const URLParamsProvider: React.FC<Props> = ({
 	// Closes the edit menu
 	const handleCloseEditMenu = () => {
 		document.body.style.overflow = "unset";
-		setOpenFilter(false);
 
 		if (clear) {
 			dispatch({
@@ -236,7 +278,7 @@ const URLParamsProvider: React.FC<Props> = ({
 	};
 
 	// Date Change
-	const handleDateChange = (ranges: OnDateRangeChangeProps) => {
+	const handleDateChange = (ranges: any) => {
 		const start = ranges.selection.startDate as Date;
 		const end = ranges.selection.endDate as Date;
 
@@ -313,6 +355,7 @@ const URLParamsProvider: React.FC<Props> = ({
 	};
 
 	const providerProps: IURLParamsProviderProps = {
+		variables,
 		state,
 		history,
 		submitNewQuery,

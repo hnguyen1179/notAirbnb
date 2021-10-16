@@ -6,12 +6,14 @@ import MobileEditGuests from "../MobileNavbar/MobileEditGuests";
 import MobileEditLocation from "../MobileNavbar/MobileEditLocation";
 import FiltersEditMenu from "./FiltersEditMenu";
 import { useURLParams } from "../../context/URLParamsContext";
+import Fade from "../Fade";
 
 interface Props {
-	menuRef: Ref<HTMLDivElement>;
+	menuRef?: Ref<HTMLDivElement>;
+	onlyFilters?: boolean;
 }
 
-const EditMenuPortal = ({ menuRef }: Props) => {
+const EditMenuPortal = ({ menuRef, onlyFilters }: Props) => {	
 	const {
 		state: { edit, editMenu, location, dates, guests },
 		handleCloseEditMenu,
@@ -66,7 +68,13 @@ const EditMenuPortal = ({ menuRef }: Props) => {
 							submitEdit={submitNewQuery}
 						/>
 					)}
-					{editMenu.filters && <FiltersEditMenu />}
+					{onlyFilters ? (
+						<Fade>
+							<FiltersEditMenu />
+						</Fade>
+					) : (
+						editMenu.filters && <FiltersEditMenu />
+					)}
 				</div>,
 				document?.querySelector("#root") as Element
 			)}

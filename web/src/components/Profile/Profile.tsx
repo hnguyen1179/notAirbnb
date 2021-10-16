@@ -1,8 +1,7 @@
-import { useContext } from "react";
 import { AdvancedImage } from "@cloudinary/react";
 import { Cloudinary } from "@cloudinary/base";
 
-import { AppContext } from "../../context/AppContext";
+import { useAppState } from "../../context/AppContext";
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading";
 import MobileNavbar from "../MobileNavbar/MobileNavbar";
@@ -46,7 +45,7 @@ interface Props {
 }
 
 const Profile = ({ typeProps, routeProps, hostProps }: Props) => {
-	const { cloudinary, mobile, user: currentUser } = useContext(AppContext);
+	const { cloudinary, mobile, user: currentUser } = useAppState();
 	const logout = useLogout();
 
 	const handleLogout = async () => {

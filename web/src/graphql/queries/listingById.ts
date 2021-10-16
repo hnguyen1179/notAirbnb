@@ -14,6 +14,14 @@ const LISTING_BY_ID = gql`
 			price
 			superhost
 			averageScore
+			averageScores {
+				cleanliness
+				accuracy
+				communication
+				location
+				checkin
+				value
+			}
 			reviewsCount
 			imageComments
 			amenities
@@ -26,9 +34,17 @@ const LISTING_BY_ID = gql`
 			listingDescription
 			locationDescription
 			stayDescription
+			datesUnavailable
+			languages
+			houseRules
+			healthAndSafety
 			host {
 				id
 				firstName
+				medals
+				details
+				description
+				dateJoined
 			}
 		}
 	}

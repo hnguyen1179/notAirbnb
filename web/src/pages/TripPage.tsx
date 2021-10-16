@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { format, getDay } from "date-fns";
 import { Redirect } from "react-router";
 import { debounce } from "@material-ui/core";
@@ -19,12 +19,14 @@ import { ReactComponent as QuestionSvg } from "../assets/icons/question.svg";
 import { ReactComponent as BoldNegativeSvg } from "../assets/icons/bold-negative.svg";
 import { calculateTotalRes } from "../utils/priceBreakdown";
 import { copyToClipboard } from "../utils/copyToClipboard";
-import { AppContext } from "../context/AppContext";
+import { useAppState } from "../context/AppContext";
 import { coordinates } from "../constants/coordinates";
 import HouseMarkerBasic from "../components/MapMarkers/HouseMarkerBasic";
 import HouseMarker from "../components/MapMarkers/HouseMarker";
-import { style } from "../constants/simpleMapStyle";
 import Navbar from "../components/Navbar/Navbar";
+import { createMapOptions } from "../utils/createMapOptions";
+import { Link } from "react-router-dom";
+import { numberWithCommas } from "../utils/numberWithCommas";
 
 interface Props {
 	id: string;
@@ -32,7 +34,7 @@ interface Props {
 }
 
 const TripPage = ({ id, routeProps }: Props) => {
-	const { cloudinary, mobile } = useContext(AppContext);
+	const { cloudinary, mobile } = useAppState();
 	const [copied, setCopied] = useState(false);
 
 	const { loading, error, data } = useReservationByIdQuery({
@@ -90,16 +92,6 @@ const TripPage = ({ id, routeProps }: Props) => {
 		}, 500);
 	}, 200);
 
-	const createMapOptions = (maps: any) => ({
-		gestureHandling: mobile ? "none" : "auto",
-		zoomControl: mobile ? false : true,
-		zoomControlOptions: {
-			position: maps.ControlPosition.TOP_RIGHT,
-		},
-		fullscreenControl: false,
-		styles: style,
-	});
-
 	const mapValues = {
 		zoom: 16,
 		center: coordinates[address],
@@ -142,7 +134,7 @@ const TripPage = ({ id, routeProps }: Props) => {
 								<span className="image-count">
 									1/{imageComments.length}
 								</span>
-								<a href={`/listing/${listingId}`}>
+								<Link to={`/listing/${listingId}`}>
 									<AdvancedImage
 										cldImg={cloudinary.image(
 											`images/${region
@@ -153,12 +145,12 @@ const TripPage = ({ id, routeProps }: Props) => {
 												)}/${listingId}/image-0`
 										)}
 									/>
-								</a>
+								</Link>
 							</div>
 							<div>
-								<a href={`/listing/${listingId}`}>
+								<Link to={`/listing/${listingId}`}>
 									<h2>{title}</h2>
-								</a>
+								</Link>
 							</div>
 						</section>
 
@@ -216,10 +208,18 @@ const TripPage = ({ id, routeProps }: Props) => {
 							<div className="TripPage__receipt__breakdown">
 								<div className="breakdown-line">
 									<span>
-										${listing.price?.toFixed(2)} x{" "}
-										{total.totalNights} nights
+										$
+										{numberWithCommas(
+											listing.price.toFixed(2)
+										)}{" "}
+										x {total.totalNights} nights
 									</span>
-									<span>${total.price?.toFixed(2)}</span>
+									<span>
+										$
+										{numberWithCommas(
+											total.price?.toFixed(2) || 0
+										)}
+									</span>
 								</div>
 								<div className="breakdown-line">
 									<span>Cleaning fee</span>
@@ -239,7 +239,7 @@ const TripPage = ({ id, routeProps }: Props) => {
 								</div>
 								<div className="breakdown-line total">
 									<span>Total (USD)</span>
-									<span>${total.totalPrice}</span>
+									<span>{total.totalPrice}</span>
 								</div>
 							</div>
 						</section>
@@ -301,11 +301,11 @@ const TripPage = ({ id, routeProps }: Props) => {
 									</a>
 								</button>
 								<button className="button active">
-									<a href={`/listing/${listingId}`}>
+									<Link to={`/listing/${listingId}`}>
 										<DoorSvg />
 										<span>Show listing</span>
 										<RightSvg />
-									</a>
+									</Link>
 								</button>
 							</div>
 						</section>
@@ -317,9 +317,9 @@ const TripPage = ({ id, routeProps }: Props) => {
 								<div className="host-details">
 									<h2>Your host, {host?.firstName}</h2>
 									<span>
-										<a href={`/host/${host?.id}`}>
+										<Link to={`/host/${host?.id}`}>
 											Show profile
-										</a>
+										</Link>
 									</span>
 								</div>
 								<div className="host-image">

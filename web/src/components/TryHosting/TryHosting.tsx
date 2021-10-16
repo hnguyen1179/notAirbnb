@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const TryHosting = () => {
 	return (
@@ -28,9 +29,9 @@ const TryHosting = () => {
 					your space.
 				</span>
 				<button>
-					<a href="">
+					<Link to="">
 						<span>Learn more</span>
-					</a>
+					</Link>
 				</button>
 			</div>
 		</div>

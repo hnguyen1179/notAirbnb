@@ -35,6 +35,7 @@ const FiltersEditMenu = () => {
 		document.body.addEventListener("click", handleBodyClick);
 
 		return () => {
+			window.removeEventListener("closeNavigation", handleCloseEditMenu);
 			document.body.removeEventListener("click", handleBodyClick);
 		};
 	}, []);

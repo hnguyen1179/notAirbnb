@@ -1,13 +1,12 @@
-import { useContext } from "react";
 import EntryForm from "../components/Entry/EntryForm";
 import Footer from "../components/Footer/Footer";
 import MobileNavbar from "../components/MobileNavbar/MobileNavbar";
 import Navbar from "../components/Navbar/Navbar";
-import { AppContext } from "../context/AppContext";
+import { useAppState } from "../context/AppContext";
 import { useModal } from "../context/ModalContext";
 
 const EntryPage = () => {
-	const { mobile } = useContext(AppContext);
+	const { mobile } = useAppState();
 	const { demoClicked } = useModal();
 
 	return (

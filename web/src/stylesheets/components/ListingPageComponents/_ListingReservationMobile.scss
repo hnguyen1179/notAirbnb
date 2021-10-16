@@ -1,0 +1,106 @@
+.ListingReservationMobile {
+	position: fixed;
+	bottom: 0;
+	height: 8rem;
+	width: 100%;
+	background-color: white;
+	z-index: 5;
+	border-top: 1px solid $outline-color;
+	padding: 1.4rem 2rem;
+
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	&__details {
+		&__price {
+			span {
+				font-weight: 400;
+			}
+
+			span.price {
+				font-size: 1.8rem;
+				font-weight: 300;
+			}
+		}
+
+		&__dates,
+		&__reviews {
+			margin-top: 0.5rem;
+		}
+
+		&__dates {
+			span {
+				text-decoration: underline;
+				font-size: 1.4rem;
+			}
+		}
+
+		&__reviews {
+			display: flex;
+			align-items: center;
+			font-size: 1.4rem;
+
+			svg {
+				height: 1.4rem;
+				width: 1.4rem;
+				color: $main-color;
+				margin-right: 0.5rem;
+				position: relative;
+				top: -0.1rem;
+			}
+
+			.score {
+				margin-right: 0.5rem;
+			}
+
+			.reviews-count {
+				font-weight: 400;
+				color: $muted-text-color;
+				text-decoration: underline;
+			}
+		}
+	}
+
+	&__button-container {
+		&__button {
+			display: inline-block;
+			position: relative;
+			text-align: center;
+			text-decoration: none;
+			touch-action: manipulation;
+			font-size: 1.6rem;
+			line-height: 2rem;
+			border-radius: 0.8rem;
+			outline: none;
+			padding: 1.4rem 2.4rem;
+			transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s,
+				-webkit-transform 0.1s ease 0s, transform 0.1s ease 0s;
+			-webkit-tap-highlight-color: transparent;
+			border: none;
+			color: rgb(255, 255, 255);
+			width: 100%;
+			overflow: hidden;
+			background-image: linear-gradient(
+				to right,
+				#00a6de,
+				#2baada,
+				#41add5,
+				#53b1d1,
+				#63b4cd
+			);
+
+			@include focusOutline;
+
+			.reserve-button-text {
+				display: block;
+				position: relative;
+				pointer-events: none;
+			}
+		}
+	}
+}
+
+.ReservationConfirmation {
+	height: calc(100% - 2.9rem);
+}

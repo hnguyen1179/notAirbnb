@@ -1,0 +1,28 @@
+.ListingListingDescription {
+	&__container {
+		line-height: 2.4rem;
+		max-height: 14.4rem;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 6;
+		-webkit-box-orient: vertical;
+
+		> p {
+			text-overflow: ellipsis;
+			font-weight: 400;
+			white-space: pre-wrap;
+		}
+	}
+}
+
+.ShowMore {
+	&--ShowListingDescription {
+		.ShowMore__container {
+			p {
+				white-space: pre-wrap;
+				font-weight: 400;
+			}
+		}
+	}
+}

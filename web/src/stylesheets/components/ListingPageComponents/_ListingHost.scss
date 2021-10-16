@@ -1,0 +1,140 @@
+.ListingHost {
+	&__header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		&__host {
+			> span {
+				font-size: 1.4rem;
+				font-weight: 400;
+				color: $muted-text-color;
+			}
+		}
+
+		&__avatar {
+			height: 6rem;
+			width: 6rem;
+			background-color: $avatar-background-color;
+			border-radius: 50%;
+		}
+	}
+
+	&__medals {
+		margin: 1.5rem 0;
+	}
+
+	&__description {
+		> p {
+			font-weight: 400;
+			margin: 2rem 0;
+		}
+	}
+
+	&__details {
+		> li {
+			font-weight: 400;
+		}
+	}
+
+	&__contact {
+		margin-top: 2rem;
+
+		> button {
+			border-color: $disabled-text-color !important;
+			pointer-events: none;
+			color: $disabled-text-color;
+		}
+
+		&__disclaimer {
+			margin-top: 2rem;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+
+			> span {
+				width: 90%;
+				font-size: 1.2rem;
+				font-weight: 400;
+			}
+		}
+	}
+}
+
+.Medal {
+	display: flex;
+	align-items: center;
+
+	&:last-child {
+		margin-top: 1rem;
+	}
+
+	svg {
+		height: 1.5rem;
+		width: 1.5rem;
+		color: $main-color;
+		fill: $main-color;
+		margin-right: 1rem;
+	}
+}
+
+@media screen and (min-width: 744px) {
+	.ListingHost {
+		&__header {
+			justify-content: flex-start;
+
+			&__host {
+				order: 2;
+			}
+
+			&__avatar {
+				order: 1;
+				margin-right: 1.5rem;
+			}
+		}
+
+		&__medals {
+			display: flex;
+			align-items: center;
+
+			.Medal {
+				margin: 0 1rem;
+
+				&:first-child {
+					margin-left: 0;
+				}
+			}
+		}
+
+		&__contact {
+			width: 30rem;
+
+			&__disclaimer {
+				> svg {
+					margin-right: 2rem;
+				}
+
+				> span {
+					order: 2;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 1128px) {
+	.ListingHost {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+
+		>div:first-child {
+			padding-right: 5rem;
+		}
+
+		>div:last-child {
+			.ListingHost__details li {
+				margin: 1rem 0;
+			}
+		}
+	}
+}

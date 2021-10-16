@@ -1,8 +1,8 @@
-import { useContext } from "react";
-import { AppContext } from "../../context/AppContext";
+import { useAppState } from "../../context/AppContext";
 import { format } from "date-fns";
 import { AdvancedImage } from "@cloudinary/react";
 import { ReactComponent as RightSvg } from "../../assets/icons/right-arrow.svg";
+import { Link } from "react-router-dom";
 
 interface PartialListing {
 	city: string;
@@ -23,7 +23,7 @@ interface Props {
 }
 
 const ReservationItem = ({ reservation }: Props) => {
-	const { cloudinary } = useContext(AppContext);
+	const { cloudinary } = useAppState();
 
 	if (!reservation || !reservation.listing) return <></>;
 
@@ -39,7 +39,7 @@ const ReservationItem = ({ reservation }: Props) => {
 
 	return (
 		<li className="ReservationItem">
-			<a href={`/trip/${id}`}>
+			<Link to={`/trip/${id}`}>
 				<div className="ReservationItem__img-container">
 					<AdvancedImage
 						className="ReservationItem__img-container__img"
@@ -50,7 +50,7 @@ const ReservationItem = ({ reservation }: Props) => {
 						)}
 					/>
 				</div>
-			</a>
+			</Link>
 			<div className="ReservationItem__description">
 				<div className="ReservationItem__description__city">
 					<span>{`${dateStart} - ${dateEnd}, ${year}`}</span>
@@ -58,15 +58,15 @@ const ReservationItem = ({ reservation }: Props) => {
 				</div>
 			</div>
 			<div className="ReservationItem__title">
-				<a href={`/trip/${id}`}>
+				<Link to={`/trip/${id}`}>
 					<div>{title}</div>
 					<RightSvg />
-				</a>
+				</Link>
 			</div>
 			<button className="ReservationItem__show-button">
-				<a href={`/trip/${id}`}>
+				<Link to={`/trip/${id}`}>
 					<div>Show more trip plans</div>
-				</a>
+				</Link>
 			</button>
 		</li>
 	);

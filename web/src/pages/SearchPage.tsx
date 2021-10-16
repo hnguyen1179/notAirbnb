@@ -1,14 +1,7 @@
-import React, {
-	useContext,
-	useState,
-	useEffect,
-	MouseEvent,
-	useRef,
-	useMemo,
-} from "react";
+import { useState, useEffect, MouseEvent, useRef, useMemo } from "react";
 import { History } from "history";
 import { useBasicSearchQuery } from "../generated/graphql";
-import { AppContext } from "../context/AppContext";
+import { useAppState } from "../context/AppContext";
 import SearchPageTopBar from "../components/SearchPageTopBar/SearchPageTopBar";
 import Loading from "../components/Loading";
 import { format } from "date-fns";
@@ -16,9 +9,9 @@ import Footer from "../components/Footer/Footer";
 import MobileNavbar from "../components/MobileNavbar/MobileNavbar";
 import SearchResultsItem from "../components/SearchResultsItem/SearchResultsItem";
 import SearchResultsPagination from "../components/SearchResultsPagination/SearchResultsPagination";
-import { URLParamsProvider } from "../context/URLParamsContext";
+import { useURLParams } from "../context/URLParamsContext";
 import Navbar from "../components/Navbar/Navbar";
-import { CSSTransition } from "react-transition-group";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 import EditMenuPortal from "../components/SearchPageTopBar/EditMenuPortal";
 import SearchPageMap from "../components/SearchPageMap/SearchPageMap";
 
@@ -43,76 +36,50 @@ export interface BasicSearchVariables {
 }
 
 const SearchPage = ({ history }: Props) => {
-	const searchParams = useMemo(
-		() => new URLSearchParams(history.location.search),
-		[history.location.search]
-	);
-
-	const { cloudinary, mobile, map } = useContext(AppContext);
-	const [openFilter, setOpenFilter] = useState(false);
+	const { cloudinary, mobile, map } = useAppState();
+	const {
+		state: { editMenu },
+		variables,
+		handleOpenEditMenu,
+		activeNumFilters,
+	} = useURLParams();
 	const [currentListing, setCurrentListing] = useState(-1);
+	const [isLoading, setIsLoading] = useState(false);
+
 	const filtersEditMenuRef = useRef<HTMLDivElement>(null);
 	const mapRef = useRef<HTMLDivElement>(null);
 
 	// Searches done via landing "region" icons
 	const isRegionSearch = !history.location.search.includes("guests");
-
-	// Checks to see if any filters are set
-	const activeNumFilters = Array.from(
-		searchParams.entries(),
-		([key, _]) => key
-	).filter((key) => {
-		return [
-			"tags",
-			"listingType",
-			"languages",
-			"smoking",
-			"pets",
-			"superhost",
-			"entire",
-			"privateListing",
-		].includes(key);
-	}).length;
+	const searchParams = new URLSearchParams(history.location.search);
 
 	// Helps prevent unnecessary data fetches
 	const previousURL = useRef(searchParams.toString());
-
-	const variables: BasicSearchVariables = useMemo(
-		() => ({
-			region: searchParams.get("region") as string,
-			guests: parseInt(searchParams.get("guests") as string),
-			checkIn: searchParams.get("check-in") as string,
-			checkOut: searchParams.get("check-out") as string,
-			tags: (searchParams.get("tags") as string)?.split(";"),
-			listingType: (searchParams.get("listingType") as string)?.split(
-				";"
-			),
-			languages: (searchParams.get("languages") as string)?.split(";"),
-			smoking: searchParams.get("smoking") === "true",
-			pets: searchParams.get("pets") === "true",
-			superhost: searchParams.get("superhost") === "true",
-			entire: searchParams.get("entire") === "true",
-			privateListing: searchParams.get("privateListing") === "true",
-			offset: (parseInt(searchParams.get("page") as string) - 1) * 10,
-		}),
-		[searchParams]
-	);
 
 	const { loading, error, data, fetchMore } = useBasicSearchQuery({
 		variables,
 	});
 
 	useEffect(() => {
+		if (!searchParams.toString().includes("guests")) {
+			localStorage.removeItem("params");
+		}
+	}, [searchParams]);
+
+	useEffect(() => {
 		// Skip any unnecessary data fetches
 		if (searchParams.toString() === previousURL.current) return;
 		previousURL.current = searchParams.toString();
 
+		setIsLoading(true);
 		// Any time the url params changes, it'll fetch a new dataset
 		// const currentPage = parseInt(searchParams.get("page") as string);
 		(async () =>
 			fetchMore({
 				variables,
 			}))();
+
+		setIsLoading(false);
 	}, [fetchMore, searchParams, variables]);
 
 	const renderListings = useMemo(() => {
@@ -157,20 +124,12 @@ const SearchPage = ({ history }: Props) => {
 				cloudinary={cloudinary}
 			/>
 		);
-	}, [currentListing, data?.basicSearch?.listings, mobile, variables.region]);
-
-	// TODO: Maybe have a dedicated error page?
-	if (error) {
-		console.log(JSON.stringify(error, null, 2));
-		return <>uh oh</>;
-	}
-
-	if (loading)
-		return (
-			<div className="page-loading">
-				<Loading />
-			</div>
-		);
+	}, [
+		cloudinary,
+		currentListing,
+		data?.basicSearch?.listings,
+		variables.region,
+	]);
 
 	const handleBack = () => {
 		history.goBack();
@@ -179,18 +138,19 @@ const SearchPage = ({ history }: Props) => {
 	const handlePageClick = async (e: MouseEvent<HTMLLIElement>) => {
 		const nextPage = parseInt(e?.currentTarget?.innerText);
 		const nextSearch = new URLSearchParams(history.location.search);
-		window.scrollTo({ top: 0 });
 		nextSearch.set("page", nextPage.toString());
 
 		history.push({
 			pathname: history.location.pathname,
 			search: nextSearch.toString(),
 		});
+
+		window.scrollTo({ top: 0 });
 	};
 
 	const handleClickOpenFilter = (e: MouseEvent) => {
 		e.stopPropagation();
-		setOpenFilter(true);
+		handleOpenEditMenu("filters");
 	};
 
 	const searchDetails = isRegionSearch
@@ -224,118 +184,115 @@ const SearchPage = ({ history }: Props) => {
 		}
 	};
 
+	// TODO: Maybe have a dedicated error page?
+	if (error) {
+		console.log(JSON.stringify(error, null, 2));
+		return <>uh oh</>;
+	}
+
+	if (loading || isLoading)
+		return (
+			<div className="page-loading">
+				<Loading />
+			</div>
+		);
+
 	return (
-		<URLParamsProvider
-			history={history}
-			variables={variables}
-			openFilter={openFilter}
-			setOpenFilter={setOpenFilter}
-			activeNumFilters={activeNumFilters}
-		>
-			<div className="SearchPage">
-				{mobile ? (
-					<SearchPageTopBar
+		<div className="SearchPage">
+			{mobile ? (
+				<SearchPageTopBar
+					searchDetails={searchDetails}
+					handleBack={handleBack}
+				/>
+			) : (
+				<>
+					<Navbar
+						notLanding={true}
+						searchPage={true}
 						searchDetails={searchDetails}
-						handleBack={handleBack}
+						location={variables.region}
 					/>
-				) : (
-					<>
-						<Navbar
-							notLanding={true}
-							searchPage={true}
-							searchDetails={searchDetails}
-							location={variables.region}
-						/>
-						<div className="Navbar-filler" />
-						<div
-							className="edit-menu-portal-background"
-							aria-hidden={openFilter}
-						/>
-						<CSSTransition
-							in={openFilter}
-							timeout={300}
-							classNames="edit-menu-filter"
-							unmountOnExit
-							nodeRef={filtersEditMenuRef}
-						>
-							<EditMenuPortal menuRef={filtersEditMenuRef} />
-						</CSSTransition>
-					</>
-				)}
+					<div className="Navbar-filler" />
+					<div
+						className="edit-menu-portal-background"
+						aria-hidden={editMenu.filters}
+					/>
+					{editMenu.filters && <EditMenuPortal onlyFilters={true} />}
+				</>
+			)}
 
-				<div className="SearchPage-outer">
-					<div className="SearchPage-container">
-						<div className="SearchPage__results-details">
-							<span>
-								{data?.basicSearch?.count} stays{" "}
-								{isRegionSearch ? "" : `· ${searchDetails}`}
-							</span>
-							<h1>{renderRegion()}</h1>
-						</div>
-
-						<button
-							className={`SearchPage__button-filter ${
-								activeNumFilters > 0 ? "filtered" : ""
-							}`}
-							onClick={handleClickOpenFilter}
-						>
-							{activeNumFilters > 0 ? (
-								<div>Filters · {activeNumFilters}</div>
-							) : (
-								<div>Filters</div>
-							)}
-						</button>
-
-						<div className="SearchPage__results">
-							<ul
-								className={`SearchPage__results__list ${
-									(data?.basicSearch?.count || 0) < 10
-										? "underline"
-										: ""
-								}`}
-							>
-								{data?.basicSearch?.count === 0 && (
-									<div className="no-results">
-										<div>No results</div>
-										<span>
-											To get more results, try adjusting
-											your search by changing your dates
-											or removing filters
-										</span>
-
-										<div className="divider" />
-									</div>
-								)}
-								{renderListings}
-							</ul>
-
-							{(data?.basicSearch?.count || 0) > 10 && (
-								<SearchResultsPagination
-									count={data?.basicSearch?.count || 0}
-									currentPage={
-										parseInt(
-											searchParams.get("page") as string
-										) || 1
-									}
-									handlePageClick={handlePageClick}
-								/>
-							)}
-						</div>
+			<div className="SearchPage-outer">
+				<div className="SearchPage-container">
+					<div className="SearchPage__results-details">
+						<span>
+							{data?.basicSearch?.count} stays{" "}
+							{isRegionSearch ? "" : `· ${searchDetails}`}
+						</span>
+						<h1>{renderRegion()}</h1>
 					</div>
-					<div className="google-maps-container">
-						<aside className="map" ref={mapRef}>
-							{map && renderMap}
-						</aside>
+
+					<button
+						className={`SearchPage__button-filter ${
+							activeNumFilters > 0 ? "filtered" : ""
+						}`}
+						onClick={handleClickOpenFilter}
+					>
+						{activeNumFilters > 0 ? (
+							<div>Filters · {activeNumFilters}</div>
+						) : (
+							<div>Filters</div>
+						)}
+					</button>
+
+					<div className="SearchPage__results">
+						<ul
+							className={`SearchPage__results__list ${
+								(data?.basicSearch?.count || 0) < 10
+									? "underline"
+									: ""
+							}`}
+						>
+							{data?.basicSearch?.count === 0 && (
+								<div className="no-results">
+									<div>No results</div>
+									<span>
+										To get more results, try adjusting your
+										search by changing your dates or
+										removing filters
+									</span>
+
+									<div className="divider" />
+								</div>
+							)}
+							{renderListings}
+						</ul>
+
+						{(data?.basicSearch?.count || 0) > 10 && (
+							<SearchResultsPagination
+								count={data?.basicSearch?.count || 0}
+								currentPage={
+									parseInt(
+										searchParams.get("page") as string
+									) || 1
+								}
+								handlePageClick={handlePageClick}
+							/>
+						)}
 					</div>
 				</div>
-
-				{mobile && <MobileNavbar />}
-
-				<div className="Footer-container">
-					<Footer />
+				<div className="google-maps-container">
+					<aside className="map" ref={mapRef}>
+						{map && renderMap}
+					</aside>
 				</div>
 			</div>
-		</URLParamsProvider>
+
+			{mobile && <MobileNavbar />}
+
+			<div className="Footer-container">
+				<Footer />
+			</div>
+		</div>
 	);
 };
 

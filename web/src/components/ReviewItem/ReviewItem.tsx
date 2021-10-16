@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import { AdvancedImage } from "@cloudinary/react";
 import { Review } from "../../generated/graphql";
 import { Cloudinary } from "@cloudinary/base";
+import { Link } from "react-router-dom";
 
 // interface HostPartial {
 // 	id: string;
@@ -61,24 +62,24 @@ const ReviewItem = ({
 		<li key={review?.id} className="ReviewItem">
 			{type === "host" && (
 				<div className="ReviewItem__listing">
-					<a href={`/listing/${review.listingId}`}>
+					<Link to={`/listing/${review.listingId}`}>
 						<div className="ReviewItem__listing__title">
 							{review.listing?.title}
 						</div>
-					</a>
+					</Link>
 				</div>
 			)}
 			<div className="ReviewItem__date">{format(date, "MMMM yyyy")}</div>
 			<div className="ReviewItem__content">{review?.content}</div>
 			<div className="ReviewItem__host">
 				<div className="ReviewItem__host__avatar">
-					<a href={`/${urlType()}/${id}`}>
+					<Link to={`/${urlType()}/${id}`}>
 						<AdvancedImage
 							cldImg={cloudinary.image(
 								`${urlType()}_avatars/${id}`
 							)}
 						/>
-					</a>
+					</Link>
 				</div>
 				<div className="ReviewItem__host__details">
 					<div className="ReviewItem__host__details__name">

@@ -345,15 +345,29 @@
 
 .edit-menu-filter {
 	&-enter {
-		opacity: 0;
-		opacity: 0;
-		transform: translateY(70%);
+		// opacity: 0;
+		// transform: translateY(100%);
+		// animation: spring 250ms ease-in-out forwards;
 	}
 
 	&-enter-active {
-		opacity: 1;
+		// opacity: 1;
+		// transform: translateY(0);
+		// transition: 200ms ease-out;
+	}
+}
+
+@keyframes spring {
+	0% {
+		transform: translateY(5%);
+		opacity: 0;
+	}
+	90% {
+		transform: translateY(-1%);
+	}
+	100% {
 		transform: translateY(0);
-		transition: 220ms ease-in-out;
+		opacity: 1;
 	}
 }
 
@@ -363,9 +377,10 @@
 	left: 0;
 	right: 0;
 	bottom: 0;
-	background-color: rgba(0, 0, 0, 0.248);
+	background-color: rgba(0, 0, 0, 0.5);
 	z-index: 15;
 	display: none;
+	height: 300vh;
 
 	&[aria-hidden="true"] {
 		display: block;
@@ -375,7 +390,6 @@
 .edit-menu {
 	position: fixed;
 	z-index: 100;
-	// background-color: rgba(0, 0, 0, 0.344);
 	top: 0;
 	left: 0;
 	right: 0;
@@ -387,7 +401,9 @@
 	}
 
 	.MobileSearchForm__form__stage {
+		background-color: white;
 		padding: 2.1rem 2rem;
+		height: 100%;
 	}
 
 	&__menu {

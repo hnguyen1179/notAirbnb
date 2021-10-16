@@ -1,25 +1,33 @@
-import React from "react";
+import { ReactElement, forwardRef } from "react";
 import { animated, useSpring, config } from "react-spring";
 
 interface FadeProps {
-	children?: React.ReactElement;
-	in: boolean;
+	children?: ReactElement;
+	style?: any;
+	configType?: "default" | "stiff";
 }
 
-const Fade = React.forwardRef<HTMLDivElement, FadeProps>((props, ref) => {
-	const { in: openFilter, children, ...other } = props;
+const defaultStyle = {
+	from: { opacity: 0, transform: "translateY(70vh)" },
+	to: {
+		opacity: 1,
+		transform: "translateY(50vh)",
+	},
+	config: config.stiff,
+};
 
-	const style = useSpring({
-		from: { opacity: 0, transform: "translateY(70vh)" },
-		to: {
-			opacity: 1,
-			transform: "translateY(50vh)",
-		},
-		config: config.stiff,
-	});
+const Fade = forwardRef<HTMLDivElement, FadeProps>((props, ref) => {
+	const {
+		children,
+		style = defaultStyle,
+		configType = "default",
+		...other
+	} = props;
+
+	if (configType) style.config = config[configType];
 
 	return (
-		<animated.div ref={ref} style={style} {...other}>
+		<animated.div style={useSpring(style)} {...other} ref={ref}>
 			{children}
 		</animated.div>
 	);

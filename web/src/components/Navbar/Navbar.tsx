@@ -1,6 +1,6 @@
-import { SyntheticEvent, RefObject, useEffect, useState, useRef } from "react";
+import { SyntheticEvent, useEffect, useState, useRef } from "react";
 import Modal from "@material-ui/core/Modal";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
+import { CSSTransition } from "react-transition-group";
 
 import { useModal } from "../../context/ModalContext";
 
@@ -15,6 +15,7 @@ import Dropdown from "./Dropdown";
 import SearchForm from "./SearchForm";
 import SearchBar from "./SearchBar";
 import SearchFormDataProvider from "./SearchFormDataProvider";
+import { Link } from "react-router-dom";
 
 interface Props {
 	isTop?: boolean; // Denotes whether or not Navbar is at the top of page or not; used in Landing
@@ -107,7 +108,7 @@ function Navbar({
 			);
 			document.body.removeEventListener("click", handleBodyClick);
 			window.removeEventListener("scroll", handleCloseNavigation);
-			handleClose();
+			if (open) handleClose();
 		};
 	}, []);
 
@@ -128,10 +129,10 @@ function Navbar({
 					}}
 				>
 					<div className="Navbar__left__logo">
-						<a href="/">
+						<Link to="/">
 							<LogoNameSvg className="logo-name" />
 							<LogoSvg className="logo" />
-						</a>
+						</Link>
 					</div>
 				</div>
 
@@ -220,7 +221,13 @@ function Navbar({
 
 				<div className="Navbar__right">
 					<div className="Navbar__right__host">
-						<span>Become a host</span>
+						<a
+							href="https://dukenguyen.dev"
+							target="_blank"
+							rel="noreferrer"
+						>
+							<span>Hire me</span>
+						</a>
 					</div>
 					<div className="Navbar__right__globe">
 						<button>
@@ -236,13 +243,11 @@ function Navbar({
 
 				{/* Modal for the entry form */}
 				<Modal open={open} onClose={handleClose} disableScrollLock>
-					<TransitionGroup>
-						<Fade in={open} ref={modalRef}>
-							<div className="Modal-container">
-								<Entry />
-							</div>
-						</Fade>
-					</TransitionGroup>
+					<Fade ref={modalRef}>
+						<div className="Modal-container">
+							<Entry />
+						</div>
+					</Fade>
 				</Modal>
 			</div>
 			<div className="background"></div>

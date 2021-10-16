@@ -10,7 +10,7 @@ const ListingMobileNav = ({ handleBack }: Props) => {
 		<nav className="ListingMobileNav">
 			<button onClick={handleBack}>
 				<BackSvg />
-				<span>Homes · Airbnb</span>
+				<span>Homes · notAirbnb</span>
 			</button>
 		</nav>
 	);

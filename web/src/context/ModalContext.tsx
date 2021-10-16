@@ -7,7 +7,8 @@ interface IModalProviderProps {
 	setEntry: (x: string) => void;
 	open: boolean;
 	setOpen: (x: boolean) => void;
-	getCursorPos: (a: any, el: HTMLElement | null) => void;
+	handleOpenEntry: () => void;
+ 	getCursorPos: (a: any, el: HTMLElement | null) => void;
 }
 
 export const ModalContext = createContext<IModalProviderProps | undefined>(
@@ -21,6 +22,7 @@ const ModalProvider: React.FC = ({ children }) => {
 
 	useEffect(() => {
 		if (open === false) {
+			document.body.style.overflow = "unset";
 			setDemoClicked(false);
 		}
 	}, [open]);
@@ -39,14 +41,19 @@ const ModalProvider: React.FC = ({ children }) => {
 
 			element.style.setProperty(
 				"--mouse-x",
-				((widthDiff / width) * 75).toString()
+				((widthDiff / width) * 100).toString()
 			);
 
 			element.style.setProperty(
 				"--mouse-y",
-				((heightDiff / height) * 75).toString()
+				((heightDiff / height) * 100).toString()
 			);
 		}
+	};
+
+	const handleOpenEntry = () => {
+		setEntry("unverified");
+		setOpen(true);
 	};
 
 	const providerProps: IModalProviderProps = {
@@ -56,6 +63,7 @@ const ModalProvider: React.FC = ({ children }) => {
 		setEntry,
 		open,
 		setOpen,
+		handleOpenEntry,
 		getCursorPos,
 	};
 
@@ -75,3 +83,4 @@ const useModal = () => {
 };
 
 export { ModalProvider, useModal };
+	

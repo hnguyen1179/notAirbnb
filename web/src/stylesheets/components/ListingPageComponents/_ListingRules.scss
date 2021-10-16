@@ -1,0 +1,59 @@
+.ListingRules {
+	.ListingRules-container {
+		margin-top: 2rem;
+	}
+
+	&__rules-column {
+		margin-top: 4rem;
+		
+		&:first-child {
+			margin-top: 2rem;
+		}
+
+		h3 {
+			font-weight: 300;
+			font-size: 1.6rem;
+			margin-bottom: 1rem;
+		}
+
+		&__rules {
+
+			p {
+				font-weight: 400;
+			}
+
+			&__rule {
+				display: flex;
+				margin: 1.25rem 0;
+				align-items: flex-start;
+				width: 90%;
+
+				span {
+					font-weight: 400;
+					line-height: 1.3;
+				}
+
+				img {
+					position: relative;
+					top: 0.2rem;
+					height: 1.6rem;
+					width: 1.6rem;
+					margin-right: 1.5rem;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 744px) {
+	.ListingRules {
+		.ListingRules-container {
+			display: grid;
+			grid-template-columns: 1fr 1fr 1fr;
+		}
+
+		&__rules-column {
+			margin: 0 !important;
+		}
+	}
+}

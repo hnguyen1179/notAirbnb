@@ -1,0 +1,152 @@
+.ListingReservation {
+	&__calendar {
+		display: flex;
+		flex-direction: column;
+
+		&__rdr-calendar {
+			&--double {
+				display: none;
+			}
+		}
+	}
+
+	.rdrCalendarWrapper {
+		max-width: 56rem;
+	}
+	.rdrMonth {
+		width: 100%;
+		// max-width: 56rem;
+	}
+
+	.rdrDay {
+		height: 10vw;
+		max-height: 6rem;
+	}
+
+	.rdrDayDisabled {
+		background-color: none !important;
+
+		> span {
+			text-decoration: line-through !important;
+			text-decoration-color: #aeb9bf !important;
+		}
+	}
+}
+
+.rdrDayNumber {
+	font-size: 1.4rem;
+	font-weight: 400;
+}
+
+.rdrStartEdge,
+.rdrDayStartOfWeek .rdrInRange,
+.rdrDayStartOfWeek .rdrDayInPreview {
+	border-radius: 0 !important;
+}
+
+.rdrEndEdge,
+.rdrDayEndOfWeek .rdrInRange,
+.rdrDayEndOfWeek .rdrDayInPreview {
+	border-radius: 0 !important;
+}
+
+.rdrDayStartPreview {
+	border-radius: 0 !important;
+}
+.rdrDayEndPreview {
+	border-radius: 0 !important;
+}
+
+.rdrInRange,
+.rdrDayInPreview {
+	border-radius: 0 !important;
+}
+
+.rdrDayToday .rdrDayNumber span {
+	font-weight: 400;
+}
+
+.calendar-clear-button {
+	margin-top: 1rem;
+	align-self: start;
+
+	> span {
+		display: block;
+		height: 2rem;
+		position: relative;
+		text-decoration: underline;
+		font-size: 1.4rem;
+		background-color: transparent;
+
+		&::after {
+			content: "";
+			background-color: inherit;
+			display: block;
+			box-sizing: content-box;
+			height: 100%;
+			width: 100%;
+			padding: 0.75rem;
+			position: absolute;
+			left: -0.75rem;
+			top: -0.75rem;
+			z-index: -1;
+			border-radius: 0.8rem;
+		}
+	}
+
+	&:hover span {
+		background-color: rgba(206, 206, 206, 0.283);
+	}
+}
+
+@media screen and (min-width: 600px) {
+	.ListingReservation__calendar {
+		.rdrCalendarWrapper {
+			width: 56rem;
+		}
+
+		align-items: center;
+	}
+}
+
+@media screen and (min-width: 744px) {
+	.ListingReservation__calendar {
+		align-items: center;
+
+		.rdrCalendarWrapper {
+			width: 100%;
+
+			.rdrDay {
+				height: 7vw;
+
+				.rdrDayNumber {
+					font-size: 1.6rem;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 1200px) {
+	.ListingReservation {
+		.rdrCalendarWrapper {
+			max-width: unset;
+			width: 100%;
+		}
+
+		&__calendar {
+			.rdrDay {
+				height: 3vw !important;
+				max-height: 4rem;
+			}
+			
+			&__rdr-calendar {
+				display: none;
+
+				&--double {
+					display: block;
+				}
+			}
+		}
+	}
+}

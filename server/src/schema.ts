@@ -86,23 +86,27 @@ const Query = objectType({
         id: nonNull(stringArg()),
       },
       resolve: async (_parent, args, context: Context) => {
-        const future = await context.prisma.reservation.findMany({
-          where: {
-            userId: args.id,
-            dateStart: {
-              gte: new Date(),
+        const future = (
+          await context.prisma.reservation.findMany({
+            where: {
+              userId: args.id,
+              dateStart: {
+                gte: new Date(),
+              },
             },
-          },
-        });
+          })
+        ).sort((a, b) => a.dateStart.valueOf() - b.dateStart.valueOf());
 
-        const past = await context.prisma.reservation.findMany({
-          where: {
-            userId: args.id,
-            dateStart: {
-              lt: new Date(),
+        const past = (
+          await context.prisma.reservation.findMany({
+            where: {
+              userId: args.id,
+              dateStart: {
+                lt: new Date(),
+              },
             },
-          },
-        });
+          })
+        ).sort((a, b) => b.dateStart.valueOf() - a.dateStart.valueOf());
 
         return [future, past];
       },
@@ -138,6 +142,7 @@ const Query = objectType({
         offset: intArg(),
       },
       resolve: async (_parent, args, context: Context) => {
+        console.log(' im in here ! ');
         const data = await context.prisma.review.findMany({
           skip: args.offset || 0,
           take: 3,
@@ -161,7 +166,7 @@ const Query = objectType({
       resolve: async (_parent, args, context: Context) => {
         const data = await context.prisma.review.findMany({
           skip: args.offset || 0,
-          take: 3,
+          take: 8,
           where: {
             listingId: args.id,
           },
@@ -313,7 +318,7 @@ const Query = objectType({
 
         const distance = differenceInDays(checkIn, checkOut) * -1;
 
-        for (let i = 0; i < distance; i++) {
+        for (let i = 0; i <= distance; i++) {
           daysRequested.push(format(addDays(checkIn, i), 'M/d/yyyy'));
         }
 
@@ -489,35 +494,38 @@ const Mutation = objectType({
       resolve: async (_, args, context: Context) => {
         const userId = getUserId(context);
 
-        if (userId === undefined) throw new Error('User undefined');
+        if (!userId) throw new Error('No such userId');
 
-        const data = await context.prisma.listing.findUnique({
+        const listing = await context.prisma.listing.findUnique({
           where: { id: args.data.listingId },
           select: {
             datesUnavailable: true,
           },
         });
 
-        if (!data?.datesUnavailable) throw new Error('Dates Undefined');
+        if (!listing) throw new Error('No such listing');
 
-        const datesUnavailable: any = data?.datesUnavailable;
+        const datesUnavailable = listing.datesUnavailable as string[];
         const start = new Date(args.data.dateStart);
 
         while (
           start.toLocaleDateString() !== args.data.dateEnd.toLocaleDateString()
         ) {
-          datesUnavailable[start.toLocaleDateString()] = true;
+          datesUnavailable.push(start.toLocaleDateString());
           start.setDate(start.getDate() + 1);
         }
 
-        context.prisma.listing.update({
+        // Push in the the ending date too;
+        datesUnavailable.push(start.toLocaleDateString());
+
+        await context.prisma.listing.update({
           where: { id: args.data.listingId },
           data: {
             datesUnavailable: datesUnavailable,
           },
         });
 
-        return context.prisma.reservation.create({
+        const reservation = await context.prisma.reservation.create({
           data: {
             userId: userId,
             listingId: args.data.listingId,
@@ -526,6 +534,8 @@ const Mutation = objectType({
             totalPrice: args.data.totalPrice,
           },
         });
+
+        return reservation;
       },
     });
 
@@ -763,16 +773,16 @@ const Listing = objectType({
           })
           .reviews();
 
-        if (reviews.length === 0) {
-          return {
-            cleanliness: 0.0,
-            accuracy: 0.0,
-            communication: 0.0,
-            location: 0.0,
-            checkin: 0.0,
-            value: 0,
-          };
-        }
+        const noScores = {
+          cleanliness: 0.0,
+          accuracy: 0.0,
+          communication: 0.0,
+          location: 0.0,
+          checkin: 0.0,
+          value: 0,
+        };
+
+        if (!reviews.length) return noScores;
 
         const averagedReviews = reviews
           .map((review) => {
@@ -790,9 +800,11 @@ const Listing = objectType({
 
         for (let i = 0; i < averagedReviews.length; i++) {
           averagedReviews[i] = +(averagedReviews[i] / reviews.length).toFixed(
-            2,
+            1,
           );
         }
+
+        if (!averagedReviews.length) return noScores;
 
         return {
           cleanliness: averagedReviews[0],

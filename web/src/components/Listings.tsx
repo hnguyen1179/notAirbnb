@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
-import { AppContext } from "../context/AppContext";
+import { useAppState } from "../context/AppContext";
 import { gql, useQuery } from "@apollo/client";
+import { Link } from "react-router-dom";
 
 const LISTINGS_QUERY = gql`
 	query LISTINGS_QUERY {
@@ -19,7 +19,7 @@ interface Listing {
 }
 
 function Listings() {
-	const { user } = useContext(AppContext);
+	const { user } = useAppState();
 	const { loading, error, data } = useQuery(LISTINGS_QUERY);
 	if (loading) return <p> loading ... </p>;
 	if (error) return <p> {error.message} </p>;
@@ -29,7 +29,7 @@ function Listings() {
 			{data.allListings.map((listing: Listing) => {
 				return (
 					<div>
-						<a href={`listing/${listing.id}`}>{listing.title}</a>
+						<Link to={`listing/${listing.id}`}>{listing.title}</Link>
 					</div>
 				);
 			})}

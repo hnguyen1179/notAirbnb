@@ -1,6 +1,7 @@
 import React from "react";
 import { AdvancedImage, placeholder } from "@cloudinary/react";
 import { CloudinaryImage } from "@cloudinary/base/assets/CloudinaryImage";
+import { Link } from "react-router-dom";
 
 interface Props {
 	name: string;
@@ -27,20 +28,22 @@ const renderUrl = (name: string) => {
 		return `/search?listingType=${listingTypes[name]}&page=1`;
 	} else if (name in pets) {
 		return `/search?pets=true&page=1`;
+	} else {
+		return "/";
 	}
 };
 
 const ListingTypeIcon = ({ name, img }: Props) => {
 	return (
 		<li className="ListingTypeIcon">
-			<a href={renderUrl(name)} className="ListingTypeIcon__content">
+			<Link to={renderUrl(name)} className="ListingTypeIcon__content">
 				<div className="ListingTypeIcon__content__image">
 					<AdvancedImage cldImg={img} />
 				</div>
 				<div className="ListingTypeIcon__content__text">
 					<span>{name}</span>
 				</div>
-			</a>
+			</Link>
 		</li>
 	);
 };

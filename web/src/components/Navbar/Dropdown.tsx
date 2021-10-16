@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import { SyntheticEvent } from "react";
 import { ReactComponent as ProfileSvg } from "../../assets/icons/dark-profile.svg";
 import { ReactComponent as HamburgerSvg } from "../../assets/icons/hamburger.svg";
-import { AppContext } from "../../context/AppContext";
+import { useAppState } from "../../context/AppContext";
 import DropdownOptions from "./DropdownOptions";
 import DropdownOptionsUser from "./DropdownOptionsUser";
 import useLogout from "../../hooks/useLogout";
@@ -11,14 +11,14 @@ import { AdvancedImage } from "@cloudinary/react";
 interface Props {
 	dropdown: boolean;
 	setDropdown: (x: boolean) => void;
-	handleOpen: (e: React.SyntheticEvent<EventTarget>) => void;
+	handleOpen: (e: SyntheticEvent<EventTarget>) => void;
 }
 
 const Dropdown = ({ dropdown, setDropdown, handleOpen }: Props) => {
-	const { cloudinary, user } = useContext(AppContext);
+	const { cloudinary, user } = useAppState();
 	const logout = useLogout();
 
-	const handleClickDropdown = (e: React.SyntheticEvent<EventTarget>) => {
+	const handleClickDropdown = (e: SyntheticEvent<EventTarget>) => {
 		e.stopPropagation();
 		setDropdown(!dropdown);
 	};
