@@ -4,6 +4,7 @@ import { useAppState } from "../../context/AppContext";
 import { useModal } from "../../context/ModalContext";
 import { useURLParams } from "../../context/URLParamsContext";
 import { useCreateReservationMutation } from "../../generated/graphql";
+import { LISTING_BY_ID } from "../../graphql/queries/listingById";
 import { calculateTotalArgs } from "../../utils/priceBreakdown";
 import { IDate } from "../MobileNavbar/MobileSearchForm";
 import ListingReservationDesktopButton from "./ListingReservationDesktopButton";
@@ -38,12 +39,12 @@ const BoxButtons = ({
 	const { getCursorPos, handleOpenEntry } = useModal();
 	const [guests, setGuests] = useState(numGuests ? numGuests : 1);
 
-	const [createReservation, createReservationResults] =
+	const [createReservation, _createReservationResults] =
 		useCreateReservationMutation({
 			onCompleted: (data) => {
-				console.log(" im done with this shit ");
 				history.push(`/trip/${data.createReservation?.id}`);
 			},
+			refetchQueries: [LISTING_BY_ID, "listingById"],
 		});
 
 	const sameDates =
@@ -72,15 +73,6 @@ const BoxButtons = ({
 			},
 		});
 	};
-
-	// t.nonNull.string("listingId");
-	// t.nonNull.field("dateStart", {
-	// 	type: "DateTime",
-	// });
-	// t.nonNull.field("dateEnd", {
-	// 	type: "DateTime",
-	// });
-	// t.nonNull.int("totalPrice");
 
 	return (
 		<div className="BoxButtons">
