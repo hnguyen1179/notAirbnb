@@ -8,6 +8,12 @@ import { IDate } from "../MobileNavbar/MobileSearchForm";
  *         - Create authorization routes in order to prevent unauthorized
  *           people from accessing links for Trips and TripsPage that they
  *           don't have access to
+ * 				 - Maybe have an outer route that runs a mutation similar to 
+ * 					 verifyEmail, in which in returns a boolean which checks if that
+ * 					 user has that actual reservation in trip/:reservationId / or if that user's id is 
+ * 					 equal to the id in the trips/:userId
+ * 
+ *  3a. Add a cancel reservation feature in trip page
  *
  *  FRIDAY EOD...
  *

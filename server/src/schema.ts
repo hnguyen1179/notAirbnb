@@ -86,23 +86,27 @@ const Query = objectType({
         id: nonNull(stringArg()),
       },
       resolve: async (_parent, args, context: Context) => {
-        const future = await context.prisma.reservation.findMany({
-          where: {
-            userId: args.id,
-            dateStart: {
-              gte: new Date(),
+        const future = (
+          await context.prisma.reservation.findMany({
+            where: {
+              userId: args.id,
+              dateStart: {
+                gte: new Date(),
+              },
             },
-          },
-        });
+          })
+        ).sort((a, b) => a.dateStart.valueOf() - b.dateStart.valueOf());
 
-        const past = await context.prisma.reservation.findMany({
-          where: {
-            userId: args.id,
-            dateStart: {
-              lt: new Date(),
+        const past = (
+          await context.prisma.reservation.findMany({
+            where: {
+              userId: args.id,
+              dateStart: {
+                lt: new Date(),
+              },
             },
-          },
-        });
+          })
+        ).sort((a, b) => b.dateStart.valueOf() - a.dateStart.valueOf());
 
         return [future, past];
       },
