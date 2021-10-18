@@ -186,7 +186,7 @@ const SearchPage = ({ history }: Props) => {
 	};
 
 	if (error) {
-		<Redirect to="/error" />;
+		return <Redirect to="/error" />;
 	}
 
 	if (loading || isLoading)

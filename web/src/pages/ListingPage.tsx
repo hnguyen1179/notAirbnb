@@ -103,19 +103,11 @@ const ListingPage: FC<Props> = (props) => {
 		);
 
 	if (listingError || reviewsError) {
-		<Redirect to="/error" />
+		return <Redirect to="/error" />
 	}
 
-	if (listingError || reviewsError)
-		return (
-			<p>
-				{listingError?.message}
-				{reviewsError?.message}
-			</p>
-		);
-
 	if (!listingData || !listingData.listingById || !reviewsData) {
-		return <Redirect to="/404" />;
+		return <Redirect to="/error" />;
 	}
 
 	const handleBack = (e: MouseEvent<HTMLButtonElement>) => {

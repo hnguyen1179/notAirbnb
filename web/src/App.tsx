@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { AppStateProvider } from "./context/AppContext";
 
 import {
-	LISTINGS,
 	LISTING,
 	LANDING,
 	ENTRY,
@@ -18,9 +17,6 @@ import NoAuthRedirectRoute from "./pages/NoAuthRedirectRoute";
 import LandingPage from "./pages/LandingPage";
 import EntryPage from "./pages/EntryPage";
 import UserPage from "./pages/UserPage";
-
-import Listings from "./components/Listings";
-import Users from "./components/Users";
 
 import "./stylesheets/main.scss";
 import { ModalProvider } from "./context/ModalContext";
@@ -48,7 +44,6 @@ function App() {
 								component={LandingPage}
 							/>
 							<Route exact path={ERROR} component={ErrorPage} />
-							<Route path={LISTINGS} component={Listings} />
 							<Route
 								path={USER_TRIPS}
 								render={(routeProps) => (
@@ -84,7 +79,7 @@ function App() {
 									/>
 								)}
 							/>
-							<Route exact path="/users" component={Users} />
+
 							<NoAuthRedirectRoute
 								path={ENTRY}
 								component={EntryPage}
