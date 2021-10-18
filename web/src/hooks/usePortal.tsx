@@ -12,7 +12,6 @@ const usePortal = () => {
 	}, []);
 
 	const closePortal = useCallback(() => {
-		console.log(" im in here ");
 		document.body.style.overflow = "unset";
 		setPortal(false);
 	}, []);

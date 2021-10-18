@@ -13,7 +13,6 @@ const httpLink = createHttpLink({
 });
 
 const ApolloProviderFC: React.FC = ({ children }) => {
-	console.log("RERENDER APOLLO");
 	const [token] = useAuthToken();
 
 	const authLink = setContext((_, { headers }) => {

@@ -15,7 +15,7 @@ import { IDate } from "../MobileNavbar/MobileSearchForm";
  * 
  *  3̶a̶.̶ A̶d̶d̶ a̶ c̶a̶n̶c̶e̶l̶ r̶e̶s̶e̶r̶v̶a̶t̶i̶o̶n̶ f̶e̶a̶t̶u̶r̶e̶ i̶n̶ t̶r̶i̶p̶ p̶a̶g̶e̶
  * 
- *  3b. Generate a random user avatar on user creation
+ *  3̶b̶.̶ G̶e̶n̶e̶r̶a̶t̶e̶ a̶ r̶a̶n̶d̶o̶m̶ u̶s̶e̶r̶ a̶v̶a̶t̶a̶r̶ o̶n̶ u̶s̶e̶r̶ c̶r̶e̶a̶t̶i̶o̶n̶
  *
  *  FRIDAY EOD...
  *

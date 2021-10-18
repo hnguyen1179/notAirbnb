@@ -3,6 +3,7 @@ import { gql, useQuery } from "@apollo/client";
 import { Cloudinary } from "@cloudinary/base";
 import { AdvancedImage, placeholder } from "@cloudinary/react";
 import Loading from "./Loading";
+import { Redirect } from "react-router";
 
 const LISTING = gql`
 	query LISTING($id: String!) {
@@ -105,8 +106,10 @@ function Listing({ id }: Props) {
 				<Loading />
 			</div>
 		);
-	if (error) console.log(JSON.stringify(error, null, 2));
-	if (error) return <p> {error.message} </p>;
+
+	if (error) {
+		<Redirect to="/error" />;
+	}
 
 	const { title, location, address, reviews, host, amenities } =
 		data.listingById;

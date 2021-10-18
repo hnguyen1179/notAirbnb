@@ -46,7 +46,6 @@ export const showMoreStyle = {
 };
 
 const ListingPage: FC<Props> = (props) => {
-	console.log("ListingPage rendered");
 	const calendarRef = useRef<HTMLElement>(null);
 	const { id, history } = props;
 	const { cloudinary, mobile } = useAppState();
@@ -103,8 +102,9 @@ const ListingPage: FC<Props> = (props) => {
 			</div>
 		);
 
-	if (listingError) console.log(JSON.stringify(listingError, null, 2));
-	if (reviewsError) console.log(JSON.stringify(reviewsError, null, 2));
+	if (listingError || reviewsError) {
+		<Redirect to="/error" />
+	}
 
 	if (listingError || reviewsError)
 		return (

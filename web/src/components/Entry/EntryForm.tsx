@@ -24,7 +24,6 @@ interface Props {
 }
 
 function EntryForm({ initialEntry, isModal = true }: Props) {
-	console.log("DIV IN P : ", document.querySelectorAll(" p * div "));
 	const { entry, setOpen, demoClicked } = useModal();
 	const [showPassword, setShowPassword] = useState(false);
 	const [showHints, setShowHints] = useState(false);

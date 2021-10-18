@@ -35,7 +35,6 @@ const CalendarLogicContext = createContext<ICalendarLogicContext>(initialState);
 const DEFAULT_DATE = new Date().toLocaleDateString();
 
 const CalendarLogicProvider: React.FC<Props> = (props) => {
-	console.log(" INSIDE CALENDAR LOGIC PROVIDER")
 	const [focusedRange, setFocusedRange] = useState<[number, number]>([0, 0]);
 	const [checkOutMaxIdx, setCheckOutMaxIdx] = useState(1);
 	const [checkOutMax, setCheckOutMax] = useState(new Date());

@@ -14,6 +14,7 @@ import Navbar from "../components/Navbar/Navbar";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import EditMenuPortal from "../components/SearchPageTopBar/EditMenuPortal";
 import SearchPageMap from "../components/SearchPageMap/SearchPageMap";
+import { Redirect } from "react-router";
 
 interface Props {
 	history: History<any>;
@@ -184,10 +185,8 @@ const SearchPage = ({ history }: Props) => {
 		}
 	};
 
-	// TODO: Maybe have a dedicated error page?
 	if (error) {
-		console.log(JSON.stringify(error, null, 2));
-		return <>uh oh</>;
+		<Redirect to="/error" />;
 	}
 
 	if (loading || isLoading)

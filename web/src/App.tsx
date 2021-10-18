@@ -34,58 +34,62 @@ import ListingPage from "./pages/ListingPage";
 import { URLParamsProvider } from "./context/URLParamsContext";
 
 function App() {
-	console.log("RERENDER APP");
 
 	return (
 		<AppStateProvider>
 			<ModalProvider>
 				<Router>
-					<ScrollToTop />
-					<Switch>
-						<Route exact path={LANDING} component={LandingPage} />
-						<Route exact path={ERROR} component={ErrorPage} />
-						<Route path={LISTINGS} component={Listings} />
+					<URLParamsProvider>
+						<ScrollToTop />
+						<Switch>
+							<Route
+								exact
+								path={LANDING}
+								component={LandingPage}
+							/>
+							<Route exact path={ERROR} component={ErrorPage} />
+							<Route path={LISTINGS} component={Listings} />
+							<Route
+								path={USER_TRIPS}
+								render={(routeProps) => (
+									<TripsPage
+										id={routeProps.match.params.id}
+									/>
+								)}
+							/>
+							<Route
+								path={USER_TRIP}
+								render={(routeProps) => (
+									<TripPage
+										id={routeProps.match.params.id}
+										routeProps={routeProps}
+									/>
+								)}
+							/>
+							<Route
+								path={HOST_PROFILE}
+								render={(routeProps) => (
+									<HostPage
+										id={routeProps.match.params.id}
+										routeProps={routeProps}
+									/>
+								)}
+							/>
+							<Route
+								path={USER_PROFILE}
+								render={(routeProps) => (
+									<UserPage
+										id={routeProps.match.params.id}
+										routeProps={routeProps}
+									/>
+								)}
+							/>
+							<Route exact path="/users" component={Users} />
+							<NoAuthRedirectRoute
+								path={ENTRY}
+								component={EntryPage}
+							/>
 
-						<Route
-							path={USER_TRIPS}
-							render={(routeProps) => (
-								<TripsPage id={routeProps.match.params.id} />
-							)}
-						/>
-						<Route
-							path={USER_TRIP}
-							render={(routeProps) => (
-								<TripPage
-									id={routeProps.match.params.id}
-									routeProps={routeProps}
-								/>
-							)}
-						/>
-						<Route
-							path={HOST_PROFILE}
-							render={(routeProps) => (
-								<HostPage
-									id={routeProps.match.params.id}
-									routeProps={routeProps}
-								/>
-							)}
-						/>
-						<Route
-							path={USER_PROFILE}
-							render={(routeProps) => (
-								<UserPage
-									id={routeProps.match.params.id}
-									routeProps={routeProps}
-								/>
-							)}
-						/>
-						<Route exact path="/users" component={Users} />
-						<NoAuthRedirectRoute
-							path={ENTRY}
-							component={EntryPage}
-						/>
-
-						<URLParamsProvider>
 							<Route
 								path={SEARCH}
 								render={(routeProps) => (
@@ -103,8 +107,9 @@ function App() {
 									/>
 								)}
 							/>
-						</URLParamsProvider>
-					</Switch>
+							<Route path="*" component={ErrorPage} />
+						</Switch>
+					</URLParamsProvider>
 				</Router>
 			</ModalProvider>
 		</AppStateProvider>

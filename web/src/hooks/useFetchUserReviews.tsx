@@ -12,7 +12,6 @@ const useFetchUserReviews = (id: string) => {
 	});
 
 	const handleFetchMore = async () => {
-		console.log(" in here ");
 		setfetchLoading(true);
 		await fetchMore({
 			variables: {

@@ -32,8 +32,6 @@ cloudinary.v2.config({
   secure: true,
 });
 
-console.log(process.env.CLOUDINARY_SECRET);
-
 // Artificially slows down requests to simulate an actual server and show loaders
 const sleep = (milliseconds: number) => {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -377,17 +375,7 @@ const Mutation = objectType({
         password: nonNull(stringArg()),
       },
       resolve: async (_parent, args, context: Context) => {
-        await sleep(Math.random() * 600 + 400);
-
-        const uploadToCloudinary = (image: string) => {
-          return new Promise((resolve, reject) => {
-            cloudinary.v2.uploader.upload(image, (err, url) => {
-              console.log(' in resolver ');
-              if (err) return reject(err);
-              return resolve(url);
-            });
-          });
-        };
+        await sleep(Math.random() * 200 + 300);
 
         try {
           const userExists = await context.prisma.user.findUnique({
@@ -397,7 +385,6 @@ const Mutation = objectType({
           });
 
           if (userExists) {
-            console.log(' in here, user ');
             throw new Error('User with this email already exists');
           }
 
@@ -493,11 +480,9 @@ const Mutation = objectType({
         ),
       },
       resolve: async (_, args, context: Context) => {
-        console.log(' IN CREATE RESERVATION ');
         const userId = getUserId(context);
 
         if (!userId) {
-          console.log(' IN USERID ERROR ');
           throw new Error('No such userId');
         }
 
@@ -509,7 +494,6 @@ const Mutation = objectType({
         });
 
         if (!listing) {
-          console.log(' IN LISTINGID ERROR ');
           throw new Error('No such listing');
         }
 
