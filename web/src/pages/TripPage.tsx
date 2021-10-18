@@ -6,7 +6,11 @@ import { AdvancedImage } from "@cloudinary/react";
 import GoogleMapReact from "google-map-react";
 
 import Loading from "../components/Loading";
-import { Reservation, useReservationByIdQuery } from "../generated/graphql";
+import {
+	Reservation,
+	useDeleteReservationMutation,
+	useReservationByIdQuery,
+} from "../generated/graphql";
 import { week } from "../constants/weekdays";
 import { ReactComponent as RightSvg } from "../assets/icons/right-arrow.svg";
 import { ReactComponent as MapSvg } from "../assets/icons/map.svg";
@@ -45,6 +49,17 @@ const TripPage = ({ id, routeProps }: Props) => {
 		variables: { id },
 	});
 
+	const [deleteReservation] = useDeleteReservationMutation({
+		onCompleted: () => {
+			if (user) {
+				routeProps.history.push(`/trips/${user?.id}`);
+			} else {
+				routeProps.history.push("/");
+			}
+		},
+		refetchQueries: "all",
+	});
+
 	useEffect(() => {
 		if (!containerRef.current) return;
 
@@ -75,6 +90,8 @@ const TripPage = ({ id, routeProps }: Props) => {
 	const { host, city, title, houseRules, address, region, imageComments } =
 		listing;
 
+	const isFuture = new Date(dateStart) > new Date();
+
 	const start = format(new Date(dateStart), "MMM d");
 	const end = format(new Date(dateEnd), "MMM d");
 	const year = format(new Date(dateStart), "yyyy");
@@ -94,10 +111,12 @@ const TripPage = ({ id, routeProps }: Props) => {
 
 	const total = calculateTotalRes(data.reservationById as Reservation);
 
-	const handleCancelReservation = () => {
-		if (user) {
-			routeProps.history.push(`/trips/${user.id}`);
-		}
+	const handleCancelReservation = async () => {
+		await deleteReservation({
+			variables: {
+				id,
+			},
+		});
 	};
 
 	const handleCloseScroll = () => {
@@ -153,7 +172,11 @@ const TripPage = ({ id, routeProps }: Props) => {
 							<span>
 								{city} · {start} - {end}, {year}
 							</span>
-							<h1>Your stay at {host?.firstName}'s place</h1>
+							<h1>
+								{isFuture
+									? `Pack your bags for ${host?.firstName}'s place!`
+									: `Your stay at ${host?.firstName}'s place`}
+							</h1>
 						</header>
 
 						<div className="divider" />
@@ -312,7 +335,7 @@ const TripPage = ({ id, routeProps }: Props) => {
 								className="TripPage__directions__map"
 								aria-hidden={!mobile}
 							>
-								{/* <GoogleMapReact
+								<GoogleMapReact
 									bootstrapURLKeys={{
 										key: process.env
 											.REACT_APP_GOOGLE_API_KEY as string,
@@ -325,7 +348,7 @@ const TripPage = ({ id, routeProps }: Props) => {
 										lat={mapValues.center.lat}
 										lng={mapValues.center.lng}
 									/>
-								</GoogleMapReact> */}
+								</GoogleMapReact>
 							</div>
 							<div className="TripPage__directions__address">
 								<div>Address</div>
@@ -417,7 +440,7 @@ const TripPage = ({ id, routeProps }: Props) => {
 				</div>
 
 				<div className="TripPage-outer__map">
-					{/* <GoogleMapReact
+					<GoogleMapReact
 						bootstrapURLKeys={{
 							key: process.env.REACT_APP_GOOGLE_API_KEY as string,
 						}}
@@ -429,8 +452,9 @@ const TripPage = ({ id, routeProps }: Props) => {
 							lat={mapValues.center.lat}
 							lng={mapValues.center.lng}
 							details={`${start} - ${end}, ${year}`}
+							future={isFuture}
 						/>
-					</GoogleMapReact> */}
+					</GoogleMapReact>
 				</div>
 			</div>
 		</div>

@@ -81,8 +81,13 @@
 		}
 
 		&__list:empty {
+			margin-bottom: 0;
+
 			+ .TripsPage__content__placeholder {
 				display: block;
+				button {
+					max-width: 20rem;
+				}
 			}
 		}
 	}

@@ -273,6 +273,13 @@ export type CreateReservationMutationVariables = Exact<{
 
 export type CreateReservationMutation = { createReservation?: Maybe<{ id: string, userId: string, listingId: string, dateStart: any, dateEnd: any, totalPrice: number }> };
 
+export type DeleteReservationMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteReservationMutation = { deleteReservation?: Maybe<{ id: string }> };
+
 export type LoginMutationVariables = Exact<{
   email: Scalars['String'];
   password: Scalars['String'];
@@ -413,6 +420,39 @@ export function useCreateReservationMutation(baseOptions?: Apollo.MutationHookOp
 export type CreateReservationMutationHookResult = ReturnType<typeof useCreateReservationMutation>;
 export type CreateReservationMutationResult = Apollo.MutationResult<CreateReservationMutation>;
 export type CreateReservationMutationOptions = Apollo.BaseMutationOptions<CreateReservationMutation, CreateReservationMutationVariables>;
+export const DeleteReservationDocument = gql`
+    mutation deleteReservation($id: String!) {
+  deleteReservation(id: $id) {
+    id
+  }
+}
+    `;
+export type DeleteReservationMutationFn = Apollo.MutationFunction<DeleteReservationMutation, DeleteReservationMutationVariables>;
+
+/**
+ * __useDeleteReservationMutation__
+ *
+ * To run a mutation, you first call `useDeleteReservationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteReservationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteReservationMutation, { data, loading, error }] = useDeleteReservationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteReservationMutation(baseOptions?: Apollo.MutationHookOptions<DeleteReservationMutation, DeleteReservationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteReservationMutation, DeleteReservationMutationVariables>(DeleteReservationDocument, options);
+      }
+export type DeleteReservationMutationHookResult = ReturnType<typeof useDeleteReservationMutation>;
+export type DeleteReservationMutationResult = Apollo.MutationResult<DeleteReservationMutation>;
+export type DeleteReservationMutationOptions = Apollo.BaseMutationOptions<DeleteReservationMutation, DeleteReservationMutationVariables>;
 export const LoginDocument = gql`
     mutation login($email: String!, $password: String!) {
   login(email: $email, password: $password) {

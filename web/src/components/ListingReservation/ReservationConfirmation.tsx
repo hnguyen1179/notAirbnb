@@ -13,7 +13,9 @@ import { IDate } from "../MobileNavbar/MobileSearchForm";
  * 					 user has that actual reservation in trip/:reservationId / or if that user's id is 
  * 					 equal to the id in the trips/:userId
  * 
- *  3a. Add a cancel reservation feature in trip page
+ *  3̶a̶.̶ A̶d̶d̶ a̶ c̶a̶n̶c̶e̶l̶ r̶e̶s̶e̶r̶v̶a̶t̶i̶o̶n̶ f̶e̶a̶t̶u̶r̶e̶ i̶n̶ t̶r̶i̶p̶ p̶a̶g̶e̶
+ * 
+ *  3b. Generate a random user avatar on user creation
  *
  *  FRIDAY EOD...
  *

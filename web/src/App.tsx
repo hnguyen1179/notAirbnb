@@ -85,7 +85,6 @@ function App() {
 							component={EntryPage}
 						/>
 
-						{/* URLParamsProvider */}
 						<URLParamsProvider>
 							<Route
 								path={SEARCH}

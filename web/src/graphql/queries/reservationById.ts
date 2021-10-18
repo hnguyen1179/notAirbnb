@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-const RESERVATION_BY__ID = gql`
+const RESERVATION_BY_ID = gql`
 	query reservationById($id: String!) {
 		reservationById(id: $id) {
 			id
@@ -26,4 +26,4 @@ const RESERVATION_BY__ID = gql`
 	}
 `;
 
-export { RESERVATION_BY__ID };
+export { RESERVATION_BY_ID };

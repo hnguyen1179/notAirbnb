@@ -4,9 +4,10 @@ interface Props {
 	lat: number;
 	lng: number;
 	details: string;
+	future: boolean;
 }
 
-const HouseMarker = ({ details }: Props) => {
+const HouseMarker = ({ details, future }: Props) => {
 	return (
 		<div className="HouseMarker">
 			<div className="HouseMarker__bubble">
@@ -17,7 +18,7 @@ const HouseMarker = ({ details }: Props) => {
 			</div>
 
 			<div className="HouseMarker__text">
-				<div>Where you stayed</div>
+				<div>{future ? "Where you will stay" : "Where you stayed"}</div>
 				<div>{details}</div>
 			</div>
 		</div>
