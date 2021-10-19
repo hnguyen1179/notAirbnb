@@ -70,9 +70,10 @@ const editMenuDefault = {
 	filters: false,
 };
 
-const URLParamsProvider: React.FC = ({ children }) => {	
+const URLParamsProvider: React.FC = ({ children }) => {
+	console.log("URLPARAMS RENDERED");
 	const history = useHistory();
-	const currentSearchString = localStorage.getItem("params");
+	const currentSearchString = sessionStorage.getItem("params");
 	const searchString = history.location.search
 		? history.location.search
 		: currentSearchString;
@@ -106,6 +107,8 @@ const URLParamsProvider: React.FC = ({ children }) => {
 		}),
 		[searchParams]
 	);
+
+	console.log("VARIABLES IN URL SEARCH PARAMS: ", variables);
 
 	// Checks to see if any filters are set
 	const activeNumFilters = Array.from(
@@ -144,12 +147,6 @@ const URLParamsProvider: React.FC = ({ children }) => {
 		},
 	};
 
-	{
-		// PAGE REFRESH WILL WIPE OUT THE STATE OF REDUCER; and so you must
-		// store the last value within the localStorage and then if it exists;
-		// you must write it as initial state;
-	}
-
 	const [state, dispatch] = useReducer(editQueryReducer, initialReducerState);
 	const [clear, setClear] = useState(false);
 	const tempState = useRef<EditQueryState | null>(null);
@@ -171,7 +168,6 @@ const URLParamsProvider: React.FC = ({ children }) => {
 			listingType,
 			languages,
 		} = state;
-
 		document.body.style.overflow = "unset";
 
 		setClear(false);
@@ -222,7 +218,7 @@ const URLParamsProvider: React.FC = ({ children }) => {
 			}
 		});
 
-		localStorage.setItem("params", nextSearch.toString());
+		sessionStorage.setItem("params", nextSearch.toString());
 
 		history.push({
 			pathname: history.location.pathname,

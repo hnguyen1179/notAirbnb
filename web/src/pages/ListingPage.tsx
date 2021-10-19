@@ -50,9 +50,15 @@ const ListingPage: FC<Props> = (props) => {
 	const { id, history } = props;
 	const { cloudinary, mobile } = useAppState();
 	const {
-		state: { dates, guests },
-		searchHandlers: { handleDateChange },
+		state: { guests },
+		variables: { checkIn, checkOut },
 	} = useURLParams();
+
+	const [tempDates, setTempDates] = useState({
+		startDate: new Date(checkIn),
+		endDate: new Date(checkOut),
+		key: "selection",
+	});
 
 	const {
 		Portal: ReviewsPortal,
@@ -103,7 +109,7 @@ const ListingPage: FC<Props> = (props) => {
 		);
 
 	if (listingError || reviewsError) {
-		return <Redirect to="/error" />
+		return <Redirect to="/error" />;
 	}
 
 	if (!listingData || !listingData.listingById || !reviewsData) {
@@ -171,10 +177,23 @@ const ListingPage: FC<Props> = (props) => {
 		</MapPortal>
 	);
 
+	const handleTempDateChange = (ranges: any) => {
+		const start = ranges.selection.startDate as Date;
+		const end = ranges.selection.endDate as Date;
+
+		const results = {
+			startDate: start,
+			endDate: end,
+			key: "selection",
+		};
+
+		setTempDates(results);
+	};
+
 	return (
 		<CalendarLogicProvider
-			dates={dates}
-			handleDateChange={handleDateChange}
+			dates={tempDates}
+			handleDateChange={handleTempDateChange}
 			datesUnavailable={listingById.datesUnavailable}
 		>
 			<div className="ListingPage">
@@ -182,10 +201,10 @@ const ListingPage: FC<Props> = (props) => {
 					{mobile ? (
 						<ListingMobileNav handleBack={handleBack} />
 					) : (
-						<>
+						<div>
 							<Navbar notLanding />
 							<div className="Navbar-filler" />
-						</>
+						</div>
 					)}
 				</div>
 
@@ -331,6 +350,7 @@ const ListingPage: FC<Props> = (props) => {
 							{!mobile && (
 								<div className="ListingPage__content__reservation-box">
 									<ListingReservationBox
+										dates={tempDates}
 										id={listingById.id}
 										city={listingById.city}
 										price={listingById.price}
@@ -399,6 +419,7 @@ const ListingPage: FC<Props> = (props) => {
 
 				{mobile && (
 					<ListingReservationMobile
+						dates={tempDates}
 						id={listingById.id}
 						price={listingById.price}
 						cleaningFee={listingById.cleaningFee}

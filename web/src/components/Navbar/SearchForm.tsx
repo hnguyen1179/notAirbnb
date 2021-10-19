@@ -5,7 +5,7 @@ import { DateRange, OnDateRangeChangeProps } from "react-date-range";
 
 import "react-date-range/dist/styles.css"; // main css file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import { disableDay } from "../../utils/disableDays";
+import { disableDay, disablePastAWeek } from "../../utils/disableDays";
 import LocationSearch from "../LocationSearch/LocationSearch";
 import { useHistory } from "react-router";
 import { addDays, format } from "date-fns";
@@ -36,7 +36,10 @@ interface Props {
 	handleDateChange?: (ranges: OnDateRangeChangeProps) => void;
 	handleGuestChange?: (value: number) => void;
 	submitNewQuery?: () => void;
+	handleCloseNavigation?: () => void;
 }
+
+const DEFAULT_DATE = new Date().toLocaleDateString();
 
 const SearchForm = ({
 	filters,
@@ -44,6 +47,7 @@ const SearchForm = ({
 	handleDateChange: setReducerDate,
 	handleGuestChange: setReducerGuest,
 	submitNewQuery,
+	handleCloseNavigation,
 }: Props) => {
 	const [focusedRange, setFocusedRange] = useState<[number, number]>([0, 0]);
 	const [focusInput, setFocusInput] = useState(-1);
@@ -204,8 +208,9 @@ const SearchForm = ({
 			page: "1",
 		});
 
-		localStorage.setItem("params", search.toString());
+		sessionStorage.setItem("params", search.toString());
 
+		console.log("SEARCH STRING: ", search.toString());
 		history.push({
 			pathname: "/search",
 			search: search.toString(),
@@ -219,6 +224,30 @@ const SearchForm = ({
 		if (focusInput === idx) output += " focused";
 
 		return output;
+	};
+
+	const defaultDate =
+		dates.startDate.toLocaleDateString() === DEFAULT_DATE &&
+		dates.endDate.toLocaleDateString() === DEFAULT_DATE;
+
+	const selectCheckout =
+		dates.startDate.toLocaleDateString() ===
+		dates.endDate.toLocaleDateString();
+
+	const handleDisableDayLogic = (date: Date) => {
+		if (defaultDate) {
+			return disableDay(date);
+		} else if (selectCheckout) {
+			return disablePastAWeek(date, dates.startDate);
+		}
+		return disableDay(date);
+	};
+
+	const handleSubmitNewQuery = () => {
+		if (handleCloseNavigation && submitNewQuery) {
+			handleCloseNavigation();
+			submitNewQuery();
+		}
 	};
 
 	return (
@@ -272,12 +301,12 @@ const SearchForm = ({
 							id="startDate"
 							value={
 								filters
-									? dates.endDate?.toLocaleDateString() ===
+									? dates.startDate?.toLocaleDateString() ===
 									  new Date().toLocaleDateString()
 										? ""
-										: dates.endDate.toLocaleDateString()
+										: dates.startDate.toLocaleDateString()
 									: selectedRef.current >= 1
-									? dates.endDate?.toLocaleDateString()
+									? dates.startDate?.toLocaleDateString()
 									: ""
 							}
 							readOnly={true}
@@ -363,7 +392,9 @@ const SearchForm = ({
 					type="submit"
 					onClick={(e) => {
 						e.preventDefault();
-						submitNewQuery ? submitNewQuery() : handleSubmit(e);
+						submitNewQuery
+							? handleSubmitNewQuery()
+							: handleSubmit(e);
 					}}
 				>
 					<SearchSvg />
@@ -385,7 +416,7 @@ const SearchForm = ({
 						ranges={[dates]}
 						rangeColors={["#00a6de"]}
 						onChange={handleDateChange}
-						disabledDay={disableDay}
+						disabledDay={handleDisableDayLogic}
 					/>
 					<DateRange
 						className="date-range date-range--big"
@@ -399,7 +430,7 @@ const SearchForm = ({
 						ranges={[dates]}
 						rangeColors={["#00a6de"]}
 						onChange={handleDateChange}
-						disabledDay={disableDay}
+						disabledDay={handleDisableDayLogic}
 					/>
 				</div>
 			)}

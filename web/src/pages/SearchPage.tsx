@@ -11,7 +11,6 @@ import SearchResultsItem from "../components/SearchResultsItem/SearchResultsItem
 import SearchResultsPagination from "../components/SearchResultsPagination/SearchResultsPagination";
 import { useURLParams } from "../context/URLParamsContext";
 import Navbar from "../components/Navbar/Navbar";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
 import EditMenuPortal from "../components/SearchPageTopBar/EditMenuPortal";
 import SearchPageMap from "../components/SearchPageMap/SearchPageMap";
 import { Redirect } from "react-router";
@@ -47,12 +46,13 @@ const SearchPage = ({ history }: Props) => {
 	const [currentListing, setCurrentListing] = useState(-1);
 	const [isLoading, setIsLoading] = useState(false);
 
-	const filtersEditMenuRef = useRef<HTMLDivElement>(null);
 	const mapRef = useRef<HTMLDivElement>(null);
 
 	// Searches done via landing "region" icons
 	const isRegionSearch = !history.location.search.includes("guests");
 	const searchParams = new URLSearchParams(history.location.search);
+	console.log("SEARCH PARAMS: ", searchParams.toString());
+	console.log("SEARCH VARIABLES: ", variables)
 
 	// Helps prevent unnecessary data fetches
 	const previousURL = useRef(searchParams.toString());
@@ -63,7 +63,7 @@ const SearchPage = ({ history }: Props) => {
 
 	useEffect(() => {
 		if (!searchParams.toString().includes("guests")) {
-			localStorage.removeItem("params");
+			sessionStorage.removeItem("params");
 		}
 	}, [searchParams]);
 
@@ -186,6 +186,7 @@ const SearchPage = ({ history }: Props) => {
 	};
 
 	if (error) {
+		console.log(error.message);
 		return <Redirect to="/error" />;
 	}
 

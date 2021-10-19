@@ -6,8 +6,10 @@ import BoxButtons from "./BoxButtons";
 import { DateRange } from "react-date-range";
 import { Maybe } from "../../generated/graphql";
 import { useCalendarLogic } from "../../context/CalendarLogicContext";
+import { IDate } from "../MobileNavbar/MobileSearchForm";
 
 interface Props {
+	dates: IDate,
 	id: string;
 	city: string;
 	price: number;
@@ -22,7 +24,7 @@ interface Props {
 
 const ListingReservationBox = (props: Props) => {
 	const {
-		dates,
+		// dates,
 		defaultDate,
 		focusedRange,
 		handleRangeFocusChange,
@@ -50,12 +52,12 @@ const ListingReservationBox = (props: Props) => {
 	}, []);
 
 	const sameDates =
-		dates.startDate.toLocaleDateString() ===
-		dates.endDate.toLocaleDateString();
+		props.dates.startDate.toLocaleDateString() ===
+		props.dates.endDate.toLocaleDateString();
 
 	useEffect(() => {
 		if (!sameDates) handleCloseCalendar();
-	}, [defaultDate, focusedRange, dates, sameDates]);
+	}, [defaultDate, focusedRange, props.dates, sameDates]);
 
 	const handleOpenCalendar = () => {
 		setOpenCalendar(true);
@@ -94,7 +96,7 @@ const ListingReservationBox = (props: Props) => {
 
 			<BoxButtons
 				id={props.id}
-				dates={dates}
+				dates={props.dates}
 				maxGuests={props.maxGuests}
 				numGuests={props.numGuests}
 				price={props.price}
@@ -116,7 +118,7 @@ const ListingReservationBox = (props: Props) => {
 					showMonthAndYearPickers={true}
 					editableDateInputs={true}
 					showDateDisplay={false}
-					ranges={[dates]}
+					ranges={[props.dates]}
 					rangeColors={["#00a6de"]}
 					onChange={handleDateChange}
 					disabledDay={handleDisableDayLogic}

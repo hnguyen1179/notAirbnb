@@ -9,13 +9,18 @@ import SearchForm from "./SearchForm";
  *
  * Avoids massive prop drilling
  */
-const SearchFormDataProvider = () => {
-	const { state, searchHandlers, submitNewQuery } = useURLParams();
+
+interface Props {
+	handleCloseNavigation: () => void;
+}
+
+const SearchFormDataProvider = ({ handleCloseNavigation }: Props) => {
+	const { state, variables, searchHandlers, submitNewQuery } = useURLParams();
 	const filters: BasicSearchVariables = {
 		region: state.location,
 		guests: state.guests,
-		checkIn: state.dates.startDate.toLocaleDateString(),
-		checkOut: state.dates.endDate.toLocaleDateString(),
+		checkIn: variables.checkIn,
+		checkOut: variables.checkOut,
 		tags: state.tags,
 		listingType: state.listingType,
 		languages: state.languages,
@@ -38,6 +43,7 @@ const SearchFormDataProvider = () => {
 				handleDateChange={handleDateChange}
 				handleGuestChange={handleGuestChange}
 				submitNewQuery={submitNewQuery}
+				handleCloseNavigation={handleCloseNavigation}
 			/>
 		</div>
 	);

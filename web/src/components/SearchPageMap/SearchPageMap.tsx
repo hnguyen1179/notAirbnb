@@ -1,5 +1,5 @@
 import { Loader } from "@googlemaps/js-api-loader";
-import { MouseEvent, RefObject, useEffect, useState } from "react";
+import { MouseEvent, RefObject, useEffect, useRef, useState } from "react";
 import GoogleMapReact from "google-map-react";
 import { Maybe } from "../../generated/graphql";
 import { PartialListing } from "../SearchResultsItem/SearchResultsItem";
@@ -8,6 +8,7 @@ import { getZoomLevel } from "../../utils/mapUtils";
 import PriceMarker from "../MapMarkers/PriceMarker";
 import { Cloudinary } from "@cloudinary/base";
 import { createMapOptions } from "../../utils/createMapOptions";
+import { map } from "lodash";
 
 interface Props {
 	listings: Maybe<PartialListing>[] | undefined;
@@ -29,28 +30,21 @@ const SearchPageMap = ({
 		zoom: 5,
 	});
 
+	const mapsRef = useRef(null);
+
+	const apiIsLoaded = async (maps: any) => {
+		if (!listings || !maps) return;
+		mapsRef.current = maps;
+		const { zoom, center } = await getZoomLevel(maps, listings, mapRef);
+
+		setMapState({
+			center,
+			zoom: zoom - 1,
+		});
+	};
+
 	useEffect(() => {
-		if (!listings?.length) return;
-
-		(async () => {
-			const loader = new Loader({
-				apiKey: process.env.REACT_APP_GOOGLE_API_KEY as string,
-				version: "weekly",
-			});
-
-			loader.load().then(async (google) => {
-				const { zoom, center } = await getZoomLevel(
-					google,
-					listings,
-					mapRef
-				);
-
-				setMapState({
-					zoom: zoom - 1,
-					center,
-				});
-			});
-		})();
+		apiIsLoaded(mapsRef.current);
 	}, [listings, mapRef]);
 
 	const resetClickIdx = () => {
@@ -63,11 +57,15 @@ const SearchPageMap = ({
 				bootstrapURLKeys={{
 					key: process.env.REACT_APP_GOOGLE_API_KEY as string,
 				}}
-				defaultCenter={mapState.center}
-				defaultZoom={mapState.zoom}
+				defaultCenter={regions["Anywhere"]}
+				defaultZoom={5}
+				center={mapState.center}
+				zoom={mapState.zoom}
 				options={createMapOptions}
 				onClick={resetClickIdx}
 				onZoomAnimationStart={resetClickIdx}
+				yesIWantToUseGoogleMapApiInternals
+				onGoogleApiLoaded={({ maps }) => apiIsLoaded(maps)}
 			>
 				{listings?.map((listing, idx) => {
 					if (!listing) return "";

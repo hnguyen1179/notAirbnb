@@ -4,10 +4,12 @@ import { useCalendarLogic } from "../../context/CalendarLogicContext";
 import { usePortal } from "../../hooks/usePortal";
 import { showMoreStyle } from "../../pages/ListingPage";
 import ListingShowMore from "../ListingShowMore/ListingShowMore";
+import { IDate } from "../MobileNavbar/MobileSearchForm";
 import ListingReservationMobileButton from "./ListingReservationMobileButton";
 import ReservationConfirmation from "./ReservationConfirmation";
 
 interface Props {
+	dates: IDate;
 	id: string;
 	price: number;
 	cleaningFee: number;
@@ -21,7 +23,7 @@ interface Props {
 
 const ListingReservationMobile = (props: Props) => {
 	const { Portal, portalProps, openPortal, closePortal } = usePortal();
-	const { defaultDate, selectCheckout, dates } = useCalendarLogic();
+	const { defaultDate, selectCheckout } = useCalendarLogic();
 
 	// On unmount; close the portal entirely
 	useEffect(() => {
@@ -50,17 +52,17 @@ const ListingReservationMobile = (props: Props) => {
 	};
 
 	const renderDates = () => {
-		const start = dates.startDate.toLocaleDateString("en", {
+		const start = props.dates.startDate.toLocaleDateString("en", {
 			month: "short",
 			day: "numeric",
 		});
-		const end = dates.endDate.toLocaleDateString("en", {
+		const end = props.dates.endDate.toLocaleDateString("en", {
 			month: "short",
 			day: "numeric",
 		});
 
 		let output = `${start} - ${end}`;
-		if (dates.endDate.getFullYear() === 2022) output += " 2022";
+		if (props.dates.endDate.getFullYear() === 2022) output += " 2022";
 
 		return output;
 	};
@@ -103,7 +105,6 @@ const ListingReservationMobile = (props: Props) => {
 				>
 					{(_containerRef) => (
 						<ReservationConfirmation
-							dates={dates}
 							defaultDate={defaultDate}
 							{...props}
 						/>

@@ -8,6 +8,12 @@ interface Props {
 	datesUnavailable: Maybe<string>[];
 }
 
+// TODO: Figure out why there is a discepancy between how the dates are selected 
+// on the ListingReservation calendar between choosing a single date on the 
+// SearchPage vs the LandingPage
+
+// After, this try to figure out the log out bug... and then deploy 
+
 const ListingReservation = (props: Props) => {
 	const {
 		dates,

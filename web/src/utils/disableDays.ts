@@ -12,6 +12,14 @@ const disableListingDay = (date: Date, datesUnavailable: Maybe<string>[]) => {
 	);
 };
 
+const disablePastAWeek = (date: Date, pickedDate: Date) => {
+	return (
+		date < new Date() ||
+		date <= subDays(pickedDate, 7) ||
+		date >= addDays(pickedDate, 7)
+	);
+};
+
 const disableListingCheckoutDays = (
 	date: Date,
 	pickedDate: Date,
@@ -36,4 +44,5 @@ export {
 	disableListingDay,
 	disableListingCheckoutDays,
 	disableListingFutureDays,
+	disablePastAWeek,
 };

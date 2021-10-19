@@ -32,12 +32,6 @@ const ApolloProviderFC: React.FC = ({ children }) => {
 				typePolicies: {
 					Query: {
 						fields: {
-							me: {
-								keyArgs: [],
-								merge(existing, incoming) {
-									return incoming;
-								},
-							},
 							reviewsByUserId: {
 								keyArgs: ["id"],
 								merge(existing = [], incoming) {

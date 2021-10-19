@@ -195,7 +195,11 @@ function Navbar({
 									<span>Experiences</span>
 									<span>Online Experiences</span>
 								</div>
-								<SearchFormDataProvider />
+								<SearchFormDataProvider
+									handleCloseNavigation={
+										handleCloseNavigation
+									}
+								/>
 							</div>
 						</CSSTransition>
 						<CSSTransition

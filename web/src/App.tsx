@@ -27,89 +27,81 @@ import ErrorPage from "./pages/ErrorPage";
 import SearchPage from "./pages/SearchPage";
 import ListingPage from "./pages/ListingPage";
 import { URLParamsProvider } from "./context/URLParamsContext";
-import AuthRedirectRoute from "./pages/AuthRedirectRoute";
 
 function App() {
 	return (
 		<AppStateProvider>
 			<ModalProvider>
 				<Router>
-					<URLParamsProvider>
-						<ScrollToTop />
-						<Switch>
-							<Route
-								exact
-								path={LANDING}
-								component={LandingPage}
-							/>
+					<ScrollToTop />
+					<Switch>
+						<Route exact path={LANDING} component={LandingPage} />
 
-							<Route
-								path={USER_TRIPS}
-								render={(routeProps) => <TripsPage />}
-							/>
+						<Route
+							path={USER_TRIPS}
+							render={(routeProps) => <TripsPage />}
+						/>
 
-							<Route
-								path={USER_TRIP}
-								render={(routeProps) => (
-									<TripPage
-										id={routeProps.match.params.id}
-										routeProps={routeProps}
-									/>
-								)}
-							/>
+						<Route
+							path={USER_TRIP}
+							render={(routeProps) => (
+								<TripPage
+									id={routeProps.match.params.id}
+									routeProps={routeProps}
+								/>
+							)}
+						/>
 
-							{/* <AuthRedirectRoute
-								path={USER_TRIP}
-								component={TripPage}
-							/> */}
+						<Route
+							path={HOST_PROFILE}
+							render={(routeProps) => (
+								<HostPage
+									id={routeProps.match.params.id}
+									routeProps={routeProps}
+								/>
+							)}
+						/>
 
-							<Route
-								path={HOST_PROFILE}
-								render={(routeProps) => (
-									<HostPage
-										id={routeProps.match.params.id}
-										routeProps={routeProps}
-									/>
-								)}
-							/>
+						<Route
+							path={USER_PROFILE}
+							render={(routeProps) => (
+								<UserPage
+									id={routeProps.match.params.id}
+									routeProps={routeProps}
+								/>
+							)}
+						/>
 
-							<Route
-								path={USER_PROFILE}
-								render={(routeProps) => (
-									<UserPage
-										id={routeProps.match.params.id}
-										routeProps={routeProps}
-									/>
-								)}
-							/>
+						<NoAuthRedirectRoute
+							path={ENTRY}
+							component={EntryPage}
+						/>
 
-							<NoAuthRedirectRoute
-								path={ENTRY}
-								component={EntryPage}
-							/>
-
-							<Route
-								path={SEARCH}
-								render={(routeProps) => (
+						<Route
+							path={SEARCH}
+							render={(routeProps) => (
+								<URLParamsProvider>
 									<SearchPage history={routeProps.history} />
-								)}
-							/>
+								</URLParamsProvider>
+							)}
+						/>
 
-							<Route
-								path={LISTING}
-								render={(routeProps) => (
+						<Route
+							path={LISTING}
+							render={(routeProps) => (
+								<URLParamsProvider>
 									<ListingPage
 										id={routeProps.match.params.id}
 										history={routeProps.history}
 										location={routeProps.location}
 										match={routeProps.match}
 									/>
-								)}
-							/>
+								</URLParamsProvider>
+							)}
+						/>
 
-							<Route path="*" component={ErrorPage} />
-						</Switch>
-					</URLParamsProvider>
+						<Route path="*" component={ErrorPage} />
+					</Switch>
 				</Router>
 			</ModalProvider>
 		</AppStateProvider>

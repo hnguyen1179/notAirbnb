@@ -26,11 +26,11 @@ const getAverageMapValues = (listings: Maybe<ListingObj>[]) => {
 };
 
 const getZoomLevel = async (
-	google: any,
+	maps: any,
 	listings: Maybe<ListingObj>[],
 	map: RefObject<HTMLDivElement>
 ) => {
-	const bounds = new google.maps.LatLngBounds();
+	const bounds = new maps.LatLngBounds();
 
 	const coordinatesList = listings?.map((listing) => {
 		if (!listing) return [];
@@ -39,7 +39,7 @@ const getZoomLevel = async (
 	});
 
 	coordinatesList.forEach((c) => {
-		bounds.extend(new google.maps.LatLng(c[0], c[1]));
+		bounds.extend(new maps.LatLng(c[0], c[1]));
 	});
 
 	const newBounds = {
@@ -54,8 +54,8 @@ const getZoomLevel = async (
 	};
 
 	const size = {
-		width: (map.current?.getBoundingClientRect().width || 0),
-		height: (map.current?.getBoundingClientRect().height || 0),
+		width: map.current?.getBoundingClientRect().width || 0,
+		height: map.current?.getBoundingClientRect().height || 0,
 	};
 
 	return fitBounds(newBounds, size);

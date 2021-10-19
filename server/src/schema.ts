@@ -44,8 +44,7 @@ const Query = objectType({
       type: 'User',
       resolve: (_parent, _args, context: Context) => {
         const userId = getUserId(context);
-        console.log(' IN ME QUERY ');
-        console.log('USERID IS ... ', userId);
+
         return context.prisma.user.findUnique({
           where: {
             id: userId,
@@ -233,6 +232,9 @@ const Query = objectType({
         superhost: booleanArg(),
       },
       resolve: async (_parent, args, context: Context) => {
+        console.log('IN BASIC SEARCH');
+        console.log('args are ... ', args);
+
         const renderOptions = ({ isCount }: { isCount: boolean }) => {
           let options: {
             skip: number;
