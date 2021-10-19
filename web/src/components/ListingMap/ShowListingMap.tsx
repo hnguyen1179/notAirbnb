@@ -27,7 +27,7 @@ const ShowListingMap = (props: Props) => {
 			</div>
 			<div className="column-2">
 				<div className="map-container">
-					{/* <GoogleReactMap
+					<GoogleReactMap
 						bootstrapURLKeys={{
 							key: process.env.REACT_APP_GOOGLE_API_KEY as string,
 						}}
@@ -36,7 +36,7 @@ const ShowListingMap = (props: Props) => {
 						defaultZoom={16}
 					>
 						<HouseMarkerBasic lat={center.lat} lng={center.lng} />
-					</GoogleReactMap> */}
+					</GoogleReactMap>
 				</div>
 			</div>
 		</>

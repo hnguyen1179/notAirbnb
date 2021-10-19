@@ -1,7 +1,7 @@
 import GoogleReactMap from "google-map-react";
 import { coordinates } from "../../constants/coordinates";
 import { Maybe } from "../../generated/graphql";
-import { createMapOptions } from "../../utils/createMapOptions";
+import { createMapOptionsListingPage } from "../../utils/createMapOptions";
 import HouseMarkerBasic from "../MapMarkers/HouseMarkerBasic";
 import { ReactComponent as RightSvg } from "../../assets/icons/right-arrow.svg";
 import { definitelyNotAirbnb } from "../../utils/definitelyNotAirbnb";
@@ -25,19 +25,16 @@ const ListingMap = (props: Props) => {
 			</div>
 
 			<div className="ListingMap__map">
-				{/* <GoogleReactMap
+				<GoogleReactMap
 					bootstrapURLKeys={{
 						key: process.env.REACT_APP_GOOGLE_API_KEY as string,
 					}}
-					options={createMapOptions}
+					options={createMapOptionsListingPage}
 					defaultCenter={center}
 					defaultZoom={16}
 				>
-					<HouseMarkerBasic
-						lat={center.lat}
-						lng={center.lng}
-					/>
-				</GoogleReactMap> */}
+					<HouseMarkerBasic lat={center.lat} lng={center.lng} />
+				</GoogleReactMap>
 			</div>
 
 			<div className="ListingMap__location">
@@ -52,7 +49,10 @@ const ListingMap = (props: Props) => {
 						<p>{definitelyNotAirbnb(props.locationDescription)}</p>
 					</div>
 
-					<button className="show-more-button" onClick={props.openPortal}>
+					<button
+						className="show-more-button"
+						onClick={props.openPortal}
+					>
 						<span>Show more</span>
 						<RightSvg />
 					</button>

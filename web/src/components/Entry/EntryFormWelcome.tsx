@@ -37,7 +37,7 @@ function Welcome({ form, setVerified, handleCloseModal, isModal }: any) {
 	const clickDemo = async () => {
 		try {
 			setFocus("email");
-			await typeWriter("email", "ronald.cox@example.com", setValue);
+			await typeWriter("email", "demo.account@gmail.com", setValue);
 			await onSubmitEmail({ email: getValues("email") });
 
 			await sleep(500);
