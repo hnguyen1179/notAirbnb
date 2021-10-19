@@ -7,19 +7,17 @@ import Loading from "../components/Loading";
 import ReservationItem from "../components/ReservationItem/ReservationItem";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
-interface Props {
-	id: string;
-}
-
-const TripsPage = ({ id }: Props) => {
+const TripsPage = () => {
 	const [onUpcoming, setOnUpcoming] = useState(true);
-	const { mobile } = useAppState();
+	const { mobile, user } = useAppState();
 
 	const { loading, error, data } = useReservationsByUserIdQuery({
-		variables: { id },
+		variables: { id: user?.id || "" },
 	});
+
+	if (!user?.id) return <Redirect to="/entry" />;
 
 	if (loading)
 		return (

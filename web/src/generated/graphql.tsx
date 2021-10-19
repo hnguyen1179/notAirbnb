@@ -89,6 +89,7 @@ export type Mutation = {
   login?: Maybe<AuthPayload>;
   signup?: Maybe<AuthPayload>;
   verifyEmail?: Maybe<Scalars['Boolean']>;
+  verifyTripAuth?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -128,6 +129,12 @@ export type MutationSignupArgs = {
 
 export type MutationVerifyEmailArgs = {
   email: Scalars['String'];
+};
+
+
+export type MutationVerifyTripAuthArgs = {
+  reservationId: Scalars['String'];
+  userId: Scalars['String'];
 };
 
 export type Query = {
@@ -297,6 +304,14 @@ export type SignupMutationVariables = Exact<{
 
 
 export type SignupMutation = { signup?: Maybe<{ token?: Maybe<string> }> };
+
+export type VerifyTripAuthMutationVariables = Exact<{
+  userId: Scalars['String'];
+  reservationId: Scalars['String'];
+}>;
+
+
+export type VerifyTripAuthMutation = { verifyTripAuth?: Maybe<boolean> };
 
 export type BasicSearchQueryVariables = Exact<{
   region?: Maybe<Scalars['String']>;
@@ -534,6 +549,38 @@ export function useSignupMutation(baseOptions?: Apollo.MutationHookOptions<Signu
 export type SignupMutationHookResult = ReturnType<typeof useSignupMutation>;
 export type SignupMutationResult = Apollo.MutationResult<SignupMutation>;
 export type SignupMutationOptions = Apollo.BaseMutationOptions<SignupMutation, SignupMutationVariables>;
+export const VerifyTripAuthDocument = gql`
+    mutation verifyTripAuth($userId: String!, $reservationId: String!) {
+  verifyTripAuth(userId: $userId, reservationId: $reservationId)
+}
+    `;
+export type VerifyTripAuthMutationFn = Apollo.MutationFunction<VerifyTripAuthMutation, VerifyTripAuthMutationVariables>;
+
+/**
+ * __useVerifyTripAuthMutation__
+ *
+ * To run a mutation, you first call `useVerifyTripAuthMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useVerifyTripAuthMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [verifyTripAuthMutation, { data, loading, error }] = useVerifyTripAuthMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      reservationId: // value for 'reservationId'
+ *   },
+ * });
+ */
+export function useVerifyTripAuthMutation(baseOptions?: Apollo.MutationHookOptions<VerifyTripAuthMutation, VerifyTripAuthMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<VerifyTripAuthMutation, VerifyTripAuthMutationVariables>(VerifyTripAuthDocument, options);
+      }
+export type VerifyTripAuthMutationHookResult = ReturnType<typeof useVerifyTripAuthMutation>;
+export type VerifyTripAuthMutationResult = Apollo.MutationResult<VerifyTripAuthMutation>;
+export type VerifyTripAuthMutationOptions = Apollo.BaseMutationOptions<VerifyTripAuthMutation, VerifyTripAuthMutationVariables>;
 export const BasicSearchDocument = gql`
     query basicSearch($region: String, $guests: Int, $checkIn: String, $checkOut: String, $offset: Int!, $tags: [String!], $languages: [String!], $listingType: [String!], $superhost: Boolean, $pets: Boolean, $smoking: Boolean, $entire: Boolean, $privateListing: Boolean) {
   basicSearch(

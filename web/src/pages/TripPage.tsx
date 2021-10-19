@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, FC } from "react";
 import { format, getDay } from "date-fns";
-import { Redirect } from "react-router";
+import { Redirect, Route, RouteComponentProps } from "react-router";
 import { debounce } from "@material-ui/core";
 import { AdvancedImage } from "@cloudinary/react";
 import GoogleMapReact from "google-map-react";
@@ -21,8 +21,6 @@ import { ReactComponent as DoorSvg } from "../assets/icons/door.svg";
 import { ReactComponent as HospitalSvg } from "../assets/icons/hospital.svg";
 import { ReactComponent as QuestionSvg } from "../assets/icons/question.svg";
 import { ReactComponent as BoldNegativeSvg } from "../assets/icons/bold-negative.svg";
-import { ReactComponent as PositiveSvg } from "../assets/icons/positive.svg";
-import { ReactComponent as NegativeSvg } from "../assets/icons/negative.svg";
 import { calculateTotalRes } from "../utils/priceBreakdown";
 import { copyToClipboard } from "../utils/copyToClipboard";
 import { useAppState } from "../context/AppContext";
@@ -36,10 +34,10 @@ import { numberWithCommas } from "../utils/numberWithCommas";
 
 interface Props {
 	id: string;
-	routeProps: any;
+	routeProps: RouteComponentProps;
 }
 
-const TripPage = ({ id, routeProps }: Props) => {
+const TripPage: FC<Props> = ({ id, routeProps }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const { user, cloudinary, mobile } = useAppState();
 	const [copied, setCopied] = useState(false);

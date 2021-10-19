@@ -83,6 +83,7 @@ type Mutation {
   login(email: String!, password: String!): AuthPayload
   signup(email: String!, firstName: String!, lastName: String!, password: String!): AuthPayload
   verifyEmail(email: String!): Boolean
+  verifyTripAuth(reservationId: String!, userId: String!): Boolean
 }
 
 type Query {

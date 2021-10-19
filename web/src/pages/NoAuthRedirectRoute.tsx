@@ -1,7 +1,14 @@
-import { Redirect, Route } from "react-router";
+import { FC } from "react";
+import { Redirect, Route, RouteComponentProps } from "react-router";
 import useAuthToken from "../hooks/useAuthToken";
 
-const NoAuthRedirectRoute = ({ component: Component, ...rest }: any) => {
+interface Props {
+	component: (renderProps: RouteComponentProps) => JSX.Element;
+	path: string;
+}
+
+// Prevent logged in users from accessing the 'Login Page'
+const NoAuthRedirectRoute: FC<Props> = ({ component: Component, ...rest }) => {
 	const [token] = useAuthToken();
 
 	return (

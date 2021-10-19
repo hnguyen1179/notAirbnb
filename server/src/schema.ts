@@ -438,6 +438,34 @@ const Mutation = objectType({
       },
     });
 
+    t.field('verifyTripAuth', {
+      type: 'Boolean',
+      args: {
+        userId: nonNull(stringArg()),
+        reservationId: nonNull(stringArg()),
+      },
+      resolve: async (_, args, context: Context) => {
+        // await sleep(Math.random() * 600 + 400);
+
+        console.log(' VERIFYING TRIP AUTH ');
+        const userReservations = await context.prisma.user
+          .findUnique({
+            where: {
+              id: args.userId,
+            },
+          })
+          .reservations();
+
+        const result = userReservations.filter(
+          (res) => res.id === args.reservationId,
+        ).length;
+
+        console.log(result > 0);
+
+        return result > 0;
+      },
+    });
+
     t.field('login', {
       type: 'AuthPayload',
       args: {

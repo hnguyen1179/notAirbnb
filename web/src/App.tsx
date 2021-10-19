@@ -10,7 +10,6 @@ import {
 	USER_TRIPS,
 	USER_TRIP,
 	HOST_PROFILE,
-	ERROR,
 } from "./constants/routes";
 
 import NoAuthRedirectRoute from "./pages/NoAuthRedirectRoute";
@@ -28,9 +27,9 @@ import ErrorPage from "./pages/ErrorPage";
 import SearchPage from "./pages/SearchPage";
 import ListingPage from "./pages/ListingPage";
 import { URLParamsProvider } from "./context/URLParamsContext";
+import AuthRedirectRoute from "./pages/AuthRedirectRoute";
 
 function App() {
-
 	return (
 		<AppStateProvider>
 			<ModalProvider>
@@ -43,15 +42,12 @@ function App() {
 								path={LANDING}
 								component={LandingPage}
 							/>
-							<Route exact path={ERROR} component={ErrorPage} />
+
 							<Route
 								path={USER_TRIPS}
-								render={(routeProps) => (
-									<TripsPage
-										id={routeProps.match.params.id}
-									/>
-								)}
+								render={(routeProps) => <TripsPage />}
 							/>
+
 							<Route
 								path={USER_TRIP}
 								render={(routeProps) => (
@@ -61,6 +57,12 @@ function App() {
 									/>
 								)}
 							/>
+
+							{/* <AuthRedirectRoute
+								path={USER_TRIP}
+								component={TripPage}
+							/> */}
+
 							<Route
 								path={HOST_PROFILE}
 								render={(routeProps) => (
@@ -70,6 +72,7 @@ function App() {
 									/>
 								)}
 							/>
+
 							<Route
 								path={USER_PROFILE}
 								render={(routeProps) => (
@@ -91,6 +94,7 @@ function App() {
 									<SearchPage history={routeProps.history} />
 								)}
 							/>
+
 							<Route
 								path={LISTING}
 								render={(routeProps) => (
@@ -102,6 +106,7 @@ function App() {
 									/>
 								)}
 							/>
+
 							<Route path="*" component={ErrorPage} />
 						</Switch>
 					</URLParamsProvider>
