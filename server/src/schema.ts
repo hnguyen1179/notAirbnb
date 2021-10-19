@@ -447,7 +447,6 @@ const Mutation = objectType({
       resolve: async (_, args, context: Context) => {
         // await sleep(Math.random() * 600 + 400);
 
-        console.log(' VERIFYING TRIP AUTH ');
         const userReservations = await context.prisma.user
           .findUnique({
             where: {
@@ -459,8 +458,6 @@ const Mutation = objectType({
         const result = userReservations.filter(
           (res) => res.id === args.reservationId,
         ).length;
-
-        console.log(result > 0);
 
         return result > 0;
       },

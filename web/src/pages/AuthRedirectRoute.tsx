@@ -26,7 +26,6 @@ const AuthRedirectRouteInner: FC<InnerProps> = ({
 	routeProps,
 	path,
 }) => {
-	console.log("INSIDE AUTH REDIRECT INNER ROUTE");
 	const { user } = useAppState();
 	const [verifyTripAuth] = useVerifyTripAuthMutation();
 	const pathname = routeProps.location.pathname;
@@ -44,13 +43,11 @@ const AuthRedirectRouteInner: FC<InnerProps> = ({
 					},
 				});
 
-				console.log("OUtPUT: ", data?.verifyTripAuth);
 				setAuthorized(data?.verifyTripAuth as boolean);
 			}
 		})();
 	}, [pathname, user, verifyTripAuth, authorized]);
 
-	console.log("rendering again ");
 	return authorized ? (
 		<Component id={routeProps.match.params.id} routeProps={routeProps} />
 	) : (
@@ -68,7 +65,6 @@ interface Props {
 }
 
 const AuthRedirectRoute: FC<Props> = (props) => {
-	console.log(" in side auth redirect route ");
 
 	return (
 		<Route

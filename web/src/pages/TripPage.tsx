@@ -69,6 +69,8 @@ const TripPage: FC<Props> = ({ id, routeProps }) => {
 		};
 	}, [containerRef.current]);
 
+	if (!user) return <Redirect to="/entry" />;
+
 	if (error) {
 		return <Redirect to="/404" />;
 	}
