@@ -15,9 +15,6 @@ function useAuthToken() {
 		});
 	};
 	const removeAuthToken = () => {
-		console.log("removing auth token ... ");
-		console.log("TOKEN NAME IS ... ", TOKEN_NAME);
-		console.log("COOKIES ARE ... ", cookies);
 		setCookie(TOKEN_NAME, "");
 		// removeCookie(TOKEN_NAME);
 	};

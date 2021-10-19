@@ -6,7 +6,6 @@ const useLogout = () => {
 	const apolloClient = useApolloClient();
 
 	const logout = async () => {
-		console.log("LOGGING Out")
 		apolloClient.clearStore().then(() => {
 			apolloClient.resetStore();
 		}); // we remove all information in the store

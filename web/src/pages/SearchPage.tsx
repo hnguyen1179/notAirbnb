@@ -51,8 +51,6 @@ const SearchPage = ({ history }: Props) => {
 	// Searches done via landing "region" icons
 	const isRegionSearch = !history.location.search.includes("guests");
 	const searchParams = new URLSearchParams(history.location.search);
-	console.log("SEARCH PARAMS: ", searchParams.toString());
-	console.log("SEARCH VARIABLES: ", variables)
 
 	// Helps prevent unnecessary data fetches
 	const previousURL = useRef(searchParams.toString());
@@ -186,7 +184,6 @@ const SearchPage = ({ history }: Props) => {
 	};
 
 	if (error) {
-		console.log(error.message);
 		return <Redirect to="/error" />;
 	}
 

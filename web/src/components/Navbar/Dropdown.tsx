@@ -8,7 +8,6 @@ import useLogout from "../../hooks/useLogout";
 
 import { AdvancedImage, placeholder } from "@cloudinary/react";
 import { useHistory, useLocation } from "react-router";
-import useAuthToken from "../../hooks/useAuthToken";
 
 interface Props {
 	dropdown: boolean;
@@ -21,9 +20,6 @@ const Dropdown = ({ dropdown, setDropdown, handleOpen }: Props) => {
 	const location = useLocation();
 	const history = useHistory();
 	const logout = useLogout();
-	console.log("DROPDOWN RENDERED");
-	const [token] = useAuthToken();
-	console.log(token);
 
 	const handleClickDropdown = (e: SyntheticEvent<EventTarget>) => {
 		e.stopPropagation();

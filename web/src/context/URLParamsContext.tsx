@@ -71,7 +71,6 @@ const editMenuDefault = {
 };
 
 const URLParamsProvider: React.FC = ({ children }) => {
-	console.log("URLPARAMS RENDERED");
 	const history = useHistory();
 	const currentSearchString = sessionStorage.getItem("params");
 	const searchString = history.location.search
@@ -107,8 +106,6 @@ const URLParamsProvider: React.FC = ({ children }) => {
 		}),
 		[searchParams]
 	);
-
-	console.log("VARIABLES IN URL SEARCH PARAMS: ", variables);
 
 	// Checks to see if any filters are set
 	const activeNumFilters = Array.from(

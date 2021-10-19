@@ -210,7 +210,6 @@ const SearchForm = ({
 
 		sessionStorage.setItem("params", search.toString());
 
-		console.log("SEARCH STRING: ", search.toString());
 		history.push({
 			pathname: "/search",
 			search: search.toString(),

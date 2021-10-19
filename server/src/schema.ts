@@ -232,9 +232,6 @@ const Query = objectType({
         superhost: booleanArg(),
       },
       resolve: async (_parent, args, context: Context) => {
-        console.log('IN BASIC SEARCH');
-        console.log('args are ... ', args);
-
         const renderOptions = ({ isCount }: { isCount: boolean }) => {
           let options: {
             skip: number;
