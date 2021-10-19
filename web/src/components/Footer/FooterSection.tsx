@@ -21,8 +21,7 @@ const FooterSection = ({ data }: Props) => {
 					const [text, url] = item.split(", ");
 
 					const defined = url ? "defined" : "";
-					// TODO: Update URL for resume with updated resume.
-					// Maybe just save the document within assets and host it
+
 					return (
 						<li
 							key={idx}

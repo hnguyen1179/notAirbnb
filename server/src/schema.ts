@@ -620,7 +620,7 @@ const Mutation = objectType({
       resolve: (_, args, context: Context) => {
         const authorId = getUserId(context);
 
-        if (authorId === undefined) throw new Error('wtf??');
+        if (authorId === undefined) throw new Error('There is no user!');
 
         return context.prisma.review.create({
           data: {

@@ -70,7 +70,6 @@ const LandingPage = () => {
 				<TryHosting />
 			</section>
 
-			{/* TODO: Remove this section on login */}
 			<section className="Landing__inspirations">
 				<Inspirations />
 			</section>

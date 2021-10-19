@@ -18,10 +18,6 @@ const disableListingCheckoutDays = (
 	checkInMin: Date,
 	checkOutMax: Date
 ) => {
-	// TODO: Calculate the disabled days for the situation in which they pick a date that is
-	// FARRR in the future; where it wouldn't be in between two days.
-	// Maybe if the checkOutMax === last item in the ordered list
-	// have a special condition that only lets you book 7 days ahead of that booked date??
 	return (
 		date < new Date() ||
 		date <= subDays(pickedDate, 7) ||
