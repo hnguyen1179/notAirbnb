@@ -1,4 +1,3 @@
-import React from "react";
 import { ReactComponent as SearchSvg } from "../../assets/icons/small-search.svg";
 import { ReactComponent as CalendarSvg } from "../../assets/icons/calendar.svg";
 import { ReactComponent as GuestsSvg } from "../../assets/icons/guests.svg";

@@ -1,4 +1,4 @@
-import React, { FC, ComponentType, Fragment } from "react";
+import { FC } from "react";
 
 type Components = any | [any, { [key: string]: any }];
 
@@ -7,12 +7,12 @@ interface Props {
 }
 
 export const Compose: FC<Props> = ({ components, children }) => (
-	<Fragment>
+	<>
 		{components.reverse().reduce((acc, curr) => {
 			const [Provider, props] = Array.isArray(curr)
 				? [curr[0], curr[1]]
 				: [curr, {}];
 			return <Provider {...props}>{acc}</Provider>;
 		}, children)}
-	</Fragment>
+	</>
 );

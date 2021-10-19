@@ -1,4 +1,3 @@
-import React from "react";
 import { ReactComponent as CheckmarkSvg } from "../../assets/icons/checkmark.svg";
 
 interface Props {

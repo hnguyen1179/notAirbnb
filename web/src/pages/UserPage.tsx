@@ -44,6 +44,7 @@ const UserPage = ({ id, routeProps }: Props) => {
 		data: userData,
 	} = useUserByIdQuery({
 		variables: { id },
+		
 	});
 
 	if (userLoading)

@@ -1,5 +1,3 @@
-import React from "react";
-
 interface Props {
 	superhostChecked: boolean;
 	handleToggleBooleanField: React.ChangeEventHandler<HTMLInputElement>;

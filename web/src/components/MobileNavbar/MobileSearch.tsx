@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { forwardRef, useState } from "react";
 import { ReactComponent as SearchSvg } from "../../assets/icons/search.svg";
 import MobileSearchForm from "./MobileSearchForm";
 
-const MobileSearch = React.forwardRef<HTMLDivElement>((props, ref) => {
+const MobileSearch = forwardRef<HTMLDivElement>((props, ref) => {
 	const [showForm, setShowForm] = useState(false);
 
 	const handleFormOpen = () => {

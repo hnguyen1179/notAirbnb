@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { useModal } from "../../context/ModalContext";
 import LoadingButton from "./LoadingButton";
 

@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useCallback, useState } from "react";
+import { MouseEventHandler, useCallback, useState } from "react";
 import { createPortal } from "react-dom";
 import Fade from "../components/Fade";
 

@@ -6,7 +6,10 @@ const useLogout = () => {
 	const apolloClient = useApolloClient();
 
 	const logout = async () => {
-		await apolloClient.clearStore(); // we remove all information in the store
+		console.log("LOGGING Out")
+		apolloClient.clearStore().then(() => {
+			apolloClient.resetStore();
+		}); // we remove all information in the store
 		removeAuthToken(); // we clear the authToken from cookies
 	};
 

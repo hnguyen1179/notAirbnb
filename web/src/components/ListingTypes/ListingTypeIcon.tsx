@@ -1,5 +1,4 @@
-import React from "react";
-import { AdvancedImage, placeholder } from "@cloudinary/react";
+import { AdvancedImage } from "@cloudinary/react";
 import { CloudinaryImage } from "@cloudinary/base/assets/CloudinaryImage";
 import { Link } from "react-router-dom";
 

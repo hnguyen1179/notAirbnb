@@ -1,13 +1,13 @@
-import React, { ReactElement, useRef } from "react";
+import { FC, RefObject, ReactElement, useRef } from "react";
 import { ReactComponent as CloseSvg } from "../../assets/icons/bold-negative.svg";
 
 interface Props {
   closePortal: () => void;
 	className: string;
-	children(containerRef: React.RefObject<HTMLDivElement>): ReactElement;
+	children(containerRef: RefObject<HTMLDivElement>): ReactElement;
 }
 
-const ListingShowMore: React.FC<Props> = ({ children, closePortal, className }) => {
+const ListingShowMore: FC<Props> = ({ children, closePortal, className }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 
 	return (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { ReactComponent as CheckmarkSvg } from "../../assets/icons/checkmark.svg";
 import { ArrayField } from "./FiltersEditMenu";
 import SectionContent from "./SectionContent";

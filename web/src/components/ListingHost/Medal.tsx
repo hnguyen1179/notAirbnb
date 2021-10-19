@@ -1,4 +1,3 @@
-import React from "react";
 import { ReactComponent as SuperhostSvg } from "../../assets/icons/super.svg";
 import { ReactComponent as VerifiedSvg } from "../../assets/icons/filled-shield.svg";
 

@@ -1,8 +1,6 @@
-import React, {
+import {
 	FC,
-	ReactComponentElement,
 	useEffect,
-	useRef,
 	useState,
 } from "react";
 import { Redirect, Route, RouteComponentProps } from "react-router";

@@ -1,5 +1,3 @@
-import React from "react";
-
 interface Props {
 	titles: string[];
 	panel: number;

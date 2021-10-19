@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 import { OnDateRangeChangeProps } from "react-date-range";
 import { addDays, format } from "date-fns";

@@ -1,4 +1,3 @@
-import React from "react";
 import { render } from "@testing-library/react";
 import { MockedProvider, MockedResponse } from "@apollo/client/testing";
 import { ModalProvider } from "../context/ModalContext";

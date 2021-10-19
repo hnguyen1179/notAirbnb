@@ -34,6 +34,7 @@ const LandingPage = () => {
 	// Fires for mobile, smaller screens
 	useEffect(() => {
 		document.addEventListener("scroll", handleMobileSearchBar);
+		document.body.style.overflow = "initial";
 
 		return () => {
 			document.removeEventListener("scroll", handleMobileSearchBar);

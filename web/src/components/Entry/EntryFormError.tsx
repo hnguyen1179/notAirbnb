@@ -1,4 +1,3 @@
-import React from "react";
 import { ReactComponent as ErrorSvg } from "../../assets/icons/error.svg";
 
 interface Props {

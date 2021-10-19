@@ -14,6 +14,8 @@ const httpLink = createHttpLink({
 
 const ApolloProviderFC: React.FC = ({ children }) => {
 	const [token] = useAuthToken();
+	console.log("APOLLOPROVIDER RENDERED");
+	console.log("TOKEN IS : ", token);
 
 	const authLink = setContext((_, { headers }) => {
 		// get auth token from cookies if it exists and sets it inside header of requests
@@ -32,6 +34,11 @@ const ApolloProviderFC: React.FC = ({ children }) => {
 				typePolicies: {
 					Query: {
 						fields: {
+							me: {
+								merge(existing, incoming) {
+									return existing;
+								},
+							},
 							reviewsByUserId: {
 								keyArgs: ["id"],
 								merge(existing = [], incoming) {

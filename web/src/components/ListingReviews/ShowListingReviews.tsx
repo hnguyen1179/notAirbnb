@@ -1,5 +1,5 @@
 import { FetchMoreQueryOptions } from "@apollo/client";
-import React, { MouseEventHandler, useEffect, useRef, useState } from "react";
+import { MouseEventHandler, useEffect, useRef, useState } from "react";
 import { ReactComponent as StarSvg } from "../../assets/icons/filled-star.svg";
 import { Exact, Maybe, ReviewsByListingIdQuery } from "../../generated/graphql";
 import Loading from "../Loading";

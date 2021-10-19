@@ -1,4 +1,3 @@
-import React from "react";
 import { ReactComponent as PlusSvg } from "../../assets/icons/plus.svg";
 import { ReactComponent as MinusSvg } from "../../assets/icons/minus.svg";
 

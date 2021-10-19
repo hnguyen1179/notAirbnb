@@ -1,15 +1,15 @@
 import { Cloudinary } from "@cloudinary/base";
-import React, { useContext, useState, useEffect } from "react";
+import { FC, createContext, useContext, useState, useEffect } from "react";
 import { useMeQuery } from "../generated/graphql";
-import { Loader } from "@googlemaps/js-api-loader";
 
 const width = window.innerWidth;
 
-const AppStateProvider: React.FC = ({ children }) => {
+const AppStateProvider: FC = ({ children }) => {
 	const mqlMobile = window.matchMedia("(min-width: 744px)");
 	const mqlMap = window.matchMedia("(min-width: 1128px)");
 
-	const { data } = useMeQuery();
+	const { data } = useMeQuery({});
+	const [user, setUser] = useState<any>(null);
 	const [mobile, setMobile] = useState(width <= 744);
 	const [map, setMap] = useState(width >= 1128);
 
@@ -36,14 +36,6 @@ const AppStateProvider: React.FC = ({ children }) => {
 	};
 
 	useEffect(() => {
-		(async () => {
-			const loader = new Loader({
-				apiKey: process.env.REACT_APP_GOOGLE_API_KEY as string,
-				version: "weekly",
-			});
-
-			await loader.load();
-		})();
 		mqlMobile.addEventListener("change", handleMobileChange);
 		mqlMap.addEventListener("change", handleMapChange);
 
@@ -53,11 +45,15 @@ const AppStateProvider: React.FC = ({ children }) => {
 		};
 	}, []);
 
+	useEffect(() => {
+		setUser(data?.me);
+	}, [data]);
+
 	return (
 		<AppContext.Provider
 			value={{
 				cloudinary,
-				user: data?.me ? data.me : null,
+				user: user,
 				mobile,
 				map,
 			}}
@@ -87,7 +83,7 @@ export type GlobalState = {
 	map: boolean;
 };
 
-const AppContext = React.createContext<GlobalState>(initialState);
+const AppContext = createContext<GlobalState>(initialState);
 
 const useAppState = () => {
 	const context = useContext(AppContext);

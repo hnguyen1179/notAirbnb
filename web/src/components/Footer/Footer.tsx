@@ -1,4 +1,3 @@
-import React from "react";
 import data from "../../data/footer.json";
 import FooterSection from "./FooterSection";
 import { ReactComponent as GlobalSvg } from "../../assets/icons/globe.svg";

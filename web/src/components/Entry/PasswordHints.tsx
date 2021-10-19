@@ -1,4 +1,3 @@
-import React from "react";
 import { ReactComponent as FailSvg } from "../../assets/icons/negative.svg";
 import { ReactComponent as PassSvg } from "../../assets/icons/positive.svg";
 
