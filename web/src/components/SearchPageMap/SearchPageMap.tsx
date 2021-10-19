@@ -23,9 +23,7 @@ const SearchPageMap = ({
 	mapRef,
 	cloudinary,
 }: Props) => {
-	console.log("SEARCH PAGE MAP RERENDERED");
 	const [clickIdx, setClickIdx] = useState(-1);
-	const [hover, setHover] = useState(false);
 	const [mapState, setMapState] = useState({
 		center: regions["Anywhere"],
 		zoom: 5,
@@ -33,7 +31,6 @@ const SearchPageMap = ({
 
 	useEffect(() => {
 		if (!listings?.length) return;
-		console.log(" in gooogle map !");
 
 		(async () => {
 			const loader = new Loader({
@@ -49,7 +46,7 @@ const SearchPageMap = ({
 				);
 
 				setMapState({
-					zoom,
+					zoom: zoom - 1,
 					center,
 				});
 			});
@@ -71,10 +68,6 @@ const SearchPageMap = ({
 				options={createMapOptions}
 				onClick={resetClickIdx}
 				onZoomAnimationStart={resetClickIdx}
-				onChildClick={(hoverKey) => console.log(hoverKey)}
-				margin={[100, 100, 100, 100]}
-				// TODO Make this draggable conditional based on whether or not you're
-				// hovering over a marker!! mouseEnter: true: mouseOut: false
 			>
 				{listings?.map((listing, idx) => {
 					if (!listing) return "";
@@ -101,7 +94,6 @@ const SearchPageMap = ({
 							handleClickMarker={handleClickMarker}
 							mapRef={mapRef}
 							cloudinary={cloudinary}
-							setHover={setHover}
 						/>
 					);
 				})}

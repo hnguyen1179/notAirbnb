@@ -3,6 +3,7 @@ import { ReactComponent as BackSvg } from "../../assets/icons/back.svg";
 
 interface Props {
 	handleBack: (e: MouseEvent<HTMLButtonElement>) => void;
+	
 }
 
 const ListingMobileNav = ({ handleBack }: Props) => {

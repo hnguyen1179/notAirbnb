@@ -1,3 +1,4 @@
+import cloudinary from 'cloudinary';
 import { permissions } from './permissions';
 import { APP_SECRET, getUserId } from './utils';
 import { compare, hash } from 'bcryptjs';
@@ -24,6 +25,13 @@ import { addDays, format, differenceInDays } from 'date-fns';
 export const dateTimeScalar = asNexusMethod(DateTimeResolver, 'date');
 export const jsonScalar = asNexusMethod(JSONObjectResolver, 'json');
 
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_SECRET,
+  secure: true,
+});
+
 // Artificially slows down requests to simulate an actual server and show loaders
 const sleep = (milliseconds: number) => {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -36,6 +44,8 @@ const Query = objectType({
       type: 'User',
       resolve: (_parent, _args, context: Context) => {
         const userId = getUserId(context);
+        console.log(' IN ME QUERY ');
+        console.log('USERID IS ... ', userId);
         return context.prisma.user.findUnique({
           where: {
             id: userId,
@@ -142,7 +152,6 @@ const Query = objectType({
         offset: intArg(),
       },
       resolve: async (_parent, args, context: Context) => {
-        console.log(' im in here ! ');
         const data = await context.prisma.review.findMany({
           skip: args.offset || 0,
           take: 3,
@@ -224,7 +233,6 @@ const Query = objectType({
         superhost: booleanArg(),
       },
       resolve: async (_parent, args, context: Context) => {
-        console.log('BASIC SEARCH');
         const renderOptions = ({ isCount }: { isCount: boolean }) => {
           let options: {
             skip: number;
@@ -330,30 +338,6 @@ const Query = objectType({
           renderOptions({ isCount: true }),
         );
 
-        // Debugging comments
-        // const allListings = await context.prisma.listing.findMany();
-        // const filtered = allListings.filter((listing) => {
-        //   return listing.datesUnavailable.every((date) => {
-        //     return !daysRequested.includes(date);
-        //   });
-        // });
-        // console.log('daysRequested: ', daysRequested);
-        // console.log(
-        //   'left: ',
-        //   filtered.map((x) => x.title),
-        // );
-        // console.log(
-        //   'LISTINGS: ',
-        //   listings.map((x) =>
-        //     x.datesUnavailable.sort(
-        //       (a, b) => new Date(a).valueOf() - new Date(b).valueOf(),
-        //     ),
-        //   ),
-        // );
-        // console.log('REGION: ', args.region);
-        // console.log('COUNT: ', count);
-        // console.log('LISTINGS LENGTH', listings.length);
-        // console.log(listings.map((l) => l.title));
         return { count, listings, offset: args.offset };
       },
     });
@@ -393,7 +377,7 @@ const Mutation = objectType({
         password: nonNull(stringArg()),
       },
       resolve: async (_parent, args, context: Context) => {
-        await sleep(Math.random() * 600 + 400);
+        await sleep(Math.random() * 200 + 300);
 
         try {
           const userExists = await context.prisma.user.findUnique({
@@ -410,6 +394,12 @@ const Mutation = objectType({
 
           const dateJoined = `Joined in ${new Date().getFullYear()}`;
           const id = objectHash(args);
+
+          const imageURL = `https://avatars.dicebear.com/api/human/${id}.svg`;
+
+          await cloudinary.v2.uploader.upload(imageURL, {
+            public_id: `user_avatars/${id}`,
+          });
 
           const user = await context.prisma.user.create({
             data: {
@@ -447,6 +437,31 @@ const Mutation = objectType({
         });
 
         return !!user;
+      },
+    });
+
+    t.field('verifyTripAuth', {
+      type: 'Boolean',
+      args: {
+        userId: nonNull(stringArg()),
+        reservationId: nonNull(stringArg()),
+      },
+      resolve: async (_, args, context: Context) => {
+        // await sleep(Math.random() * 600 + 400);
+
+        const userReservations = await context.prisma.user
+          .findUnique({
+            where: {
+              id: args.userId,
+            },
+          })
+          .reservations();
+
+        const result = userReservations.filter(
+          (res) => res.id === args.reservationId,
+        ).length;
+
+        return result > 0;
       },
     });
 
@@ -494,7 +509,9 @@ const Mutation = objectType({
       resolve: async (_, args, context: Context) => {
         const userId = getUserId(context);
 
-        if (!userId) throw new Error('No such userId');
+        if (!userId) {
+          throw new Error('No such userId');
+        }
 
         const listing = await context.prisma.listing.findUnique({
           where: { id: args.data.listingId },
@@ -503,9 +520,11 @@ const Mutation = objectType({
           },
         });
 
-        if (!listing) throw new Error('No such listing');
+        if (!listing) {
+          throw new Error('No such listing');
+        }
 
-        const datesUnavailable = listing.datesUnavailable as string[];
+        const datesUnavailable = listing.datesUnavailable;
         const start = new Date(args.data.dateStart);
 
         while (
@@ -525,7 +544,7 @@ const Mutation = objectType({
           },
         });
 
-        const reservation = await context.prisma.reservation.create({
+        return context.prisma.reservation.create({
           data: {
             userId: userId,
             listingId: args.data.listingId,
@@ -534,8 +553,6 @@ const Mutation = objectType({
             totalPrice: args.data.totalPrice,
           },
         });
-
-        return reservation;
       },
     });
 
@@ -545,7 +562,47 @@ const Mutation = objectType({
       args: {
         id: nonNull(stringArg()),
       },
-      resolve: (_, args, context: Context) => {
+      resolve: async (_, args, context: Context) => {
+        const reservation = await context.prisma.reservation.findUnique({
+          where: { id: args.id },
+          select: {
+            dateStart: true,
+            dateEnd: true,
+            listingId: true,
+          },
+        });
+
+        if (!reservation) throw new Error('No such reservation');
+
+        const listing = await context.prisma.listing.findUnique({
+          where: { id: reservation?.listingId },
+          select: {
+            datesUnavailable: true,
+          },
+        });
+
+        if (!listing) throw new Error('No such listing');
+
+        const datesUnavailable = listing.datesUnavailable;
+
+        const distance =
+          differenceInDays(reservation.dateStart, reservation.dateEnd) * -1;
+
+        const idxStart = datesUnavailable.findIndex(
+          (date) => date === reservation.dateStart.toLocaleDateString(),
+        );
+
+        if (idxStart !== -1) {
+          datesUnavailable.splice(idxStart, distance + 1);
+        }
+
+        await context.prisma.listing.update({
+          where: { id: reservation.listingId },
+          data: {
+            datesUnavailable: datesUnavailable,
+          },
+        });
+
         return context.prisma.reservation.delete({
           where: { id: args.id },
         });
@@ -565,7 +622,7 @@ const Mutation = objectType({
       resolve: (_, args, context: Context) => {
         const authorId = getUserId(context);
 
-        if (authorId === undefined) throw new Error('wtf??');
+        if (authorId === undefined) throw new Error('There is no user!');
 
         return context.prisma.review.create({
           data: {

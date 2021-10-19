@@ -1,11 +1,9 @@
 export const LANDING = "/";
-export const ERROR = "/404";
 export const LISTING = "/listing/:id";
-export const LISTINGS = "/listings"; // temp
 export const ENTRY = "/entry";
 export const SEARCH = "/search";
 export const USER_PROFILE = "/user/:id";
-export const USER_TRIPS = "/trips/:id";
+export const USER_TRIPS = "/trips";
 export const USER_TRIP = "/trip/:id";
 export const HOST_PROFILE = "/host/:id";
 export const LISTINGS_BY_SEARCH = "/listings/:city";

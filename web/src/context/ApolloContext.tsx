@@ -13,7 +13,6 @@ const httpLink = createHttpLink({
 });
 
 const ApolloProviderFC: React.FC = ({ children }) => {
-	console.log("RERENDER APOLLO");
 	const [token] = useAuthToken();
 
 	const authLink = setContext((_, { headers }) => {
@@ -33,6 +32,12 @@ const ApolloProviderFC: React.FC = ({ children }) => {
 				typePolicies: {
 					Query: {
 						fields: {
+							me: {
+								keyArgs: [],
+								merge(existing, incoming) {
+									return incoming;
+								},
+							},
 							reviewsByUserId: {
 								keyArgs: ["id"],
 								merge(existing = [], incoming) {

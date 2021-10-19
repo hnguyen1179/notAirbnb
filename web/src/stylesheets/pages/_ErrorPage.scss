@@ -1,0 +1,43 @@
+.ErrorPage {
+	&__gif {
+    margin-top: 2rem;
+    img {
+      position: relative;
+      left: 5rem;
+    }
+	}
+
+  &-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100vh;
+  }
+
+  &__text {
+    text-align: center;
+    &__head {
+      line-height: 1.03;
+    }
+
+    aside {
+      margin-top: 2rem;
+      color: $muted-text-color;
+    }
+  }
+
+	.Navbar-filler {
+		display: block;
+		height: 8rem;
+	}
+}
+
+@media screen and (min-width: 744px) {
+	.ErrorPage {
+    &-container {
+      height: 80vh;
+    }
+	}
+}

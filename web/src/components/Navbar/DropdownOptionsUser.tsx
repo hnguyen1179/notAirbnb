@@ -15,7 +15,7 @@ const DropdownOptionsUser = ({ user }: Props) => {
 				</NavLink>
 			</button>
 			<button className="Navbar__right__profile__dropdown__link">
-				<NavLink to={`/trips/${user.id}`}>
+				<NavLink to={`/trips`}>
 					<div>
 						<span>Trips</span>
 					</div>

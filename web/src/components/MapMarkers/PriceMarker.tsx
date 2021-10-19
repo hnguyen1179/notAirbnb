@@ -3,7 +3,6 @@ import {
 	MouseEvent,
 	MouseEventHandler,
 	RefObject,
-	useEffect,
 	useRef,
 } from "react";
 import { Maybe } from "../../generated/graphql";
@@ -21,7 +20,6 @@ interface Props extends ChildComponentProps {
 	handleClickMarker: (e: MouseEvent<HTMLDivElement>) => void;
 	mapRef: RefObject<HTMLDivElement>;
 	cloudinary: Cloudinary;
-	setHover: (state: boolean) => void;
 }
 
 const PriceMarker = ({
@@ -33,26 +31,19 @@ const PriceMarker = ({
 	handleClickMarker,
 	mapRef,
 	cloudinary,
-	setHover,
 }: Props) => {
 	const markerRef = useRef<HTMLDivElement>(null);
 	const imageRef = useRef<HTMLDivElement>(null);
 
 	const handleMouseEnter: MouseEventHandler = (e) => {
 		e.stopPropagation();
-		setHover(false);
 	};
 
 	const handleMouseExit: MouseEventHandler = (e) => {
 		e.stopPropagation();
-		setHover(true);
 	};
 
 	if (!listing) return <></>;
-	// console.log($geoService.getWidth());
-	// console.log(listing.title)
-	// console.log("MAP: ", mapRef.current?.getBoundingClientRect().left)
-	// console.log("MARKER :", markerRef.current?.getBoundingClientRect().left)
 
 	return (
 		<div

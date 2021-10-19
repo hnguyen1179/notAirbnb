@@ -50,9 +50,10 @@ const PasswordHints: React.FC<Props> = ({
 				<FailSvg /> Password strength: weak
 			</li>
 			{errors && errors.type !== REQUIRED
-				? ERROR_NAMES.map((error: string, idx: any) => {
+				? ERROR_NAMES.map((error: string, idx) => {
 						return (
 							<li
+								key={idx}
 								className="PasswordHints-container__item"
 								style={{
 									color: !Object.values(

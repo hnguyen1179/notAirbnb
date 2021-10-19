@@ -161,7 +161,7 @@ function SignUp({
 							<div className="MuiContainer__input-subtext">
 								To sign up, you need to be at least 18. Your
 								birthday won’t be shared with other people who
-								use notAirbnb.
+								use&nbsp;notAirbnb.
 							</div>
 						)}
 					</div>
@@ -192,8 +192,7 @@ function SignUp({
 						/>
 						{!errors.email && (
 							<span className="MuiContainer__input-subtext">
-								We'll email you trip confirmations and receipts.
-								(Not really)
+								We will NOT email you trip confirmations and receipts.
 							</span>
 						)}
 					</div>

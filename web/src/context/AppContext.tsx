@@ -6,12 +6,10 @@ import { Loader } from "@googlemaps/js-api-loader";
 const width = window.innerWidth;
 
 const AppStateProvider: React.FC = ({ children }) => {
-	console.log("RERENDER GLOBAL STATE");
 	const mqlMobile = window.matchMedia("(min-width: 744px)");
 	const mqlMap = window.matchMedia("(min-width: 1128px)");
 
 	const { data } = useMeQuery();
-	// LOGIN Bug, maybe look into how people store the current user object?
 	const [mobile, setMobile] = useState(width <= 744);
 	const [map, setMap] = useState(width >= 1128);
 

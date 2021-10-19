@@ -39,13 +39,12 @@ const BoxButtons = ({
 	const { getCursorPos, handleOpenEntry } = useModal();
 	const [guests, setGuests] = useState(numGuests ? numGuests : 1);
 
-	const [createReservation, _createReservationResults] =
-		useCreateReservationMutation({
-			onCompleted: (data) => {
-				history.push(`/trip/${data.createReservation?.id}`);
-			},
-			refetchQueries: [LISTING_BY_ID, "listingById"],
-		});
+	const [createReservation] = useCreateReservationMutation({
+		onCompleted: (data) => {
+			history.push(`/trip/${data.createReservation?.id}`);
+		},
+		refetchQueries: [LISTING_BY_ID, "listingById"],
+	});
 
 	const sameDates =
 		dates.startDate.toLocaleDateString() ===
@@ -64,7 +63,7 @@ const BoxButtons = ({
 			listingId: id,
 			dateStart: dates.startDate,
 			dateEnd: dates.endDate,
-			totalPrice: +priceBreakdown.totalPrice.slice(1),
+			totalPrice: +priceBreakdown.totalPrice.replaceAll(",", "").slice(1),
 		};
 
 		await createReservation({
