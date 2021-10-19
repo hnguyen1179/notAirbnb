@@ -10,7 +10,6 @@ const AppStateProvider: React.FC = ({ children }) => {
 	const mqlMap = window.matchMedia("(min-width: 1128px)");
 
 	const { data } = useMeQuery();
-	// LOGIN Bug, maybe look into how people store the current user object?
 	const [mobile, setMobile] = useState(width <= 744);
 	const [map, setMap] = useState(width >= 1128);
 

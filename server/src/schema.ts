@@ -44,6 +44,8 @@ const Query = objectType({
       type: 'User',
       resolve: (_parent, _args, context: Context) => {
         const userId = getUserId(context);
+        console.log(' IN ME QUERY ');
+        console.log('USERID IS ... ', userId);
         return context.prisma.user.findUnique({
           where: {
             id: userId,

@@ -17,8 +17,6 @@ const TripsPage = () => {
 		variables: { id: user?.id || "" },
 	});
 
-	if (!user?.id) return <Redirect to="/entry" />;
-
 	if (loading)
 		return (
 			<div className="page-loading">
@@ -51,6 +49,8 @@ const TripsPage = () => {
 		</ul>
 	);
 
+	if (!user?.id) return <Redirect to="/entry" />;
+	
 	return (
 		<div className="TripsPage">
 			{!mobile && (
