@@ -446,8 +446,6 @@ const Mutation = objectType({
         reservationId: nonNull(stringArg()),
       },
       resolve: async (_, args, context: Context) => {
-        // await sleep(Math.random() * 600 + 400);
-
         const userReservations = await context.prisma.user
           .findUnique({
             where: {

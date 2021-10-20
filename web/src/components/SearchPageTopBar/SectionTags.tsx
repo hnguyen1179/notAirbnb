@@ -5,24 +5,20 @@ import SectionHeaderDropdown from "./SectionHeaderDropdown";
 import SectionContent from "./SectionContent";
 // These are the values;
 const amenitiesValues = [
-	"Kitchen", //
-	"Air conditioning", //
-	"Washer", //
-	"Dryer", //
-	"Wifi", //
+	"Kitchen", 
+	"Air conditioning", 
+	"Washer", 
+	"Dryer", 
+	"Wifi", 
 	"TV", // search via CAPS TV or HDTV
-	"Hair dryer", //
-	"Refrigerator", //
-	"Microwave", //
-	"Workspace", //
+	"Hair dryer", 
+	"Refrigerator", 
+	"Microwave", 
+	"Workspace", 
 	"Beach", // 'Summer Stays'
-	"Backyard", //
-	"Bathtub", //
-	"Fireplace", //
-	// "Free parking", // search via "Free ... parking"
-	// "Hot tub", //
-	// "Pool", // 'Summer Stays'
-	// "EV charger", //
+	"Backyard", 
+	"Bathtub", 
+	"Fireplace", 
 ];
 // Amenities and Facilities are taken care of by "tags"
 // Enums are how you filter for these tags

@@ -1,7 +1,7 @@
 {
-  "name": "airbnb_clone",
+  "name": "airbnb_clone_server",
   "version": "1.0.0",
-  "description": "A clone of airbnb using the MERN stack",
+  "description": "A clone of airbnb",
   "license": "MIT",
   "scripts": {
     "test": "jest --watchAll",

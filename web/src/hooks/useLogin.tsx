@@ -4,7 +4,8 @@ import useAuthToken from "./useAuthToken";
 import { LOG_IN } from "../graphql/mutations/login";
 
 const useLoginMutation = () => {
-	const [setAuthToken, removeAuthToken] = useAuthToken();
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [_, setAuthToken, removeAuthToken] = useAuthToken();
 
 	const [mutation, mutationResults] = useMutation(LOG_IN, {
 		onCompleted: (data: Result) => {

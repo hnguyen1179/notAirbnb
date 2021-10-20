@@ -6,6 +6,7 @@ type AuthToken = string;
 
 function useAuthToken() {
 	const [cookies, setCookie] = useCookies([TOKEN_NAME]);
+
 	const setAuthToken = (authToken: AuthToken) => {
 		const expirationDate = new Date();
 		expirationDate.setDate(expirationDate.getDate() + 7);
@@ -14,6 +15,7 @@ function useAuthToken() {
 			expires: expirationDate,
 		});
 	};
+	
 	const removeAuthToken = () => {
 		setCookie(TOKEN_NAME, "");
 	};

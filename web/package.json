@@ -1,6 +1,7 @@
 {
-	"name": "web",
+	"name": "airbnb_clone_client",
 	"version": "0.1.0",
+	"description": "A clone of airbnb",
 	"private": true,
 	"license": "MIT",
 	"homepage": "https://not-airbnb.netlify.app/",
