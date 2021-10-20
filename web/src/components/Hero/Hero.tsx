@@ -17,7 +17,7 @@ const Hero = () => {
 					/>
 					<img
 						src={`https://res.cloudinary.com/dcufjeb5d/image/upload/v1630378604/assets/hero-image-small.jpg`}
-						alt="Silouette of man with child and dog exploring woods"
+						alt="Silhouette of man with child and dog exploring woods"
 					/>
 				</picture>
 			</div>
