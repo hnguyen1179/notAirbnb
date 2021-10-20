@@ -22,10 +22,10 @@ Despite being a fullstack application, the backend functionalities are pretty ba
 ## Technologies
 
 **Frontend** <br/> 
-TypeScript && React
+React
 
 **Backend** <br/>
-TypeScript && Apollo && PostgreSQL && GraphQL API w/ Prisma ORM 
+Apollo && PostgreSQL && GraphQL API w/ Prisma ORM 
 
 ## Highlights
 * **Fully Responsive** - near pixel-perfect CSS along with smart component layout allows for seamless transitions between mobile and desktop ... 
