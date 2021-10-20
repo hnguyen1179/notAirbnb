@@ -39,6 +39,7 @@ const LocationSearch = ({ form, location, setLocation, next, submitEdit }: Props
 		}
 
 		submitEdit && submitEdit();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [radioSelected]);
 
 	const handleRadioSelect = (e: any) => {

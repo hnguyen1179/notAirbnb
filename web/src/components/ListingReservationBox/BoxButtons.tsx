@@ -2,7 +2,6 @@ import { useRef, useState } from "react";
 import { useHistory } from "react-router";
 import { useAppState } from "../../context/AppContext";
 import { useModal } from "../../context/ModalContext";
-import { useURLParams } from "../../context/URLParamsContext";
 import { useCreateReservationMutation } from "../../generated/graphql";
 import { LISTING_BY_ID } from "../../graphql/queries/listingById";
 import { calculateTotalArgs } from "../../utils/priceBreakdown";

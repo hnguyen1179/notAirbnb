@@ -24,7 +24,6 @@ interface Props {
 
 const ListingReservationBox = (props: Props) => {
 	const {
-		// dates,
 		defaultDate,
 		focusedRange,
 		handleRangeFocusChange,
