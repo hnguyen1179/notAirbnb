@@ -12,6 +12,16 @@ interface Props {
 }
 
 const ListingPreview = ({ url, cloudinary, listing }: Props) => {
+	const renderReviewScore = () => {
+		if (!listing.reviewsCount) {
+			return "No reviews";
+		} else if (listing.reviewsCount && !listing.averageScore) {
+			return "No scores";
+		} else {
+			return listing.averageScore;
+		}
+	};
+
 	return (
 		<li className="ListingPreview">
 			<Link to={`/listing/${listing.id}`}>
@@ -22,8 +32,8 @@ const ListingPreview = ({ url, cloudinary, listing }: Props) => {
 					<div>
 						<StarSvg />
 					</div>
-					<div>{listing.averageScore}</div>
-					<div>({listing.reviewsCount})</div>
+					<div>{renderReviewScore()}</div>
+					<div>({listing.reviewsCount} reviews)</div>
 				</div>
 				<div className="ListingPreview__title">
 					<div>{listing.listingType}</div>
