@@ -50,7 +50,10 @@ const SearchPage = ({ history }: Props) => {
 
 	// Searches done via landing "region" icons
 	const isRegionSearch = !history.location.search.includes("guests");
-	const searchParams = new URLSearchParams(history.location.search);
+	const searchParams = useMemo(
+		() => new URLSearchParams(history.location.search),
+		[history.location.search]
+	);
 
 	// Helps prevent unnecessary data fetches
 	const previousURL = useRef(searchParams.toString());

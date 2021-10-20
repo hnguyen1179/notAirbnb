@@ -1,9 +1,8 @@
+import { FC } from "react";
 import { AdvancedImage } from "@cloudinary/react";
 import { useAppState } from "../context/AppContext";
-import { Link, RouteComponentProps } from "react-router-dom";
-import ListingMobileNav from "../components/ListingMobileNav/ListingMobileNav";
+import { RouteComponentProps } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
-import { FC } from "react";
 import Footer from "../components/Footer/Footer";
 import MobileNavbar from "../components/MobileNavbar/MobileNavbar";
 
@@ -12,10 +11,6 @@ interface Props extends RouteComponentProps {}
 const ErrorPage: FC<Props> = (props) => {
 	const { mobile } = useAppState();
 	const { cloudinary } = useAppState();
-
-	const handleBack = () => {
-		props.history.goBack();
-	};
 
 	return (
 		<div className="ErrorPage">

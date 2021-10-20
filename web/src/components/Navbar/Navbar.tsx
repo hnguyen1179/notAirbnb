@@ -93,6 +93,7 @@ function Navbar({
 		} else {
 			setSearch(false);
 		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [isTop]);
 
 	// Creates event listeners to click out of profile and search components
@@ -110,6 +111,7 @@ function Navbar({
 			window.removeEventListener("scroll", handleCloseNavigation);
 			if (open) handleClose();
 		};
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const active = search ? "active" : "";

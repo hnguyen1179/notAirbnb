@@ -29,6 +29,7 @@ const EditMenuPortal = ({ menuRef, onlyFilters }: Props) => {
 		return () => {
 			handleCloseEditMenu();
 		};
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	return (

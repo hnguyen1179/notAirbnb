@@ -4,7 +4,7 @@ import useAuthToken from "./useAuthToken";
 import { SIGN_UP } from "../graphql/mutations/signup";
 
 const useSignup = () => {
-	const [_, setAuthToken] = useAuthToken();
+	const [setAuthToken] = useAuthToken();
 
 	const [mutation, mutationResults] = useMutation(SIGN_UP, {
 		onCompleted: (data: Result) => {

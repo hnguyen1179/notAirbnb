@@ -3,10 +3,8 @@ import ItemDetailsMobile from "./ItemDetailsMobile";
 import ItemDetailsDesktop from "./ItemDetailsDesktop";
 import { Maybe } from "../../generated/graphql";
 import PictureCarousel from "./PictureCarousel";
-import { AdvancedImage, placeholder, lazyload } from "@cloudinary/react";
 import { useRef } from "react";
 import ListingCarousel from "../ListingCarousel/ListingCarousel";
-import { ImageSource } from "@cloudinary/base/qualifiers/source/sourceTypes/ImageSource";
 import { Link } from "react-router-dom";
 export interface PartialListing {
 	__typename?: "Listing" | undefined;
@@ -45,10 +43,6 @@ const SearchResultsItem = ({
 	checkOut,
 }: Props) => {
 	const imageRef = useRef<HTMLDivElement>(null);
-
-	const url = `images/${listing.region.replaceAll(" ", "_").toLowerCase()}/${
-		listing.id
-	}/image-0`;
 
 	return (
 		<li className="SearchResultsItem">

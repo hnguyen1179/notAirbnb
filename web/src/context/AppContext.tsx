@@ -43,6 +43,7 @@ const AppStateProvider: FC = ({ children }) => {
 			mqlMobile.removeEventListener("change", handleMobileChange);
 			mqlMap.removeEventListener("change", handleMapChange);
 		};
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, FC } from "react";
 import { format, getDay } from "date-fns";
-import { Redirect, Route, RouteComponentProps } from "react-router";
+import { Redirect, RouteComponentProps } from "react-router";
 import { debounce } from "@material-ui/core";
 import { AdvancedImage } from "@cloudinary/react";
 import GoogleMapReact from "google-map-react";
@@ -67,7 +67,7 @@ const TripPage: FC<Props> = ({ id, routeProps }) => {
 		return () => {
 			element.removeEventListener("scroll", handleCloseScroll);
 		};
-	}, [containerRef.current]);
+	}, []);
 
 	if (!user) return <Redirect to="/entry" />;
 

@@ -1,4 +1,3 @@
-import { Loader } from "@googlemaps/js-api-loader";
 import { MouseEvent, RefObject, useEffect, useRef, useState } from "react";
 import GoogleMapReact from "google-map-react";
 import { Maybe } from "../../generated/graphql";
@@ -8,7 +7,6 @@ import { getZoomLevel } from "../../utils/mapUtils";
 import PriceMarker from "../MapMarkers/PriceMarker";
 import { Cloudinary } from "@cloudinary/base";
 import { createMapOptions } from "../../utils/createMapOptions";
-import { map } from "lodash";
 
 interface Props {
 	listings: Maybe<PartialListing>[] | undefined;
@@ -45,6 +43,7 @@ const SearchPageMap = ({
 
 	useEffect(() => {
 		apiIsLoaded(mapsRef.current);
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [listings, mapRef]);
 
 	const resetClickIdx = () => {
