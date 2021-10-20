@@ -51,7 +51,7 @@ Apollo && PostgreSQL && GraphQL API w/ Prisma ORM
 </br>
 </br>
 
-* **Advanced React Patterns** - This project proved to be a great exercise in generating creative advanced React patterns for frontend problem solving. An example of which is my usePortal hook, which returns a ```<Portal />``` component. This was pretty essential in providing code reusability for all of the modal-like components found on each listing page
+* **Advanced React Patterns** - This project proved to be a great exercise in generating creative advanced React patterns for frontend problem solving. An example of which is my ```usePortal``` hook, which returns a ```<Portal />``` component. This was pretty essential in providing code reusability for all of the modal-like components found on each listing page
 
   ``` javascript
   import { MouseEventHandler, useCallback, useState } from "react";
