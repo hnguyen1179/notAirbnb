@@ -1,11 +1,11 @@
-import { server as testServer } from '../testServer';
+import { server as testServer } from '../server';
 import {
   ALL_LISTINGS,
   LISTING_BY_REGION,
   LISTING_BY_ID,
   USER_BY_ID,
 } from '../queries/queries';
-import { LOG_IN, ME } from '../queries/mutations';
+import { LOG_IN } from '../queries/mutations';
 
 const SAMPLE_LISTING_ID = '25495492cbe79d1e18044e281be88056114cc003';
 const SAMPLE_HOST_ID = '1c4029bb1b54d73e3465db1c319f59ff5ae0fcce';

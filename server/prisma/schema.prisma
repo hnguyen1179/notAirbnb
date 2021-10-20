@@ -8,10 +8,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// Cannot add new uncalculated fields i.e. hostId to reviews,
-// since that would be modifiying your entire database to add a hostId to each review
-// Instead, just work with the relations review -> listing -> hostId
-
 model User {
   id           String        @id
   firstName    String
