@@ -3,6 +3,7 @@
 	"version": "0.1.0",
 	"private": true,
 	"license": "MIT",
+	"homepage": "https://not-airbnb.netlify.app/",
 	"dependencies": {
 		"@apollo/client": "^3.4.8",
 		"@cloudinary/base": "^1.0.0-beta.4",

@@ -12,6 +12,8 @@ const httpLink = createHttpLink({
 	uri: process.env.REACT_APP_SERVER_URL,
 });
 
+console.log(process.env.REACT_APP_SERVER_URL);
+
 const ApolloProviderFC: React.FC = ({ children }) => {
 	const [token] = useAuthToken();
 
