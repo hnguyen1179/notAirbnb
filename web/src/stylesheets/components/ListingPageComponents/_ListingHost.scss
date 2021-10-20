@@ -1,8 +1,10 @@
 .ListingHost {
 	&__header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
+		a {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
 
 		&__host {
 			> span {
@@ -81,7 +83,9 @@
 @media screen and (min-width: 744px) {
 	.ListingHost {
 		&__header {
-			justify-content: flex-start;
+			a {
+				justify-content: flex-start;
+			}
 
 			&__host {
 				order: 2;
@@ -127,11 +131,17 @@
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 
-		>div:first-child {
+		&__description {
+			> p {
+				width: 90%;
+			}
+		}
+
+		> a div:first-child {
 			padding-right: 5rem;
 		}
 
-		>div:last-child {
+		> a div:last-child {
 			.ListingHost__details li {
 				margin: 1rem 0;
 			}

@@ -4,6 +4,7 @@ import { useAppState } from "../../context/AppContext";
 import { ReactComponent as ProtectSvg } from "../../assets/icons/protect.svg";
 import Medal from "./Medal";
 import { definitelyNotAirbnb } from "../../utils/definitelyNotAirbnb";
+import { Link } from "react-router-dom";
 
 interface HostPartial {
 	id: string;
@@ -25,18 +26,20 @@ const ListingHost = (props: Props) => {
 		<div className="ListingHost">
 			<div>
 				<header className="ListingHost__header">
-					<div className="ListingHost__header__host">
-						<h2>Hosted by {props.host?.firstName}</h2>
-						<span>{props.host?.dateJoined}</span>
-					</div>
+					<Link to={`/host/${props.host?.id}`}>
+						<div className="ListingHost__header__host">
+							<h2>Hosted by {props.host?.firstName}</h2>
+							<span>{props.host?.dateJoined}</span>
+						</div>
 
-					<div className="ListingHost__header__avatar">
-						<AdvancedImage
-							cldImg={cloudinary.image(
-								`host_avatars/${props.host?.id}`
-							)}
-						/>
-					</div>
+						<div className="ListingHost__header__avatar">
+							<AdvancedImage
+								cldImg={cloudinary.image(
+									`host_avatars/${props.host?.id}`
+								)}
+							/>
+						</div>
+					</Link>
 				</header>
 
 				<ul className="ListingHost__medals">

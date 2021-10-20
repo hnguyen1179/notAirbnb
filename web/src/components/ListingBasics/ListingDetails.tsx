@@ -1,8 +1,9 @@
 import { Cloudinary } from "@cloudinary/base";
 import { AdvancedImage } from "@cloudinary/react";
+import { Link } from "react-router-dom";
 
 interface Props {
-  cloudinary: Cloudinary,
+	cloudinary: Cloudinary;
 	listingType: string;
 	hostName: string;
 	hostId: string;
@@ -27,19 +28,19 @@ const ListingDetails = (props: Props) => {
 		<div className="ListingDetails">
 			<div className="ListingDetails__top">
 				<div className="ListingDetails__top__title">
-					<div>
-						{props.listingType}
-					</div>
-					<div>
-						hosted by {props.hostName}
-					</div>
-        </div>
+					<div>{props.listingType}</div>
+					<div>hosted by {props.hostName}</div>
+				</div>
 
-        <div className="ListingDetails__top__host-avatar">
-          <AdvancedImage
-            cldImg={props.cloudinary.image(`host_avatars/${props.hostId}`)}
-          />
-        </div>
+				<div className="ListingDetails__top__host-avatar">
+					<Link to={`/host/${props.hostId}`}>
+						<AdvancedImage
+							cldImg={props.cloudinary.image(
+								`host_avatars/${props.hostId}`
+							)}
+						/>
+					</Link>
+				</div>
 			</div>
 
 			<div className="ListingDetails__nums">
