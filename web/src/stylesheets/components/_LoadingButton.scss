@@ -9,7 +9,7 @@
 	width: 0.7rem;
 	height: 0.7rem;
 	background: black;
-	opacity: 10%;
+	opacity: 0.1;
 	border-radius: 50%;
 	margin: 0.2rem;
 	animation: glow 0.5s ease-in-out alternate-reverse infinite;
@@ -33,10 +33,10 @@
 
 @keyframes glow {
 	0% {
-		opacity: 100%;
+		opacity: 0.1;
 	}
 	100% {
-		opacity: 10%;
+		opacity: 1;
 	}
 }
 

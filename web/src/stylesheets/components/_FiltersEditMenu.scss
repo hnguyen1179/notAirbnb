@@ -409,12 +409,12 @@
 	&__menu {
 		&-enter {
 			transform: translateY(100%);
-			opacity: 0%;
+			opacity: 0;
 		}
 
 		&-enter-active {
 			transform: translateY(0);
-			opacity: 100%;
+			opacity: 1;
 			transition: 300ms ease-out;
 		}
 	}
