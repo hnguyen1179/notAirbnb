@@ -27,11 +27,15 @@ const ListingCarousel = (props: Props) => {
 	};
 
 	useLayoutEffect(() => {
-		slideRef.current?.addEventListener("scroll", handleSlideScroll);
+		const element = slideRef?.current;
+
+		if (!element) return;
+		element.addEventListener("scroll", handleSlideScroll);
 
 		return () => {
-			slideRef.current?.removeEventListener("scroll", handleSlideScroll);
+			element.removeEventListener("scroll", handleSlideScroll);
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const renderImages = useMemo(
@@ -60,6 +64,7 @@ const ListingCarousel = (props: Props) => {
 					</li>
 				);
 			}),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[]
 	);
 

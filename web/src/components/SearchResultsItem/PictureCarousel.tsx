@@ -2,10 +2,7 @@ import { Cloudinary } from "@cloudinary/base";
 import { AdvancedImage, placeholder, lazyload } from "@cloudinary/react";
 import {
 	MouseEventHandler,
-	useEffect,
-	useLayoutEffect,
 	useMemo,
-	useRef,
 	useState,
 } from "react";
 import { Maybe } from "../../generated/graphql";

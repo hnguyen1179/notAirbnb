@@ -24,7 +24,11 @@ const FooterSection = ({ data }: Props) => {
 							key={idx}
 							className={`FooterSection__list__item ${defined}`}
 						>
-							<a href={url || ""} target="_blank">
+							<a
+								href={url || ""}
+								target="_blank"
+								rel="noreferrer"
+							>
 								{text}
 							</a>
 						</li>
