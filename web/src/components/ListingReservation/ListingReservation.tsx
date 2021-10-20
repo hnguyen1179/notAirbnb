@@ -1,4 +1,3 @@
-import { formatDistance } from "date-fns";
 import { DateRange } from "react-date-range";
 import { useCalendarLogic } from "../../context/CalendarLogicContext";
 import { Maybe } from "../../generated/graphql";

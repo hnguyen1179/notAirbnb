@@ -30,6 +30,7 @@ const ListingReservationMobile = (props: Props) => {
 		return () => {
 			closePortal();
 		};
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handleClickCheckAvailability = () => {
