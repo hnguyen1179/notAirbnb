@@ -11,7 +11,7 @@ const ListingHighlights = (props: Props) => {
 				if (!highlightStr) return <></>;
 				const [highlight, description] = highlightStr.split("||");
 				let fileName = highlight.replaceAll(" ", "_").toLowerCase();
-				if ((/superhost/).test(fileName)) fileName = 'superhost'
+				if (/superhost/.test(fileName)) fileName = "superhost";
 
 				const editedDescription = description.replaceAll(
 					"Airbnb",
@@ -20,7 +20,10 @@ const ListingHighlights = (props: Props) => {
 
 				return (
 					<li className="ListingHighlights__highlight" key={idx}>
-						<img src={`/assets/highlights/${fileName}.svg`} />
+						<img
+							src={`/assets/highlights/${fileName}.svg`}
+							alt={fileName.replaceAll("_", " ")}
+						/>
 
 						<div className="ListingHighlights__highlight__details">
 							<span className="title">{highlight}</span>
