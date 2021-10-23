@@ -47,6 +47,7 @@ const ListingImagesGrid = (props: Props) => {
 		() => (
 			<>
 				<button
+					aria-label="Show All Button"
 					className="ListingImagesGrid__main-image-container"
 					onClick={handleOpenShowAll}
 				>
@@ -58,6 +59,7 @@ const ListingImagesGrid = (props: Props) => {
 
 						return (
 							<button
+								aria-label="Show All Button"
 								key={idx}
 								className="ListingImagesGrid__grid__image-container"
 								onClick={(e) => handleOpenShowAll(e, imageIdx)}

@@ -23,6 +23,7 @@ const MobileEditLocation = ({
 	return (
 		<div className="MobileSearchForm__form__stage MobileSearchForm__form__stage--location">
 			<button
+				aria-label="Back Button"
 				className="MobileSearchForm__form__stage__back-button"
 				type="button"
 				onClick={handleFormClose}

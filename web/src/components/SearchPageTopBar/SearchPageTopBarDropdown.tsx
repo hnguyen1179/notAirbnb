@@ -25,6 +25,7 @@ const SearchPageTopBarDropdown = ({
 			<div className="lower">
 				<div>
 					<button
+						aria-label="Location"
 						className="lower__region"
 						onClick={() => handleOpenEditMenu("location")}
 					>
@@ -35,6 +36,7 @@ const SearchPageTopBarDropdown = ({
 					</button>
 					<div className="lower__date-guests">
 						<button
+							aria-label="Dates"
 							className="date"
 							onClick={() => handleOpenEditMenu("dates")}
 						>
@@ -44,6 +46,7 @@ const SearchPageTopBarDropdown = ({
 							</div>
 						</button>
 						<button
+							aria-label="Guests"
 							className="guests"
 							onClick={() => handleOpenEditMenu("guests")}
 						>

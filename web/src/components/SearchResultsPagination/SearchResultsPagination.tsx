@@ -25,7 +25,12 @@ const SearchResultsPagination = ({
 							aria-current={i === currentPage}
 							onClick={handlePageClick}
 						>
-							<button disabled={i === currentPage}>{i}</button>
+							<button
+								aria-label={`Page ${i}`}
+								disabled={i === currentPage}
+							>
+								{i}
+							</button>
 						</li>
 					);
 				})}

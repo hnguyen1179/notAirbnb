@@ -44,7 +44,7 @@ const FiltersEditMenu = () => {
 	return (
 		<div className="FiltersEditMenu" onClick={(e) => e.stopPropagation()}>
 			<header className="FiltersEditMenu__header">
-				<button onClick={handleCloseEditMenu}>
+				<button aria-label="Back" onClick={handleCloseEditMenu}>
 					<BackSvg />
 				</button>
 

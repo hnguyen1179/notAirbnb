@@ -76,7 +76,7 @@ function SignUp({
 	return (
 		<div className="EntryForm EntryForm--signup">
 			<header>
-				<button onClick={() => resetForm({ goBack: true })}>
+				<button aria-label="Back Button" onClick={() => resetForm({ goBack: true })}>
 					<BackSvg />
 				</button>
 				<h1 className="EntryForm__title">Finish signing up</h1>

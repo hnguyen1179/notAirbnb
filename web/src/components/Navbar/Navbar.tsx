@@ -212,6 +212,7 @@ function Navbar({
 							nodeRef={buttonRef}
 						>
 							<button
+								aria-label="Search Bar"
 								className="Navbar__search__button--search-page"
 								ref={buttonRef}
 								onClick={handleClickSearch}
@@ -236,7 +237,7 @@ function Navbar({
 						</a>
 					</div>
 					<div className="Navbar__right__globe">
-						<button>
+						<button aria-label="Globe">
 							<GlobeSvg />
 						</button>
 					</div>

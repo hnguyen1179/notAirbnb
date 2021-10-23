@@ -9,7 +9,7 @@ interface Props {
 const ListingMobileNav = ({ handleBack }: Props) => {
 	return (
 		<nav className="ListingMobileNav">
-			<button onClick={handleBack}>
+			<button aria-label="Back Button" onClick={handleBack}>
 				<BackSvg />
 				<span>Homes · notAirbnb</span>
 			</button>

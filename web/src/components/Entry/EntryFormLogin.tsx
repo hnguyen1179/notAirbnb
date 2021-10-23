@@ -51,7 +51,7 @@ function Login({
 	return (
 		<div className="EntryForm EntryForm--login">
 			<header>
-				<button onClick={() => resetForm({ goBack: true })}>
+				<button aria-label="Back Button" onClick={() => resetForm({ goBack: true })}>
 					<BackSvg />
 				</button>
 				<h1 className="EntryForm__title">Log In</h1>

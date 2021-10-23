@@ -19,6 +19,7 @@ const NumberGuests = ({ guests, setGuests }: Props) => {
 		<div className="NumberGuests">
 			<div className="NumberGuests__adjust">
 				<button
+					aria-label="Subtract Button"
 					className="NumberGuests__adjust__button"
 					type="button"
 					onClick={subtract}
@@ -30,6 +31,7 @@ const NumberGuests = ({ guests, setGuests }: Props) => {
 				<div className="NumberGuests__adjust__number">{guests}</div>
 
 				<button
+					aria-label="Add Button"
 					className="NumberGuests__adjust__button"
 					type="button"
 					onClick={add}

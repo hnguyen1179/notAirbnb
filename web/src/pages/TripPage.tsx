@@ -150,7 +150,7 @@ const TripPage: FC<Props> = ({ id, routeProps }) => {
 			{mobile ? (
 				<>
 					<div className="TripPage-back-button">
-						<button onClick={handleBackClick}>
+						<button aria-label="Back" onClick={handleBackClick}>
 							<BoldNegativeSvg />
 						</button>
 						<div>Your home reservation</div>

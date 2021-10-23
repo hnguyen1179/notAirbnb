@@ -13,7 +13,7 @@ const ListingShowMore: FC<Props> = ({ children, closePortal, className }) => {
 	return (
 		<div className={`ShowMore ShowMore--${className}`}>
 			<nav className="ShowMore__nav">
-				<button onClick={closePortal}>
+				<button aria-label="Exit Button" onClick={closePortal}>
 					<CloseSvg />
 				</button>
 			</nav>

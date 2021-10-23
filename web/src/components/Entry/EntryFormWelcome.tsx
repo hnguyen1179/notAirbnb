@@ -61,6 +61,7 @@ function Welcome({ form, setVerified, handleCloseModal, isModal }: any) {
 		<div className="EntryForm EntryForm--welcome">
 			<header>
 				<button
+					aria-label="Exit Button"
 					className={`EntryForm__close ${hideClose}`}
 					onClick={handleCloseModal}
 				>

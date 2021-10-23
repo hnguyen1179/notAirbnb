@@ -49,6 +49,7 @@ const SearchPageTopBar = ({ searchDetails, handleBack }: Props) => {
 		<>
 			<div className="SearchPage__top-bar">
 				<button
+					aria-label="Back"
 					className="button button--back"
 					onClick={backButtonEvent}
 				>
@@ -64,6 +65,7 @@ const SearchPageTopBar = ({ searchDetails, handleBack }: Props) => {
 					<div className="date">{searchDetails}</div>
 				</button>
 				<button
+					aria-label="Filters"
 					className={`button button--edit-filter ${
 						activeNumFilters > 0 ? "filtered" : ""
 					}`}

@@ -6,6 +6,7 @@ interface Props {
 function ShowPasswordButton({ showPassword, handleClick }: Props) {
 	return (
 		<button
+			aria-label="Toggle Show Password Button"
 			className="ShowPasswordButton-container"
 			type="button"
 			onClick={handleClick}

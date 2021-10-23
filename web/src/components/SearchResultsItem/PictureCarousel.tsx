@@ -93,6 +93,7 @@ const PictureCarousel = ({
 	return (
 		<div className="PictureCarousel">
 			<button
+				aria-label="Previous"
 				className="PictureCarousel__button PictureCarousel__button--left"
 				aria-hidden={index === 0}
 				disabled={!animationState.finished}
@@ -114,6 +115,7 @@ const PictureCarousel = ({
 			</ul>
 
 			<button
+				aria-label="Next"
 				className="PictureCarousel__button PictureCarousel__button--right"
 				aria-hidden={index === imageComments.length - 1}
 				disabled={!animationState.finished}

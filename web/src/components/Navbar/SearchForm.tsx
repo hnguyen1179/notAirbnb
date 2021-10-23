@@ -387,6 +387,7 @@ const SearchForm = ({
 				</div>
 
 				<button
+					aria-label="Search"
 					className="SearchForm__container__input-container__button SearchForm__container__input-container__button--decoy"
 					type="submit"
 					onClick={(e) => {

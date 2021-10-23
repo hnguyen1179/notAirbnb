@@ -39,7 +39,7 @@ const ListingTypes = () => {
 				<div
 					className={`ListingTypes__container__button ListingTypes__container__button--left ${showLeft}`}
 				>
-					<button onClick={handleArrowClick}>
+					<button aria-label="Previous Button" onClick={handleArrowClick}>
 						<LeftArrowSvg />
 					</button>
 				</div>
@@ -66,7 +66,7 @@ const ListingTypes = () => {
 				<div
 					className={`ListingTypes__container__button ListingTypes__container__button--right ${showRight}`}
 				>
-					<button onClick={handleArrowClick}>
+					<button aria-label="Next Button" onClick={handleArrowClick}>
 						<RightArrowSvg />
 					</button>
 				</div>

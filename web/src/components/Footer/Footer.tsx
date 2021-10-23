@@ -17,7 +17,7 @@ const Footer = () => {
 			</div>
 			<div className="Footer__meta">
 				<div className="Footer__meta__language">
-					<button>
+					<button aria-label="Change Language Button">
 						<GlobalSvg />
 						<span>English (US)</span>
 					</button>

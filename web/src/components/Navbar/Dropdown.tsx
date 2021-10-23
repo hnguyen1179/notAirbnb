@@ -54,6 +54,7 @@ const Dropdown = ({ dropdown, setDropdown, handleOpen }: Props) => {
 	return (
 		<div className="Navbar__right__profile">
 			<button
+				aria-label="Profile Dropdown Button"
 				className="Navbar__right__profile__button"
 				onClick={handleClickDropdown}
 			>

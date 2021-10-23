@@ -140,7 +140,7 @@ const Profile = ({ typeProps, routeProps, hostProps }: Props) => {
 					</ul>
 					{reviews.length !== reviewsCount &&
 						(fetchLoading ? (
-							<button
+						<button					
 								className="UserPage__reviews__more-button"
 								role="alert"
 								aria-busy={fetchLoading}

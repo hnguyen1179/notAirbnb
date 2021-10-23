@@ -44,6 +44,7 @@ const MobileEditDates = ({
 	return (
 		<div className="MobileSearchForm__form__stage MobileSearchForm__form__stage--dates">
 			<button
+				aria-label="Back Button"
 				className="MobileSearchForm__form__stage__back-button"
 				type="button"
 				onClick={handleBack}

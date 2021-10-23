@@ -27,7 +27,7 @@ const ListingShowImages = (props: Props) => {
 	return (
 		<div className="ListingShowImages">
 			<nav className="ListingShowImages__nav">
-				<button onClick={props.closePortal}>
+				<button aria-label="Back Button" onClick={props.closePortal}>
 					<BackSvg />
 				</button>
 			</nav>

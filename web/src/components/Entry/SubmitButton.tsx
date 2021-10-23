@@ -13,6 +13,7 @@ const SubmitButton = ({ loading, children }: Props) => {
 
 	return (
 		<button
+			aria-label="Submit Button"
 			className="EntryForm__main__form__submit-button"
 			type="submit"
 			disabled={loading}
