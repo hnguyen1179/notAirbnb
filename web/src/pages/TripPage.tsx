@@ -251,35 +251,37 @@ const TripPage: FC<Props> = ({ id, routeProps }) => {
 									<RightSvg />
 								</div>
 							</button>
-							<div className="cancel-button">
-								<button
-									className="button active"
-									onClick={handleOpenCancel}
-								>
-									<div>
-										<BoldNegativeSvg />
-										<span>Cancel reservation</span>
-										<RightSvg />
-									</div>
-								</button>
-								<div
-									className={`confirmation ${
-										cancel ? "show" : ""
-									}`}
-								>
+							{isFuture ? (
+								<div className="cancel-button">
 									<button
 										className="button active"
-										onClick={handleCancelReservation}
+										onClick={handleOpenCancel}
 									>
 										<div>
 											<BoldNegativeSvg />
-											<span>
-												Confirm your cancellation
-											</span>
+											<span>Cancel reservation</span>
+											<RightSvg />
 										</div>
 									</button>
+									<div
+										className={`confirmation ${
+											cancel ? "show" : ""
+										}`}
+									>
+										<button
+											className="button active"
+											onClick={handleCancelReservation}
+										>
+											<div>
+												<BoldNegativeSvg />
+												<span>
+													Confirm your cancellation
+												</span>
+											</div>
+										</button>
+									</div>
 								</div>
-							</div>
+							) : null}
 						</section>
 
 						<div className="big-divider" />
