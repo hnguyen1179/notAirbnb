@@ -102,7 +102,7 @@ const MobileSearchForm = ({ handleFormClose, history }: Props) => {
 						handleSubmit={handleSubmit}
 						location={location}
 						dates={dates}
-						guests={guests}
+						guests={guests || 0}
 						setGuests={setGuests}
 						setStage={setStage}
 					/>

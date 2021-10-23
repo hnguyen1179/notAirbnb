@@ -64,7 +64,7 @@ const EditMenuPortal = ({ menuRef, onlyFilters }: Props) => {
 							handleCloseForm={handleCloseEditMenu}
 							location={location}
 							dates={dates}
-							guests={guests}
+							guests={guests || 0}
 							setGuests={handleGuestChange}
 							submitEdit={submitNewQuery}
 						/>

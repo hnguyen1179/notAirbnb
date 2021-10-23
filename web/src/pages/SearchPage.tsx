@@ -162,7 +162,13 @@ const SearchPage = ({ history }: Props) => {
 				format(new Date(variables.checkOut), "yyyy") === "2022"
 					? ", 2022 "
 					: " "
-		  }· ${variables.guests} guest${variables.guests === 1 ? "" : "s"}`;
+		  }· ${
+				variables.guests
+					? `${variables.guests} guest${
+							variables.guests === 1 ? "" : "s"
+					  }`
+					: "Add Guests"
+		  }`;
 
 	const generateCategory = () => {
 		if (variables.listingType?.includes("Entire residential home")) {
