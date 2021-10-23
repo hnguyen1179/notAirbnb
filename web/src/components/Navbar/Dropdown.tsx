@@ -40,6 +40,7 @@ const Dropdown = ({ dropdown, setDropdown, handleOpen }: Props) => {
 	const renderAvatar = useMemo(() => {
 		return user ? (
 			<AdvancedImage
+				alt="User avatar"
 				style={{ width: "50px" }}
 				cldImg={cloudinary.image(`user_avatars/${user.id}`)}
 				plugins={[placeholder("predominant-color")]}

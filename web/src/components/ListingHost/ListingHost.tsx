@@ -34,6 +34,7 @@ const ListingHost = (props: Props) => {
 
 						<div className="ListingHost__header__avatar">
 							<AdvancedImage
+								alt="Host avatar"
 								cldImg={cloudinary.image(
 									`host_avatars/${props.host?.id}`
 								)}

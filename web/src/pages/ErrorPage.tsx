@@ -33,7 +33,10 @@ const ErrorPage: FC<Props> = (props) => {
 				</div>
 
 				<div className="ErrorPage__gif">
-					<AdvancedImage cldImg={cloudinary.image("assets/error")} />
+					<AdvancedImage
+						alt="Animation of sad girl dropping icecream from cone"
+						cldImg={cloudinary.image("assets/error")}
+					/>
 				</div>
 			</div>
 

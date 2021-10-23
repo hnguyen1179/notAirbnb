@@ -38,6 +38,7 @@ const ListingReviewsItem = (props: Props) => {
 				<Link to={`/user/${props.review.author?.id}`}>
 					<div className="ListingReviewsItem__header__avatar">
 						<AdvancedImage
+							alt="User avatar"
 							cldImg={cloudinary.image(
 								`user_avatars/${props.review.author?.id}`
 							)}

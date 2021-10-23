@@ -1,10 +1,6 @@
 import { Cloudinary } from "@cloudinary/base";
 import { AdvancedImage, placeholder, lazyload } from "@cloudinary/react";
-import {
-	MouseEventHandler,
-	useMemo,
-	useState,
-} from "react";
+import { MouseEventHandler, useMemo, useState } from "react";
 import { Maybe } from "../../generated/graphql";
 import { ReactComponent as BackSvg } from "../../assets/icons/left-arrow.svg";
 import { ReactComponent as ForwardSvg } from "../../assets/icons/right-arrow.svg";
@@ -73,14 +69,17 @@ const PictureCarousel = ({
 					.toLowerCase()}/${id}/image-${idx}`;
 
 				return (
-					<li key={idx} className="PictureCarousel__slide__image-container">
+					<li
+						key={idx}
+						className="PictureCarousel__slide__image-container"
+					>
 						<AdvancedImage
+							alt={comment || `Host submitted image: ${idx}`}
 							cldImg={cloudinary.image(url)}
 							plugins={[
 								placeholder("predominant-color"),
 								lazyload(),
 							]}
-							alt={comment}
 							draggable={false}
 						/>
 					</li>

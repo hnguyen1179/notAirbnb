@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 interface Props {
 	name: string;
 	img: CloudinaryImage;
+	alt: string;
 }
 
 const searchTerms: { [key: string]: string } = {
@@ -32,12 +33,12 @@ const renderUrl = (name: string) => {
 	}
 };
 
-const ListingTypeIcon = ({ name, img }: Props) => {
+const ListingTypeIcon = ({ name, img, alt }: Props) => {
 	return (
 		<li className="ListingTypeIcon">
 			<Link to={renderUrl(name)} className="ListingTypeIcon__content">
 				<div className="ListingTypeIcon__content__image">
-					<AdvancedImage cldImg={img} />
+					<AdvancedImage alt={alt} cldImg={img} />
 				</div>
 				<div className="ListingTypeIcon__content__text">
 					<span>{name}</span>

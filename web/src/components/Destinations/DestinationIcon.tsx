@@ -10,9 +10,10 @@ interface ILocation {
 interface Props {
 	location: ILocation;
 	img: CloudinaryImage;
+	alt: string;
 }
 
-const DestinationIcon = ({ location, img }: Props) => {
+const DestinationIcon = ({ location, img, alt }: Props) => {
 	return (
 		<li className="DestinationIcon">
 			<Link
@@ -24,6 +25,7 @@ const DestinationIcon = ({ location, img }: Props) => {
 			>
 				<div className="DestinationIcon__content__image">
 					<AdvancedImage
+						alt={alt}
 						cldImg={img}
 						plugsin={[placeholder("predominant-color")]}
 					/>

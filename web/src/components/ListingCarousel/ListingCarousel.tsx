@@ -52,12 +52,12 @@ const ListingCarousel = (props: Props) => {
 					>
 						<div>
 							<AdvancedImage
+								alt={comment || `Host submitted image: ${idx}`}
 								cldImg={cloudinary.image(url)}
 								plugins={[
 									placeholder("predominant-color"),
 									lazyload(),
 								]}
-								alt={comment}
 								draggable={false}
 							/>
 						</div>

@@ -31,6 +31,7 @@ const Destinations = () => {
 							key={location.name}
 							location={location}
 							img={img}
+							alt={filename}
 						/>
 					);
 				})}

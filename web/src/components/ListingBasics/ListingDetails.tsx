@@ -35,6 +35,7 @@ const ListingDetails = (props: Props) => {
 				<div className="ListingDetails__top__host-avatar">
 					<Link to={`/host/${props.hostId}`}>
 						<AdvancedImage
+							alt="Host avatar"
 							cldImg={props.cloudinary.image(
 								`host_avatars/${props.hostId}`
 							)}

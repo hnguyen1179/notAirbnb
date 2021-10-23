@@ -92,6 +92,7 @@ const Profile = ({ typeProps, routeProps, hostProps }: Props) => {
 					</div>
 					<div className="UserPage__header__avatar">
 						<AdvancedImage
+							alt="User avatar"
 							className="avatar"
 							cldImg={cloudinary.image(`${type}_avatars/${id}`)}
 						/>
@@ -140,7 +141,7 @@ const Profile = ({ typeProps, routeProps, hostProps }: Props) => {
 					</ul>
 					{reviews.length !== reviewsCount &&
 						(fetchLoading ? (
-						<button					
+							<button
 								className="UserPage__reviews__more-button"
 								role="alert"
 								aria-busy={fetchLoading}
@@ -176,6 +177,7 @@ const Profile = ({ typeProps, routeProps, hostProps }: Props) => {
 				<div className="UserPage__badges">
 					<div className="UserPage__header__avatar">
 						<AdvancedImage
+							alt="User avatar"
 							className="avatar"
 							cldImg={cloudinary.image(`${type}_avatars/${id}`)}
 						/>

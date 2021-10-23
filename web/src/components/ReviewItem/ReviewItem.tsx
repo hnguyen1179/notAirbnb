@@ -75,6 +75,7 @@ const ReviewItem = ({
 				<div className="ReviewItem__host__avatar">
 					<Link to={`/${urlType()}/${id}`}>
 						<AdvancedImage
+							alt="Host avatar"
 							cldImg={cloudinary.image(
 								`${urlType()}_avatars/${id}`
 							)}

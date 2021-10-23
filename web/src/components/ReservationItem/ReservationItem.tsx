@@ -42,6 +42,7 @@ const ReservationItem = ({ reservation }: Props) => {
 			<Link to={`/trip/${id}`}>
 				<div className="ReservationItem__img-container">
 					<AdvancedImage
+						alt="Host submitted image of listing"
 						className="ReservationItem__img-container__img"
 						cldImg={cloudinary.image(
 							`images/${region

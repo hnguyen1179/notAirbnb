@@ -188,6 +188,7 @@ const TripPage: FC<Props> = ({ id, routeProps }) => {
 								</span>
 								<Link to={`/listing/${listingId}`}>
 									<AdvancedImage
+										alt="Host submitted image of listing"
 										cldImg={cloudinary.image(
 											`images/${region
 												.toLocaleLowerCase()
@@ -405,6 +406,7 @@ const TripPage: FC<Props> = ({ id, routeProps }) => {
 								</div>
 								<div className="host-image">
 									<AdvancedImage
+										alt="Host avatar"
 										cldImg={cloudinary.image(
 											`host_avatars/${host?.id}`
 										)}

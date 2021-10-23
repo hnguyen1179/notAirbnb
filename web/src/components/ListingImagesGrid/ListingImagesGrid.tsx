@@ -34,10 +34,10 @@ const ListingImagesGrid = (props: Props) => {
 	const renderAdvancedImage = (idx: number) => {
 		return (
 			<AdvancedImage
+				alt={imageComments[idx] || `Host submitted image: ${idx}`}
 				className={"ListingImagesGrid__grid__image"}
 				cldImg={cloudinary.image(urlBase + idx)}
 				plugins={[placeholder("predominant-color"), lazyload()]}
-				alt={imageComments[idx]}
 				draggable={false}
 			/>
 		);

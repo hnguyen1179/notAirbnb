@@ -26,7 +26,10 @@ const ListingPreview = ({ url, cloudinary, listing }: Props) => {
 		<li className="ListingPreview">
 			<Link to={`/listing/${listing.id}`}>
 				<div className="ListingPreview__image">
-					<AdvancedImage cldImg={cloudinary.image(url)} />
+					<AdvancedImage
+						alt="Host submitted image of listing"
+						cldImg={cloudinary.image(url)}
+					/>
 				</div>
 				<div className="ListingPreview__details">
 					<div>

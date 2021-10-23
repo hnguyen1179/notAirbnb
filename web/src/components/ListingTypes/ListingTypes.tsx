@@ -58,6 +58,7 @@ const ListingTypes = () => {
 									key={type}
 									name={type}
 									img={img}
+									alt={filename}
 								/>
 							);
 						})}

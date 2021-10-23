@@ -21,7 +21,7 @@ const ListingShowImages = (props: Props) => {
 			imagesRef.current.scrollTop =
 				props.image * (window.innerHeight * 0.9);
 		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [imagesRef.current]);
 
 	return (
@@ -40,10 +40,13 @@ const ListingShowImages = (props: Props) => {
 								className="ListingShowImages__images__image"
 							>
 								<AdvancedImage
+									alt={
+										comment ||
+										`Host submitted image: ${idx}`
+									}
 									cldImg={props.cloudinary.image(
 										props.urlBase + idx
 									)}
-									alt={comment}
 									draggable={false}
 								/>
 							</div>
