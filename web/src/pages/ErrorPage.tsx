@@ -36,6 +36,7 @@ const ErrorPage: FC<Props> = (props) => {
 					<AdvancedImage
 						alt="Animation of sad girl dropping icecream from cone"
 						cldImg={cloudinary.image("assets/error")}
+						loading="lazy"
 					/>
 				</div>
 			</div>

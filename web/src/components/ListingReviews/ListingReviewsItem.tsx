@@ -42,6 +42,7 @@ const ListingReviewsItem = (props: Props) => {
 							cldImg={cloudinary.image(
 								`user_avatars/${props.review.author?.id}`
 							)}
+							loading="lazy"
 						/>
 					</div>
 					<div className="ListingReviewsItem__header__author">

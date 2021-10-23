@@ -95,6 +95,7 @@ const Profile = ({ typeProps, routeProps, hostProps }: Props) => {
 							alt="User avatar"
 							className="avatar"
 							cldImg={cloudinary.image(`${type}_avatars/${id}`)}
+							loading="lazy"
 						/>
 					</div>
 				</header>
@@ -180,6 +181,7 @@ const Profile = ({ typeProps, routeProps, hostProps }: Props) => {
 							alt="User avatar"
 							className="avatar"
 							cldImg={cloudinary.image(`${type}_avatars/${id}`)}
+							loading="lazy"
 						/>
 					</div>
 

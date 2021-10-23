@@ -79,6 +79,7 @@ const ReviewItem = ({
 							cldImg={cloudinary.image(
 								`${urlType()}_avatars/${id}`
 							)}
+							loading="lazy"
 						/>
 					</Link>
 				</div>

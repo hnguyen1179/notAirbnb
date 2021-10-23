@@ -197,6 +197,7 @@ const TripPage: FC<Props> = ({ id, routeProps }) => {
 													"_"
 												)}/${listingId}/image-0`
 										)}
+										loading="lazy"
 									/>
 								</Link>
 							</div>
@@ -410,6 +411,7 @@ const TripPage: FC<Props> = ({ id, routeProps }) => {
 										cldImg={cloudinary.image(
 											`host_avatars/${host?.id}`
 										)}
+										loading="lazy"
 									/>
 								</div>
 							</div>

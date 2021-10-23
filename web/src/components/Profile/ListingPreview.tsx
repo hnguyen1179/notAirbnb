@@ -29,6 +29,7 @@ const ListingPreview = ({ url, cloudinary, listing }: Props) => {
 					<AdvancedImage
 						alt="Host submitted image of listing"
 						cldImg={cloudinary.image(url)}
+						loading="lazy"
 					/>
 				</div>
 				<div className="ListingPreview__details">

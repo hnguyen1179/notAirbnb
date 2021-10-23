@@ -81,6 +81,7 @@ const PictureCarousel = ({
 								lazyload(),
 							]}
 							draggable={false}
+							loading="lazy"
 						/>
 					</li>
 				);

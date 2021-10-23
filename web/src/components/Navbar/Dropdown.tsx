@@ -44,6 +44,7 @@ const Dropdown = ({ dropdown, setDropdown, handleOpen }: Props) => {
 				style={{ width: "50px" }}
 				cldImg={cloudinary.image(`user_avatars/${user.id}`)}
 				plugins={[placeholder("predominant-color")]}
+				loading="lazy"
 			/>
 		) : (
 			<ProfileSvg />

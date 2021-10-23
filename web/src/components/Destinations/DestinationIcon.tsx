@@ -28,6 +28,7 @@ const DestinationIcon = ({ location, img, alt }: Props) => {
 						alt={alt}
 						cldImg={img}
 						plugsin={[placeholder("predominant-color")]}
+						loading="lazy"
 					/>
 				</div>
 				<div className="DestinationIcon__content__text">

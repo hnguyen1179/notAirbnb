@@ -49,6 +49,7 @@ const ReservationItem = ({ reservation }: Props) => {
 								.toLocaleLowerCase()
 								.replace(" ", "_")}/${listingId}/image-0`
 						)}
+						loading="lazy"
 					/>
 				</div>
 			</Link>

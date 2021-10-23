@@ -39,6 +39,7 @@ const ListingDetails = (props: Props) => {
 							cldImg={props.cloudinary.image(
 								`host_avatars/${props.hostId}`
 							)}
+							loading="lazy"
 						/>
 					</Link>
 				</div>

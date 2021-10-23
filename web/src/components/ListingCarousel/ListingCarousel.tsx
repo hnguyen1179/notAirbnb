@@ -59,6 +59,7 @@ const ListingCarousel = (props: Props) => {
 									lazyload(),
 								]}
 								draggable={false}
+								loading="lazy"
 							/>
 						</div>
 					</li>

@@ -38,7 +38,7 @@ const ListingTypeIcon = ({ name, img, alt }: Props) => {
 		<li className="ListingTypeIcon">
 			<Link to={renderUrl(name)} className="ListingTypeIcon__content">
 				<div className="ListingTypeIcon__content__image">
-					<AdvancedImage alt={alt} cldImg={img} />
+					<AdvancedImage alt={alt} cldImg={img} loading="lazy" />
 				</div>
 				<div className="ListingTypeIcon__content__text">
 					<span>{name}</span>

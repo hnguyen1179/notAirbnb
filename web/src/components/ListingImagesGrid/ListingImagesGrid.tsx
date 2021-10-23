@@ -39,6 +39,7 @@ const ListingImagesGrid = (props: Props) => {
 				cldImg={cloudinary.image(urlBase + idx)}
 				plugins={[placeholder("predominant-color"), lazyload()]}
 				draggable={false}
+				loading="lazy"
 			/>
 		);
 	};

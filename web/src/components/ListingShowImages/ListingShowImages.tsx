@@ -48,6 +48,7 @@ const ListingShowImages = (props: Props) => {
 										props.urlBase + idx
 									)}
 									draggable={false}
+									loading="lazy"
 								/>
 							</div>
 						);
