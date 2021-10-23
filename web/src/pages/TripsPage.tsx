@@ -15,6 +15,7 @@ const TripsPage = () => {
 
 	const { loading, error, data } = useReservationsByUserIdQuery({
 		variables: { id: user?.id || "" },
+		fetchPolicy: "network-only",
 	});
 
 	if (loading)
@@ -50,7 +51,7 @@ const TripsPage = () => {
 	);
 
 	if (!user?.id) return <Redirect to="/entry" />;
-	
+
 	return (
 		<div className="TripsPage">
 			{!mobile && (
