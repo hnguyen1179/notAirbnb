@@ -21,6 +21,7 @@ import objectHash from 'object-hash';
 import { Context } from './context';
 import { Listing, Prisma } from '.prisma/client';
 import { addDays, format, differenceInDays } from 'date-fns';
+import { argsToArgsConfig } from 'graphql/type/definition';
 
 export const dateTimeScalar = asNexusMethod(DateTimeResolver, 'date');
 export const jsonScalar = asNexusMethod(JSONObjectResolver, 'json');
@@ -232,6 +233,8 @@ const Query = objectType({
         superhost: booleanArg(),
       },
       resolve: async (_parent, args, context: Context) => {
+        const same = args.checkIn === args.checkOut;
+
         const renderOptions = ({ isCount }: { isCount: boolean }) => {
           let options: {
             skip: number;
@@ -249,7 +252,7 @@ const Query = objectType({
                 },
                 NOT: {
                   datesUnavailable: {
-                    hasSome: args.checkIn ? daysRequested : [],
+                    hasSome: daysRequested,
                   },
                 },
               },
@@ -320,18 +323,24 @@ const Query = objectType({
         };
 
         const daysRequested: string[] = [];
-        const checkIn = new Date(args.checkIn as string);
-        const checkOut = new Date(args.checkOut as string);
 
-        const distance = differenceInDays(checkIn, checkOut) * -1;
+        if (!same) {
+          const checkIn = new Date(args.checkIn as string);
+          const checkOut = new Date(args.checkOut as string);
+          const distance = differenceInDays(checkIn, checkOut) * -1;
 
-        for (let i = 0; i <= distance; i++) {
-          daysRequested.push(format(addDays(checkIn, i), 'M/d/yyyy'));
+          for (let i = 0; i <= distance; i++) {
+            daysRequested.push(format(addDays(checkIn, i), 'M/d/yyyy'));
+          }
+        } else {
+          daysRequested.length = 0;
         }
 
         const listings = await context.prisma.listing.findMany(
           renderOptions({ isCount: false }),
         );
+
+        console.log(renderOptions({ isCount: false }).where.NOT);
 
         const count = await context.prisma.listing.count(
           renderOptions({ isCount: true }),
