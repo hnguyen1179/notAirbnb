@@ -340,8 +340,6 @@ const Query = objectType({
           renderOptions({ isCount: false }),
         );
 
-        console.log(renderOptions({ isCount: false }).where.NOT);
-
         const count = await context.prisma.listing.count(
           renderOptions({ isCount: true }),
         );
