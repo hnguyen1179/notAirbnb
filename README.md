@@ -28,7 +28,7 @@ React
 Apollo && PostgreSQL && GraphQL API w/ Prisma ORM 
 
 ## Highlights
-* **Fully Responsive** - near pixel-perfect CSS along with smart component layout allows for seamless transitions between mobile and desktop ... 
+* **Fully Responsive** - near pixel-perfect CSS along with an intuitive component layout allows for seamless transitions between mobile and desktop ... 
 
 ![landing-mobile](https://user-images.githubusercontent.com/19617238/138088611-254a31dd-f090-4048-ac53-a50d2d6af44b.gif)
 </br>
