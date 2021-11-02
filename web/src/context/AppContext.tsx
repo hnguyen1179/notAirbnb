@@ -1,5 +1,13 @@
 import { Cloudinary } from "@cloudinary/base";
-import { FC, createContext, useContext, useState, useEffect } from "react";
+import {
+	FC,
+	createContext,
+	useContext,
+	useState,
+	useEffect,
+	useCallback,
+	useMemo,
+} from "react";
 import { useMeQuery } from "../generated/graphql";
 
 const width = window.innerWidth;
@@ -13,27 +21,31 @@ const AppStateProvider: FC = ({ children }) => {
 	const [mobile, setMobile] = useState(width <= 744);
 	const [map, setMap] = useState(width >= 1128);
 
-	const cloudinary = new Cloudinary({
-		cloud: {
-			cloudName: process.env.REACT_APP_CLOUDINARY_NAME,
-		},
-	});
+	const cloudinary = useMemo(
+		() =>
+			new Cloudinary({
+				cloud: {
+					cloudName: process.env.REACT_APP_CLOUDINARY_NAME,
+				},
+			}),
+		[]
+	);
 
-	const handleMobileChange = () => {
+	const handleMobileChange = useCallback(() => {
 		if (mqlMobile.matches) {
 			setMobile(false);
 		} else {
 			setMobile(true);
 		}
-	};
+	}, [mqlMobile.matches]);
 
-	const handleMapChange = () => {
+	const handleMapChange = useCallback(() => {
 		if (mqlMap.matches) {
 			setMap(true);
 		} else {
 			setMap(false);
 		}
-	};
+	}, [mqlMap.matches]);
 
 	useEffect(() => {
 		mqlMobile.addEventListener("change", handleMobileChange);
@@ -43,8 +55,7 @@ const AppStateProvider: FC = ({ children }) => {
 			mqlMobile.removeEventListener("change", handleMobileChange);
 			mqlMap.removeEventListener("change", handleMapChange);
 		};
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [handleMapChange, handleMobileChange, mqlMap, mqlMobile]);
 
 	useEffect(() => {
 		setUser(data?.me);

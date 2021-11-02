@@ -2,7 +2,7 @@ import { Cloudinary } from "@cloudinary/base";
 import { AdvancedImage, placeholder, lazyload } from "@cloudinary/react";
 import { Maybe } from "../../generated/graphql";
 import { ReactComponent as MoreSvg } from "../../assets/icons/more-photos.svg";
-import { MouseEvent, useMemo, useState } from "react";
+import { MouseEvent, useCallback, useMemo, useState } from "react";
 import { usePortal } from "../../hooks/usePortal";
 import ListingShowImages from "../ListingShowImages/ListingShowImages";
 
@@ -22,27 +22,30 @@ const ListingImagesGrid = (props: Props) => {
 		.replaceAll(" ", "_")
 		.toLowerCase()}/${id}/image-`;
 
-	const handleOpenShowAll = (
-		e: MouseEvent<HTMLButtonElement>,
-		idx: number = 0
-	) => {
-		window.scrollTo({ top: 0 });
-		setImage(idx);
-		openPortal(e);
-	};
+	const handleOpenShowAll = useCallback(
+		(e: MouseEvent<HTMLButtonElement>, idx: number = 0) => {
+			window.scrollTo({ top: 0 });
+			setImage(idx);
+			openPortal(e);
+		},
+		[openPortal]
+	);
 
-	const renderAdvancedImage = (idx: number) => {
-		return (
-			<AdvancedImage
-				alt={imageComments[idx] || `Host submitted image: ${idx}`}
-				className={"ListingImagesGrid__grid__image"}
-				cldImg={cloudinary.image(urlBase + idx)}
-				plugins={[placeholder("predominant-color"), lazyload()]}
-				draggable={false}
-				loading="lazy"
-			/>
-		);
-	};
+	const renderAdvancedImage = useMemo(
+		() => (idx: number) => {
+			return (
+				<AdvancedImage
+					alt={imageComments[idx] || `Host submitted image: ${idx}`}
+					className={"ListingImagesGrid__grid__image"}
+					cldImg={cloudinary.image(urlBase + idx)}
+					plugins={[placeholder("predominant-color"), lazyload()]}
+					draggable={false}
+					loading="lazy"
+				/>
+			);
+		},
+		[cloudinary, imageComments, urlBase]
+	);
 
 	const renderGrid = useMemo(
 		() => (
@@ -72,8 +75,7 @@ const ListingImagesGrid = (props: Props) => {
 				</div>
 			</>
 		),
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[]
+		[handleOpenShowAll, imageComments, renderAdvancedImage]
 	);
 
 	const style = {

@@ -1,4 +1,4 @@
-import { SyntheticEvent, useEffect, useState, useRef } from "react";
+import { SyntheticEvent, useEffect, useState, useRef, useCallback } from "react";
 import Modal from "@material-ui/core/Modal";
 import { CSSTransition } from "react-transition-group";
 
@@ -60,10 +60,10 @@ function Navbar({
 	};
 
 	// Closes modal
-	const handleClose = () => {
+	const handleClose = useCallback(() => {
 		document.body.style.overflow = "initial";
 		setOpen(false);
-	};
+	}, [setOpen]);
 
 	// Opens search component
 	const handleClickSearch = (e: React.SyntheticEvent<EventTarget>) => {
@@ -93,8 +93,7 @@ function Navbar({
 		} else {
 			setSearch(false);
 		}
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isTop]);
+	}, [isTop, notLanding]);
 
 	// Creates event listeners to click out of profile and search components
 	useEffect(() => {
@@ -111,8 +110,7 @@ function Navbar({
 			window.removeEventListener("scroll", handleCloseNavigation);
 			if (open) handleClose();
 		};
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [handleClose, open]);
 
 	const active = search ? "active" : "";
 	const transparent = isTop ? "transparent" : "";

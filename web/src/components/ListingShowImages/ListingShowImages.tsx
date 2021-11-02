@@ -21,8 +21,7 @@ const ListingShowImages = (props: Props) => {
 			imagesRef.current.scrollTop =
 				props.image * (window.innerHeight * 0.9);
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [imagesRef.current]);
+	}, [props.image]);
 
 	return (
 		<div className="ListingShowImages">

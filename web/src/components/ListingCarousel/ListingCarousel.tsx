@@ -15,18 +15,17 @@ const ListingCarousel = (props: Props) => {
 	const slideRef = useRef<HTMLUListElement>(null);
 	const { cloudinary, imageComments, region, id } = props;
 
-	const handleSlideScroll: EventListener = () => {
-		const width = slideRef.current?.offsetWidth || 0;
-		const totalWidth = width * imageComments.length;
-		const scrollLeft = slideRef.current?.scrollLeft || 0;
-
-		if (scrollLeft % width === 0) {
-			const newIdx = (scrollLeft / totalWidth) * imageComments.length;
-			setScrollIdx(newIdx + 1);
-		}
-	};
-
 	useLayoutEffect(() => {
+		const handleSlideScroll: EventListener = () => {
+			const width = slideRef.current?.offsetWidth || 0;
+			const totalWidth = width * imageComments.length;
+			const scrollLeft = slideRef.current?.scrollLeft || 0;
+
+			if (scrollLeft % width === 0) {
+				const newIdx = (scrollLeft / totalWidth) * imageComments.length;
+				setScrollIdx(newIdx + 1);
+			}
+		};
 		const element = slideRef?.current;
 
 		if (!element) return;
@@ -35,8 +34,7 @@ const ListingCarousel = (props: Props) => {
 		return () => {
 			element.removeEventListener("scroll", handleSlideScroll);
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [imageComments.length]);
 
 	const renderImages = useMemo(
 		() =>
@@ -65,8 +63,7 @@ const ListingCarousel = (props: Props) => {
 					</li>
 				);
 			}),
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[]
+		[cloudinary, id, imageComments, region]
 	);
 
 	return (

@@ -59,8 +59,7 @@ const ShowListingReviews = (props: Props) => {
 		return () => {
 			element?.removeEventListener("scroll", handleScroll);
 		};
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [props.containerRef]);
+	}, [props, props.containerRef]);
 
 	return (
 		<>

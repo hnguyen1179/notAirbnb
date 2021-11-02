@@ -38,8 +38,7 @@ const FiltersEditMenu = () => {
 			window.removeEventListener("closeNavigation", handleCloseEditMenu);
 			document.body.removeEventListener("click", handleBodyClick);
 		};
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [handleCloseEditMenu]);
 
 	return (
 		<div className="FiltersEditMenu" onClick={(e) => e.stopPropagation()}>

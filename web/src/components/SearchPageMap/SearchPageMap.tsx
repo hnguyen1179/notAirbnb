@@ -1,4 +1,4 @@
-import { MouseEvent, RefObject, useEffect, useRef, useState } from "react";
+import { MouseEvent, RefObject, useCallback, useEffect, useRef, useState } from "react";
 import GoogleMapReact from "google-map-react";
 import { Maybe } from "../../generated/graphql";
 import { PartialListing } from "../SearchResultsItem/SearchResultsItem";
@@ -30,7 +30,7 @@ const SearchPageMap = ({
 
 	const mapsRef = useRef(null);
 
-	const apiIsLoaded = async (maps: any) => {
+	const apiIsLoaded = useCallback(async (maps: any) => {
 		if (!listings || !maps) return;
 		mapsRef.current = maps;
 		const { zoom, center } = await getZoomLevel(maps, listings, mapRef);
@@ -39,12 +39,11 @@ const SearchPageMap = ({
 			center,
 			zoom: zoom - 1,
 		});
-	};
+	}, [listings, mapRef]);
 
 	useEffect(() => {
 		apiIsLoaded(mapsRef.current);
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [listings, mapRef]);
+	}, [apiIsLoaded, listings, mapRef]);
 
 	const resetClickIdx = () => {
 		setClickIdx(-1);

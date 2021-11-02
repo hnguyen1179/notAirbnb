@@ -39,8 +39,7 @@ const LocationSearch = ({ form, location, setLocation, next, submitEdit }: Props
 		}
 
 		submitEdit && submitEdit();
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [radioSelected]);
+	}, [radioSelected, submitEdit]);
 
 	const handleRadioSelect = (e: any) => {
 		// setLocation is for the mobile
