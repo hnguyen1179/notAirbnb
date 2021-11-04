@@ -42,7 +42,7 @@ const ShowListingReviews = (props: Props) => {
 			) {
 				setLoading(true);
 
-				await props.fetchMore({
+				props.fetchMore({
 					variables: {
 						offset: offsetRef.current,
 					},
