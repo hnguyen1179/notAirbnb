@@ -131,6 +131,3 @@ Apollo && PostgreSQL && GraphQL API w/ Prisma ORM
 
   export { usePortal };
   ```
-
-## Future Direction
-* Add the ability to review listings. This is a work in progress! 
