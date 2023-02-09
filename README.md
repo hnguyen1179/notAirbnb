@@ -7,7 +7,7 @@
 1. [Introduction](#introduction)
 2. [Technologies](#technologies)
 3. [Highlights](#highlights)
-4. [Future Direction](#future-direction)
+4. [Issue With Backend](#issue-with-backend)
 
 ## Introduction
 
@@ -132,7 +132,7 @@ Apollo && PostgreSQL && GraphQL API w/ Prisma ORM
   export { usePortal };
   ```
   
-  ## Issue with Backend
+  ## Issue With Backend
   As of Nov 2022, Heroku discontinued their free tier and switched to a subscription service in order to host Postgres servers and so the backend isn't   working :( 
   
   Attempts to reconnect the backend will be made once I have more time freed up! 
