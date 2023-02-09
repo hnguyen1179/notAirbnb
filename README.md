@@ -25,7 +25,7 @@ Despite being a fullstack application, the backend functionalities are pretty ba
 React
 
 **Backend** <br/>
-Apollo && PostgreSQL && GraphQL API w/ Prisma ORM 
+Apollo, PostgreSQL, and a GraphQL API w/ Prisma ORM 
 
 ## Highlights
 * **Fully Responsive** - near pixel-perfect CSS along with an intuitive component layout allows for seamless transitions between mobile and desktop ... 
