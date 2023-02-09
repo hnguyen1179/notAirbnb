@@ -131,3 +131,10 @@ Apollo && PostgreSQL && GraphQL API w/ Prisma ORM
 
   export { usePortal };
   ```
+  
+  ## Issue with Backend
+  As of Nov 2022, Heroku discontinued their free tier and switched to a subscription service in order to host Postgres servers and so the backend isn't   working :( 
+  
+  Attempts to reconnect the backend will be made once I have more time freed up! 
+
+
