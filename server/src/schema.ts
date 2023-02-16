@@ -21,7 +21,6 @@ import objectHash from 'object-hash';
 import { Context } from './context';
 import { Listing, Prisma } from '.prisma/client';
 import { addDays, format, differenceInDays } from 'date-fns';
-import { argsToArgsConfig } from 'graphql/type/definition';
 
 export const dateTimeScalar = asNexusMethod(DateTimeResolver, 'date');
 export const jsonScalar = asNexusMethod(JSONObjectResolver, 'json');
@@ -461,11 +460,15 @@ const Mutation = objectType({
           })
           .reservations();
 
-        const result = userReservations.filter(
-          (res) => res.id === args.reservationId,
-        ).length;
+        if (userReservations) {
+          const result = userReservations.filter(
+            (res) => res.id === args.reservationId,
+          ).length;
 
-        return result > 0;
+          return result > 0;
+        }
+
+        return false;
       },
     });
 
@@ -671,27 +674,37 @@ const User = objectType({
           })
           .reviews();
 
-        return data.length;
+        if (data) {
+          return data.length;
+        }
+
+        return 0;
       },
     });
     t.nonNull.field('reviews', {
       type: list('Review'),
-      resolve: (parent, _, context: Context) => {
-        return context.prisma.user
+      resolve: async (parent, _, context: Context) => {
+        const results = await context.prisma.user
           .findUnique({
             where: { id: parent.id || undefined },
           })
           .reviews();
+
+        if (results) results;
+        return [];
       },
     });
     t.nonNull.field('reservations', {
       type: list('Reservation'),
-      resolve: (parent, _, context: Context) => {
-        return context.prisma.user
+      resolve: async (parent, _, context: Context) => {
+        const results = await context.prisma.user
           .findUnique({
             where: { id: parent.id || undefined },
           })
           .reservations();
+
+        if (results) return results;
+        return [];
       },
     });
   },
@@ -740,12 +753,15 @@ const Host = objectType({
     t.nonNull.field('medals', { type: list('String') });
     t.nonNull.field('listings', {
       type: list('Listing'),
-      resolve: (parent, _, context: Context) => {
-        return context.prisma.host
+      resolve: async (parent, _, context: Context) => {
+        const results = await context.prisma.host
           .findUnique({
             where: { id: parent.id || undefined },
           })
           .listings();
+
+        if (results) return results;
+        return [];
       },
     });
   },
@@ -843,7 +859,7 @@ const Listing = objectType({
           value: 0,
         };
 
-        if (!reviews.length) return noScores;
+        if (!reviews || !reviews.length) return noScores;
 
         const averagedReviews = reviews
           .map((review) => {
@@ -888,27 +904,37 @@ const Listing = objectType({
           })
           .reviews();
 
-        return data.length;
+        if (data) {
+          return data.length;
+        }
+
+        return 0;
       },
     });
     t.nonNull.field('reviews', {
       type: list('Review'),
-      resolve: (parent, _, context: Context) => {
-        return context.prisma.listing
+      resolve: async (parent, _, context: Context) => {
+        const results = await context.prisma.listing
           .findUnique({
             where: { id: parent.id || undefined },
           })
           .reviews();
+
+        if (results) return results;
+        return [];
       },
     });
     t.nonNull.field('reservations', {
       type: list('Reservation'),
-      resolve: (parent, _, context: Context) => {
-        return context.prisma.listing
+      resolve: async (parent, _, context: Context) => {
+        const results = await context.prisma.listing
           .findUnique({
             where: { id: parent.id || undefined },
           })
           .reservations();
+
+        if (results) return results;
+        return [];
       },
     });
   },
