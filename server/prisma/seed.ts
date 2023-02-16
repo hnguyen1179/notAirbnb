@@ -1,3 +1,4 @@
+// TODO: Write a function that takes in json file and adds 2 years to every date listed
 import users from './user_and_reviews_reservations.json';
 import hosts from './host_and_listings_final_final.json';
 // import proper_dates_unavailable from './proper_dates_unavailable.json';
@@ -38,6 +39,7 @@ const hostData = hosts.map((host) => {
 
 async function main() {
   console.log(`Start seeding ...`);
+  // seeding users
   for (const u of await userData) {
     const user = await prisma.user.create({
       data: u,
@@ -45,6 +47,7 @@ async function main() {
     console.log(`Created user with id: ${user.id}`);
   }
 
+  // seeding hosts
   for (const h of hostData) {
     const host = await prisma.host.create({
       data: h,
@@ -134,7 +137,7 @@ async function main() {
         },
       });
 
-      console.log(`Created review with id: ${item.id}`);
+      console.log(`Created reservation with id: ${item.id}`);
     }
   }
 
