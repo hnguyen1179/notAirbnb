@@ -10,9 +10,10 @@ export const server = new ApolloServer({
 });
 
 (async () => {
+  const port = process.env.PORT;
   const { url } = await startStandaloneServer(server, {
     context: async ({ req }) => ({ ...req, prisma }),
-    listen: { port: 4000 },
+    listen: { port: port ? Number(port) : 4000 },
   });
 
   console.log(`🚀 Server ready at: ${url} ⭐️ `);
