@@ -7,6 +7,7 @@
     "strict": true,
     "resolveJsonModule": true,
     "types": ["node", "jest"],
+    "skipLibCheck": true
   },
   "include": ["src/**/*", "prisma/**/*", "../nexus2.ts", "../schema2.ts"]
 }
