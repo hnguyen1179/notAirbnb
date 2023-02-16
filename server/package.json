@@ -6,7 +6,6 @@
   },
   "description": "A clone of airbnb",
   "license": "MIT",
-  "type": "module",
   "scripts": {
     "test": "jest --watchAll",
     "dev": "ts-node-dev --no-notify --respawn --transpile-only src/server",
