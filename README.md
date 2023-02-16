@@ -136,5 +136,7 @@ Apollo, PostgreSQL, and a GraphQL API w/ Prisma ORM
   As of Nov 2022, Heroku discontinued their free tier and switched to a subscription service in order to host Postgres servers and so the backend isn't   working :( 
   
   Attempts to reconnect the backend will be made once I have more time freed up! 
+  
+  Edit: Fixed for the most part. Migrated the backend to use Apollo 4 and querying is working, however mutations like auth are unfortunately still down
 
 
