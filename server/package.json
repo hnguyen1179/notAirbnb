@@ -1,6 +1,9 @@
 {
   "name": "airbnb_clone_server",
   "version": "1.0.0",
+  "engine": {
+    "node": "18.13.0"
+  },
   "description": "A clone of airbnb",
   "license": "MIT",
   "scripts": {
