@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server';
+import { gql } from 'graphql-tag';
 
 const ALL_LISTINGS = gql`
   query listings {

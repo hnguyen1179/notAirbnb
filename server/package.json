@@ -6,6 +6,7 @@
   },
   "description": "A clone of airbnb",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "test": "jest --watchAll",
     "dev": "ts-node-dev --no-notify --respawn --transpile-only src/server",
@@ -26,6 +27,7 @@
     "tabWidth": 2
   },
   "dependencies": {
+    "@apollo/server": "^4.4.0",
     "@prisma/client": "^4.10.1",
     "apollo-server": "^3.11.1",
     "bcryptjs": "2.4.3",
@@ -36,6 +38,7 @@
     "graphql-middleware": "^6.1.33",
     "graphql-scalars": "1.10.0",
     "graphql-shield": "7.5.0",
+    "graphql-tag": "^2.12.6",
     "graphql-type-json": "^0.3.2",
     "jsonwebtoken": "8.5.1",
     "nexus": "1.1.0",
