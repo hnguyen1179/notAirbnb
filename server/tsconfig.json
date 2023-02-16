@@ -2,10 +2,11 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDir": ".",
     "lib": ["esnext"],
     "strict": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "types": ["node", "jest"],
   },
-  "include": ["src/**/*", "../nexus2.ts", "../schema2.ts"]
+  "include": ["src/**/*", "prisma/**/*", "../nexus2.ts", "../schema2.ts"]
 }
