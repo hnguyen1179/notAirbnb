@@ -29,7 +29,9 @@ const EditMenuPortal = ({ menuRef, onlyFilters }: Props) => {
 		return () => {
 			handleCloseEditMenu();
 		};
-	}, [handleCloseEditMenu]);
+	// Do not wont this to run every single rerender 
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<>
