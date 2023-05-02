@@ -31,10 +31,7 @@ export const server = new ApolloServer({
   app.use(
     '/',
     cors<cors.CorsRequest>({
-      origin: [
-        'https://not-airbnb.netlify.app',
-        'https://not-airbnb.herokuapp.com',
-      ],
+      origin: true,
       credentials: true,
     }),
     bodyParser.json({ limit: '50mb' }),
