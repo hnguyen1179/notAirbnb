@@ -418,7 +418,7 @@ const Mutation = objectType({
           });
 
           return {
-            token: sign({ userId: user.id }, APP_SECRET),
+            token: sign({ userId: user.id }, 'secret'),
             user,
           };
         } catch (e: any) {
@@ -494,7 +494,7 @@ const Mutation = objectType({
           if (!passwordValid) throw new Error('Invalid password');
 
           return {
-            token: sign({ userId: user.id }, APP_SECRET),
+            token: sign({ userId: user.id }, 'secret'),
             user,
           };
         } catch (e: any) {
