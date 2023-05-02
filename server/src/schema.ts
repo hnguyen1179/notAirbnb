@@ -43,9 +43,6 @@ const Query = objectType({
     t.field('me', {
       type: 'User',
       resolve: (_parent, _args, context: Context) => {
-        console.log('------------------------------------------');
-        console.log('In me query, context is: ', context);
-        // getUserId not working in production??
         const userId = getUserId(context);
 
         return context.prisma.user.findUnique({
