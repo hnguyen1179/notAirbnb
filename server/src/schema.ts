@@ -43,6 +43,7 @@ const Query = objectType({
     t.field('me', {
       type: 'User',
       resolve: (_parent, _args, context: Context) => {
+        console.log('in me query');
         const userId = getUserId(context);
 
         return context.prisma.user.findUnique({

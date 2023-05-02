@@ -10,6 +10,7 @@ interface Token {
 
 // Grabs the current user's ID
 export function getUserId(context: Context): string | undefined {
+  console.log('in fx getUserId');
   const authHeader = context.req.get('Authorization');
   console.log('authHeader is: ', authHeader);
   if (authHeader) {
