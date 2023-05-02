@@ -34,12 +34,6 @@
     "codegen": "graphql-codegen --config codegen.yml"
   },
   "eslintConfig": {
-    "rules": {
-      "indent": [
-        "error",
-        "tab"
-      ]
-    },
     "extends": [
       "react-app",
       "react-app/jest"
