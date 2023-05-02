@@ -11,6 +11,7 @@ interface Token {
 // Grabs the current user's ID
 export function getUserId(context: Context): string | undefined {
   const authHeader = context.req.get('Authorization');
+  console.log('authHeader is: ', authHeader);
   if (authHeader) {
     const token = authHeader.replace('Bearer ', '');
     const verifiedToken = verify(token, 'secret') as Token;
