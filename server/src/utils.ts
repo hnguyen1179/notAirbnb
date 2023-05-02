@@ -10,14 +10,8 @@ interface Token {
 
 // Grabs the current user's ID
 export function getUserId(context: Context): string | undefined {
-  console.log('in getUserId function... ');
-  console.log('authorization is... ', context.authorization);
-  console.log('authorization also is... ', context.req.headers.authorization);
-  console.log(
-    'in getUserId function, authHeader is: ',
-    context.req.get('Authorization'),
-  );
-  const authHeader = context.req.get('Authorization');
+  const authHeader = context.authorization;
+  console.log('authHeader is... ', authHeader);
   if (authHeader) {
     const token = authHeader.replace('Bearer ', '');
     const verifiedToken = verify(token, 'secret') as Token;
