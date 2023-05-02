@@ -43,7 +43,6 @@ const Query = objectType({
     t.field('me', {
       type: 'User',
       resolve: (_parent, _args, context: Context) => {
-        console.log('in me query, context is...: ', context);
         // see if we can print this clog above to debug
         // getUserId not working in production??
         const userId = getUserId(context);

@@ -58,7 +58,6 @@ const AppStateProvider: FC = ({ children }) => {
   }, [handleMapChange, handleMobileChange, mqlMap, mqlMobile]);
 
   useEffect(() => {
-    console.log("appState data is...: ", data);
     setUser(data?.me);
   }, [data]);
 
