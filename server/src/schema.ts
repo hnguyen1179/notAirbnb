@@ -498,6 +498,7 @@ const Mutation = objectType({
             user,
           };
         } catch (e: any) {
+          console.log(e);
           return e;
         }
       },

@@ -45,7 +45,6 @@ function EntryForm({ initialEntry, isModal = true }: Props) {
   };
 
   const handleCloseModal = () => {
-    console.log("in fx handleCloseModal");
     setOpen(false);
   };
 
