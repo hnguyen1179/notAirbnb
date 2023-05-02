@@ -38,7 +38,11 @@ export const server = new ApolloServer({
     // expressMiddleware accepts the same arguments:
     // an Apollo Server instance and optional configuration options
     expressMiddleware(server, {
-      context: async ({ req }) => ({ ...req, prisma }),
+      context: async ({ req }) => ({
+        authorization: req.headers.authorization,
+        ...req,
+        prisma,
+      }),
     }),
   );
 

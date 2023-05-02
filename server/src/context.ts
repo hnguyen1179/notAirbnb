@@ -4,6 +4,7 @@ const prisma = new PrismaClient();
 
 export interface Context {
   prisma: PrismaClient;
+  authorization: string;
   req: any; // HTTP request carrying the `Authorization` header
 }
 
