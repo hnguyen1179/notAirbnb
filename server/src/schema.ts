@@ -432,7 +432,7 @@ const Mutation = objectType({
             user,
           };
         } catch (e: any) {
-          console.log(' Errored with: ', e.message);
+          console.error(e);
           return e;
         }
       },
