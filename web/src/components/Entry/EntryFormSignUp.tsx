@@ -36,7 +36,6 @@ function SignUp({
   const [signup, { loading: signupLoad }] = useSignup();
 
   const onSubmitSignup = async (payload: any) => {
-    console.log("in onSubmitSignup");
     try {
       const { email, password, firstName, lastName } = payload;
       await signup(email, password, firstName, lastName);
@@ -45,14 +44,12 @@ function SignUp({
       if (!isModal) {
         history.push("/");
       }
-      console.log("Successful: onSubmitSignup");
     } catch (e: any) {
       setError(
         "email",
         { type: "Duplicate Email", message: e.message },
         { shouldFocus: true }
       );
-      console.log("Fail: onSubmitSignup");
     }
   };
 

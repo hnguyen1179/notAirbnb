@@ -51,6 +51,4 @@ export const server = new ApolloServer({
   await new Promise<void>((resolve) =>
     httpServer.listen({ port: port ? Number(port) : 4000 }, resolve),
   );
-
-  console.log(`🚀 Server ready at http://localhost:${port || 4000}/`);
 })();
