@@ -382,20 +382,25 @@ const Mutation = objectType({
         password: nonNull(stringArg()),
       },
       resolve: async (_parent, args, context: Context) => {
+        console.log(' IN SIGN UP MUTATION ');
         await sleep(Math.random() * 200 + 300);
 
         try {
+          console.log(' Try ');
           const userExists = await context.prisma.user.findUnique({
             where: {
               email: args.email,
             },
           });
 
+          console.log({ userExists });
+
           if (userExists) {
             throw new Error('User with this email already exists');
           }
 
           const hashedPassword = await hash(args.password, 10);
+          console.log({ hashedPassword });
 
           const dateJoined = `Joined in ${new Date().getFullYear()}`;
           const id = objectHash(args);
@@ -417,11 +422,14 @@ const Mutation = objectType({
             },
           });
 
+          console.log({ user });
+
           return {
             token: sign({ userId: user.id }, 'secret'),
             user,
           };
         } catch (e: any) {
+          console.log(' Errored with: ', e.message);
           return e;
         }
       },
