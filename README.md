@@ -16,15 +16,15 @@ notAirbnb was born out of my desire to pick up some backend knowledge by creatin
 In this project, users are able to browse from a multitude of listings spread over cities in the SoCal/Las Vegas region. Users are then able to book these listings as well. Each of these listings were web scrapped via Puppeteer from real listings, however all names and personal information are fictitious.
 </br>
 </br>
-Despite being a fullstack application, the backend functionalities are pretty bare as I was primarily more focused on the frontend aspect of cloning Airbnb.
+Users are able to sign up for accounts (each of which is given a unique, randomly generated avatar) and also book listings for future trips. In addition, logged in users are able to view their previous and upcoming reservations. Listings are found via a robust search feature which include very detailed filters. 
 
 ## Technologies
 
 **Frontend** <br/> 
-React
+React styled via SCSS, react-spring and custom keyframes for animations, Google Maps API, Material UI for some ui elements (although most of it was custom via help of react-hook-form) and Cloudinary to host assets. Hosted on Netlify.
 
 **Backend** <br/>
-Apollo, PostgreSQL, and a GraphQL API w/ Prisma ORM 
+Express, Apollo, PostgreSQL, and a GraphQL API w/ Prisma ORM. Hosted on Heroku.
 
 ## Highlights
 * **Fully Responsive** - near pixel-perfect CSS along with an intuitive component layout allows for seamless transitions between mobile and desktop ... 
