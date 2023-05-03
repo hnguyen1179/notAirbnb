@@ -29,13 +29,13 @@ Apollo, PostgreSQL, and a GraphQL API w/ Prisma ORM
 ## Highlights
 * **Fully Responsive** - near pixel-perfect CSS along with an intuitive component layout allows for seamless transitions between mobile and desktop ... 
 
-![landing-mobile](https://user-images.githubusercontent.com/19617238/138088611-254a31dd-f090-4048-ac53-a50d2d6af44b.gif)
+![landing-responsive](https://user-images.githubusercontent.com/19617238/138088587-91c1f36b-bacd-4da8-a5ac-77e52ee6e6c7.gif)
 </br>
 </br>
 ... featuring a mobile-first design from the start of the project
 </br>
 </br>
-![landing-responsive](https://user-images.githubusercontent.com/19617238/138088587-91c1f36b-bacd-4da8-a5ac-77e52ee6e6c7.gif)
+![landing-mobile](https://user-images.githubusercontent.com/19617238/138088611-254a31dd-f090-4048-ac53-a50d2d6af44b.gif)
 </br>
 
 * **Robust Search Feature** - Users are able to search listings via a complex set of filters, as well as by region, dates available and number of guests 
