@@ -404,12 +404,15 @@ const Mutation = objectType({
 
           const dateJoined = `Joined in ${new Date().getFullYear()}`;
           const id = objectHash(args);
+          console.log({ id });
 
           const imageURL = `https://avatars.dicebear.com/api/human/${id}.svg`;
 
+          console.log('Starting to upload avatar');
           await cloudinary.v2.uploader.upload(imageURL, {
             public_id: `user_avatars/${id}`,
           });
+          console.log('Finished uploading avatar');
 
           const user = await context.prisma.user.create({
             data: {
