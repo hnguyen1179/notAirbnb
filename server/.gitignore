@@ -4,3 +4,4 @@ src/generated/
 *.env*
 *.db
 *.babelrc
+.DS_Store
