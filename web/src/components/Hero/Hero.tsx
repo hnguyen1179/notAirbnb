@@ -4,8 +4,8 @@ import { format, addDays } from "date-fns";
 const Hero = () => {
   const today = new Date();
   const currentDay = today.getDay();
-	const daysUntilNextWeek = 7 - currentDay;
-	
+  const daysUntilNextWeek = 7 - currentDay;
+
   // Formatted 'mm-dd-yyyy'
   const startOfNextWeek = format(
     addDays(today, daysUntilNextWeek),
@@ -42,11 +42,11 @@ const Hero = () => {
       <div className="Landing__hero__content__text">
         <span>Not sure where to go?</span>
         <span>Perfect.</span>
-        <button>
-          <Link to={link}>
+        <Link to={link}>
+          <button>
             <span>I'm flexible</span>
-          </Link>
-        </button>
+          </button>
+        </Link>
       </div>
     </div>
   );
