@@ -43,9 +43,9 @@ const Hero = () => {
         <span>Not sure where to go?</span>
         <span>Perfect.</span>
         <Link to={link}>
-          <button>
+          <div>
             <span>I'm flexible</span>
-          </button>
+          </div>
         </Link>
       </div>
     </div>

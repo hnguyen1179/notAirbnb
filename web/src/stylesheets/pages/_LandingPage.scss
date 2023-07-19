@@ -65,7 +65,7 @@
 
         a {
           text-decoration: none;
-          button {
+          div {
             margin-top: 1.4rem;
             padding: 1.4rem 3rem;
             border-radius: 2.5rem;
@@ -147,7 +147,7 @@
           margin-top: 0.4rem;
         }
 
-        & > button {
+        & > div {
           font-size: 1.4rem;
           pointer-events: none;
           padding: 0.8rem 1.6rem;
@@ -198,7 +198,7 @@
     &__text {
       top: 42.5%;
 
-      button {
+      div {
         padding: 1.8rem 6rem;
       }
     }
