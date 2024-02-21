@@ -1,51 +1,51 @@
 [
-	{
-		"title": "ABOUT",
-		"list": [
-			"How notAirbnb works",
-			"Newsroom",
-			"notAirbnb 2022",
-			"Investors",
-			"notAirbnb Plus",
-			"notAirbnb Luxe",
-			"HotelTonight",
-			"notAirbnb for Work",
-			"Made possible by Hosts",
-			"Careers",
-			"Founders' Letter"
-		]
-	},
-	{
-		"title": "COMMUNITY",
-		"list": [
-			"Diversity & Belonging",
-			"Against Discrimination",
-			"Accessibility",
-			"notAirbnb Associates",
-			"Help Afghan refugees, https://www.refugeesinternational.org/donate-2020",
-			"Guest Referrals",
-			"Gift cards",
-			"notAirbnb.org"
-		]
-	},
-	{
-		"title": "DUKE NGUYEN",
-		"list": [
-			"Resume, /assets/duke-nguyen-resume.pdf",
-			"Personal Site, https://dukenguyen.dev",
-			"LinkedIn, https://www.linkedin.com/in/nguyenduke/",
-			"GitHub, https://github.com/hnguyen1179",
-			"Spotify, https://open.spotify.com/user/duke603kid?si=c3dtOklqRhGcQc0ITDmwAA"
-		]
-	},
-	{
-		"title": "SUPPORT",
-		"list": [
-			"Our COVID-19 Response",
-			"Help Center",
-			"Cancellation options",
-			"Neighborhood Support",
-			"Trust & Safety"
-		]
-	}
+  {
+    "title": "ABOUT",
+    "list": [
+      "How notAirbnb works",
+      "Newsroom",
+      "notAirbnb 2022",
+      "Investors",
+      "notAirbnb Plus",
+      "notAirbnb Luxe",
+      "HotelTonight",
+      "notAirbnb for Work",
+      "Made possible by Hosts",
+      "Careers",
+      "Founders' Letter"
+    ]
+  },
+  {
+    "title": "COMMUNITY",
+    "list": [
+      "Diversity & Belonging",
+      "Against Discrimination",
+      "Accessibility",
+      "notAirbnb Associates",
+      "Help Afghan refugees, https://www.refugeesinternational.org",
+      "Guest Referrals",
+      "Gift cards",
+      "notAirbnb.org"
+    ]
+  },
+  {
+    "title": "DUKE NGUYEN",
+    "list": [
+      "Resume, /assets/duke-nguyen-resume.pdf",
+      "Personal Site, https://dukenguyen.dev",
+      "LinkedIn, https://www.linkedin.com/in/nguyenduke/",
+      "GitHub, https://github.com/hnguyen1179",
+      "Spotify, https://open.spotify.com/user/duke603kid?si=c3dtOklqRhGcQc0ITDmwAA"
+    ]
+  },
+  {
+    "title": "SUPPORT",
+    "list": [
+      "Our COVID-19 Response",
+      "Help Center",
+      "Cancellation options",
+      "Neighborhood Support",
+      "Trust & Safety"
+    ]
+  }
 ]
